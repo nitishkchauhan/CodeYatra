@@ -1,56 +1,93 @@
-# Welcome to your Expo app 👋
+# CodeYatra
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile app that teaches programming from first principles to full-stack
+development, in four stages:
 
-## Get started
+| Stage | Topics | Practice style |
+|---|---|---|
+| 1 · Foundations | Sequences, loops, functions, conditions | Isometric block puzzles with Yatri the robot |
+| 2 · Web Development | HTML, CSS, JavaScript | Fill-in code with a live preview and checks |
+| 3 · Python | Loops, functions, problem solving | Fill-in code with real output and tests |
+| 4 · Full-Stack | React, Node.js, Next.js | Components and props with a live preview |
 
-1. Install dependencies
+Every lesson follows the same rhythm: **concept → quick check → practice → complete**.
 
-   ```bash
-   npm install
-   ```
+Built with Expo SDK 57, Expo Router, Reanimated 4 and react-native-svg.
 
-2. Start the app
+## What is inside
 
-   ```bash
-   npx expo start
-   ```
+- **4 stages, 21 lessons, 12 practice challenges**: blocks puzzles, fill-in code with live previews, and a real code editor
+- **Real code execution**: Python (Pyodide) and JavaScript run in a sandboxed worker with tests, line-numbered errors and an infinite-loop guard
+- **Code playground** for free coding
+- **Accounts (Supabase)**: email code or Google sign-in, progress sync across phones; guest mode works offline
+- **Weekly league**, shareable **certificates**, **coins + shop** (outfits, streak freezes), **daily reminders**
+- English / हिन्दी UI, haptics, accessible labels, reduced-motion friendly animations
 
-In the output, you'll find options to open the app in a
+## Turn on accounts (optional)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. Create a free project at supabase.com.
+2. SQL Editor → paste and run `supabase/schema.sql`.
+3. Authentication → Emails → edit the Magic Link template to include `{{ .Token }}` so learners get a 6-digit code.
+4. (Google) Authentication → Providers → Google, and add `codeyatra://auth-callback` to Redirect URLs.
+5. Copy `.env.example` to `.env` and fill in the URL and publishable key. Restart `npx expo start`.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+For EAS builds, add the same two values as EAS environment variables (`npx eas-cli@latest env:create`).
 
-## Get a fresh project
-
-When you're ready, run:
+## Run it
 
 ```bash
-npm run reset-project
+npm install
+npx expo start          # scan the QR code with Expo Go on Android
+npx expo start --web    # quick check in the browser
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Build an installable Android APK
 
-### Other setup steps
+```bash
+npx eas-cli@latest login
+npx eas-cli@latest build -p android --profile preview
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Use `--profile production` for a Play Store bundle (`.aab`).
 
-## Learn more
+## Checks
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm test               # engine, content, real Python/JS solutions, sync merge
+npx tsc --noEmit
+npx expo lint
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+The content tests prove every puzzle is solvable within its block target and
+that every code exercise passes with its intended answer **and with no other
+combination of tokens**.
 
-## Join the community
+## Project layout
 
-Join our community of developers creating universal apps.
+```
+src/
+  app/                    Expo Router screens
+    onboarding.tsx        First run: welcome, language, about you
+    (tabs)/               Learn, Practice, Profile (custom tab bar)
+    lesson/[id].tsx       Lesson player (no bottom navigation)
+  features/lesson/        Concept, Quiz, Puzzle and Code steps + completion screen
+  components/             Board, Yatri, Code (highlighter + gaps), Preview, Blocks, StageSheet, TabBar
+  components/ui/          Text, Button, Icon, Progress (ring/bar/segments), Toast
+  content/                Stages, units and lesson content for all four stages
+  game/                   Puzzle engine, levels, Python codegen
+  state/                  Saved progress (AsyncStorage), streak rules
+  i18n/                   English / Hindi UI strings
+  lib/haptics.ts          Vibration feedback (respects the user setting)
+  theme/                  "Studio" design tokens
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Adding a lesson
+
+1. Write it in `src/content/<stage>.ts` as a list of steps (`concept`, `quiz`,
+   `puzzle`, `code`). Code steps include a `solution` and a `run` function that
+   returns output, checks or a preview.
+2. Reference its id in the stage's `units` in `src/content/index.ts`.
+3. Run `npm test`. The content tests check it automatically.
+
+Lessons listed in a unit without content yet show as **Soon** and never block
+the lessons after them.

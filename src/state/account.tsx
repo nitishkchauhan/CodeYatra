@@ -1,0 +1,145 @@
+import type { Session } from '@supabase/supabase-js';
+import * as Linking from 'expo-linking';
+import * as WebBrowser from 'expo-web-browser';
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Platform } from 'react-native';
+
+import { mergeProgress, normalize, weekStart, weekXp, type Progress } from './model';
+import { useProgress } from './progress';
+import { accountsEnabled, supabase } from '@/lib/supabase';
+
+WebBrowser.maybeCompleteAuthSession();
+
+export type SyncStatus = 'off' | 'syncing' | 'synced' | 'error';
+
+type AccountApi = {
+  enabled: boolean;
+  session: Session | null;
+  email: string | null;
+  sync: SyncStatus;
+  sendCode: (email: string) => Promise<string | null>;
+  verifyCode: (email: string, code: string) => Promise<string | null>;
+  signInWithGoogle: () => Promise<string | null>;
+  signOut: () => Promise<void>;
+  deleteAccount: () => Promise<string | null>;
+};
+
+const AccountContext = createContext<AccountApi | null>(null);
+const PUSH_DELAY_MS = 1500;
+
+async function push(userId: string, state: Progress, today: string) {
+  if (!supabase) return;
+  const [a, b] = await Promise.all([
+    supabase.from('learner_state').upsert({ user_id: userId, state, updated_at: new Date().toISOString() }),
+    supabase.from('profiles').upsert({
+      user_id: userId,
+      display_name: (state.name || 'Explorer').slice(0, 24),
+      total_xp: state.xp,
+      week_xp: weekXp(state, today),
+      week_start: weekStart(today),
+      streak: state.streak,
+      outfit: state.outfit,
+      updated_at: new Date().toISOString(),
+    }),
+  ]);
+  if (a.error || b.error) throw a.error ?? b.error;
+}
+
+export function AccountProvider({ children }: { children: ReactNode }) {
+  const progress = useProgress();
+  const [session, setSession] = useState<Session | null>(null);
+  const [sync, setSync] = useState<SyncStatus>('off');
+  const pulledFor = useRef<string | null>(null);
+  const userId = session?.user.id ?? null;
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  // On sign-in: pull the cloud copy once, merge it with this phone's progress, save both.
+  useEffect(() => {
+    if (!supabase || !userId || !progress.hydrated || pulledFor.current === userId) return;
+    pulledFor.current = userId;
+    setSync('syncing');
+    const client = supabase;
+    (async () => {
+      const { data, error } = await client.from('learner_state').select('state').eq('user_id', userId).maybeSingle();
+      if (error) throw error;
+      const merged = data ? mergeProgress(progress.state, normalize(data.state as Partial<Progress>)) : progress.state;
+      progress.replace(merged);
+      await push(userId, merged, progress.today);
+      setSync('synced');
+    })().catch(() => setSync('error'));
+    // Only re-run when the signed-in user or hydration changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, progress.hydrated]);
+
+  // Afterwards: push changes shortly after they happen.
+  useEffect(() => {
+    if (!userId || pulledFor.current !== userId) return;
+    const t = setTimeout(() => {
+      setSync('syncing');
+      push(userId, progress.state, progress.today)
+        .then(() => setSync('synced'))
+        .catch(() => setSync('error'));
+    }, PUSH_DELAY_MS);
+    return () => clearTimeout(t);
+  }, [userId, progress.state, progress.today]);
+
+  const api: AccountApi = {
+    enabled: accountsEnabled,
+    session,
+    email: session?.user.email ?? null,
+    sync: userId ? sync : 'off',
+    sendCode: async (email) => {
+      if (!supabase) return 'Accounts are not set up yet.';
+      const { error } = await supabase.auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true } });
+      return error?.message ?? null;
+    },
+    verifyCode: async (email, code) => {
+      if (!supabase) return 'Accounts are not set up yet.';
+      const { error } = await supabase.auth.verifyOtp({ email: email.trim(), token: code.trim(), type: 'email' });
+      return error?.message ?? null;
+    },
+    signInWithGoogle: async () => {
+      if (!supabase) return 'Accounts are not set up yet.';
+      const redirectTo = Linking.createURL('auth-callback');
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo, skipBrowserRedirect: Platform.OS !== 'web' },
+      });
+      if (error) return error.message;
+      if (Platform.OS === 'web' || !data.url) return null;
+      const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+      if (result.type !== 'success') return result.type === 'cancel' || result.type === 'dismiss' ? null : 'Google sign-in did not finish.';
+      const code = Linking.parse(result.url).queryParams?.code;
+      if (typeof code !== 'string') return 'Google sign-in did not return a code.';
+      const exchange = await supabase.auth.exchangeCodeForSession(code);
+      return exchange.error?.message ?? null;
+    },
+    signOut: async () => {
+      pulledFor.current = null;
+      await supabase?.auth.signOut();
+    },
+    deleteAccount: async () => {
+      if (!supabase) return null;
+      const { error } = await supabase.rpc('delete_my_account');
+      if (error) return error.message;
+      pulledFor.current = null;
+      await supabase.auth.signOut();
+      progress.reset();
+      return null;
+    },
+  };
+
+  return <AccountContext.Provider value={api}>{children}</AccountContext.Provider>;
+}
+
+export function useAccount() {
+  const ctx = useContext(AccountContext);
+  if (!ctx) throw new Error('useAccount must be used inside AccountProvider');
+  return ctx;
+}
