@@ -1,0 +1,26 @@
+# Builds a signed Play Store bundle (.aab) with the "production" profile in eas.json.
+# Runs on every push to main/master once the project is connected to a GitHub repo,
+# or on demand: npx eas-cli@latest workflow:run create-production-builds.yml
+name: Create production builds
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - '**'
+      - '!**/*.md'
+  workflow_dispatch: {}
+
+concurrency:
+  group: production-build
+  cancel_in_progress: true
+
+jobs:
+  build_android:
+    name: Build Android (Play Store)
+    type: build
+    params:
+      platform: android
+      profile: production
