@@ -13,6 +13,9 @@ import { useAccount, type SyncStatus } from '@/state/account';
 import { useProgress } from '@/state/progress';
 import { card, colors, fonts } from '@/theme';
 
+// Google sign-in needs a Google Cloud OAuth client set up in Supabase first.
+const GOOGLE_ENABLED = process.env.EXPO_PUBLIC_GOOGLE_SIGNIN === 'on';
+
 const SYNC_LABEL: Record<SyncStatus, { text: string; color: string }> = {
   off: { text: 'Not syncing', color: colors.ink3 },
   syncing: { text: 'Syncing…', color: colors.primary },
@@ -94,27 +97,40 @@ export default function AccountScreen() {
                   </T>
                 </View>
               </View>
-              <Button variant="outline" label="Sign out" onPress={() => run(async () => (await account.signOut(), null), () => toast('Signed out. Progress stays on this phone'))} />
+              <Button
+                variant="outline"
+                label="Sign out"
+                onPress={() =>
+                  run(
+                    async () => (await account.signOut(), null),
+                    () => toast('Signed out. Progress stays on this phone'),
+                  )
+                }
+              />
               <Button variant="ghost" label="Delete account" onPress={confirmDelete} disabled={busy} />
             </Animated.View>
           ) : (
             <Animated.View entering={FadeInDown.delay(80)} style={{ gap: 12 }}>
-              <Button
-                variant="outline"
-                label="Continue with Google"
-                icon={() => (
-                  <T style={{ fontFamily: fonts.display, fontSize: 18, color: '#4285F4' }} accessibilityElementsHidden>
-                    G
-                  </T>
-                )}
-                disabled={busy}
-                onPress={() => run(account.signInWithGoogle, () => toast('Signed in'))}
-              />
-              <View style={styles.or}>
-                <View style={styles.rule} />
-                <T variant="caption">or use your email</T>
-                <View style={styles.rule} />
-              </View>
+              {GOOGLE_ENABLED ? (
+                <>
+                  <Button
+                    variant="outline"
+                    label="Continue with Google"
+                    icon={() => (
+                      <T style={{ fontFamily: fonts.display, fontSize: 18, color: '#4285F4' }} accessibilityElementsHidden>
+                        G
+                      </T>
+                    )}
+                    disabled={busy}
+                    onPress={() => run(account.signInWithGoogle, () => toast('Signed in'))}
+                  />
+                  <View style={styles.or}>
+                    <View style={styles.rule} />
+                    <T variant="caption">or use your email</T>
+                    <View style={styles.rule} />
+                  </View>
+                </>
+              ) : null}
               {!sent ? (
                 <>
                   <TextInput
@@ -132,7 +148,12 @@ export default function AccountScreen() {
                   <Button
                     label={busy ? 'Sending…' : 'Email me a sign-in link'}
                     disabled={!isEmail(email) || busy}
-                    onPress={() => run(() => account.sendCode(email), () => setSent(true))}
+                    onPress={() =>
+                      run(
+                        () => account.sendCode(email),
+                        () => setSent(true),
+                      )
+                    }
                   />
                 </>
               ) : (
@@ -155,9 +176,22 @@ export default function AccountScreen() {
                   <Button
                     label={busy ? 'Checking…' : 'Sign in'}
                     disabled={code.length !== 6 || busy}
-                    onPress={() => run(() => account.verifyCode(email, code), () => toast('Signed in. Syncing your progress'))}
+                    onPress={() =>
+                      run(
+                        () => account.verifyCode(email, code),
+                        () => toast('Signed in. Syncing your progress'),
+                      )
+                    }
                   />
-                  <Button variant="ghost" label="Use a different email" height={44} onPress={() => { setSent(false); setCode(''); }} />
+                  <Button
+                    variant="ghost"
+                    label="Use a different email"
+                    height={44}
+                    onPress={() => {
+                      setSent(false);
+                      setCode('');
+                    }}
+                  />
                 </>
               )}
               <T variant="caption" style={{ textAlign: 'center' }}>
