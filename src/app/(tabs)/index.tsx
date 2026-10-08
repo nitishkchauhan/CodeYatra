@@ -72,7 +72,7 @@ export default function LearnScreen() {
           <View style={styles.trackHead}>
             <TrackBadge stage={stage} size={44} />
             <View style={{ flex: 1 }}>
-              <T variant="kicker" color={stage.color}>
+              <T variant="kicker" color={stage.color} numberOfLines={1}>
                 {stage.section.toUpperCase()} · {stage.audience.toUpperCase()}
               </T>
               <T variant="heading" style={{ fontSize: 18 }}>

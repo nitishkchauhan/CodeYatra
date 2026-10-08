@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { ProjectCards } from '@/components/ProjectCards';
 import { TrackBadge } from '@/components/TrackBadge';
 import { TrackRail } from '@/components/TrackRail';
 import { Icon } from '@/components/ui/Icon';
@@ -53,13 +54,20 @@ export default function PracticeScreen() {
                 Code playground
               </T>
               <T variant="bodySm" color="#C8C3F5">
-                Write real Python or JavaScript and run it
+                Python, JavaScript or a live web page
               </T>
             </View>
             <Icon name="chevronRight" size={20} color="#C8C3F5" />
           </Pressable>
         </Animated.View>
 
+        <Animated.View entering={FadeInDown.delay(80).duration(320)}>
+          <ProjectCards />
+        </Animated.View>
+
+        <T variant="heading" style={{ marginTop: 4 }}>
+          Challenges by language
+        </T>
         <TrackRail value={stage.id} onChange={setStageId} />
 
         <Animated.View key={stage.id} entering={FadeIn.duration(220)} style={{ gap: 14 }}>
