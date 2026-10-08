@@ -7,7 +7,8 @@ export type RunLang = 'python' | 'javascript';
 export type ExerciseLang = RunLang | 'sql';
 
 export const runtimeOf = (lang: ExerciseLang): RunLang => (lang === 'sql' ? 'python' : lang);
-export type EditorTest = { call: string; expect: string } | { stdout: string };
+/** `unordered` compares output lines as a set, for SQL results without ORDER BY. */
+export type EditorTest = { call: string; expect: string } | { stdout: string; unordered?: boolean };
 export type TestResult = { label: string; ok: boolean; got?: string; error?: string };
 
 const MARKER = '__CY_RESULTS__';
@@ -47,6 +48,8 @@ print("${MARKER}" + __cy_json.dumps(__cy_results))
 `;
 }
 
+const sortLines = (s: string) => s.split('\n').map((l) => l.trim()).sort().join('\n');
+
 export function readResults(tests: EditorTest[], output: string[]): { output: string[]; results: TestResult[] } {
   const visible = output.filter((l) => !l.startsWith(MARKER));
   const line = output.find((l) => l.startsWith(MARKER));
@@ -55,7 +58,8 @@ export function readResults(tests: EditorTest[], output: string[]): { output: st
   for (const t of tests) {
     if ('stdout' in t) {
       const got = visible.join('\n').trim();
-      results.push({ label: 'Prints the expected output', ok: got === t.stdout.trim(), got: got || '(nothing)' });
+      const same = t.unordered ? sortLines(got) === sortLines(t.stdout.trim()) : got === t.stdout.trim();
+      results.push({ label: t.unordered ? 'Returns the expected rows' : 'Prints the expected output', ok: same, got: got || '(nothing)' });
     } else {
       const row = rows.find((r) => r[0] === t.call && r[1] === t.expect);
       results.push({

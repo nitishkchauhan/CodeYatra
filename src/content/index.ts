@@ -6,7 +6,7 @@ import { countSeats, styleButton, WEB_MORE } from './web2';
 import { FULLSTACK_LESSONS, trainCardProps } from './fullstack';
 import { PYTHON_LESSONS, trainFare } from './python';
 import { dailyLesson, reviewLesson } from './daily';
-import type { Lesson, LessonRef, Stage, Unit } from './types';
+import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
 import { ticketHtml, WEB_LESSONS } from './web';
 import { CSS_LESSONS, flexRow } from './styling';
 import { HTML_LESSONS, searchForm } from './html';
@@ -15,8 +15,22 @@ import { NEXT_LESSONS, dynamicRoute, routeHandler } from './next';
 import { expressRoute, NODE_LESSONS } from './node';
 import { canteenBill, PYTHON_EXTRA } from './python3';
 import { REACT_LESSONS, trainList } from './react';
+import { PROJECTS } from './projects';
+import { C_LESSONS } from './tracks/c';
+import { CSS_MORE } from './tracks/cssMore';
+import { balanced, binarySearch, DSA_LESSONS, firstRepeat } from './tracks/dsa';
+import { GIT_LESSONS } from './tracks/git';
+import { HTML_MORE } from './tracks/htmlMore';
+import { JAVA_LESSONS } from './tracks/java';
+import { JS_MORE } from './tracks/jsMore';
+import { LOGIC_MORE } from './tracks/logicMore';
+import { PLACEMENT_LESSONS } from './tracks/placement';
+import { PYTHON_MORE_2 } from './tracks/pythonMore';
+import { SQL_LESSONS } from './tracks/sql';
+import { NEXT_MORE, NODE_MORE, REACT_MORE } from './tracks/stackMore';
 
 export * from './types';
+export { PROJECTS } from './projects';
 export { dailyDone, dailyId, DAILY_SIZE } from './daily';
 export { isOrderCorrect, isPredictCorrect, normalizeOutput, optionOrder, runWebChecks, scrambledOrder } from './helpers';
 
@@ -170,6 +184,29 @@ const TRACK_PRACTICE: Lesson[] = [
   practice('x-handler', 'An API in Next.js', 'next', 3, ['Export GET from route.js'], routeHandler),
 ];
 
+/** A practice set made of every step of the given types from some lessons. */
+function drill(id: string, title: string, skill: SkillKey, lessons: Lesson[], types: Step['type'][], learned: string[], max = 5): Lesson {
+  const steps = lessons.flatMap((l) => l.steps.filter((s) => types.includes(s.type))).slice(0, max);
+  return { id, title, kind: 'practice', minutes: steps.length * 2, skill, learned, steps };
+}
+
+const sqlJoin = SQL_LESSONS.find((l) => l.id === 'sql-join')!.steps.find((s) => s.type === 'editor')!;
+
+const NEW_TRACK_PRACTICE: Lesson[] = [
+  drill('x-c-output', 'Output drill', 'c', C_LESSONS, ['predict'], ['Traced C programs line by line']),
+  drill('x-c-bugs', 'Bug hunt', 'c', C_LESSONS, ['bug'], ['Spotted classic C bugs']),
+  drill('x-java-output', 'Output drill', 'java', JAVA_LESSONS, ['predict'], ['Traced Java programs line by line']),
+  drill('x-java-fix', 'Fix the code', 'java', JAVA_LESSONS, ['bug', 'tap'], ['Spotted Java mistakes']),
+  practice('x-dsa-binary', 'Binary search', 'dsa', 6, ['Halve the range each step'], binarySearch),
+  practice('x-dsa-stack', 'Balanced brackets', 'dsa', 6, ['Use a stack to match pairs'], balanced),
+  practice('x-dsa-hash', 'First repeated booking', 'dsa', 4, ['Use a set for O(1) lookups'], firstRepeat),
+  drill('x-sql-drill', 'Query results drill', 'sql', SQL_LESSONS, ['predict'], ['Read queries like the database does']),
+  practice('x-sql-join', "Asha's trains", 'sql', 5, ['Join two tables on a key'], sqlJoin),
+  drill('x-git-drill', 'Command drill', 'git', GIT_LESSONS, ['order', 'tap'], ['Remembered everyday Git commands']),
+  drill('x-pl-output', 'Output round', 'placement', PLACEMENT_LESSONS, ['predict'], ['Handled tricky output questions']),
+  drill('x-pl-code', 'Coding round', 'placement', PLACEMENT_LESSONS, ['editor'], ['Solved classic coding questions'], 4),
+];
+
 const ALL: Lesson[] = [
   ...FOUNDATIONS_LESSONS,
   ...FOUNDATIONS_MORE,
@@ -186,8 +223,24 @@ const ALL: Lesson[] = [
   ...REACT_LESSONS,
   ...NODE_LESSONS,
   ...NEXT_LESSONS,
+  ...LOGIC_MORE,
+  ...HTML_MORE,
+  ...CSS_MORE,
+  ...JS_MORE,
+  ...PYTHON_MORE_2,
+  ...REACT_MORE,
+  ...NODE_MORE,
+  ...NEXT_MORE,
+  ...C_LESSONS,
+  ...JAVA_LESSONS,
+  ...DSA_LESSONS,
+  ...SQL_LESSONS,
+  ...GIT_LESSONS,
+  ...PLACEMENT_LESSONS,
   ...PRACTICE_LESSONS,
   ...TRACK_PRACTICE,
+  ...NEW_TRACK_PRACTICE,
+  ...PROJECTS,
 ];
 const BY_ID = new Map(ALL.map((l) => [l.id, l]));
 
@@ -218,7 +271,7 @@ const unit = (id: string, title: string, lesson: LessonRef): Unit => ({
   lessons: [lesson],
 });
 
-/** Language tracks, grouped into sections. Each track has five or more modules of reading plus practice. */
+/** Language tracks, grouped into sections. Each track has ten modules of reading plus practice. */
 export const STAGES: Stage[] = [
   {
     id: 'foundations',
@@ -238,33 +291,19 @@ export const STAGES: Stage[] = [
     units: [
       unit('f-u1', 'Sequences', ref('f-seq-1', 'First steps', 'Puzzle · 4 min')),
       unit('f-u2', 'Turns', ref('f-seq-2', 'Turn the corner', 'Puzzle · 5 min')),
+      unit('f-u7', 'Variables', ref('f-var-1', 'Variables are labelled boxes', 'Read + predict · 5 min')),
       unit('f-u3', 'Loops', ref('f-loop-1', 'Repeat with loops', 'Read + puzzle · 6 min')),
+      unit('f-u8', 'While loops', ref('f-while-1', 'Repeat until done', 'Read + order lines · 6 min')),
       unit('f-u4', 'Patterns', ref('f-loop-2', 'Spot the pattern', 'Read + puzzle · 6 min')),
+      unit('f-u9', 'Nested loops', ref('f-nest-1', 'Loops inside loops', 'Read + predict · 6 min')),
       unit('f-u5', 'Functions', ref('f-fn-1', 'Make your own block', 'Read + code · 7 min')),
       unit('f-u6', 'Conditions', ref('f-if-1', 'If there is a gem…', 'Read + code · 7 min')),
+      unit('f-u10', 'Debugging', ref('f-debug-1', 'Debug like a pro', 'Read + find the bug · 6 min')),
     ],
     practice: [
-      {
-        id: 'x-corner',
-        title: 'Corner run',
-        kind: 'Blocks puzzle',
-        difficulty: 'Easy',
-        xp: 15,
-      },
-      {
-        id: 'x-bazaar',
-        title: 'Gem Bazaar',
-        kind: 'Blocks puzzle',
-        difficulty: 'Medium',
-        xp: 15,
-      },
-      {
-        id: 'x-stairs',
-        title: 'Staircase climb',
-        kind: 'Blocks puzzle',
-        difficulty: 'Hard',
-        xp: 15,
-      },
+      { id: 'x-corner', title: 'Corner run', kind: 'Blocks puzzle', difficulty: 'Easy', xp: 15 },
+      { id: 'x-bazaar', title: 'Gem Bazaar', kind: 'Blocks puzzle', difficulty: 'Medium', xp: 15 },
+      { id: 'x-stairs', title: 'Staircase climb', kind: 'Blocks puzzle', difficulty: 'Hard', xp: 15 },
     ],
   },
   {
@@ -277,7 +316,7 @@ export const STAGES: Stage[] = [
     short: 'HTML',
     sub: 'Structure of every web page',
     audience: 'Class 9+',
-    blurb: 'Tags, lists, links, forms and page layout with a live preview.',
+    blurb: 'Tags, lists, tables, forms and accessible pages with a live preview.',
     color: '#C2410C',
     soft: '#FFEDE3',
     accent: '#FDBA8C',
@@ -285,25 +324,18 @@ export const STAGES: Stage[] = [
     units: [
       unit('h-u1', 'Tags and headings', ref('w-html-1', 'Your first web page', 'Read + practice · 6 min')),
       unit('h-u2', 'Links and images', ref('w-html-2', 'Links and images', 'Read + practice · 6 min')),
+      unit('h-u6', 'Attributes', ref('h-attr-1', 'Attributes, ids and classes', 'Read + build · 6 min')),
       unit('h-u3', 'Lists', ref('h-list-1', 'Lists', 'Read + live preview · 5 min')),
+      unit('h-u7', 'Tables', ref('h-table-1', 'Tables', 'Read + build · 6 min')),
       unit('h-u4', 'Forms', ref('h-form-1', 'Forms and inputs', 'Read + live preview · 6 min')),
+      unit('h-u8', 'More form controls', ref('h-inputs-1', 'More form controls', 'Read + build · 6 min')),
       unit('h-u5', 'Page layout', ref('h-sem-1', 'Page layout', 'Read + live preview · 6 min')),
+      unit('h-u9', 'Accessibility', ref('h-a11y-1', 'Accessible pages', 'Read + build · 6 min')),
+      unit('h-u10', 'Head and SEO', ref('h-head-1', 'The head and SEO', 'Read + practice · 5 min')),
     ],
     practice: [
-      {
-        id: 'x-ticket',
-        title: 'Build a ticket card',
-        kind: 'HTML',
-        difficulty: 'Easy',
-        xp: 15,
-      },
-      {
-        id: 'x-form',
-        title: 'Train search form',
-        kind: 'HTML forms',
-        difficulty: 'Medium',
-        xp: 15,
-      },
+      { id: 'x-ticket', title: 'Build a ticket card', kind: 'HTML', difficulty: 'Easy', xp: 15 },
+      { id: 'x-form', title: 'Train search form', kind: 'HTML forms', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -324,25 +356,18 @@ export const STAGES: Stage[] = [
     units: [
       unit('c-u1', 'Colours', ref('w-css-1', 'Colours and spacing', 'Read + live preview · 7 min')),
       unit('c-u2', 'Selectors', ref('c-sel-1', 'Selectors', 'Read + practice · 5 min')),
+      unit('c-u6', 'Typography', ref('c-text-1', 'Typography', 'Read + build · 6 min')),
       unit('c-u3', 'Box model', ref('c-box-1', 'The box model', 'Read + live preview · 6 min')),
       unit('c-u4', 'Flexbox', ref('c-flex-1', 'Flexbox layout', 'Read + live preview · 7 min')),
+      unit('c-u7', 'Grid', ref('c-grid-1', 'CSS Grid', 'Read + build · 7 min')),
+      unit('c-u8', 'Positioning', ref('c-pos-1', 'Positioning', 'Read + build · 7 min')),
       unit('c-u5', 'Responsive', ref('c-resp-1', 'Responsive design', 'Read + live preview · 6 min')),
+      unit('c-u9', 'Motion', ref('c-motion-1', 'Hover and transitions', 'Read + build · 6 min')),
+      unit('c-u10', 'Variables', ref('c-vars-1', 'CSS variables', 'Read + build · 6 min')),
     ],
     practice: [
-      {
-        id: 'x-style',
-        title: 'Style the ticket',
-        kind: 'CSS',
-        difficulty: 'Easy',
-        xp: 15,
-      },
-      {
-        id: 'x-flex',
-        title: 'Line up the ticket',
-        kind: 'Flexbox',
-        difficulty: 'Medium',
-        xp: 15,
-      },
+      { id: 'x-style', title: 'Style the ticket', kind: 'CSS', difficulty: 'Easy', xp: 15 },
+      { id: 'x-flex', title: 'Line up the ticket', kind: 'Flexbox', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -362,26 +387,19 @@ export const STAGES: Stage[] = [
     icon: 'M4 4h16v16H4z M10 9v6.5a1.5 1.5 0 01-3 0 M17 10a2 2 0 00-3.5 0c0 2.5 3.5 1.5 3.5 4a2 2 0 01-3.5 0',
     units: [
       unit('j-u1', 'Variables', ref('j-var-1', 'Variables and strings', 'Read + code editor · 6 min')),
+      unit('j-u6', 'Decisions', ref('j-cond-1', 'Decisions', 'Read + code editor · 6 min')),
       unit('j-u2', 'Loops', ref('w-js-1', 'Make the page think', 'Read + code editor · 8 min')),
       unit('j-u3', 'Arrays', ref('j-arr-1', 'Arrays and filter', 'Read + code editor · 7 min')),
+      unit('j-u7', 'Arrow functions', ref('j-arrow-1', 'Arrow functions and callbacks', 'Read + code editor · 7 min')),
       unit('j-u4', 'Objects', ref('j-obj-1', 'Objects', 'Read + code editor · 7 min')),
+      unit('j-u8', 'Classes', ref('j-class-1', 'Classes', 'Read + predict · 7 min')),
+      unit('j-u9', 'Errors', ref('j-error-1', 'Handling errors', 'Read + code editor · 7 min')),
       unit('j-u5', 'The DOM', ref('j-dom-1', 'Events and the DOM', 'Read + practice · 6 min')),
+      unit('j-u10', 'Async', ref('j-async-1', 'Promises and async', 'Read + find the bug · 7 min')),
     ],
     practice: [
-      {
-        id: 'x-seats',
-        title: 'Count the seats',
-        kind: 'Code editor',
-        difficulty: 'Easy',
-        xp: 15,
-      },
-      {
-        id: 'x-budget',
-        title: 'Tickets within budget',
-        kind: 'Code editor',
-        difficulty: 'Medium',
-        xp: 15,
-      },
+      { id: 'x-seats', title: 'Count the seats', kind: 'Code editor', difficulty: 'Easy', xp: 15 },
+      { id: 'x-budget', title: 'Tickets within budget', kind: 'Code editor', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -394,55 +412,93 @@ export const STAGES: Stage[] = [
     short: 'Python',
     sub: 'Basics to problem solving',
     audience: 'Class 11+ · College',
-    blurb: 'Type real Python and pass tests, from variables to algorithms.',
+    blurb: 'Type real Python and pass tests, from variables to classes.',
     color: '#1D4ED8',
     soft: '#E7EFFE',
     accent: '#93C5FD',
     icon: 'M4 17l6-5-6-5 M12 19h8',
     units: [
       unit('p-u0', 'Variables', ref('p-var-1', 'Variables and f-strings', 'Read + code editor · 5 min')),
+      unit('p-u6', 'Strings', ref('p-str-1', 'String methods', 'Read + code editor · 6 min')),
       unit('p-u1', 'Loops', ref('p-loop-1', 'Counting with range()', 'Read + practice · 6 min')),
       unit('p-u2', 'Lists', ref('p-loop-2', 'Loops with lists', 'Read + code editor · 7 min')),
+      unit('p-u7', 'Comprehensions', ref('p-comp-1', 'List comprehensions', 'Read + code editor · 6 min')),
       unit('p-u3', 'Functions', ref('p-fn-1', 'def and return', 'Read + code editor · 7 min')),
       unit('p-u4', 'Dictionaries', ref('p-dict-1', 'Dictionaries', 'Read + code editor · 7 min')),
+      unit('p-u8', 'Classes', ref('p-class-1', 'Classes and objects', 'Read + code editor · 8 min')),
+      unit('p-u9', 'Errors', ref('p-err-1', 'Handling errors', 'Read + practice · 6 min')),
       unit('p-u5', 'Problem solving', ref('p-ps-1', 'Break a problem down', 'Read + code editor · 8 min')),
     ],
     practice: [
-      {
-        id: 'x-times',
-        title: 'Print the 5 times table',
-        kind: 'Python',
-        difficulty: 'Easy',
-        xp: 15,
-      },
-      {
-        id: 'x-canteen',
-        title: 'Canteen bill',
-        kind: 'Code editor',
-        difficulty: 'Easy',
-        xp: 15,
-      },
-      {
-        id: 'x-fare',
-        title: 'Train fare calculator',
-        kind: 'Python',
-        difficulty: 'Medium',
-        xp: 15,
-      },
-      {
-        id: 'x-vowels',
-        title: 'Count the vowels',
-        kind: 'Code editor',
-        difficulty: 'Medium',
-        xp: 15,
-      },
-      {
-        id: 'x-route',
-        title: 'Find the cheapest train',
-        kind: 'Code editor',
-        difficulty: 'Hard',
-        xp: 15,
-      },
+      { id: 'x-times', title: 'Print the 5 times table', kind: 'Python', difficulty: 'Easy', xp: 15 },
+      { id: 'x-canteen', title: 'Canteen bill', kind: 'Code editor', difficulty: 'Easy', xp: 15 },
+      { id: 'x-fare', title: 'Train fare calculator', kind: 'Python', difficulty: 'Medium', xp: 15 },
+      { id: 'x-vowels', title: 'Count the vowels', kind: 'Code editor', difficulty: 'Medium', xp: 15 },
+      { id: 'x-route', title: 'Find the cheapest train', kind: 'Code editor', difficulty: 'Hard', xp: 15 },
+    ],
+  },
+  {
+    id: 'c',
+    section: 'Programming',
+    badge: 'C',
+    badgeBg: '#283593',
+    badgeInk: '#FFFFFF',
+    name: 'C Programming',
+    short: 'C',
+    sub: 'How computers really work',
+    audience: 'B.Tech · BCA · Diploma',
+    blurb: 'The first-year favourite: types, loops, arrays, pointers and memory.',
+    color: '#3949AB',
+    soft: '#E8EAF6',
+    accent: '#9FA8DA',
+    icon: 'M17 7a6 6 0 1 0 0 10',
+    units: [
+      unit('c1', 'Hello, C', ref('c-hello', 'Hello, C', 'Read + order lines · 5 min')),
+      unit('c2', 'Variables', ref('c-vars', 'Variables and types', 'Read + predict · 6 min')),
+      unit('c3', 'Decisions', ref('c-if', 'Decisions with if', 'Read + find the bug · 6 min')),
+      unit('c4', 'Loops', ref('c-loops', 'Loops', 'Read + order lines · 6 min')),
+      unit('c5', 'Functions', ref('c-func', 'Functions', 'Read + predict · 6 min')),
+      unit('c6', 'Arrays', ref('c-arrays', 'Arrays', 'Read + find the bug · 7 min')),
+      unit('c7', 'Strings', ref('c-strings', 'Strings', 'Read + predict · 6 min')),
+      unit('c8', 'Pointers', ref('c-pointers', 'Pointers', 'Read + predict · 8 min')),
+      unit('c9', 'Structs', ref('c-struct', 'Structs', 'Read + predict · 7 min')),
+      unit('c10', 'Memory', ref('c-memory', 'Dynamic memory', 'Read + predict · 7 min')),
+    ],
+    practice: [
+      { id: 'x-c-output', title: 'Output drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },
+      { id: 'x-c-bugs', title: 'Bug hunt', kind: 'Find the bug', difficulty: 'Medium', xp: 15 },
+    ],
+  },
+  {
+    id: 'java',
+    section: 'Programming',
+    badge: 'Jv',
+    badgeBg: '#E76F00',
+    badgeInk: '#FFFFFF',
+    name: 'Java',
+    short: 'Java',
+    sub: 'Object-oriented programming',
+    audience: 'B.Tech · BCA',
+    blurb: 'Classes, objects and collections: the language of placements and Android.',
+    color: '#B45309',
+    soft: '#FDF0E1',
+    accent: '#FDBA74',
+    icon: 'M7 17c3 1.5 7 1.5 10 0 M8 14c2.5 1 5.5 1 8 0 M12 3c-2 3 2 4 0 7',
+    units: [
+      unit('jv1', 'Hello, Java', ref('jv-hello', 'Hello, Java', 'Read + order lines · 5 min')),
+      unit('jv2', 'Variables', ref('jv-vars', 'Variables and types', 'Read + predict · 6 min')),
+      unit('jv3', 'Conditions', ref('jv-if', 'Conditions', 'Read + find the bug · 6 min')),
+      unit('jv4', 'Loops', ref('jv-loops', 'Loops', 'Read + order lines · 6 min')),
+      unit('jv5', 'Methods', ref('jv-methods', 'Methods', 'Read + predict · 6 min')),
+      unit('jv6', 'Arrays', ref('jv-arrays', 'Arrays', 'Read + find the bug · 6 min')),
+      unit('jv7', 'Strings', ref('jv-strings', 'Strings', 'Read + predict · 6 min')),
+      unit('jv8', 'Classes', ref('jv-classes', 'Classes and objects', 'Read + predict · 7 min')),
+      unit('jv9', 'Inheritance', ref('jv-oop', 'Inheritance', 'Read + predict · 7 min')),
+      unit('jv10', 'Collections', ref('jv-collections', 'ArrayList and HashMap', 'Read + predict · 7 min')),
+    ],
+    practice: [
+      { id: 'x-java-output', title: 'Output drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },
+      { id: 'x-java-fix', title: 'Fix the code', kind: 'Find the bug', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -463,25 +519,18 @@ export const STAGES: Stage[] = [
     units: [
       unit('r-u1', 'Components', ref('r-comp-1', 'Components and props', 'Read + live preview · 7 min')),
       unit('r-u2', 'State', ref('r-state-1', 'State with useState', 'Read + practice · 8 min')),
+      unit('r-u6', 'Conditional UI', ref('r-cond-1', 'Conditional rendering', 'Read + practice · 6 min')),
       unit('r-u3', 'Lists', ref('r-list-1', 'Lists and keys', 'Read + practice · 6 min')),
       unit('r-u4', 'Events', ref('r-event-1', 'Events and forms', 'Read + practice · 7 min')),
+      unit('r-u7', 'Composition', ref('r-children-1', 'Composition with children', 'Read + order lines · 6 min')),
+      unit('r-u8', 'Shared state', ref('r-lift-1', 'Lifting state up', 'Read + find the bug · 7 min')),
       unit('r-u5', 'Effects', ref('r-effect-1', 'Fetching data with useEffect', 'Read + practice · 8 min')),
+      unit('r-u9', 'Custom hooks', ref('r-hooks-1', 'Custom hooks', 'Read + find the bug · 7 min')),
+      unit('r-u10', 'Context', ref('r-context-1', 'Context', 'Read + practice · 7 min')),
     ],
     practice: [
-      {
-        id: 'x-props',
-        title: 'TrainCard props',
-        kind: 'React',
-        difficulty: 'Easy',
-        xp: 15,
-      },
-      {
-        id: 'x-list',
-        title: 'Render every train',
-        kind: 'React',
-        difficulty: 'Medium',
-        xp: 15,
-      },
+      { id: 'x-props', title: 'TrainCard props', kind: 'React', difficulty: 'Easy', xp: 15 },
+      { id: 'x-list', title: 'Render every train', kind: 'React', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -494,33 +543,26 @@ export const STAGES: Stage[] = [
     short: 'Node.js',
     sub: 'Servers and APIs',
     audience: 'B.Tech · BCA',
-    blurb: 'Write the backend: modules, async code, Express and JSON.',
+    blurb: 'Write the backend: modules, npm, Express, middleware and REST APIs.',
     color: '#15803D',
     soft: '#E3F5E8',
     accent: '#86EFAC',
     icon: 'M12 2l9 5v10l-9 5-9-5V7z',
     units: [
       unit('n-u1', 'Modules', ref('n-intro-1', 'Node.js and modules', 'Read + practice · 6 min')),
+      unit('n-u6', 'npm', ref('n-npm-1', 'npm and packages', 'Read + order lines · 5 min')),
       unit('n-u2', 'Async', ref('n-async-1', 'async and await', 'Read + practice · 7 min')),
+      unit('n-u7', 'Files', ref('n-fs-1', 'Reading and writing files', 'Read + predict · 6 min')),
       unit('n-u3', 'Express', ref('n-express-1', 'Servers with Express', 'Read + practice · 8 min')),
+      unit('n-u8', 'Middleware', ref('n-middleware-1', 'Express middleware', 'Read + code editor · 7 min')),
       unit('n-u4', 'JSON', ref('n-json-1', 'Working with JSON', 'Read + code editor · 7 min')),
       unit('n-u5', 'API routes', ref('n-api-1', 'Your first API route', 'Read + code editor · 8 min')),
+      unit('n-u9', 'REST design', ref('n-rest-1', 'REST API design', 'Read + code editor · 7 min')),
+      unit('n-u10', 'Config', ref('n-env-1', 'Config and secrets', 'Read + predict · 5 min')),
     ],
     practice: [
-      {
-        id: 'x-express',
-        title: 'A real web server',
-        kind: 'Express',
-        difficulty: 'Medium',
-        xp: 15,
-      },
-      {
-        id: 'x-api',
-        title: 'Bookings API',
-        kind: 'Code editor',
-        difficulty: 'Hard',
-        xp: 15,
-      },
+      { id: 'x-express', title: 'A real web server', kind: 'Express', difficulty: 'Medium', xp: 15 },
+      { id: 'x-api', title: 'Bookings API', kind: 'Code editor', difficulty: 'Hard', xp: 15 },
     ],
   },
   {
@@ -533,38 +575,157 @@ export const STAGES: Stage[] = [
     short: 'Next.js',
     sub: 'Full-stack React framework',
     audience: 'B.Tech · BCA',
-    blurb: 'Routing, layouts, server components and APIs in one project.',
+    blurb: 'Routing, layouts, server components, actions and deployment.',
     color: '#16142B',
     soft: '#ECEBF3',
     accent: '#A3A1B8',
     icon: 'M12 3l10 18H2z',
     units: [
       unit('nx-u1', 'Pages', ref('nx-1', 'Pages and routing', 'Read + practice · 6 min')),
+      unit('nx-u6', 'Links', ref('nx-link-1', 'Links and navigation', 'Read + practice · 5 min')),
       unit('nx-u2', 'Layouts', ref('nx-layout-1', 'Layouts', 'Read + practice · 6 min')),
       unit('nx-u3', 'Dynamic routes', ref('nx-dyn-1', 'Dynamic routes', 'Read + practice · 6 min')),
+      unit('nx-u7', 'Metadata', ref('nx-meta-1', 'Metadata and SEO', 'Read + practice · 5 min')),
       unit('nx-u4', 'Server data', ref('nx-data-1', 'Server components', 'Read + practice · 7 min')),
+      unit('nx-u8', 'Loading and errors', ref('nx-loading-1', 'Loading and error states', 'Read + order lines · 6 min')),
       unit('nx-u5', 'APIs', ref('nx-api-1', 'Route handlers', 'Read + practice · 6 min')),
+      unit('nx-u9', 'Server actions', ref('nx-actions-1', 'Server actions', 'Read + practice · 7 min')),
+      unit('nx-u10', 'Deploy', ref('nx-deploy-1', 'Deploying', 'Read + order lines · 5 min')),
     ],
     practice: [
-      {
-        id: 'x-dynamic',
-        title: 'One page per train',
-        kind: 'Next.js',
-        difficulty: 'Medium',
-        xp: 15,
-      },
-      {
-        id: 'x-handler',
-        title: 'An API in Next.js',
-        kind: 'Next.js',
-        difficulty: 'Medium',
-        xp: 15,
-      },
+      { id: 'x-dynamic', title: 'One page per train', kind: 'Next.js', difficulty: 'Medium', xp: 15 },
+      { id: 'x-handler', title: 'An API in Next.js', kind: 'Next.js', difficulty: 'Medium', xp: 15 },
+    ],
+  },
+  {
+    id: 'dsa',
+    section: 'CS core',
+    badge: 'O(n)',
+    badgeBg: '#7C3AED',
+    badgeInk: '#FFFFFF',
+    name: 'Data Structures & Algorithms',
+    short: 'DSA',
+    sub: 'Think in algorithms',
+    audience: 'B.Tech · BCA · Placements',
+    blurb: 'Big-O, searching, sorting, stacks, queues, hashing and recursion, in Python.',
+    color: '#6D28D9',
+    soft: '#F1EBFE',
+    accent: '#C4B5FD',
+    icon: 'M12 4v4 M6 12h12 M6 12v4 M18 12v4 M12 8v4',
+    units: [
+      unit('dsa1', 'Big-O', ref('dsa-bigo', 'Big-O: how code scales', 'Read + predict · 6 min')),
+      unit('dsa2', 'Linear search', ref('dsa-linear', 'Linear search', 'Read + code editor · 6 min')),
+      unit('dsa3', 'Binary search', ref('dsa-binary', 'Binary search', 'Read + code editor · 8 min')),
+      unit('dsa4', 'Sorting', ref('dsa-sort', 'Sorting', 'Read + find the bug · 7 min')),
+      unit('dsa5', 'Stacks', ref('dsa-stack', 'Stacks', 'Read + code editor · 8 min')),
+      unit('dsa6', 'Queues', ref('dsa-queue', 'Queues', 'Read + predict · 6 min')),
+      unit('dsa7', 'Hashing', ref('dsa-hash', 'Hashing with sets and dicts', 'Read + code editor · 7 min')),
+      unit('dsa8', 'Two pointers', ref('dsa-pointers', 'Two pointers', 'Read + code editor · 7 min')),
+      unit('dsa9', 'Recursion', ref('dsa-recursion', 'Recursion', 'Read + find the bug · 7 min')),
+      unit('dsa10', 'Linked lists', ref('dsa-linked', 'Linked lists', 'Read + predict · 7 min')),
+    ],
+    practice: [
+      { id: 'x-dsa-binary', title: 'Binary search', kind: 'Code editor', difficulty: 'Medium', xp: 15 },
+      { id: 'x-dsa-stack', title: 'Balanced brackets', kind: 'Code editor', difficulty: 'Medium', xp: 15 },
+      { id: 'x-dsa-hash', title: 'First repeated booking', kind: 'Code editor', difficulty: 'Easy', xp: 15 },
+    ],
+  },
+  {
+    id: 'sql',
+    section: 'CS core',
+    badge: 'SQL',
+    badgeBg: '#0369A1',
+    badgeInk: '#FFFFFF',
+    name: 'SQL & Databases',
+    short: 'SQL',
+    sub: 'Ask questions of data',
+    audience: 'Class 11+ · College',
+    blurb: 'Run real queries on a railway database: filter, sort, group and join.',
+    color: '#0369A1',
+    soft: '#E0F2FE',
+    accent: '#7DD3FC',
+    icon: 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6 M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
+    units: [
+      unit('sq1', 'SELECT', ref('sql-select', 'Tables and SELECT', 'Read + run a query · 6 min')),
+      unit('sq2', 'WHERE', ref('sql-where', 'Filtering with WHERE', 'Read + run a query · 6 min')),
+      unit('sq3', 'Sorting', ref('sql-order', 'ORDER BY and LIMIT', 'Read + run a query · 6 min')),
+      unit('sq4', 'Aggregates', ref('sql-agg', 'COUNT, SUM and AVG', 'Read + run a query · 6 min')),
+      unit('sq5', 'Grouping', ref('sql-group', 'GROUP BY', 'Read + run a query · 7 min')),
+      unit('sq6', 'Joins', ref('sql-join', 'JOIN', 'Read + run a query · 8 min')),
+      unit('sq7', 'Patterns', ref('sql-patterns', 'LIKE, IN and BETWEEN', 'Read + run a query · 6 min')),
+      unit('sq8', 'Changing data', ref('sql-change', 'INSERT, UPDATE and DELETE', 'Read + find the bug · 6 min')),
+      unit('sq9', 'Design', ref('sql-design', 'Keys and table design', 'Read + order lines · 6 min')),
+      unit('sq10', 'Subqueries', ref('sql-sub', 'Subqueries', 'Read + run a query · 8 min')),
+    ],
+    practice: [
+      { id: 'x-sql-drill', title: 'Query results drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },
+      { id: 'x-sql-join', title: "Asha's trains", kind: 'Run a query', difficulty: 'Hard', xp: 15 },
+    ],
+  },
+  {
+    id: 'git',
+    section: 'CS core',
+    badge: 'git',
+    badgeBg: '#F05032',
+    badgeInk: '#FFFFFF',
+    name: 'Git & GitHub',
+    short: 'Git',
+    sub: 'Version control like a pro',
+    audience: 'Everyone who codes',
+    blurb: 'Commits, branches, merges, pull requests and undoing mistakes.',
+    color: '#C2410C',
+    soft: '#FFEDE5',
+    accent: '#FDBA8C',
+    icon: 'M6 3v12 M6 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M18 9a9 9 0 0 1-9 9',
+    units: [
+      unit('g1', 'Why Git', ref('git-why', 'Why Git?', 'Read + quiz · 4 min')),
+      unit('g2', 'Repositories', ref('git-init', 'Start a repository', 'Read + order lines · 5 min')),
+      unit('g3', 'Commits', ref('git-commit', 'add and commit', 'Read + order lines · 5 min')),
+      unit('g4', 'History', ref('git-history', 'log and diff', 'Read + practice · 5 min')),
+      unit('g5', 'Branches', ref('git-branch', 'Branches', 'Read + order lines · 5 min')),
+      unit('g6', 'Merging', ref('git-merge', 'Merging and conflicts', 'Read + find the bug · 6 min')),
+      unit('g7', 'Remotes', ref('git-remote', 'push and pull', 'Read + order lines · 5 min')),
+      unit('g8', 'Pull requests', ref('git-pr', 'Pull requests', 'Read + order lines · 5 min')),
+      unit('g9', '.gitignore', ref('git-ignore', '.gitignore', 'Read + quiz · 4 min')),
+      unit('g10', 'Undo', ref('git-undo', 'Undo safely', 'Read + practice · 5 min')),
+    ],
+    practice: [{ id: 'x-git-drill', title: 'Command drill', kind: 'Order + tap', difficulty: 'Easy', xp: 15 }],
+  },
+  {
+    id: 'placement',
+    section: 'Placement',
+    badge: '★',
+    badgeBg: '#FF9F1C',
+    badgeInk: '#16142B',
+    name: 'Placement Prep',
+    short: 'Placement',
+    sub: 'Crack the coding round',
+    audience: 'Final year · Job seekers',
+    blurb: 'The questions campus drives ask again and again, with real code tests.',
+    color: '#B45309',
+    soft: '#FFF4E3',
+    accent: '#FDBA74',
+    icon: 'M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z',
+    units: [
+      unit('pl1', 'FizzBuzz', ref('pl-fizzbuzz', 'FizzBuzz', 'Coding round · 5 min')),
+      unit('pl2', 'Strings', ref('pl-reverse', 'Reverse a string', 'Coding round · 6 min')),
+      unit('pl3', 'Primes', ref('pl-prime', 'Prime check', 'Coding round · 7 min')),
+      unit('pl4', 'Arrays', ref('pl-second', 'Second largest', 'Coding round · 7 min')),
+      unit('pl5', 'Hashing', ref('pl-anagram', 'Anagrams', 'Coding round · 6 min')),
+      unit('pl6', 'C output', ref('pl-output-c', 'Output questions: C', 'Written test · 6 min')),
+      unit('pl7', 'Python output', ref('pl-output-py', 'Output questions: Python', 'Written test · 6 min')),
+      unit('pl8', 'OOP', ref('pl-oops', 'OOP interview questions', 'Interview · 5 min')),
+      unit('pl9', 'SQL', ref('pl-sql', 'SQL interview questions', 'Interview · 5 min')),
+      unit('pl10', 'Complexity', ref('pl-complexity', 'Complexity questions', 'Interview · 5 min')),
+    ],
+    practice: [
+      { id: 'x-pl-output', title: 'Output round', kind: 'Predict the output', difficulty: 'Hard', xp: 15 },
+      { id: 'x-pl-code', title: 'Coding round', kind: 'Code editor', difficulty: 'Hard', xp: 15 },
     ],
   },
 ];
 
-export const SECTIONS = ['Start here', 'Web basics', 'Programming', 'Full-stack'] as const;
+export const SECTIONS = ['Start here', 'Web basics', 'Programming', 'Full-stack', 'CS core', 'Placement'] as const;
 
 /** Saves from v1 used four broad stages; map them to the matching track. */
 export const LEGACY_STAGE: Record<string, string> = {

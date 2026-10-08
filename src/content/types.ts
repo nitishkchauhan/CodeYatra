@@ -89,7 +89,7 @@ export type EditorStep = {
   lang: 'python' | 'javascript' | 'sql';
   file: string;
   starter: string;
-  tests: ({ call: string; expect: string } | { stdout: string })[];
+  tests: ({ call: string; expect: string } | { stdout: string; unordered?: boolean })[];
   hint: string;
   /** A correct answer, verified by tests. */
   solution: string;

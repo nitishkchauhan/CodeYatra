@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { allLessons, findStage, optionOrder, getLesson, hasContent, STAGES, stageLessonStatuses, type CodeStep } from '..';
+import { allLessons, findStage, optionOrder, PROJECTS, getLesson, hasContent, STAGES, stageLessonStatuses, type CodeStep } from '..';
 import { LEVELS } from '@/game/levels';
 
 const lessons = allLessons();
@@ -37,10 +37,10 @@ describe('lesson content', () => {
 });
 
 describe('stages', () => {
-  it('has a track per language, each with 5+ playable modules', () => {
-    expect(STAGES.map((s) => s.id)).toEqual(['foundations', 'html', 'css', 'js', 'python', 'react', 'node', 'next']);
+  it('has a track per language, each with 10 playable modules', () => {
+    expect(STAGES.map((s) => s.id)).toEqual(['foundations', 'html', 'css', 'js', 'python', 'c', 'java', 'react', 'node', 'next', 'dsa', 'sql', 'git', 'placement']);
     for (const stage of STAGES) {
-      expect(stage.units.length).toBeGreaterThanOrEqual(5);
+      expect(stage.units.length).toBe(10);
       for (const u of stage.units) for (const l of u.lessons) expect(hasContent(l.id)).toBe(true);
       for (const p of stage.practice) expect(hasContent(p.id)).toBe(true);
     }
@@ -58,8 +58,8 @@ describe('stages', () => {
     expect(findStage('nope').id).toBe('foundations');
   });
 
-  it('lists every written lesson in a stage', () => {
-    const listed = new Set(STAGES.flatMap((s) => [...s.units.flatMap((u) => u.lessons.map((l) => l.id)), ...s.practice.map((p) => p.id)]));
+  it('lists every written lesson in a stage or the projects', () => {
+    const listed = new Set([...STAGES.flatMap((s) => [...s.units.flatMap((u) => u.lessons.map((l) => l.id)), ...s.practice.map((p) => p.id)]), ...PROJECTS.map((p) => p.id)]);
     for (const lesson of lessons) expect(listed).toContain(lesson.id);
   });
 
@@ -76,8 +76,8 @@ describe('stages', () => {
     const statuses = stageLessonStatuses(stage, { 'f-seq-1': true });
     expect(statuses.get('f-seq-1')).toBe('done');
     expect(statuses.get('f-seq-2')).toBe('current');
+    expect(statuses.get('f-var-1')).toBe('locked');
     expect(statuses.get('f-loop-1')).toBe('locked');
-    expect(statuses.get('f-loop-2')).toBe('locked');
   });
 
   it('finds lessons by id', () => {
@@ -92,5 +92,19 @@ describe('quiz option order', () => {
     const positions = new Set(quizzes.map((q) => optionOrder(q.prompt, q.options.length).indexOf(q.answer)));
     expect(positions.size).toBeGreaterThanOrEqual(3);
     for (const q of quizzes) expect([...optionOrder(q.prompt, q.options.length)].sort()).toEqual(q.options.map((_, i) => i));
+  });
+});
+
+describe('ids', () => {
+  it('are unique across every lesson', () => {
+    const ids = allLessons().map((l) => l.id);
+    expect(ids.length).toBe(new Set(ids).size);
+  });
+
+  it('every track has practice that exists', () => {
+    for (const stage of STAGES) {
+      expect(stage.practice.length).toBeGreaterThan(0);
+      for (const p of stage.practice) expect(getLesson(p.id)?.steps.length).toBeGreaterThan(0);
+    }
   });
 });
