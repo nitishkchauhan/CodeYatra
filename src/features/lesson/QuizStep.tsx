@@ -15,7 +15,7 @@ import { CodeBlock } from '@/components/Code';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
-import type { QuizStep as Step } from '@/content';
+import { optionOrder, type QuizStep as Step } from '@/content';
 import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { colors, fonts } from '@/theme';
@@ -61,7 +61,8 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
           </Animated.View>
         ) : null}
         <Animated.View entering={FadeInDown.delay(160).duration(320)} style={[{ gap: 10 }, shakeStyle]} accessibilityRole="radiogroup">
-          {step.options.map((option, i) => {
+          {optionOrder(step.prompt, step.options.length).map((i, shown) => {
+            const option = step.options[i];
             const selected = pick === i;
             let border: string = colors.line;
             let bg: string = colors.surface;
@@ -86,7 +87,7 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
                 ]}>
                 <View style={[styles.badge, { backgroundColor: badge }]}>
                   <T variant="labelSm" color={badgeInk}>
-                    {'ABCD'[i]}
+                    {'ABCD'[shown]}
                   </T>
                 </View>
                 <T style={[{ flex: 1, color: colors.ink }, step.mono ? { fontFamily: fonts.mono, fontSize: 15 } : { fontFamily: fonts.bodySemibold, fontSize: 15 }]}>

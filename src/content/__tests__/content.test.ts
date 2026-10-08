@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { allLessons, getLesson, hasContent, STAGES, stageLessonStatuses, type CodeStep } from '..';
+import { allLessons, findStage, optionOrder, getLesson, hasContent, STAGES, stageLessonStatuses, type CodeStep } from '..';
 import { LEVELS } from '@/game/levels';
 
 const lessons = allLessons();
@@ -37,11 +37,25 @@ describe('lesson content', () => {
 });
 
 describe('stages', () => {
-  it('has four stages, each with at least one playable lesson', () => {
-    expect(STAGES).toHaveLength(4);
+  it('has a track per language, each with 5+ playable modules', () => {
+    expect(STAGES.map((s) => s.id)).toEqual(['foundations', 'html', 'css', 'js', 'python', 'react', 'node', 'next']);
     for (const stage of STAGES) {
-      expect(stage.units.some((u) => u.lessons.some((l) => hasContent(l.id)))).toBe(true);
+      expect(stage.units.length).toBeGreaterThanOrEqual(5);
+      for (const u of stage.units) for (const l of u.lessons) expect(hasContent(l.id)).toBe(true);
+      for (const p of stage.practice) expect(hasContent(p.id)).toBe(true);
     }
+  });
+
+  it('teaches before it tests: every module opens with reading', () => {
+    for (const stage of STAGES.slice(1)) {
+      for (const u of stage.units) expect(getLesson(u.lessons[0].id)?.steps[0].type).toBe('concept');
+    }
+  });
+
+  it('maps v1 stage ids to tracks', () => {
+    expect(findStage('web').id).toBe('html');
+    expect(findStage('fullstack').id).toBe('react');
+    expect(findStage('nope').id).toBe('foundations');
   });
 
   it('lists every written lesson in a stage', () => {
@@ -69,5 +83,14 @@ describe('stages', () => {
   it('finds lessons by id', () => {
     expect(getLesson('f-loop-1')?.steps.map((s) => s.type)).toEqual(['concept', 'quiz', 'puzzle', 'code']);
     expect(getLesson('missing')).toBeUndefined();
+  });
+});
+
+describe('quiz option order', () => {
+  it('spreads right answers across positions', () => {
+    const quizzes = allLessons().flatMap((l) => l.steps.filter((s) => s.type === 'quiz'));
+    const positions = new Set(quizzes.map((q) => optionOrder(q.prompt, q.options.length).indexOf(q.answer)));
+    expect(positions.size).toBeGreaterThanOrEqual(3);
+    for (const q of quizzes) expect([...optionOrder(q.prompt, q.options.length)].sort()).toEqual(q.options.map((_, i) => i));
   });
 });

@@ -19,6 +19,10 @@ create table if not exists public.profiles (
   updated_at timestamptz not null default now()
 );
 
+-- Added in v1.1: profile photo and bio (safe to re-run).
+alter table public.profiles add column if not exists avatar_url text;
+alter table public.profiles add column if not exists bio text not null default '' check (char_length(bio) <= 80);
+
 create index if not exists profiles_week_idx on public.profiles (week_start, week_xp desc);
 
 alter table public.learner_state enable row level security;
@@ -43,6 +47,26 @@ create policy "own profile insert" on public.profiles
 drop policy if exists "own profile update" on public.profiles;
 create policy "own profile update" on public.profiles
   for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- Profile photos: public to read, each learner writes only their own folder (avatars/<user id>/…).
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('avatars', 'avatars', true, 2097152, array['image/jpeg', 'image/png', 'image/webp'])
+on conflict (id) do nothing;
+
+drop policy if exists "avatar upload" on storage.objects;
+create policy "avatar upload" on storage.objects
+  for insert to authenticated
+  with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists "avatar update" on storage.objects;
+create policy "avatar update" on storage.objects
+  for update to authenticated
+  using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists "avatar delete" on storage.objects;
+create policy "avatar delete" on storage.objects
+  for delete to authenticated
+  using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
 
 -- Learners can delete their account (and, through the cascades, all their data).
 create or replace function public.delete_my_account()

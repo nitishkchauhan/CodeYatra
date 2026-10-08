@@ -4,12 +4,13 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { TrackBadge } from '@/components/TrackBadge';
+import { TrackRail } from '@/components/TrackRail';
 import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { hasContent, STAGES } from '@/content';
+import { findStage, hasContent } from '@/content';
 import { useT } from '@/i18n';
-import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
 import { card, colors } from '@/theme';
 
@@ -24,7 +25,7 @@ export default function PracticeScreen() {
   const toast = useToast();
   const { state } = useProgress();
   const [stageId, setStageId] = useState(state.stageId);
-  const stage = STAGES.find((s) => s.id === stageId) ?? STAGES[0];
+  const stage = findStage(stageId);
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.bg }}>
@@ -59,43 +60,22 @@ export default function PracticeScreen() {
           </Pressable>
         </Animated.View>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ marginHorizontal: -16, flexGrow: 0 }}
-          contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
-          accessibilityRole="tablist">
-          {STAGES.map((s) => {
-            const on = s.id === stageId;
-            return (
-              <Pressable
-                key={s.id}
-                accessibilityRole="tab"
-                accessibilityState={{ selected: on }}
-                onPress={() => {
-                  haptic.tap();
-                  setStageId(s.id);
-                }}
-                style={[styles.filter, { backgroundColor: on ? s.color : colors.surface, borderColor: on ? s.color : colors.line }]}>
-                <T variant="labelSm" color={on ? '#FFFFFF' : colors.ink2} style={{ fontSize: 13 }}>
-                  {s.short}
-                </T>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
+        <TrackRail value={stage.id} onChange={setStageId} />
 
         <Animated.View key={stage.id} entering={FadeIn.duration(220)} style={{ gap: 14 }}>
           <View style={[styles.summary, { backgroundColor: stage.soft }]}>
-            <T variant="kicker" color={stage.color} style={{ letterSpacing: 0.8 }}>
-              STAGE {STAGES.indexOf(stage) + 1} · {stage.audience.toUpperCase()}
-            </T>
-            <T variant="heading" style={{ fontSize: 18, lineHeight: 23 }}>
-              {stage.name}
-            </T>
-            <T variant="bodySm" color={colors.ink2}>
-              {stage.blurb}
-            </T>
+            <TrackBadge stage={stage} size={48} />
+            <View style={{ flex: 1, gap: 2 }}>
+              <T variant="kicker" color={stage.color} style={{ letterSpacing: 0.8 }}>
+                {stage.section.toUpperCase()} · {stage.practice.length} CHALLENGES
+              </T>
+              <T variant="heading" style={{ fontSize: 18, lineHeight: 23 }}>
+                {stage.name}
+              </T>
+              <T variant="bodySm" color={colors.ink2}>
+                {stage.blurb}
+              </T>
+            </View>
           </View>
 
           {stage.practice.map((p, i) => {
@@ -109,17 +89,24 @@ export default function PracticeScreen() {
                   accessibilityLabel={`${p.title}, ${p.kind}, ${p.difficulty}${available ? '' : ', coming soon'}${done ? ', completed' : ''}`}
                   onPress={() => {
                     if (!available) toast('This challenge is being written. Check back soon!');
-                    else router.push({ pathname: '/lesson/[id]', params: { id: p.id } });
+                    else
+                      router.push({
+                        pathname: '/lesson/[id]',
+                        params: { id: p.id },
+                      });
                   }}
                   style={({ pressed }) => [styles.item, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
-                  <View style={[styles.itemIcon, { backgroundColor: available ? stage.soft : colors.lineSoft }]}>
-                    <Icon d={stage.icon} size={22} color={available ? stage.color : colors.ink3} />
-                  </View>
+                  <TrackBadge stage={stage} size={44} dimmed={!available} />
                   <View style={{ flex: 1, gap: 4 }}>
                     <T variant="label" color={available ? colors.ink : '#6E6A88'}>
                       {p.title}
                     </T>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 6,
+                      }}>
                       <T variant="caption" style={{ fontFamily: 'Figtree_600SemiBold' }}>
                         {p.kind}
                       </T>
@@ -135,7 +122,14 @@ export default function PracticeScreen() {
                       <Icon name="check" size={14} color={colors.success} strokeWidth={2.6} />
                     </View>
                   ) : available ? (
-                    <View style={[styles.badge, { backgroundColor: colors.saffronSoft, paddingHorizontal: 9 }]}>
+                    <View
+                      style={[
+                        styles.badge,
+                        {
+                          backgroundColor: colors.saffronSoft,
+                          paddingHorizontal: 9,
+                        },
+                      ]}>
                       <T variant="labelSm" color={colors.saffronInk}>
                         +{p.xp} XP
                       </T>
@@ -156,12 +150,48 @@ export default function PracticeScreen() {
 }
 
 const styles = StyleSheet.create({
-  playground: { borderRadius: 20, backgroundColor: colors.hero, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  playIcon: { width: 48, height: 48, borderRadius: 14, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
-  filter: { minHeight: 40, paddingHorizontal: 16, borderRadius: 20, borderWidth: 1, justifyContent: 'center' },
-  summary: { borderRadius: 18, padding: 14, gap: 4 },
-  item: { ...card, borderRadius: 16, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  itemIcon: { width: 44, height: 44, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  diff: { height: 18, paddingHorizontal: 6, borderRadius: 9, justifyContent: 'center' },
-  badge: { minWidth: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  playground: {
+    borderRadius: 20,
+    backgroundColor: colors.hero,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  playIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  summary: {
+    borderRadius: 18,
+    padding: 14,
+    gap: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  item: {
+    ...card,
+    borderRadius: 16,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  diff: {
+    height: 18,
+    paddingHorizontal: 6,
+    borderRadius: 9,
+    justifyContent: 'center',
+  },
+  badge: {
+    minWidth: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

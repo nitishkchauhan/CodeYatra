@@ -22,6 +22,8 @@ type AccountApi = {
   signInWithGoogle: () => Promise<string | null>;
   signOut: () => Promise<void>;
   deleteAccount: () => Promise<string | null>;
+  /** Uploads the profile photo so other devices and the league can show it. Returns an error message or null. */
+  uploadAvatar: (uri: string | null) => Promise<string | null>;
 };
 
 const AccountContext = createContext<AccountApi | null>(null);
@@ -30,7 +32,8 @@ const PUSH_DELAY_MS = 1500;
 async function push(userId: string, state: Progress, today: string) {
   if (!supabase) return;
   const [a, b] = await Promise.all([
-    supabase.from('learner_state').upsert({ user_id: userId, state, updated_at: new Date().toISOString() }),
+    // The device photo path means nothing on another phone; avatarUrl is the shared copy.
+    supabase.from('learner_state').upsert({ user_id: userId, state: { ...state, avatar: null }, updated_at: new Date().toISOString() }),
     supabase.from('profiles').upsert({
       user_id: userId,
       display_name: (state.name || 'Explorer').slice(0, 24),
@@ -39,6 +42,8 @@ async function push(userId: string, state: Progress, today: string) {
       week_start: weekStart(today),
       streak: state.streak,
       outfit: state.outfit,
+      avatar_url: state.avatarUrl,
+      bio: state.bio.slice(0, 80),
       updated_at: new Date().toISOString(),
     }),
   ]);
@@ -123,6 +128,26 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     signOut: async () => {
       pulledFor.current = null;
       await supabase?.auth.signOut();
+    },
+    uploadAvatar: async (uri) => {
+      if (!supabase || !userId) return null;
+      const bucket = supabase.storage.from('avatars');
+      const path = `${userId}/avatar.jpg`;
+      try {
+        if (!uri) {
+          await bucket.remove([path]);
+          progress.setProfile({ avatarUrl: null });
+          return null;
+        }
+        const body = await (await fetch(uri)).arrayBuffer();
+        const { error } = await bucket.upload(path, body, { upsert: true, contentType: 'image/jpeg' });
+        if (error) return error.message;
+        // A version suffix makes other devices fetch the new photo instead of a cached one.
+        progress.setProfile({ avatarUrl: `${bucket.getPublicUrl(path).data.publicUrl}?v=${Date.now()}` });
+        return null;
+      } catch {
+        return 'Could not upload the photo. It is saved on this phone.';
+      }
     },
     deleteAccount: async () => {
       if (!supabase) return null;

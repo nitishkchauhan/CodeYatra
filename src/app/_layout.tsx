@@ -59,6 +59,7 @@ export default function RootLayout() {
                 <Stack.Screen name="leaderboard" options={{ animation: 'slide_from_right' }} />
                 <Stack.Screen name="certificate/[stageId]" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
                 <Stack.Screen name="playground" options={{ animation: 'slide_from_right' }} />
+                <Stack.Screen name="edit-profile" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
               </Stack>
             </ToastProvider>
             </CodeRunnerProvider>

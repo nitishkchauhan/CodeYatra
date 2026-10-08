@@ -11,10 +11,11 @@ export type { LearnerLevel, Progress, UiLang } from './model';
 
 const STORAGE_KEY = 'codeyatra/progress/v1';
 export const DAILY_GOAL = 20;
+export const BIO_MAX = 80;
 
 const RECOMMENDED_STAGE: Record<LearnerLevel, string> = {
   school: 'foundations',
-  college: 'web',
+  college: 'html',
   curious: 'foundations',
 };
 
@@ -30,9 +31,11 @@ type ProgressApi = {
   finishOnboarding: (input: { name: string; level: LearnerLevel; lang: UiLang }) => void;
   completeLesson: (lessonId: string, xp: number, accuracy: number) => LessonResult;
   setLang: (lang: UiLang) => void;
+  setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
   setName: (name: string) => void;
+  setProfile: (profile: Partial<Pick<Progress, 'name' | 'bio' | 'avatar' | 'avatarUrl' | 'avatarColor'>>) => void;
   setReminder: (reminder: Progress['reminder']) => void;
   buyOutfit: (id: OutfitId, price: number) => boolean;
   equipOutfit: (id: OutfitId | null) => void;
@@ -84,8 +87,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     todayXp: state.dailyXp[today] ?? 0,
     streak: visibleStreak(state.streak, state.lastActive, today),
     recommendedStageId: RECOMMENDED_STAGE[state.level],
-    finishOnboarding: ({ name, level, lang }) =>
-      update((s) => ({ ...s, onboarded: true, name: name.trim(), level, lang, stageId: RECOMMENDED_STAGE[level] })),
+    finishOnboarding: ({ name, level, lang }) => update((s) => ({ ...s, onboarded: true, name: name.trim(), level, lang, stageId: RECOMMENDED_STAGE[level] })),
     completeLesson: (lessonId, xp, accuracy) => {
       const lesson = getLesson(lessonId);
       const streakResult = nextStreak(state.streak, state.lastActive, today);
@@ -96,8 +98,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         [lessonId]: { xp: (prev?.xp ?? 0) + xp, accuracy: Math.max(prev?.accuracy ?? 0, accuracy), at: prev?.at ?? today },
       };
       const stageId = finishedStageId(lessonId, completed);
-      const certificate: Certificate | null =
-        stageId && !state.certificates[stageId] ? { stageId, name: state.name || 'Explorer', date: today } : null;
+      const certificate: Certificate | null = stageId && !state.certificates[stageId] ? { stageId, name: state.name || 'Explorer', date: today } : null;
 
       update((s) => ({
         ...s,
@@ -112,9 +113,17 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       return { ...streakResult, coins, certificate };
     },
     setLang: (lang) => update((s) => ({ ...s, lang })),
+    setLevel: (level) => update((s) => ({ ...s, level })),
     setHaptics: (on) => update((s) => ({ ...s, haptics: on })),
     setStage: (stageId) => update((s) => ({ ...s, stageId })),
     setName: (name) => update((s) => ({ ...s, name: name.trim().slice(0, 24) })),
+    setProfile: (profile) =>
+      update((s) => ({
+        ...s,
+        ...profile,
+        name: profile.name !== undefined ? profile.name.trim().slice(0, 24) : s.name,
+        bio: profile.bio !== undefined ? profile.bio.trim().slice(0, BIO_MAX) : s.bio,
+      })),
     setReminder: (reminder) => update((s) => ({ ...s, reminder })),
     buyOutfit: (id, price) => {
       if (state.coins < price || state.inventory.includes(id)) return false;

@@ -2,7 +2,7 @@
   "expo": {
     "name": "CodeYatra",
     "slug": "code-yatra",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "codeyatra",
@@ -35,7 +35,15 @@
         }
       ],
       "expo-sqlite",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "CodeYatra uses your photos so you can choose a profile picture.",
+          "cameraPermission": "CodeYatra uses the camera so you can take a profile picture.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

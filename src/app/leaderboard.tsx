@@ -4,6 +4,7 @@ import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Avatar } from '@/components/Avatar';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Glyph } from '@/components/ui/Icon';
@@ -15,7 +16,7 @@ import { weekStart, weekXp } from '@/state/model';
 import { useProgress } from '@/state/progress';
 import { card, colors } from '@/theme';
 
-type Row = { user_id: string; display_name: string; week_xp: number; streak: number; outfit: string | null };
+type Row = { user_id: string; display_name: string; week_xp: number; streak: number; outfit: string | null; avatar_url: string | null };
 
 const MEDAL = ['#F5B301', '#A8B0BD', '#D08A4E'];
 
@@ -24,7 +25,7 @@ async function fetchLeague(today: string): Promise<{ rows: Row[] | null; error: 
   if (!supabase) return { rows: null, error: null };
   const { data, error } = await supabase
     .from('profiles')
-    .select('user_id, display_name, week_xp, streak, outfit')
+    .select('user_id, display_name, week_xp, streak, outfit, avatar_url')
     .eq('week_start', weekStart(today))
     .order('week_xp', { ascending: false })
     .limit(50);
@@ -107,7 +108,11 @@ export default function LeaderboardScreen() {
                 if (!r) return <View key={i} style={{ flex: 1 }} />;
                 return (
                   <Animated.View key={r.user_id} entering={ZoomIn.delay(100 + i * 120)} style={[styles.place, { paddingTop: i === 0 ? 0 : 24 }]}>
-                    <Yatri size={i === 0 ? 70 : 56} outfit={r.outfit} mood={i === 0 ? 'celebrate' : 'happy'} />
+                    {r.avatar_url ? (
+                      <Avatar uri={r.avatar_url} size={i === 0 ? 64 : 52} ring={MEDAL[i]} />
+                    ) : (
+                      <Yatri size={i === 0 ? 70 : 56} outfit={r.outfit} mood={i === 0 ? 'celebrate' : 'happy'} />
+                    )}
                     <View style={[styles.medal, { backgroundColor: MEDAL[i] }]}>
                       <T variant="labelSm" color="#FFFFFF">
                         {i + 1}

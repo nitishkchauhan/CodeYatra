@@ -25,6 +25,12 @@ export type Progress = {
   certificates: Record<string, Certificate>;
   inventory: string[];
   outfit: string | null;
+  /** Photo on this device (file or data URI). Never synced: other devices use avatarUrl. */
+  avatar: string | null;
+  /** Public URL of the uploaded photo, when signed in. */
+  avatarUrl: string | null;
+  avatarColor: string;
+  bio: string;
   reminder: { enabled: boolean; hour: number; minute: number };
   /** Milliseconds; the newer side wins settings when merging phone and cloud copies. */
   updatedAt: number;
@@ -48,14 +54,22 @@ export const INITIAL: Progress = {
   certificates: {},
   inventory: [],
   outfit: null,
+  avatar: null,
+  avatarUrl: null,
+  avatarColor: '#1F1B83',
+  bio: '',
   reminder: { enabled: false, hour: 19, minute: 0 },
   updatedAt: 0,
 };
 
 /** Fills fields added in newer app versions when loading older saves. */
 export function normalize(raw: Partial<Progress> | null | undefined): Progress {
-  return { ...INITIAL, ...(raw ?? {}), reminder: { ...INITIAL.reminder, ...(raw?.reminder ?? {}) } };
+  const p: Progress = { ...INITIAL, ...(raw ?? {}), reminder: { ...INITIAL.reminder, ...(raw?.reminder ?? {}) } };
+  // v1 had four broad stages; they became language tracks.
+  return { ...p, stageId: LEGACY_STAGES[p.stageId] ?? p.stageId };
 }
+
+const LEGACY_STAGES: Record<string, string> = { web: 'html', fullstack: 'react' };
 
 /**
  * Combines the phone's copy with the cloud copy without losing anything:
@@ -68,9 +82,7 @@ export function mergeProgress(local: Progress, remote: Progress): Progress {
   const completed: Record<string, Completion> = { ...remote.completed };
   for (const [id, c] of Object.entries(local.completed)) {
     const r = completed[id];
-    completed[id] = r
-      ? { xp: Math.max(r.xp, c.xp), accuracy: Math.max(r.accuracy, c.accuracy), at: r.at < c.at ? r.at : c.at }
-      : c;
+    completed[id] = r ? { xp: Math.max(r.xp, c.xp), accuracy: Math.max(r.accuracy, c.accuracy), at: r.at < c.at ? r.at : c.at } : c;
   }
 
   const dailyXp: Record<string, number> = { ...remote.dailyXp };
@@ -96,6 +108,7 @@ export function mergeProgress(local: Progress, remote: Progress): Progress {
     completed,
     certificates: { ...remote.certificates, ...local.certificates },
     inventory: [...new Set([...remote.inventory, ...local.inventory])],
+    avatar: local.avatar,
     updatedAt: Math.max(local.updatedAt, remote.updatedAt),
   };
 }

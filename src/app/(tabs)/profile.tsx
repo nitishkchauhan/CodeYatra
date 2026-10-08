@@ -3,12 +3,13 @@ import { Alert, Platform, Pressable, ScrollView, StyleSheet, Switch, View } from
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Yatri } from '@/components/Yatri';
+import { Avatar } from '@/components/Avatar';
+import { TrackBadge } from '@/components/TrackBadge';
 import { Glyph, Icon } from '@/components/ui/Icon';
 import { Bar } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { SKILLS, skillProgress, STAGES } from '@/content';
+import { findStage, stageProgress, STAGES } from '@/content';
 import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { syncReminder } from '@/lib/reminders';
@@ -35,9 +36,9 @@ const SHORTCUTS: { label: string; sub: string; href: Href; icon: string; tint: s
 export default function ProfileScreen() {
   const t = useT();
   const toast = useToast();
-  const { state, streak, today, setLang, setHaptics, setReminder, reset } = useProgress();
+  const { state, streak, today, setLang, setHaptics, setReminder, setStage, reset } = useProgress();
   const account = useAccount();
-  const stage = STAGES.find((s) => s.id === state.stageId) ?? STAGES[0];
+  const stage = findStage(state.stageId);
   const lessonsDone = Object.keys(state.completed).length;
 
   const week = Array.from({ length: 7 }, (_, i) => {
@@ -71,15 +72,21 @@ export default function ProfileScreen() {
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 32, gap: 12 }}>
         <Animated.View entering={FadeInDown.duration(320)} style={styles.hero}>
-          <View style={styles.avatar}>
-            <Yatri size={52} outfit={state.outfit} dark />
-          </View>
+          <Pressable accessibilityRole="button" accessibilityLabel="Change profile photo" onPress={() => router.push('/edit-profile')}>
+            <Avatar uri={state.avatar ?? state.avatarUrl} color={state.avatarColor} outfit={state.outfit} size={76} />
+            <View style={styles.camera}>
+              <Icon d="M4 8h3l2-3h6l2 3h3v11H4z M12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" size={13} color={colors.ink} strokeWidth={2.2} />
+            </View>
+          </Pressable>
           <View style={{ flex: 1, gap: 2 }}>
-            <T variant="title" color="#FFFFFF" numberOfLines={1}>
-              {state.name || 'Explorer'}
-            </T>
-            <T variant="bodySm" color="#C8C3F5">
-              {LEVEL_LABEL[state.level]} · {stage.short}
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <T variant="title" color="#FFFFFF" numberOfLines={1} style={{ flexShrink: 1 }}>
+                {state.name || 'Explorer'}
+              </T>
+              <TrackBadge stage={stage} size={22} />
+            </View>
+            <T variant="bodySm" color="#C8C3F5" numberOfLines={2}>
+              {state.bio || `${LEVEL_LABEL[state.level]} · learning ${stage.short}`}
             </T>
             <Pressable accessibilityRole="button" onPress={() => router.push('/account')} style={styles.accountChip}>
               <View style={[styles.dot, { backgroundColor: account.session ? colors.tealLight : '#FDBA74' }]} />
@@ -89,6 +96,9 @@ export default function ProfileScreen() {
               <Icon name="chevronRight" size={14} color="#C8C3F5" />
             </Pressable>
           </View>
+          <Pressable accessibilityRole="button" accessibilityLabel="Edit profile" onPress={() => router.push('/edit-profile')} hitSlop={6} style={styles.edit}>
+            <Icon d="M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4" size={18} color="#FFFFFF" />
+          </Pressable>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(60).duration(320)} style={{ flexDirection: 'row', gap: 8 }}>
@@ -183,21 +193,32 @@ export default function ProfileScreen() {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(220).duration(320)} style={[card, { padding: 14, gap: 12 }]}>
-          <T variant="label">Skills</T>
-          {SKILLS.map((s) => {
-            const pct = skillProgress(s.key, state.completed);
+          <T variant="label">Languages</T>
+          {STAGES.map((s) => {
+            const { pct, done, total } = stageProgress(s, state.completed);
             return (
-              <View key={s.key} style={{ gap: 5 }} accessible accessibilityLabel={`${s.label} ${pct} percent`}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <T variant="labelSm" style={{ fontSize: 13 }}>
-                    {s.label}
-                  </T>
-                  <T variant="labelSm" color={s.color} style={{ fontSize: 13 }}>
-                    {pct}%
-                  </T>
+              <Pressable
+                key={s.id}
+                accessibilityRole="button"
+                accessibilityLabel={`${s.name}: ${done} of ${total} modules, ${pct} percent. Open track`}
+                onPress={() => {
+                  setStage(s.id);
+                  router.navigate('/');
+                }}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <TrackBadge stage={s} size={30} />
+                <View style={{ flex: 1, gap: 5 }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <T variant="labelSm" style={{ fontSize: 13 }}>
+                      {s.name}
+                    </T>
+                    <T variant="labelSm" color={pct ? s.color : colors.ink3} style={{ fontSize: 12 }}>
+                      {done}/{total}
+                    </T>
+                  </View>
+                  <Bar value={pct / 100} color={s.color} />
                 </View>
-                <Bar value={pct / 100} color={s.color} />
-              </View>
+              </Pressable>
             );
           })}
         </Animated.View>
@@ -268,7 +289,7 @@ export default function ProfileScreen() {
           </Pressable>
         </Animated.View>
         <T variant="caption" style={{ textAlign: 'center' }}>
-          CodeYatra · {t('learn')} · v1.0
+          CodeYatra · {t('learn')} · v1.1
         </T>
       </ScrollView>
     </SafeAreaView>
@@ -277,7 +298,8 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   hero: { borderRadius: 22, backgroundColor: colors.hero, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 14 },
-  avatar: { width: 72, height: 72, borderRadius: 36, backgroundColor: colors.brand, alignItems: 'center', justifyContent: 'center', boxShadow: `0 0 0 3px ${colors.saffron}` },
+  camera: { position: 'absolute', right: -2, bottom: -2, width: 26, height: 26, borderRadius: 13, backgroundColor: colors.saffron, borderWidth: 2, borderColor: colors.hero, alignItems: 'center', justifyContent: 'center' },
+  edit: { position: 'absolute', top: 10, right: 10, width: 36, height: 36, borderRadius: 18, backgroundColor: '#ffffff1f', alignItems: 'center', justifyContent: 'center' },
   accountChip: { alignSelf: 'flex-start', marginTop: 6, minHeight: 32, flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, borderRadius: 16, backgroundColor: '#ffffff1f' },
   dot: { width: 8, height: 8, borderRadius: 4 },
   stat: { flex: 1, borderRadius: 16, paddingVertical: 10, paddingHorizontal: 8, gap: 2, alignItems: 'center' },

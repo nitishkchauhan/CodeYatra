@@ -5,49 +5,28 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StageSheet } from '@/components/StageSheet';
+import { TrackBadge } from '@/components/TrackBadge';
+import { TrackRail } from '@/components/TrackRail';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
 import { Ring } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { STAGES, stageLessonStatuses, stageProgress, type LessonStatus } from '@/content';
+import { findStage, stageLessonStatuses, stageProgress, type LessonStatus } from '@/content';
 import { greetingKey, useT } from '@/i18n';
-import { haptic } from '@/lib/haptics';
 import { DAILY_GOAL, useProgress } from '@/state/progress';
 import { card, colors } from '@/theme';
 
 const fmt = (n: number) => n.toLocaleString('en-IN');
 
-function StatusIcon({ status }: { status: LessonStatus }) {
-  if (status === 'done') {
-    return (
-      <View style={[styles.statusDot, { backgroundColor: colors.success }]}>
-        <Icon name="check" size={14} color="#FFFFFF" strokeWidth={3} />
-      </View>
-    );
-  }
-  if (status === 'current') {
-    return (
-      <View style={[styles.statusDot, { borderWidth: 2.5, borderColor: colors.primary }]}>
-        <View style={{ width: 9, height: 9, borderRadius: 5, backgroundColor: colors.primary }} />
-      </View>
-    );
-  }
-  return (
-    <View style={[styles.statusDot, { backgroundColor: colors.lineSoft }]}>
-      <Icon name="lock" size={12} color={colors.ink3} strokeWidth={2.2} />
-    </View>
-  );
-}
-
 export default function LearnScreen() {
   const t = useT();
   const toast = useToast();
-  const { state, todayXp, streak } = useProgress();
+  const { state, todayXp, streak, setStage } = useProgress();
   const [sheet, setSheet] = useState(false);
 
-  const stage = STAGES.find((s) => s.id === state.stageId) ?? STAGES[0];
+  const stage = findStage(state.stageId);
   const statuses = stageLessonStatuses(stage, state.completed);
   const { pct } = stageProgress(stage, state.completed);
   const currentUnit = stage.units.find((u) => u.lessons.some((l) => statuses.get(l.id) === 'current'));
@@ -87,31 +66,28 @@ export default function LearnScreen() {
           </Pressable>
         </Animated.View>
 
-        <Animated.View entering={FadeInDown.delay(60).duration(320)}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={`Current stage ${stage.name}. Change stage`}
-            onPress={() => {
-              haptic.tap();
-              setSheet(true);
-            }}
-            style={({ pressed }) => [styles.stageCard, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
-            <View style={[styles.stageIcon, { backgroundColor: stage.soft }]}>
-              <Icon d={stage.icon} size={20} color={stage.color} />
-            </View>
+        <Animated.View entering={FadeInDown.delay(60).duration(320)} style={{ gap: 10 }}>
+          <TrackRail value={stage.id} onChange={setStage} onMore={() => setSheet(true)} />
+          <View style={styles.trackHead}>
+            <TrackBadge stage={stage} size={44} />
             <View style={{ flex: 1 }}>
-              <T variant="heading" style={{ fontSize: 15 }}>
+              <T variant="kicker" color={stage.color}>
+                {stage.section.toUpperCase()} · {stage.audience.toUpperCase()}
+              </T>
+              <T variant="heading" style={{ fontSize: 18 }}>
                 {stage.name}
               </T>
-              <T variant="caption" color="#6E6A88">
-                {t('stage')} {STAGES.indexOf(stage) + 1} {t('of')} 4 · {stage.sub}
+              <T variant="caption" color="#6E6A88" numberOfLines={1}>
+                {stage.units.length} modules · {stage.sub}
               </T>
             </View>
-            <T variant="labelSm" color={stage.color}>
-              {pct}%
-            </T>
-            <Icon name="chevronDown" size={18} color={colors.ink3} />
-          </Pressable>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <Ring value={pct / 100} color={stage.color} track={stage.soft} size={46} />
+              <T variant="labelSm" color={stage.color} style={{ position: 'absolute', fontSize: 11 }}>
+                {pct}%
+              </T>
+            </View>
+          </View>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(120).duration(320)} style={styles.hero}>
@@ -124,7 +100,7 @@ export default function LearnScreen() {
             <>
               <View style={{ gap: 6, maxWidth: 210 }}>
                 <T variant="kicker" color="#7BE3D8">
-                  {`UNIT ${stage.units.indexOf(currentUnit) + 1} · ${currentUnit.title.toUpperCase()}`}
+                  {`MODULE ${stage.units.indexOf(currentUnit) + 1} · ${currentUnit.title.toUpperCase()}`}
                 </T>
                 <T variant="title" color="#FFFFFF">
                   {currentLesson.title}
@@ -134,9 +110,19 @@ export default function LearnScreen() {
                 </T>
               </View>
               <View style={styles.heroSegs}>
-                {currentUnit.lessons.map((l) => {
+                {stage.units.flatMap((u) => u.lessons).map((l) => {
                   const s = statuses.get(l.id);
-                  return <View key={l.id} style={[styles.heroSeg, { backgroundColor: s === 'done' ? colors.tealLight : s === 'current' ? '#FFFFFF' : colors.heroLine }]} />;
+                  return (
+                    <View
+                      key={l.id}
+                      style={[
+                        styles.heroSeg,
+                        {
+                          backgroundColor: s === 'done' ? colors.tealLight : s === 'current' ? '#FFFFFF' : colors.heroLine,
+                        },
+                      ]}
+                    />
+                  );
                 })}
               </View>
               <Button
@@ -175,63 +161,95 @@ export default function LearnScreen() {
               {goalMet ? 'Goal reached. Great work today!' : 'One lesson is enough to reach it'}
             </T>
           </View>
-          <View style={[styles.goalChip, { backgroundColor: goalMet ? colors.successSoft : colors.saffronSoft }]}>
+          <View
+            style={[
+              styles.goalChip,
+              {
+                backgroundColor: goalMet ? colors.successSoft : colors.saffronSoft,
+              },
+            ]}>
             <T variant="labelSm" color={goalMet ? '#166534' : colors.saffronInk}>
               {goalMet ? 'Done' : `+${DAILY_GOAL - todayXp} XP`}
             </T>
           </View>
         </Animated.View>
 
+        <View style={styles.unitHead}>
+          <T variant="heading">Modules</T>
+          <T variant="labelSm" color={colors.ink3}>
+            Read · practice · earn XP
+          </T>
+        </View>
         {stage.units.map((unit, ui) => {
-          const done = unit.lessons.filter((l) => statuses.get(l.id) === 'done').length;
+          const l = unit.lessons[0];
+          const status = statuses.get(l.id) ?? 'locked';
+          const muted = status === 'locked' || status === 'soon';
+          const last = ui === stage.units.length - 1;
           return (
-            <Animated.View key={unit.id} entering={FadeInDown.delay(220 + ui * 50).duration(320)} style={{ gap: 8 }}>
-              <View style={styles.unitHead}>
-                <T variant="heading">
-                  Unit {ui + 1} · {unit.title}
-                </T>
-                <T variant="labelSm" color={colors.ink3}>
-                  {done} of {unit.lessons.length} done
-                </T>
+            <Animated.View key={unit.id} entering={FadeInDown.delay(220 + ui * 50).duration(320)} style={styles.moduleRow}>
+              <View style={styles.rail}>
+                <View
+                  style={[
+                    styles.moduleNum,
+                    status === 'done' && {
+                      backgroundColor: colors.success,
+                      borderColor: colors.success,
+                    },
+                    status === 'current' && {
+                      backgroundColor: stage.color,
+                      borderColor: stage.color,
+                    },
+                  ]}>
+                  {status === 'done' ? (
+                    <Icon name="check" size={16} color="#FFFFFF" strokeWidth={3} />
+                  ) : muted ? (
+                    <Icon name="lock" size={13} color={colors.ink3} strokeWidth={2.2} />
+                  ) : (
+                    <T variant="label" color="#FFFFFF">
+                      {ui + 1}
+                    </T>
+                  )}
+                </View>
+                {!last ? <View style={[styles.railLine, status === 'done' && { backgroundColor: colors.success }]} /> : null}
               </View>
-              <View style={[card, { overflow: 'hidden' }]}>
-                {unit.lessons.map((l, li) => {
-                  const status = statuses.get(l.id) ?? 'locked';
-                  const muted = status === 'locked' || status === 'soon';
-                  return (
-                    <Pressable
-                      key={l.id}
-                      accessibilityRole="button"
-                      accessibilityLabel={`${l.title}, ${status}`}
-                      onPress={() => open(l.id, status)}
-                      style={({ pressed }) => [
-                        styles.lessonRow,
-                        li > 0 && { borderTopWidth: 1, borderTopColor: colors.lineSoft },
-                        status === 'current' && { backgroundColor: colors.surfaceTint },
-                        pressed && { backgroundColor: colors.lineSoft },
-                      ]}>
-                      <StatusIcon status={status} />
-                      <View style={{ flex: 1, paddingVertical: 10 }}>
-                        <T variant="label" color={muted ? colors.ink3 : colors.ink}>
-                          {l.title}
-                        </T>
-                        <T variant="caption">{l.meta}</T>
-                      </View>
-                      {status === 'current' ? (
-                        <View style={styles.nextPill}>
-                          <T variant="labelSm" color="#FFFFFF" style={{ fontSize: 11 }}>
-                            {t('upNext')}
-                          </T>
-                        </View>
-                      ) : status === 'soon' ? (
-                        <T variant="labelSm" color={colors.ink3} style={{ fontSize: 11 }}>
-                          {t('soon')}
-                        </T>
-                      ) : null}
-                    </Pressable>
-                  );
-                })}
-              </View>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`Module ${ui + 1}, ${unit.title}: ${l.title}, ${status}`}
+                onPress={() => open(l.id, status)}
+                style={({ pressed }) => [
+                  styles.moduleCard,
+                  status === 'current' && {
+                    borderColor: stage.color,
+                    borderWidth: 2,
+                    backgroundColor: stage.soft,
+                  },
+                  pressed && { transform: [{ scale: 0.98 }] },
+                ]}>
+                <View style={{ flex: 1, gap: 2 }}>
+                  <T variant="kicker" color={muted ? colors.ink3 : stage.color}>
+                    MODULE {ui + 1} · {unit.title.toUpperCase()}
+                  </T>
+                  <T variant="label" color={muted ? colors.ink3 : colors.ink}>
+                    {l.title}
+                  </T>
+                  <T variant="caption">{l.meta}</T>
+                </View>
+                {status === 'current' ? (
+                  <View style={[styles.nextPill, { backgroundColor: stage.color }]}>
+                    <T variant="labelSm" color="#FFFFFF" style={{ fontSize: 11 }}>
+                      {t('upNext')}
+                    </T>
+                  </View>
+                ) : status === 'done' ? (
+                  <T variant="labelSm" color={colors.success} style={{ fontSize: 11 }}>
+                    Review
+                  </T>
+                ) : status === 'soon' ? (
+                  <T variant="labelSm" color={colors.ink3} style={{ fontSize: 11 }}>
+                    {t('soon')}
+                  </T>
+                ) : null}
+              </Pressable>
             </Animated.View>
           );
         })}
@@ -255,16 +273,76 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  stageCard: { ...card, minHeight: 62, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 12 },
-  stageIcon: { width: 40, height: 40, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  hero: { borderRadius: 22, backgroundColor: colors.hero, padding: 18, overflow: 'hidden' },
-  circle: { position: 'absolute', borderRadius: 999, borderWidth: 1, borderColor: colors.heroLine },
+  trackHead: {
+    ...card,
+    borderRadius: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: 12,
+  },
+  moduleRow: { flexDirection: 'row', gap: 12, alignItems: 'stretch' },
+  rail: { width: 32, alignItems: 'center' },
+  moduleNum: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: colors.line,
+    backgroundColor: colors.lineSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+  },
+  railLine: {
+    flex: 1,
+    width: 2,
+    marginTop: 4,
+    marginBottom: -18,
+    backgroundColor: colors.line,
+  },
+  moduleCard: {
+    ...card,
+    flex: 1,
+    borderRadius: 16,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    minHeight: 72,
+  },
+  hero: {
+    borderRadius: 22,
+    backgroundColor: colors.hero,
+    padding: 18,
+    overflow: 'hidden',
+  },
+  circle: {
+    position: 'absolute',
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: colors.heroLine,
+  },
   heroSegs: { flexDirection: 'row', gap: 4, marginTop: 16, marginBottom: 14 },
   heroSeg: { flex: 1, height: 6, borderRadius: 3 },
   goal: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12 },
-  goalChip: { height: 28, paddingHorizontal: 10, borderRadius: 14, justifyContent: 'center' },
-  unitHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', paddingHorizontal: 2 },
-  lessonRow: { minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14 },
-  statusDot: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
-  nextPill: { height: 24, paddingHorizontal: 9, borderRadius: 12, backgroundColor: colors.primary, justifyContent: 'center' },
+  goalChip: {
+    height: 28,
+    paddingHorizontal: 10,
+    borderRadius: 14,
+    justifyContent: 'center',
+  },
+  unitHead: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    paddingHorizontal: 2,
+  },
+  nextPill: {
+    height: 24,
+    paddingHorizontal: 9,
+    borderRadius: 12,
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+  },
 });

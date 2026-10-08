@@ -9,7 +9,21 @@ export type HtmlNode = { tag: string; text: string };
 export type Preview =
   | { kind: 'html'; nodes: HtmlNode[] }
   | { kind: 'react'; from: string; to: string | undefined; seats: string }
-  | { kind: 'button'; background: string; color: string; radius: number; padding: number; label: string };
+  | {
+      kind: 'button';
+      background: string;
+      color: string;
+      radius: number;
+      padding: number;
+      label: string;
+    }
+  | {
+      kind: 'flex';
+      row: boolean;
+      justify: 'flex-start' | 'space-between';
+      align: 'flex-start' | 'center';
+      items: string[];
+    };
 
 export type RunOutput = {
   pass: boolean;
@@ -30,7 +44,12 @@ export type ConceptStep = {
   visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps';
   code?: CodeSample[];
   /** "Watch it run": highlights a line once per round and shows the loop variable. */
-  demo?: { values: (number | string)[]; line: number; caption: (value: number | string, round: number) => string; done: string };
+  demo?: {
+    values: (number | string)[];
+    line: number;
+    caption: (value: number | string, round: number) => string;
+    done: string;
+  };
   tip?: string;
 };
 
@@ -78,7 +97,7 @@ export type EditorStep = {
 
 export type Step = ConceptStep | QuizStep | PuzzleStep | CodeStep | EditorStep;
 
-export type SkillKey = 'sequencing' | 'loops' | 'web' | 'python' | 'react';
+export type SkillKey = 'sequencing' | 'loops' | 'web' | 'python' | 'react' | 'html' | 'css' | 'js' | 'node' | 'next';
 
 export type Lesson = {
   id: string;
@@ -92,10 +111,22 @@ export type Lesson = {
 
 export type LessonRef = { id: string; title: string; meta: string };
 export type Unit = { id: string; title: string; lessons: LessonRef[] };
-export type PracticeRef = { id: string; title: string; kind: string; difficulty: 'Easy' | 'Medium' | 'Hard'; xp: number };
+export type PracticeRef = {
+  id: string;
+  title: string;
+  kind: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  xp: number;
+};
 
+/** A language track (HTML, Python, …). Tracks are grouped into sections for navigation. */
 export type Stage = {
   id: string;
+  section: 'Start here' | 'Web basics' | 'Programming' | 'Full-stack';
+  /** Short label drawn in the track's badge, e.g. "JS" ("atom" draws the React logo). */
+  badge: string;
+  badgeBg: string;
+  badgeInk: string;
   name: string;
   short: string;
   sub: string;

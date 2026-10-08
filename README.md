@@ -1,22 +1,27 @@
 # CodeYatra
 
 A mobile app that teaches programming from first principles to full-stack
-development, in four stages:
+development, in eight language tracks grouped into sections:
 
-| Stage | Topics | Practice style |
-|---|---|---|
-| 1 · Foundations | Sequences, loops, functions, conditions | Isometric block puzzles with Yatri the robot |
-| 2 · Web Development | HTML, CSS, JavaScript | Fill-in code with a live preview and checks |
-| 3 · Python | Loops, functions, problem solving | Fill-in code with real output and tests |
-| 4 · Full-Stack | React, Node.js, Next.js | Components and props with a live preview |
+| Section | Track | Modules | Practice style |
+|---|---|---|---|
+| Start here | Logic & Blocks | 6 | Isometric block puzzles with Yatri the robot |
+| Web basics | HTML | 5 | Fill-in code with a live preview |
+| Web basics | CSS | 5 | Live preview of colours, box model, Flexbox |
+| Web basics | JavaScript | 5 | Real code editor with tests |
+| Programming | Python | 6 | Real code editor with tests (Pyodide) |
+| Full-stack | React | 5 | Components, state, lists, events, effects |
+| Full-stack | Node.js | 5 | Modules, async, Express, JSON, API routes |
+| Full-stack | Next.js | 5 | Layouts, dynamic routes, server data, route handlers |
 
-Every lesson follows the same rhythm: **concept → quick check → practice → complete**.
+Every module follows the same rhythm: **read → quick check → practice → complete**.
 
 Built with Expo SDK 57, Expo Router, Reanimated 4 and react-native-svg.
 
 ## What is inside
 
-- **4 stages, 21 lessons, 12 practice challenges**: blocks puzzles, fill-in code with live previews, and a real code editor
+- **8 tracks, 42 modules, 20 practice challenges**: switch languages from an icon row on Learn and Practice
+- **Profile**: photo from gallery or camera (synced via Supabase Storage when signed in), bio, avatar colour, main language
 - **Real code execution**: Python (Pyodide) and JavaScript run in a sandboxed worker with tests, line-numbered errors and an infinite-loop guard
 - **Code playground** for free coding
 - **Accounts (Supabase)**: email code or Google sign-in, progress sync across phones; guest mode works offline
@@ -26,12 +31,16 @@ Built with Expo SDK 57, Expo Router, Reanimated 4 and react-native-svg.
 ## Turn on accounts (optional)
 
 1. Create a free project at supabase.com.
-2. SQL Editor → paste and run `supabase/schema.sql`.
+2. SQL Editor → paste and run `supabase/schema.sql` (safe to re-run; it also creates the `avatars` storage bucket).
 3. Authentication → Emails → edit the Magic Link template to include `{{ .Token }}` so learners get a 6-digit code.
 4. (Google) Authentication → Providers → Google, and add `codeyatra://auth-callback` to Redirect URLs.
 5. Copy `.env.example` to `.env` and fill in the URL and publishable key. Restart `npx expo start`.
 
 For EAS builds, add the same two values as EAS environment variables (`npx eas-cli@latest env:create`).
+
+## Publish on Google Play
+
+See [store/README.md](store/README.md): listing text (English + Hindi), privacy policy, data safety answers, screenshot list and upload steps.
 
 ## Run it
 
