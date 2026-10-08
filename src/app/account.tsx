@@ -130,7 +130,7 @@ export default function AccountScreen() {
                     style={styles.input}
                   />
                   <Button
-                    label={busy ? 'Sending…' : 'Email me a code'}
+                    label={busy ? 'Sending…' : 'Email me a sign-in link'}
                     disabled={!isEmail(email) || busy}
                     onPress={() => run(() => account.sendCode(email), () => setSent(true))}
                   />
@@ -138,7 +138,8 @@ export default function AccountScreen() {
               ) : (
                 <>
                   <T variant="bodySm" color={colors.ink2}>
-                    We sent a 6-digit code to <T variant="label">{email.trim()}</T>. It can take a minute to arrive.
+                    We emailed <T variant="label">{email.trim()}</T>. Open it on this phone and tap the sign-in link, or type the 6-digit code if the email has one. It
+                    can take a minute to arrive.
                   </T>
                   <TextInput
                     value={code}

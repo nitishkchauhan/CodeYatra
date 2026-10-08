@@ -101,7 +101,11 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     sync: userId ? sync : 'off',
     sendCode: async (email) => {
       if (!supabase) return 'Accounts are not set up yet.';
-      const { error } = await supabase.auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true } });
+      // The email has a sign-in link (default template) and, if the template includes {{ .Token }}, a 6-digit code.
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: { shouldCreateUser: true, emailRedirectTo: Linking.createURL('auth-callback') },
+      });
       return error?.message ?? null;
     },
     verifyCode: async (email, code) => {
