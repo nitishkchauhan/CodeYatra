@@ -1,5 +1,5 @@
 import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold, Figtree_800ExtraBold } from '@expo-google-fonts/figtree';
-import { JetBrainsMono_400Regular, JetBrainsMono_500Medium } from '@expo-google-fonts/jetbrains-mono';
+import { RobotoMono_400Regular, RobotoMono_500Medium } from '@expo-google-fonts/roboto-mono';
 import { Lexend_500Medium, Lexend_600SemiBold, useFonts } from '@expo-google-fonts/lexend';
 import { Stack, type ErrorBoundaryProps } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -58,8 +58,8 @@ export default function RootLayout() {
     Figtree_600SemiBold,
     Figtree_700Bold,
     Figtree_800ExtraBold,
-    JetBrainsMono_400Regular,
-    JetBrainsMono_500Medium,
+    RobotoMono_400Regular,
+    RobotoMono_500Medium,
   });
 
   return (

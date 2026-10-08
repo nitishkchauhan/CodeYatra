@@ -74,3 +74,16 @@ describe('answer checking', () => {
     expect(isOrderCorrect(lines, [1, 0, 2])).toBe(false);
   });
 });
+
+describe('syntax colouring', () => {
+  const comment = (line: string, lang: Parameters<typeof tokenize>[1]) => tokenize(line, lang).some((t) => t.text.length > 2 && /^(\/\/|#|--)/.test(t.text));
+  it('treats // as floor division in Python, and as a comment in JavaScript and C', () => {
+    expect(comment('mid = (lo + hi) // 2', 'python')).toBe(false);
+    expect(comment('x = 1 // half', 'javascript')).toBe(true);
+    expect(comment('int a = 1; // one', 'c')).toBe(true);
+  });
+  it('keeps #include as code in C, and # as a comment in Python', () => {
+    expect(comment('#include <stdio.h>', 'c')).toBe(false);
+    expect(comment('# note', 'python')).toBe(true);
+  });
+});

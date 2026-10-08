@@ -66,8 +66,9 @@ export const fonts = {
   bodySemibold: 'Figtree_600SemiBold',
   bodyBold: 'Figtree_700Bold',
   bodyHeavy: 'Figtree_800ExtraBold',
-  mono: 'JetBrainsMono_400Regular',
-  monoMedium: 'JetBrainsMono_500Medium',
+  // Roboto Mono has no code ligatures, so <= and => look exactly as learners type them.
+  mono: 'RobotoMono_400Regular',
+  monoMedium: 'RobotoMono_500Medium',
 } as const;
 
 export const radius = { sm: 8, md: 12, lg: 14, xl: 18, xxl: 22, pill: 999 } as const;

@@ -25,7 +25,7 @@ New personal accounts must run a **closed test with at least 12 testers for 14 d
 | --- | --- | --- |
 | App icon | 512 × 512 PNG | `assets/images/icon.png` (export at 512) |
 | Feature graphic | 1024 × 500 PNG/JPG | Ready: [feature-graphic.png](feature-graphic.png) (regenerate with `node scripts/feature-graphic.js`) |
-| Phone screenshots | 2–8, 1080 × 1920 (9:16) | See shot list below |
+| Phone screenshots | 2–8, 1080 × 1920 (9:16) | Ready: [screenshots/](screenshots) (regenerate with `python scripts/frame-screenshots.py <raw folder>`) |
 
 Shot list, in this order:
 

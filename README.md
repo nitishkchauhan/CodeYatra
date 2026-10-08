@@ -58,6 +58,10 @@ Each signed-in learner gets 20 questions a day (`DAILY_LIMIT` in `supabase/funct
 
 Turn on GitHub Pages (Settings → Pages → branch `main`, folder `/docs`). Then `docs/verify.html` verifies certificates and `docs/privacy.html` is the privacy policy URL for Google Play.
 
+## Launching
+
+Step-by-step owner checklist: [LAUNCH.md](LAUNCH.md).
+
 ## Publish on Google Play
 
 See [store/README.md](store/README.md): listing text, privacy policy, data safety answers, screenshot list and upload steps.

@@ -6,7 +6,7 @@ import { LANG_COLOR } from './Code';
 import { colors, fonts } from '@/theme';
 
 const C = colors.code;
-const CHAR_W = 8.15; // JetBrains Mono at 13.5px
+const CHAR_W = 8.1; // Roboto Mono at 13.5px
 const LINE_H = 22;
 
 export type EditorLang = 'python' | 'javascript' | 'html' | 'css' | 'sql';

@@ -44,7 +44,7 @@ export function tokenize(line: string, lang: CodeLang): Token[] {
   const re = markup
     ? /(\s+)|(\/\/.*$)|("[^"]*"|'[^']*')|(<\/?[A-Za-z][\w.]*|\/?>)|(\d+(?:\.\d+)?)|([A-Za-z_][\w]*)|(.)/g
     : hashComment
-      ? /(\s+)|(#.*$|\/\/.*$)|("[^"]*"|'[^']*')|()(\d+(?:\.\d+)?)|([A-Za-z_][\w]*)|(.)/g
+      ? /(\s+)|(#.*$)|("[^"]*"|'[^']*')|()(\d+(?:\.\d+)?)|([A-Za-z_][\w]*)|(.)/g
       : /(\s+)|(\/\/.*$|--\s.*$)|("[^"]*"|'[^']*')|()(\d+(?:\.\d+)?)|([A-Za-z_][\w]*)|(.)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(line))) {
