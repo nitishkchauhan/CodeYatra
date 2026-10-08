@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>Your CodeYatra login code</title>
+</head>
+<body style="margin:0;padding:0;background:#EEF0F8;">
+<span style="display:none;max-height:0;overflow:hidden;opacity:0;">Your CodeYatra code is {{ .Token }}. It expires in 1 hour.</span>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEF0F8;">
+  <tr>
+    <td align="center" style="padding:28px 12px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#FFFFFF;border-radius:20px;overflow:hidden;font-family:Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+
+        <!-- Header -->
+        <tr>
+          <td align="center" style="background:#06104A;background-image:linear-gradient(135deg,#06104A 0%,#1B1F7A 60%,#4B3FD8 100%);padding:28px 24px 22px;">
+            <img src="https://raw.githubusercontent.com/nitishkchauhan/CodeYatra/main/assets/images/icon.png" width="84" height="84" alt="Yatri the robot" style="display:block;border:0;border-radius:22px;">
+            <div style="margin-top:12px;font-size:26px;font-weight:800;letter-spacing:-0.5px;line-height:1;">
+              <span style="color:#FFFFFF;">Code</span><span style="color:#FF9F1C;">Yatra</span>
+            </div>
+            <div style="margin-top:6px;font-size:13px;color:#B9B6F2;letter-spacing:0.3px;">Learn to Code. Play the Journey.</div>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:28px 28px 8px;">
+            <div style="font-size:21px;font-weight:700;color:#16142B;">Welcome back, explorer! 👋</div>
+            <div style="margin-top:8px;font-size:15px;line-height:22px;color:#5B5775;">
+              Enter this code in the CodeYatra app to sign in and keep your streak going.
+            </div>
+          </td>
+        </tr>
+
+        <!-- Code -->
+        <tr>
+          <td align="center" style="padding:18px 28px 6px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="background:#F4F2FF;border:2px dashed #4B3FD8;border-radius:16px;">
+              <tr>
+                <td align="center" style="padding:18px 26px;">
+                  <div style="font-size:12px;font-weight:700;color:#4B3FD8;letter-spacing:2px;">YOUR LOGIN CODE</div>
+                  <div style="margin-top:8px;font-family:Consolas,'Courier New',monospace;font-size:38px;font-weight:700;letter-spacing:10px;color:#16142B;">{{ .Token }}</div>
+                </td>
+              </tr>
+            </table>
+            <div style="margin-top:10px;font-size:13px;color:#8A86A6;">⏱ Expires in 1 hour · Use it only once</div>
+          </td>
+        </tr>
+
+        <!-- Button -->
+        <tr>
+          <td align="center" style="padding:20px 28px 6px;">
+            <div style="font-size:13px;color:#8A86A6;margin-bottom:10px;">On your phone? Skip typing:</div>
+            <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#FF9F1C;color:#16142B;font-size:16px;font-weight:700;text-decoration:none;padding:14px 30px;border-radius:14px;border-bottom:4px solid #D97F00;">
+              ▶&nbsp; Open CodeYatra &amp; sign in
+            </a>
+          </td>
+        </tr>
+
+        <!-- Tracks strip -->
+        <tr>
+          <td align="center" style="padding:24px 20px 6px;">
+            <div style="font-size:12px;color:#8A86A6;margin-bottom:10px;">Today’s journey awaits</div>
+            <span style="display:inline-block;margin:3px;padding:6px 10px;border-radius:8px;background:#E34F26;color:#FFFFFF;font:700 12px Consolas,monospace;">&lt;/&gt; HTML</span>
+            <span style="display:inline-block;margin:3px;padding:6px 10px;border-radius:8px;background:#1572B6;color:#FFFFFF;font:700 12px Consolas,monospace;">{ } CSS</span>
+            <span style="display:inline-block;margin:3px;padding:6px 10px;border-radius:8px;background:#F7DF1E;color:#16142B;font:700 12px Consolas,monospace;">JS</span>
+            <span style="display:inline-block;margin:3px;padding:6px 10px;border-radius:8px;background:#3776AB;color:#FFD43B;font:700 12px Consolas,monospace;">Py</span>
+            <span style="display:inline-block;margin:3px;padding:6px 10px;border-radius:8px;background:#20232A;color:#61DAFB;font:700 12px Consolas,monospace;">React</span>
+            <span style="display:inline-block;margin:3px;padding:6px 10px;border-radius:8px;background:#5FA04E;color:#FFFFFF;font:700 12px Consolas,monospace;">Node</span>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding:22px 28px 26px;">
+            <div style="border-top:1px solid #ECEAF4;padding-top:16px;font-size:12px;line-height:18px;color:#8A86A6;text-align:center;">
+              Didn’t ask for this? You can safely ignore this email. Nobody can sign in without this code.<br>
+              Never share this code with anyone, not even someone claiming to be from CodeYatra.
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div style="margin-top:14px;font-family:Segoe UI,Roboto,Arial,sans-serif;font-size:11px;color:#9A97B5;">© CodeYatra · Made for learners in India</div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
