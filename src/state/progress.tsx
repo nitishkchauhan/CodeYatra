@@ -4,10 +4,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { getLesson, STAGES } from '@/content';
 import { coinsFor, STREAK_FREEZE, type OutfitId } from '@/content/shop';
 import { setHapticsEnabled } from '@/lib/haptics';
-import { applyStreakFreezes, INITIAL, normalize, type Certificate, type LearnerLevel, type Progress, type UiLang } from './model';
+import { applyStreakFreezes, INITIAL, normalize, type Certificate, type LearnerLevel, type Progress } from './model';
 import { dayKey, nextStreak, visibleStreak } from './streak';
 
-export type { LearnerLevel, Progress, UiLang } from './model';
+export type { LearnerLevel, Progress } from './model';
 
 const STORAGE_KEY = 'codeyatra/progress/v1';
 export const DAILY_GOAL = 20;
@@ -28,9 +28,8 @@ type ProgressApi = {
   todayXp: number;
   streak: number;
   recommendedStageId: string;
-  finishOnboarding: (input: { name: string; level: LearnerLevel; lang: UiLang }) => void;
+  finishOnboarding: (input: { name: string; level: LearnerLevel }) => void;
   completeLesson: (lessonId: string, xp: number, accuracy: number) => LessonResult;
-  setLang: (lang: UiLang) => void;
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -87,7 +86,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     todayXp: state.dailyXp[today] ?? 0,
     streak: visibleStreak(state.streak, state.lastActive, today),
     recommendedStageId: RECOMMENDED_STAGE[state.level],
-    finishOnboarding: ({ name, level, lang }) => update((s) => ({ ...s, onboarded: true, name: name.trim(), level, lang, stageId: RECOMMENDED_STAGE[level] })),
+    finishOnboarding: ({ name, level }) => update((s) => ({ ...s, onboarded: true, name: name.trim(), level, stageId: RECOMMENDED_STAGE[level] })),
     completeLesson: (lessonId, xp, accuracy) => {
       const lesson = getLesson(lessonId);
       const streakResult = nextStreak(state.streak, state.lastActive, today);
@@ -112,7 +111,6 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       }));
       return { ...streakResult, coins, certificate };
     },
-    setLang: (lang) => update((s) => ({ ...s, lang })),
     setLevel: (level) => update((s) => ({ ...s, level })),
     setHaptics: (on) => update((s) => ({ ...s, haptics: on })),
     setStage: (stageId) => update((s) => ({ ...s, stageId })),

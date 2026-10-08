@@ -102,7 +102,6 @@ export const JS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · JAVASCRIPT',
         title: 'Variables are labelled boxes',
-        hindi: 'वेरिएबल नाम वाले डिब्बे हैं',
         body: 'const name = "Asha" puts "Asha" in a box called name. Use let when the value will change. Backtick strings can drop values right into text with ${ }.',
         code: [
           {
@@ -142,7 +141,6 @@ export const JS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · ARRAYS',
         title: 'Arrays hold many values',
-        hindi: 'Array में कई मान होते हैं',
         body: 'An array is an ordered list. filter() builds a new array of items that pass a test, and map() builds one where every item is changed.',
         code: [
           {
@@ -177,7 +175,6 @@ export const JS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · OBJECTS',
         title: 'Objects describe one thing',
-        hindi: 'Object एक चीज़ का वर्णन करता है',
         body: 'An object stores named values together. train.name reads one field; const { name, seats } = train unpacks several at once.',
         code: [
           {
@@ -212,7 +209,6 @@ export const JS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · THE DOM',
         title: 'JavaScript can change the page',
-        hindi: 'JavaScript पेज को बदल सकता है',
         body: 'The browser turns your HTML into objects called the DOM. Find an element with querySelector, listen for events like click, and update its text or style.',
         code: [
           {

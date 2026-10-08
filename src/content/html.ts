@@ -100,7 +100,6 @@ export const HTML_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · HTML LISTS',
         title: 'Lists keep things in order',
-        hindi: 'लिस्ट चीज़ों को क्रम में रखती है',
         body: 'Menus, steps and stations are all lists. Wrap the list in <ul> for bullets or <ol> for numbers, and put every item in its own <li>.',
         code: [
           {
@@ -140,7 +139,6 @@ export const HTML_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · HTML FORMS',
         title: 'Forms let people talk to your site',
-        hindi: 'फ़ॉर्म से लोग आपकी साइट से बात करते हैं',
         body: 'Every search box and login screen is a form. An <input> collects what people type, a <label> says what to type, and a submit button sends it.',
         code: [
           {
@@ -175,7 +173,6 @@ export const HTML_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · SEMANTIC HTML',
         title: 'Name the parts of your page',
-        hindi: 'पेज के हिस्सों को नाम दें',
         body: 'A <div> says nothing about its content. Semantic tags do: <header> is the top banner, <nav> holds links, <main> is the content and <footer> sits at the bottom.',
         code: [
           {

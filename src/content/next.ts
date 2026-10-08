@@ -102,7 +102,6 @@ export const NEXT_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · NEXT.JS',
         title: 'Layouts frame your pages',
-        hindi: 'Layout आपके पेजों का फ़्रेम है',
         body: 'A layout.jsx file wraps every page in its folder. Put the navbar and footer there once. Next.js passes the active page in as children.',
         code: [
           {
@@ -137,7 +136,6 @@ export const NEXT_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · DYNAMIC ROUTES',
         title: 'One file, many URLs',
-        hindi: 'एक फ़ाइल, कई URL',
         body: 'There are thousands of trains, but you write one page. A folder named [id] matches any value, and that value arrives in params.',
         code: [
           {
@@ -178,7 +176,6 @@ export const NEXT_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · SERVER COMPONENTS',
         title: 'Fetch where the data lives',
-        hindi: 'डेटा वहीं लाओ जहाँ वो है',
         body: 'In the app folder, components run on the server unless you write "use client". Server components can be async and await data, and the HTML arrives ready, which is fast on slow networks.',
         code: [
           {
@@ -213,7 +210,6 @@ export const NEXT_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · ROUTE HANDLERS',
         title: 'Your backend lives in the same project',
-        hindi: 'बैकएंड उसी प्रोजेक्ट में',
         body: 'A route.js file turns its folder into an API. Export functions named after HTTP methods, GET or POST, and return a Response.',
         code: [
           {

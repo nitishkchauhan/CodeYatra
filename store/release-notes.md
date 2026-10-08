@@ -1,6 +1,6 @@
 # Release notes
 
-Play Console limit: 500 characters per language.
+Play Console limit: 500 characters.
 
 ## 1.1.0
 
@@ -9,18 +9,13 @@ Play Console limit: 500 characters per language.
 • 40+ modules, each with a reading card, quick check and hands-on practice
 • Live previews for HTML & CSS, real code editor for Python & JavaScript
 • New: profile photo, bio, avatar colour and main language
+• New logo and app icon; the app is now English-only
 • Track progress and certificates for every language
 </en-IN>
 
-<hi-IN>
-• 8 भाषाएँ: लॉजिक, HTML, CSS, JavaScript, Python, React, Node.js और Next.js
-• 40+ मॉड्यूल: पढ़ें, क्विज़ दें और अभ्यास करें
-• HTML/CSS का लाइव प्रीव्यू, Python/JavaScript के लिए असली कोड एडिटर
-• नया: प्रोफ़ाइल फ़ोटो, बायो और अपनी मुख्य भाषा
-</hi-IN>
 
 ## 1.0.0
 
 <en-IN>
-First release: block puzzles, lessons in English and Hindi, code editor, streaks, shop, league and certificates.
+First release: block puzzles, lessons, code editor, streaks, shop, league and certificates.
 </en-IN>

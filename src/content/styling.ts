@@ -102,7 +102,6 @@ export const CSS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · CSS SELECTORS',
         title: 'Choose what to style',
-        hindi: 'चुनें कि किसे स्टाइल करना है',
         body: 'A selector says which elements a rule applies to. p picks every paragraph, .price picks everything with class="price", and #book picks the single element with id="book".',
         code: [
           {
@@ -142,7 +141,6 @@ export const CSS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · BOX MODEL',
         title: 'Every element is a box',
-        hindi: 'हर एलिमेंट एक डिब्बा है',
         body: 'From the inside out, a box has content, then padding, then a border, then margin. Padding gives the content breathing room; margin keeps other boxes away.',
         code: [
           {
@@ -177,7 +175,6 @@ export const CSS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · FLEXBOX',
         title: 'Flexbox arranges things in a line',
-        hindi: 'Flexbox चीज़ों को एक लाइन में सजाता है',
         body: 'Set display: flex on a parent and its children sit side by side. justify-content controls spacing along the line; align-items controls alignment across it.',
         code: [
           {
@@ -212,7 +209,6 @@ export const CSS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · RESPONSIVE CSS',
         title: 'One page, every screen',
-        hindi: 'एक पेज, हर स्क्रीन',
         body: 'Most people in India browse on phones. A media query changes your layout when the screen is narrow, so the same page works on a phone and a laptop.',
         code: [
           {

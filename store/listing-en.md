@@ -4,7 +4,7 @@
 CodeYatra – Learn to Code
 
 **Short description** (80 max)
-Learn HTML, CSS, JavaScript, Python, React & Node with bite-size Hindi + English lessons
+Learn HTML, CSS, JavaScript, Python, React & Node in bite-size lessons
 
 **Full description** (4000 max)
 
@@ -21,7 +21,7 @@ Start your coding journey with Yatri, your robot guide. CodeYatra teaches real p
 • Next.js: layouts, dynamic routes, server components and route handlers
 
 📖 READ, THEN PRACTISE
-Every module starts with a short reading card, with a Hindi line to help it click, and a quick check. Then you practise for real:
+Every module starts with a short reading card and a quick check. Then you practise for real:
 • Fill-the-gap code with a live preview that updates as you type
 • A real code editor that runs Python and JavaScript and checks your answer with tests
 • Block puzzles where Yatri walks your program step by step
@@ -36,7 +36,7 @@ Every module starts with a short reading card, with a Hindi line to help it clic
 Finish a track to earn a certificate you can share.
 
 👤 MAKE IT YOURS
-Add a profile photo, write a short bio, pick your main language, and switch between English and हिन्दी.
+Add a profile photo, write a short bio and pick your main language.
 
 📶 MADE FOR INDIA
 Lightweight, works on budget phones, and most lessons work offline once loaded. Examples use trains, chai and cricket, not foreign menus.

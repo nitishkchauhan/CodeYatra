@@ -25,11 +25,11 @@ describe('mergeProgress', () => {
   });
 
   it('takes the more recent streak and the newer settings', () => {
-    const phone = p({ streak: 3, lastActive: '2026-10-07', lang: 'hi', coins: 40, updatedAt: 5 });
-    const cloud = p({ streak: 9, lastActive: '2026-10-01', lang: 'en', coins: 90, inventory: ['safa'], updatedAt: 9 });
+    const phone = p({ streak: 3, lastActive: '2026-10-07', haptics: false, coins: 40, updatedAt: 5 });
+    const cloud = p({ streak: 9, lastActive: '2026-10-01', haptics: true, coins: 90, inventory: ['safa'], updatedAt: 9 });
     const m = mergeProgress(phone, cloud);
     expect([m.streak, m.lastActive]).toEqual([3, '2026-10-07']);
-    expect([m.lang, m.coins]).toEqual(['en', 90]);
+    expect([m.haptics, m.coins]).toEqual([true, 90]);
     expect(m.inventory).toEqual(['safa']);
   });
 

@@ -53,7 +53,6 @@ export const WEB_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · HTML',
         title: 'HTML gives a page its structure',
-        hindi: 'HTML पेज का ढाँचा बनाता है',
         body: 'Every web page is built from elements. A tag like <h1> opens an element and </h1> closes it. The browser shows whatever is between them.',
         visual: 'htmlAnatomy',
         code: [

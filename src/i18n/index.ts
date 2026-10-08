@@ -1,6 +1,4 @@
-import { useProgress } from '@/state/progress';
-
-// UI chrome only. Lesson content is English with Hindi support lines.
+// UI strings, kept in one table so wording stays consistent.
 const STRINGS = {
   en: {
     morning: 'Good morning',
@@ -26,38 +24,12 @@ const STRINGS = {
     soon: 'Soon',
     edit: 'Edit',
   },
-  hi: {
-    morning: 'सुप्रभात',
-    afternoon: 'नमस्ते',
-    evening: 'शुभ संध्या',
-    learn: 'सीखें',
-    practice: 'अभ्यास',
-    profile: 'प्रोफ़ाइल',
-    continueLesson: 'आगे बढ़ें',
-    startLesson: 'पाठ शुरू करें',
-    startPractice: 'अभ्यास शुरू करें',
-    continue: 'आगे बढ़ें',
-    check: 'जाँचें',
-    tryAgain: 'फिर कोशिश करें',
-    runCode: 'कोड चलाएँ',
-    running: 'चल रहा है…',
-    runAgain: 'फिर चलाएँ',
-    finish: 'पूरा करें',
-    dailyGoal: 'आज का लक्ष्य',
-    stage: 'स्टेज',
-    of: 'में से',
-    upNext: 'अगला',
-    soon: 'जल्द',
-    edit: 'बदलें',
-  },
 } as const;
 
 export type StringKey = keyof (typeof STRINGS)['en'];
 
 export function useT() {
-  const { state } = useProgress();
-  const table = STRINGS[state.lang];
-  return (key: StringKey) => table[key];
+  return (key: StringKey) => STRINGS.en[key];
 }
 
 export function greetingKey(hour: number): StringKey {

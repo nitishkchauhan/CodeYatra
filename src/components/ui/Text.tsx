@@ -12,7 +12,6 @@ const VARIANTS = {
   labelSm: { fontFamily: fonts.bodyBold, fontSize: 12, lineHeight: 16, color: colors.ink },
   caption: { fontFamily: fonts.body, fontSize: 12, lineHeight: 16, color: colors.ink3 },
   kicker: { fontFamily: fonts.bodyBold, fontSize: 11, lineHeight: 14, letterSpacing: 1, color: colors.primary },
-  hindi: { fontFamily: fonts.hindi, fontSize: 14, lineHeight: 22, color: colors.ink3 },
   mono: { fontFamily: fonts.mono, fontSize: 14, lineHeight: 20, color: colors.ink },
 } satisfies Record<string, TextStyle>;
 

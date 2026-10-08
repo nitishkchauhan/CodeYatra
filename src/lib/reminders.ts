@@ -6,7 +6,7 @@ const CHANNEL = 'streak';
 const MESSAGES = [
   { title: 'Yatri is waiting for you', body: 'One short lesson keeps your streak alive.' },
   { title: 'Your streak is on the line', body: 'Five minutes of code today? Yatri packed snacks.' },
-  { title: 'आज का पाठ तैयार है', body: 'Today’s lesson is ready. Let’s keep the yatra going!' },
+  { title: 'Your lesson is ready', body: 'Today’s lesson is ready. Let’s keep the yatra going!' },
 ];
 
 if (Platform.OS !== 'web') {

@@ -34,7 +34,7 @@ export const colors = {
   warnLine: '#FFE3B8',
   warnInk: '#5A3D12',
 
-  brand: '#1F1B83',
+  brand: '#06104A',
   hero: '#221D63',
   heroLine: '#3A3390',
   teal: '#0EA5A0',
@@ -66,8 +66,6 @@ export const fonts = {
   bodySemibold: 'Figtree_600SemiBold',
   bodyBold: 'Figtree_700Bold',
   bodyHeavy: 'Figtree_800ExtraBold',
-  hindi: 'NotoSansDevanagari_400Regular',
-  hindiBold: 'NotoSansDevanagari_600SemiBold',
   mono: 'JetBrainsMono_400Regular',
   monoMedium: 'JetBrainsMono_500Medium',
 } as const;

@@ -1,4 +1,5 @@
 // Builds CodeYatra's brand images from the master artwork (assets/brand/codeyatra-logo.png).
+// The wordmark-free mark (codeyatra-mark.png) is used for square icons.
 // Usage: npm i -D @resvg/resvg-js && node scripts/generate-brand.js
 const fs = require('fs');
 const path = require('path');
@@ -7,12 +8,15 @@ const { Resvg } = require('@resvg/resvg-js');
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(ROOT, 'assets/brand/codeyatra-logo.png');
 const OUT = path.join(ROOT, 'assets/images');
-const BG = '#1F1B83'; // the artwork's own background colour
+const BG = '#06104A'; // the artwork's own background colour
 
+// The mark is the same artwork with the wordmark painted out, for square icons.
+const MARK = path.join(ROOT, 'assets/brand/codeyatra-mark.png');
 const src = fs.readFileSync(SRC);
 const W = src.readUInt32BE(16);
 const H = src.readUInt32BE(20);
 const href = `data:image/png;base64,${src.toString('base64')}`;
+const markHref = `data:image/png;base64,${fs.readFileSync(MARK).toString('base64')}`;
 
 function render(svg, file, width) {
   fs.writeFileSync(path.join(OUT, file), new Resvg(svg, { fitTo: { mode: 'width', value: width } }).render().asPng());
@@ -31,13 +35,13 @@ function crop(out, [x, y, size], { scale = 1, feather = false, background = true
     ${mask}
     ${background ? `<rect width="${out}" height="${out}" fill="${BG}"/>` : ''}
     <g ${feather ? 'mask="url(#m)"' : ''}>
-      <image x="${offset - x * k}" y="${offset - y * k}" width="${W * k}" height="${H * k}" xlink:href="${href}"/>
+      <image x="${offset - x * k}" y="${offset - y * k}" width="${W * k}" height="${H * k}" xlink:href="${markHref}"/>
     </g>
   </svg>`;
 }
 
 // Robot plus the code blocks it points at.
-const ROBOT = [122, 18, 368];
+const ROBOT = [292, 120, 750];
 
 render(crop(1024, ROBOT), 'icon.png', 1024);
 // Android adaptive layers: subject inside the safe zone, on the artwork's background colour.

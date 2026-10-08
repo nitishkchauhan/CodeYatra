@@ -2,7 +2,6 @@
 import { addDays } from './streak';
 
 export type LearnerLevel = 'school' | 'college' | 'curious';
-export type UiLang = 'en' | 'hi';
 
 export type Completion = { xp: number; accuracy: number; at: string };
 export type Certificate = { stageId: string; name: string; date: string };
@@ -12,7 +11,6 @@ export type Progress = {
   onboarded: boolean;
   name: string;
   level: LearnerLevel;
-  lang: UiLang;
   haptics: boolean;
   stageId: string;
   xp: number;
@@ -41,7 +39,6 @@ export const INITIAL: Progress = {
   onboarded: false,
   name: '',
   level: 'school',
-  lang: 'en',
   haptics: true,
   stageId: 'foundations',
   xp: 0,

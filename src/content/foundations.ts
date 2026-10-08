@@ -34,7 +34,6 @@ export const FOUNDATIONS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · SEQUENCES',
         title: 'Code runs one step at a time',
-        hindi: 'कोड एक-एक कदम चलता है',
         body: 'A program is a list of instructions. The computer runs them in order, top to bottom, like directions to a friend’s house.',
         visual: 'sequence',
         code: [
@@ -67,7 +66,6 @@ export const FOUNDATIONS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · DIRECTIONS',
         title: 'Turn changes where Move goes',
-        hindi: 'मुड़ने से दिशा बदलती है',
         body: 'Turning does not move Yatri. It changes which way Yatri faces, so the next Move goes in the new direction.',
         visual: 'sequence',
         code: [
@@ -99,7 +97,6 @@ export const FOUNDATIONS_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · LOOPS',
         title: 'A loop repeats code for you',
-        hindi: 'लूप एक काम को बार-बार दोहराता है',
         body: 'Instead of writing the same instruction again and again, put it inside a loop and say how many times.',
         visual: 'loopCompare',
         code: [

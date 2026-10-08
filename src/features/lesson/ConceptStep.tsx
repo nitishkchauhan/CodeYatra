@@ -48,10 +48,7 @@ export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }
     Speech.speak(`${step.title}. ${step.body}`, {
       language: 'en-IN',
       rate: 0.95,
-      onDone: () => {
-        if (step.hindi) Speech.speak(step.hindi, { language: 'hi-IN', onDone: done, onStopped: done, onError: done });
-        else done();
-      },
+      onDone: done,
       onStopped: done,
       onError: done,
     });
@@ -67,7 +64,6 @@ export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }
           <T variant="display" accessibilityRole="header">
             {step.title}
           </T>
-          {step.hindi ? <T variant="hindi">{step.hindi}</T> : null}
           <T variant="body" style={{ marginTop: 2 }}>
             {step.body}
           </T>

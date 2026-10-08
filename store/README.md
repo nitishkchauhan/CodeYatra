@@ -13,9 +13,9 @@ New personal accounts must run a **closed test with at least 12 testers for 14 d
 
 ## 2. Create the app in Play Console
 
-1. **Create app** → name `CodeYatra – Learn to Code`, default language English (India), App, Free.
+1. **Create app** → name `CodeYatra – Learn to Code`, default language English (India), App, Free. The app is English-only.
 2. Package name is fixed by the first upload: `com.codeyatra.app`.
-3. Fill **Store listing** from [listing-en.md](listing-en.md) and add the Hindi translation from [listing-hi.md](listing-hi.md).
+3. Fill **Store listing** from [listing-en.md](listing-en.md).
 4. **Privacy policy URL**: host [privacy-policy.html](privacy-policy.html) (GitHub Pages works: Settings → Pages) and paste the link.
 5. **App content** answers: see [data-safety.md](data-safety.md).
 
@@ -24,13 +24,13 @@ New personal accounts must run a **closed test with at least 12 testers for 14 d
 | Asset | Size | Source |
 | --- | --- | --- |
 | App icon | 512 × 512 PNG | `assets/images/icon.png` (export at 512) |
-| Feature graphic | 1024 × 500 PNG/JPG | Logo + Yatri on `#1F1B83`, tagline “कोड की यात्रा” |
+| Feature graphic | 1024 × 500 PNG/JPG | Logo on `#06104A`, tagline “Learn to Code. Play the Journey.” |
 | Phone screenshots | 2–8, 1080 × 1920 (9:16) | See shot list below |
 
 Shot list, in this order:
 
 1. Learn: language tracks row and the current module (HTML or Python)
-2. A lesson's reading card, with the Hindi line visible
+2. A lesson's reading card
 3. Fill-the-gap practice with the live preview showing
 4. Code editor: Python tests passing
 5. Blocks puzzle with Yatri on the board

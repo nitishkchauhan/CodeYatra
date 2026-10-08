@@ -14,7 +14,7 @@ import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { syncReminder } from '@/lib/reminders';
 import { useAccount } from '@/state/account';
-import { useProgress, type LearnerLevel, type UiLang } from '@/state/progress';
+import { useProgress, type LearnerLevel } from '@/state/progress';
 import { addDays } from '@/state/streak';
 import { card, colors } from '@/theme';
 
@@ -36,7 +36,7 @@ const SHORTCUTS: { label: string; sub: string; href: Href; icon: string; tint: s
 export default function ProfileScreen() {
   const t = useT();
   const toast = useToast();
-  const { state, streak, today, setLang, setHaptics, setReminder, setStage, reset } = useProgress();
+  const { state, streak, today, setHaptics, setReminder, setStage, reset } = useProgress();
   const account = useAccount();
   const stage = findStage(state.stageId);
   const lessonsDone = Object.keys(state.completed).length;
@@ -225,21 +225,6 @@ export default function ProfileScreen() {
 
         <Animated.View entering={FadeInDown.delay(260).duration(320)} style={[card, { overflow: 'hidden' }]}>
           <View style={styles.setting}>
-            <Icon name="globe" size={20} color={colors.primary} />
-            <T variant="label" style={{ flex: 1 }}>
-              Language · भाषा
-            </T>
-            <View style={styles.segment} accessibilityRole="radiogroup">
-              {(['en', 'hi'] as UiLang[]).map((l) => (
-                <Pressable key={l} accessibilityRole="radio" accessibilityState={{ checked: state.lang === l }} onPress={() => setLang(l)} style={[styles.segmentBtn, state.lang === l && styles.segmentOn]}>
-                  <T variant="labelSm" color={state.lang === l ? colors.ink : '#6E6A88'}>
-                    {l === 'en' ? 'English' : 'हिन्दी'}
-                  </T>
-                </Pressable>
-              ))}
-            </View>
-          </View>
-          <View style={[styles.setting, styles.divider]}>
             <Icon d="M18 16V11a6 6 0 0 0-12 0v5l-2 2h16z M10 21h4" size={20} color={colors.primary} />
             <View style={{ flex: 1 }}>
               <T variant="label">Daily reminder</T>

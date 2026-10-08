@@ -49,7 +49,6 @@ export const PYTHON_EXTRA: Lesson[] = [
         type: 'concept',
         kicker: 'READ · PYTHON',
         title: 'Python reads like English',
-        hindi: 'Python अंग्रेज़ी जैसा पढ़ा जाता है',
         body: 'name = "Asha" stores a value. No let or const needed. Put f before a string and anything in { } becomes its value.',
         code: [
           {
@@ -89,7 +88,6 @@ export const PYTHON_EXTRA: Lesson[] = [
         type: 'concept',
         kicker: 'READ · DICTIONARIES',
         title: 'Look things up by name',
-        hindi: 'नाम से चीज़ें खोजें',
         body: 'A dictionary pairs keys with values, like a menu pairs dishes with prices. Look up a value with menu["chai"]. Asking for a missing key raises a KeyError, so check with in first.',
         code: [
           {

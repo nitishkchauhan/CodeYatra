@@ -93,7 +93,6 @@ export const NODE_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · NODE.JS',
         title: 'JavaScript on the server',
-        hindi: 'सर्वर पर JavaScript',
         body: 'Node.js runs JavaScript on a computer instead of in a browser, so you can build servers, scripts and tools. Big programs are split into modules: files that export and import code.',
         code: [
           {
@@ -128,7 +127,6 @@ export const NODE_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · ASYNC',
         title: 'Don’t block the queue',
-        hindi: 'कतार को मत रोको',
         body: 'Reading a file or a database takes time. Node keeps serving other people while it waits. await pauses only your function until the Promise finishes.',
         code: [
           {
@@ -162,7 +160,6 @@ export const NODE_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · EXPRESS',
         title: 'A route is a URL plus a handler',
-        hindi: 'Route = URL + handler',
         body: 'Express is the most popular Node web framework. app.get("/path", handler) runs your handler for each request; it gets req (what came in) and res (what you send back).',
         code: [
           {
@@ -197,7 +194,6 @@ export const NODE_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · JSON',
         title: 'JSON is how apps talk',
-        hindi: 'JSON से ऐप्स बात करते हैं',
         body: 'Requests and responses travel as text. JSON looks like a JavaScript object. JSON.parse reads it into an object; JSON.stringify turns an object back into text.',
         code: [
           {

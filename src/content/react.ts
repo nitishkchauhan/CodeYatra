@@ -87,7 +87,6 @@ export const REACT_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · REACT LISTS',
         title: 'From an array to a list',
-        hindi: 'Array से लिस्ट तक',
         body: 'In React you don’t write each <li> by hand. You map an array of data to elements. Give each element a key, an id that never changes, so React knows which item is which.',
         code: [
           {
@@ -122,7 +121,6 @@ export const REACT_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · REACT EVENTS',
         title: 'React to what people do',
-        hindi: 'यूज़र की हर क्रिया पर प्रतिक्रिया दें',
         body: 'Pass a function to onClick or onChange. For text boxes, store the text in state and pass it back as value. That is a controlled input: state is the single source of truth.',
         code: [
           {
@@ -156,7 +154,6 @@ export const REACT_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'READ · USEEFFECT',
         title: 'Effects talk to the outside world',
-        hindi: 'Effects बाहरी दुनिया से बात करते हैं',
         body: 'Rendering should only describe the UI. Loading data, timers and subscriptions are side effects, and they go in useEffect. The dependency array says when to run it again.',
         code: [
           {

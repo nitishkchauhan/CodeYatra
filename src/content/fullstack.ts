@@ -46,7 +46,6 @@ export const FULLSTACK_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · REACT',
         title: 'Components are reusable pieces of UI',
-        hindi: 'कंपोनेंट UI के दोबारा इस्तेमाल होने वाले हिस्से हैं',
         body: 'A React component is a function that returns UI. Props are the inputs you pass in, so one component can show different data.',
         visual: 'componentProps',
         code: [

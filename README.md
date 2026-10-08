@@ -26,7 +26,7 @@ Built with Expo SDK 57, Expo Router, Reanimated 4 and react-native-svg.
 - **Code playground** for free coding
 - **Accounts (Supabase)**: email code or Google sign-in, progress sync across phones; guest mode works offline
 - **Weekly league**, shareable **certificates**, **coins + shop** (outfits, streak freezes), **daily reminders**
-- English / हिन्दी UI, haptics, accessible labels, reduced-motion friendly animations
+- English UI, haptics, accessible labels, reduced-motion friendly animations
 
 ## Turn on accounts (optional)
 
@@ -40,7 +40,7 @@ For EAS builds, add the same two values as EAS environment variables (`npx eas-c
 
 ## Publish on Google Play
 
-See [store/README.md](store/README.md): listing text (English + Hindi), privacy policy, data safety answers, screenshot list and upload steps.
+See [store/README.md](store/README.md): listing text, privacy policy, data safety answers, screenshot list and upload steps.
 
 ## Run it
 
@@ -85,7 +85,7 @@ src/
   content/                Stages, units and lesson content for all four stages
   game/                   Puzzle engine, levels, Python codegen
   state/                  Saved progress (AsyncStorage), streak rules
-  i18n/                   English / Hindi UI strings
+  i18n/                   UI strings
   lib/haptics.ts          Vibration feedback (respects the user setting)
   theme/                  "Studio" design tokens
 ```

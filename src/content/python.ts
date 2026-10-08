@@ -42,7 +42,6 @@ export const PYTHON_LESSONS: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · PYTHON LOOPS',
         title: 'range() counts for you',
-        hindi: 'range() आपके लिए गिनती करता है',
         body: 'range(1, 6) gives the numbers 1, 2, 3, 4, 5. It starts at the first number and stops just before the second.',
         code: [
           { lang: 'python', label: 'Python', lines: ['for i in range(1, 6):', '    print(i)'] },

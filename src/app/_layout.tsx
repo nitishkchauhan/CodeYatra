@@ -1,7 +1,6 @@
 import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold, Figtree_800ExtraBold } from '@expo-google-fonts/figtree';
 import { JetBrainsMono_400Regular, JetBrainsMono_500Medium } from '@expo-google-fonts/jetbrains-mono';
 import { Lexend_500Medium, Lexend_600SemiBold, useFonts } from '@expo-google-fonts/lexend';
-import { NotoSansDevanagari_400Regular, NotoSansDevanagari_600SemiBold } from '@expo-google-fonts/noto-sans-devanagari';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -35,8 +34,6 @@ export default function RootLayout() {
     Figtree_600SemiBold,
     Figtree_700Bold,
     Figtree_800ExtraBold,
-    NotoSansDevanagari_400Regular,
-    NotoSansDevanagari_600SemiBold,
     JetBrainsMono_400Regular,
     JetBrainsMono_500Medium,
   });

@@ -84,7 +84,6 @@ export const PYTHON_MORE: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · LISTS',
         title: 'Lists keep many values together',
-        hindi: 'लिस्ट में कई चीज़ें एक साथ रहती हैं',
         body: 'A list is written with square brackets. A for loop can walk through it, giving you one item at a time.',
         code: [
           { lang: 'python', label: 'Python', lines: ['cities = ["Delhi", "Jaipur", "Pune"]', 'for city in cities:', '    print(city)'] },
@@ -118,7 +117,6 @@ export const PYTHON_MORE: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · FUNCTIONS',
         title: 'Functions take inputs and return answers',
-        hindi: 'फ़ंक्शन इनपुट लेकर जवाब लौटाते हैं',
         body: 'Parameters go in the brackets. return hands a value back to whoever called the function, so you can store it or use it again.',
         code: [{ lang: 'python', label: 'Python', lines: ['def square(n):', '    return n * n', '', 'area = square(5)', 'print(area)  # 25'] }],
         tip: 'print shows a value. return gives it back so other code can use it.',
@@ -148,7 +146,6 @@ export const PYTHON_MORE: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · PROBLEM SOLVING',
         title: 'Big problems are small steps',
-        hindi: 'बड़ी समस्या, छोटे कदम',
         body: 'Programmers break problems down: 1) what goes in, 2) what comes out, 3) what to do with each piece. Then they test the strange cases: empty, capitals, zero.',
         code: [{ lang: 'python', label: 'Python', lines: ['# 1. In: a word   2. Out: a number', '# 3. For each letter: is it a vowel?', 'count = 0', 'for ch in "Yatra".lower():', '    if ch in "aeiou":', '        count += 1'] }],
         tip: 'Before coding, write the steps as comments. Then turn each comment into a line of code.',

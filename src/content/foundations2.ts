@@ -47,7 +47,6 @@ export const FOUNDATIONS_MORE: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · PATTERNS',
         title: 'Loops can repeat a whole routine',
-        hindi: 'लूप पूरा क्रम दोहरा सकता है',
         body: 'A staircase is “step forward, step down” again and again. Spot the routine once, put all of it inside a Repeat, and the loop does the rest.',
         visual: 'loopCompare',
         code: [
@@ -80,7 +79,6 @@ export const FOUNDATIONS_MORE: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · FUNCTIONS',
         title: 'A function is a block you invent',
-        hindi: 'फ़ंक्शन आपका बनाया हुआ ब्लॉक है',
         body: 'Give a group of steps a name with def. Now you can use that name anywhere, as many times as you like, instead of rewriting the steps.',
         code: [
           { lang: 'python', label: 'Python', lines: ['def hop():', '    move()', '    move()', '', 'hop()', 'hop()'] },
@@ -113,7 +111,6 @@ export const FOUNDATIONS_MORE: Lesson[] = [
         type: 'concept',
         kicker: 'CONCEPT · CONDITIONS',
         title: 'Programs can make decisions',
-        hindi: 'प्रोग्राम फ़ैसले ले सकते हैं',
         body: 'An if checks a question. When the answer is True, the indented code runs. Add elif and else to handle the other cases.',
         code: [
           { lang: 'python', label: 'Python', lines: ['if tile == "gem":', '    pick_gem()', 'elif tile == "rock":', '    turn_right()', 'else:', '    move()'] },

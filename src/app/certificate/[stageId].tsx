@@ -67,9 +67,6 @@ export default function CertificateScreen() {
                       <T variant="kicker" color={colors.ink3} style={{ letterSpacing: 2, marginTop: 8 }}>
                         CERTIFICATE OF COMPLETION
                       </T>
-                      <T variant="hindi" style={{ fontSize: 12 }}>
-                        प्रमाण पत्र
-                      </T>
                       <T variant="bodySm" color={colors.ink2} style={{ marginTop: 12 }}>
                         This certifies that
                       </T>

@@ -61,7 +61,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
     return (
       <CompleteView
         title={lesson.kind === 'lesson' ? 'Lesson complete!' : 'Practice complete!'}
-        subtitle={`${lesson.title} · बहुत बढ़िया`}
+        subtitle={`${lesson.title} · Well done!`}
         xp={xp}
         coins={coinsFor(lesson.kind, accuracy === 100)}
         accuracy={accuracy}

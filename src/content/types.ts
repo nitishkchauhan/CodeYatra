@@ -39,7 +39,6 @@ export type ConceptStep = {
   type: 'concept';
   kicker: string;
   title: string;
-  hindi?: string;
   body: string;
   visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps';
   code?: CodeSample[];

@@ -112,7 +112,7 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
               </Animated.View>
               <View style={{ flex: 1, gap: 2 }}>
                 <T variant="heading" color={right ? colors.successInk : colors.dangerInk} style={{ fontSize: 17 }}>
-                  {right ? 'Correct! शाबाश' : 'Not quite'}
+                  {right ? 'Correct!' : 'Not quite'}
                 </T>
                 <T variant="bodySm" color={right ? '#1F5B36' : '#7A2A2C'} style={{ fontSize: 14, lineHeight: 20 }}>
                   {right ? step.right : step.wrong}
