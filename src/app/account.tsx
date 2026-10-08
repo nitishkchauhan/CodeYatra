@@ -159,23 +159,23 @@ export default function AccountScreen() {
               ) : (
                 <>
                   <T variant="bodySm" color={colors.ink2}>
-                    We emailed <T variant="label">{email.trim()}</T>. Open it on this phone and tap the sign-in link, or type the 6-digit code if the email has one. It
+                    We emailed <T variant="label">{email.trim()}</T>. Open it on this phone and tap the sign-in link, or type the code from the email. It
                     can take a minute to arrive.
                   </T>
                   <TextInput
                     value={code}
-                    onChangeText={(v) => setCode(v.replace(/\D/g, '').slice(0, 6))}
-                    placeholder="123456"
+                    onChangeText={(v) => setCode(v.replace(/\D/g, '').slice(0, 10))}
+                    placeholder="Code from email"
                     placeholderTextColor={colors.ink3}
                     keyboardType="number-pad"
                     autoComplete="one-time-code"
                     textContentType="oneTimeCode"
-                    accessibilityLabel="6-digit code"
+                    accessibilityLabel="Login code from email"
                     style={[styles.input, { fontFamily: fonts.mono, fontSize: 22, letterSpacing: 6, textAlign: 'center' }]}
                   />
                   <Button
                     label={busy ? 'Checking…' : 'Sign in'}
-                    disabled={code.length !== 6 || busy}
+                    disabled={code.length < 6 || busy}
                     onPress={() =>
                       run(
                         () => account.verifyCode(email, code),
