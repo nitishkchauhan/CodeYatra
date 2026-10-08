@@ -29,7 +29,8 @@ type ProgressApi = {
   streak: number;
   recommendedStageId: string;
   finishOnboarding: (input: { name: string; level: LearnerLevel }) => void;
-  completeLesson: (lessonId: string, xp: number, accuracy: number) => LessonResult;
+  completeLesson: (lessonId: string, xp: number, accuracy: number, reviewed?: string[]) => LessonResult;
+  recordMistake: (key: string) => void;
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -87,7 +88,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     streak: visibleStreak(state.streak, state.lastActive, today),
     recommendedStageId: RECOMMENDED_STAGE[state.level],
     finishOnboarding: ({ name, level }) => update((s) => ({ ...s, onboarded: true, name: name.trim(), level, stageId: RECOMMENDED_STAGE[level] })),
-    completeLesson: (lessonId, xp, accuracy) => {
+    completeLesson: (lessonId, xp, accuracy, reviewed = []) => {
       const lesson = getLesson(lessonId);
       const streakResult = nextStreak(state.streak, state.lastActive, today);
       const coins = coinsFor(lesson?.kind ?? 'lesson', accuracy === 100);
@@ -106,11 +107,14 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         streak: streakResult.streak,
         lastActive: today,
         dailyXp: { ...s.dailyXp, [today]: (s.dailyXp[today] ?? 0) + xp },
-        completed: { ...s.completed, [lessonId]: completed[lessonId] },
+        // A review is extra practice: it isn't stored as a lesson, it clears the mistakes it fixed.
+        completed: lessonId === 'review' ? s.completed : { ...s.completed, [lessonId]: completed[lessonId] },
+        mistakes: reviewed.length ? Object.fromEntries(Object.entries(s.mistakes).filter(([k]) => !reviewed.includes(k))) : s.mistakes,
         certificates: certificate ? { ...s.certificates, [certificate.stageId]: certificate } : s.certificates,
       }));
       return { ...streakResult, coins, certificate };
     },
+    recordMistake: (key) => update((s) => ({ ...s, mistakes: { ...s.mistakes, [key]: today } })),
     setLevel: (level) => update((s) => ({ ...s, level })),
     setHaptics: (on) => update((s) => ({ ...s, haptics: on })),
     setStage: (stageId) => update((s) => ({ ...s, stageId })),

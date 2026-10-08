@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { ActionBar } from './Shell';
-import { GapCode } from '@/components/Code';
+import { GapCode, LANG_COLOR } from '@/components/Code';
 import { Preview } from '@/components/Preview';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
@@ -13,7 +13,6 @@ import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { colors, fonts } from '@/theme';
 
-const LANG_COLOR: Record<Step['lang'], string> = { python: '#1D4ED8', javascript: '#A16207', html: '#C2410C', css: '#7C3AED', jsx: '#0F766E' };
 
 export function CodeStep({ step, onDone, onMistake }: { step: Step; onDone: () => void; onMistake: () => void }) {
   const t = useT();

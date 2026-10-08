@@ -9,8 +9,29 @@ const C = colors.code;
 const KEYWORDS = new Set([
   'for', 'in', 'def', 'return', 'if', 'else', 'elif', 'while', 'let', 'const', 'function',
   'import', 'from', 'export', 'True', 'False', 'None', 'true', 'false', 'null', 'undefined', 'class',
+  'and', 'or', 'not', 'async', 'await', 'new', 'break', 'continue', 'do', 'switch', 'case', 'default',
+  // C and Java
+  'int', 'float', 'double', 'char', 'void', 'long', 'bool', 'boolean', 'public', 'private', 'static',
+  'final', 'struct', 'include', 'String', 'this', 'extends', 'implements', 'interface', 'try', 'catch',
+  // SQL (upper case, as written in lessons)
+  'SELECT', 'FROM', 'WHERE', 'ORDER', 'BY', 'GROUP', 'HAVING', 'INSERT', 'INTO', 'VALUES', 'UPDATE',
+  'SET', 'DELETE', 'CREATE', 'TABLE', 'JOIN', 'ON', 'AS', 'AND', 'OR', 'NOT', 'LIMIT', 'DESC', 'ASC',
+  'PRIMARY', 'KEY', 'COUNT', 'SUM', 'AVG', 'INNER', 'LEFT', 'NULL', 'DISTINCT',
 ]);
-const BUILTINS = new Set(['range', 'print', 'len', 'list', 'console', 'log', 'Math']);
+const BUILTINS = new Set(['range', 'print', 'len', 'list', 'console', 'log', 'Math', 'printf', 'scanf', 'System', 'out', 'println', 'git', 'append', 'pop']);
+
+/** Accent colour per language, used for kickers and file dots. */
+export const LANG_COLOR: Record<CodeLang, string> = {
+  python: '#1D4ED8',
+  javascript: '#A16207',
+  html: '#C2410C',
+  css: '#7C3AED',
+  jsx: '#0F766E',
+  c: '#3949AB',
+  java: '#B45309',
+  sql: '#0369A1',
+  bash: '#15803D',
+};
 
 type Token = { text: string; color: string };
 
@@ -18,9 +39,13 @@ type Token = { text: string; color: string };
 export function tokenize(line: string, lang: CodeLang): Token[] {
   const tokens: Token[] = [];
   const markup = lang === 'html' || lang === 'jsx' || lang === 'css';
+  // C's #include is code, not a comment; Python and shell use # for comments.
+  const hashComment = lang === 'python' || lang === 'bash';
   const re = markup
     ? /(\s+)|(\/\/.*$)|("[^"]*"|'[^']*')|(<\/?[A-Za-z][\w.]*|\/?>)|(\d+(?:\.\d+)?)|([A-Za-z_][\w]*)|(.)/g
-    : /(\s+)|(#.*$|\/\/.*$)|("[^"]*"|'[^']*')|()(\d+(?:\.\d+)?)|([A-Za-z_][\w]*)|(.)/g;
+    : hashComment
+      ? /(\s+)|(#.*$|\/\/.*$)|("[^"]*"|'[^']*')|()(\d+(?:\.\d+)?)|([A-Za-z_][\w]*)|(.)/g
+      : /(\s+)|(\/\/.*$|--\s.*$)|("[^"]*"|'[^']*')|()(\d+(?:\.\d+)?)|([A-Za-z_][\w]*)|(.)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(line))) {
     const [text, space, comment, str, tag, num, word] = m;

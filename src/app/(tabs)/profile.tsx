@@ -15,6 +15,7 @@ import { haptic } from '@/lib/haptics';
 import { syncReminder } from '@/lib/reminders';
 import { useAccount } from '@/state/account';
 import { useProgress, type LearnerLevel } from '@/state/progress';
+import { countsAsLesson } from '@/state/model';
 import { addDays } from '@/state/streak';
 import { card, colors } from '@/theme';
 
@@ -39,7 +40,7 @@ export default function ProfileScreen() {
   const { state, streak, today, setHaptics, setReminder, setStage, reset } = useProgress();
   const account = useAccount();
   const stage = findStage(state.stageId);
-  const lessonsDone = Object.keys(state.completed).length;
+  const lessonsDone = Object.keys(state.completed).filter(countsAsLesson).length;
 
   const week = Array.from({ length: 7 }, (_, i) => {
     const key = addDays(today, i - 6);

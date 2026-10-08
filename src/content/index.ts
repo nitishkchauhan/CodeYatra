@@ -5,6 +5,7 @@ import { cheapestTrain, countVowels, PYTHON_MORE } from './python2';
 import { countSeats, styleButton, WEB_MORE } from './web2';
 import { FULLSTACK_LESSONS, trainCardProps } from './fullstack';
 import { PYTHON_LESSONS, trainFare } from './python';
+import { dailyLesson, reviewLesson } from './daily';
 import type { Lesson, LessonRef, Stage, Unit } from './types';
 import { ticketHtml, WEB_LESSONS } from './web';
 import { CSS_LESSONS, flexRow } from './styling';
@@ -16,7 +17,8 @@ import { canteenBill, PYTHON_EXTRA } from './python3';
 import { REACT_LESSONS, trainList } from './react';
 
 export * from './types';
-export { optionOrder } from './helpers';
+export { dailyDone, dailyId, DAILY_SIZE } from './daily';
+export { isOrderCorrect, isPredictCorrect, normalizeOutput, optionOrder, runWebChecks, scrambledOrder } from './helpers';
 
 const PRACTICE_LESSONS: Lesson[] = [
   {
@@ -189,7 +191,19 @@ const ALL: Lesson[] = [
 ];
 const BY_ID = new Map(ALL.map((l) => [l.id, l]));
 
-export const getLesson = (id: string) => BY_ID.get(id);
+const DAILY_ID = /^daily-(\d{4}-\d{2}-\d{2})-(.+)$/;
+const findLesson = (id: string) => BY_ID.get(id);
+
+/** Finds a written lesson, or builds a daily challenge from its id ("daily-<day>-<track>"). */
+export function getLesson(id: string): Lesson | undefined {
+  const daily = DAILY_ID.exec(id);
+  if (daily) {
+    const stage = STAGES.find((s) => s.id === daily[2]);
+    return stage ? dailyLesson(daily[1], stage, findLesson) : undefined;
+  }
+  return findLesson(id);
+}
+export const buildReview = (mistakes: Record<string, string>) => reviewLesson(mistakes, findLesson);
 export const hasContent = (id: string) => BY_ID.has(id);
 export const allLessons = () => ALL;
 

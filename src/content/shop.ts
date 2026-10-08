@@ -10,4 +10,4 @@ export const OUTFITS: { id: OutfitId; name: string; blurb: string; price: number
 export const STREAK_FREEZE = { price: 50, max: 2 };
 
 /** Coins for finishing a lesson; perfect runs earn a bonus. */
-export const coinsFor = (kind: 'lesson' | 'practice', perfect: boolean) => (kind === 'lesson' ? 10 : 5) + (perfect ? 5 : 0);
+export const coinsFor = (kind: 'lesson' | 'practice' | 'project', perfect: boolean) => (kind === 'project' ? 30 : kind === 'lesson' ? 10 : 5) + (perfect ? 5 : 0);

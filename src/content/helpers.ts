@@ -1,4 +1,4 @@
-import type { CodeLang, CodeStep, Preview, Seg } from './types';
+import type { CodeLang, CodeStep, Preview, Seg, WebCheck, WebFile } from './types';
 
 /**
  * A fill-in-the-gap exercise where each gap has exactly one right answer.
@@ -53,4 +53,28 @@ export function optionOrder(prompt: string, count: number): number[] {
     [order[i], order[j]] = [order[j], order[i]];
   }
   return order;
+}
+
+/** Starting order for a Parsons exercise: shuffled, and never already solved. */
+export function scrambledOrder(seed: string, count: number): number[] {
+  const order = optionOrder(seed, count);
+  return order.every((v, i) => v === i) ? [...order.slice(1), order[0]] : order;
+}
+
+/** Placed lines are right when their text matches the solution, so duplicate lines may swap. */
+export function isOrderCorrect(lines: string[], placed: number[]): boolean {
+  return placed.length === lines.length && placed.every((p, i) => lines[p].trim() === lines[i].trim());
+}
+
+/** Compares program output loosely: case, spacing and line breaks don't matter. */
+export const normalizeOutput = (s: string) => s.trim().replace(/\s+/g, ' ').toLowerCase();
+
+export function isPredictCorrect(answer: string, expected: string, accept: string[] = []): boolean {
+  const got = normalizeOutput(answer);
+  return [expected, ...accept].some((e) => normalizeOutput(e) === got);
+}
+
+/** Runs a web exercise's checks against the learner's files. */
+export function runWebChecks(files: Partial<Record<WebFile, string>>, checks: WebCheck[]) {
+  return checks.map((c) => ({ label: c.label, ok: c.pattern.test(files[c.file] ?? '') }));
 }

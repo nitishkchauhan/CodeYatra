@@ -1,4 +1,4 @@
-export type CodeLang = 'python' | 'javascript' | 'html' | 'css' | 'jsx';
+export type CodeLang = 'python' | 'javascript' | 'html' | 'css' | 'jsx' | 'c' | 'java' | 'sql' | 'bash';
 
 export type CodeSample = { lang: CodeLang; label: string; lines: string[] };
 
@@ -85,7 +85,8 @@ export type EditorStep = {
   kicker: string;
   title: string;
   instructions: string;
-  lang: 'python' | 'javascript';
+  /** SQL runs through Python's sqlite3 against the sample railway database. */
+  lang: 'python' | 'javascript' | 'sql';
   file: string;
   starter: string;
   tests: ({ call: string; expect: string } | { stdout: string })[];
@@ -94,18 +95,87 @@ export type EditorStep = {
   solution: string;
 };
 
-export type Step = ConceptStep | QuizStep | PuzzleStep | CodeStep | EditorStep;
+/** Put shuffled lines back in order (a Parsons problem). `lines` is the correct order. */
+export type OrderStep = {
+  type: 'order';
+  kicker: string;
+  title: string;
+  instructions: string;
+  lang: CodeLang;
+  lines: string[];
+  output?: string[];
+  explain: string;
+};
 
-export type SkillKey = 'sequencing' | 'loops' | 'web' | 'python' | 'react' | 'html' | 'css' | 'js' | 'node' | 'next';
+/** Tap the line that has the bug. */
+export type BugStep = {
+  type: 'bug';
+  kicker: string;
+  title: string;
+  instructions: string;
+  lang: CodeLang;
+  lines: string[];
+  /** Index of the buggy line. */
+  bug: number;
+  /** The corrected line, shown after answering. */
+  fix: string;
+  explain: string;
+};
+
+/** Read the code and type exactly what it prints. */
+export type PredictStep = {
+  type: 'predict';
+  kicker: string;
+  title: string;
+  lang: CodeLang;
+  lines: string[];
+  answer: string;
+  /** Other answers that also count (compared ignoring case and extra spaces). */
+  accept?: string[];
+  explain: string;
+};
+
+/** Tap one token in the code, e.g. "tap the loop variable". */
+export type TapStep = {
+  type: 'tap';
+  kicker: string;
+  title: string;
+  instructions: string;
+  lang: CodeLang;
+  lines: string[];
+  target: { line: number; token: string };
+  explain: string;
+};
+
+export type WebFile = 'html' | 'css' | 'js';
+export type WebCheck = { label: string; file: WebFile; pattern: RegExp };
+
+/** Build a real web page in HTML/CSS/JS editors with a live preview; checks read the source. */
+export type WebStep = {
+  type: 'web';
+  kicker: string;
+  title: string;
+  instructions: string;
+  starter: Partial<Record<WebFile, string>> & { html: string };
+  solution: Partial<Record<WebFile, string>> & { html: string };
+  checks: WebCheck[];
+  hint: string;
+};
+
+export type Step = ConceptStep | QuizStep | PuzzleStep | CodeStep | EditorStep | OrderStep | BugStep | PredictStep | TapStep | WebStep;
+
+export type SkillKey = 'sequencing' | 'loops' | 'web' | 'python' | 'react' | 'html' | 'css' | 'js' | 'node' | 'next' | 'c' | 'java' | 'dsa' | 'sql' | 'git' | 'placement';
 
 export type Lesson = {
   id: string;
   title: string;
-  kind: 'lesson' | 'practice';
+  kind: 'lesson' | 'practice' | 'project';
   minutes: number;
   skill: SkillKey;
   steps: Step[];
   learned: string[];
+  /** For built lessons (daily challenge, review): where each step came from, as "lessonId#stepIndex". */
+  sources?: string[];
 };
 
 export type LessonRef = { id: string; title: string; meta: string };
@@ -121,7 +191,7 @@ export type PracticeRef = {
 /** A language track (HTML, Python, …). Tracks are grouped into sections for navigation. */
 export type Stage = {
   id: string;
-  section: 'Start here' | 'Web basics' | 'Programming' | 'Full-stack';
+  section: 'Start here' | 'Web basics' | 'Programming' | 'Full-stack' | 'CS core' | 'Placement';
   /** Short label drawn in the track's badge, e.g. "JS" ("atom" draws the React logo). */
   badge: string;
   badgeBg: string;

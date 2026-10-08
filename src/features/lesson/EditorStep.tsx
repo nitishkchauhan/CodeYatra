@@ -3,6 +3,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'reac
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { ActionBar } from './Shell';
+import { LANG_COLOR } from '@/components/Code';
 import { CodeEditor } from '@/components/CodeEditor';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
@@ -11,7 +12,7 @@ import type { EditorStep as Step } from '@/content';
 import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { useCodeRunner } from '@/lib/runner';
-import { buildProgram, readResults, type TestResult } from '@/lib/runner/harness';
+import { buildProgram, readResults, runtimeOf, type TestResult } from '@/lib/runner/harness';
 import { colors, fonts } from '@/theme';
 
 type Outcome = { output: string[]; results: TestResult[]; error?: string };
@@ -47,7 +48,7 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
   const run = useCodeRunner();
   const [code, setCode] = useState(step.starter);
   const [busy, setBusy] = useState(false);
-  const [firstPython, setFirstPython] = useState(step.lang === 'python');
+  const [firstPython, setFirstPython] = useState(step.lang !== 'javascript');
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [hint, setHint] = useState(false);
 
@@ -55,7 +56,7 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
 
   const runTests = async () => {
     setBusy(true);
-    const result = await run(step.lang, buildProgram(step.lang, code, step.tests));
+    const result = await run(runtimeOf(step.lang), buildProgram(step.lang, code, step.tests));
     setBusy(false);
     setFirstPython(false);
     const read = readResults(step.tests, result.output);
@@ -72,7 +73,7 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <Animated.View entering={FadeInDown.duration(320)} style={{ gap: 6 }}>
-          <T variant="kicker" color={step.lang === 'python' ? '#1D4ED8' : '#A16207'}>
+          <T variant="kicker" color={LANG_COLOR[step.lang]}>
             {step.kicker}
           </T>
           <T variant="title" accessibilityRole="header">

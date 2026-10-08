@@ -29,6 +29,8 @@ export type Progress = {
   avatarUrl: string | null;
   avatarColor: string;
   bio: string;
+  /** Steps answered wrong, as "lessonId#stepIndex" → day. Cleared when reviewed correctly. */
+  mistakes: Record<string, string>;
   reminder: { enabled: boolean; hour: number; minute: number };
   /** Milliseconds; the newer side wins settings when merging phone and cloud copies. */
   updatedAt: number;
@@ -55,6 +57,7 @@ export const INITIAL: Progress = {
   avatarUrl: null,
   avatarColor: '#1F1B83',
   bio: '',
+  mistakes: {},
   reminder: { enabled: false, hour: 19, minute: 0 },
   updatedAt: 0,
 };
@@ -65,6 +68,9 @@ export function normalize(raw: Partial<Progress> | null | undefined): Progress {
   // v1 had four broad stages; they became language tracks.
   return { ...p, stageId: LEGACY_STAGES[p.stageId] ?? p.stageId };
 }
+
+/** Lessons that count toward progress: daily challenges and reviews are extra practice. */
+export const countsAsLesson = (id: string) => !id.startsWith('daily-') && id !== 'review';
 
 const LEGACY_STAGES: Record<string, string> = { web: 'html', fullstack: 'react' };
 
@@ -105,6 +111,7 @@ export function mergeProgress(local: Progress, remote: Progress): Progress {
     completed,
     certificates: { ...remote.certificates, ...local.certificates },
     inventory: [...new Set([...remote.inventory, ...local.inventory])],
+    mistakes: { ...remote.mistakes, ...local.mistakes },
     avatar: local.avatar,
     updatedAt: Math.max(local.updatedAt, remote.updatedAt),
   };

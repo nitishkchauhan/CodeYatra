@@ -1,16 +1,19 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useCallback, useDeferredValue, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { CodeEditor } from '@/components/CodeEditor';
+import { WebPreview } from '@/components/WebPreview';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
 import { ConsoleView } from '@/features/lesson/EditorStep';
 import { useCodeRunner, type RunOutcome } from '@/lib/runner';
 import type { RunLang } from '@/lib/runner/harness';
+import { buildPage, type PageLog } from '@/lib/web/page';
+import type { WebFile } from '@/content';
 import { colors } from '@/theme';
 
 const SNIPPETS: Record<RunLang, { label: string; code: string }[]> = {
@@ -28,9 +31,83 @@ const SNIPPETS: Record<RunLang, { label: string; code: string }[]> = {
   ],
 };
 
+const NL = '\n';
+const WEB_STARTER = {
+  html: ['<h1>Namaste!</h1>', '<p>Edit the files and watch this page change.</p>', '<button id="btn">Tap me</button>', ''].join(NL),
+  css: [
+    'body {',
+    '  background: #F6F5FA;',
+    '}',
+    'h1 {',
+    '  color: #4B3FD8;',
+    '}',
+    'button {',
+    '  background: #FF9F1C;',
+    '  border: 0;',
+    '  padding: 10px 16px;',
+    '  border-radius: 10px;',
+    '}',
+    '',
+  ].join(NL),
+  js: [
+    'const btn = document.querySelector("#btn");',
+    'let taps = 0;',
+    'btn.addEventListener("click", () => {',
+    '  taps++;',
+    '  btn.textContent = `Tapped ${taps} times`;',
+    '  console.log("taps:", taps);',
+    '});',
+    '',
+  ].join(NL),
+};
+const WEB_FILE: Record<WebFile, string> = { html: 'index.html', css: 'style.css', js: 'app.js' };
+
+type Mode = RunLang | 'web';
+
+/** HTML, CSS and JS editors with a live preview of the page. */
+function WebPlayground() {
+  const [files, setFiles] = useState(WEB_STARTER);
+  const [tab, setTab] = useState<WebFile>('html');
+  const [logs, setLogs] = useState<PageLog[]>([]);
+  const doc = useDeferredValue(buildPage(files));
+  const onLog = useCallback((log: PageLog) => setLogs((l) => [...l.slice(-5), log]), []);
+  return (
+    <>
+      <WebPreview key={doc} doc={doc} height={260} onLog={onLog} />
+      {logs.length ? <ConsoleView output={logs.filter((l) => l.level === 'log').map((l) => l.text)} error={logs.find((l) => l.level === 'error')?.text} /> : null}
+      <View style={styles.segment} accessibilityRole="tablist">
+        {(['html', 'css', 'js'] as WebFile[]).map((f) => (
+          <Pressable
+            key={f}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: tab === f }}
+            onPress={() => setTab(f)}
+            style={[styles.segmentBtn, tab === f && styles.segmentOn]}>
+            <T variant="labelSm" color={tab === f ? colors.ink : colors.ink2}>
+              {WEB_FILE[f]}
+            </T>
+          </Pressable>
+        ))}
+      </View>
+      <CodeEditor
+        key={tab}
+        value={files[tab]}
+        onChange={(v) => {
+          setFiles({ ...files, [tab]: v });
+          setLogs([]);
+        }}
+        lang={tab === 'js' ? 'javascript' : tab}
+        file={WEB_FILE[tab]}
+        minLines={10}
+      />
+    </>
+  );
+}
+
 export default function Playground() {
   const run = useCodeRunner();
-  const [lang, setLang] = useState<RunLang>('python');
+  const [mode, setMode] = useState<Mode>('python');
+  const lang: RunLang = mode === 'web' ? 'javascript' : mode;
   const [code, setCode] = useState<Record<RunLang, string>>({ python: SNIPPETS.python[0].code, javascript: SNIPPETS.javascript[0].code });
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<RunOutcome | null>(null);
@@ -59,57 +136,64 @@ export default function Playground() {
       </View>
       <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 4, gap: 14 }} keyboardShouldPersistTaps="handled">
         <View style={styles.segment} accessibilityRole="tablist">
-          {(['python', 'javascript'] as RunLang[]).map((l) => (
+          {(['python', 'javascript', 'web'] as Mode[]).map((m) => (
             <Pressable
-              key={l}
+              key={m}
               accessibilityRole="tab"
-              accessibilityState={{ selected: lang === l }}
+              accessibilityState={{ selected: mode === m }}
               onPress={() => {
-                setLang(l);
+                setMode(m);
                 setResult(null);
               }}
-              style={[styles.segmentBtn, lang === l && styles.segmentOn]}>
-              <T variant="label" color={lang === l ? colors.ink : colors.ink2}>
-                {l === 'python' ? 'Python' : 'JavaScript'}
+              style={[styles.segmentBtn, mode === m && styles.segmentOn]}>
+              <T variant="label" color={mode === m ? colors.ink : colors.ink2}>
+                {m === 'python' ? 'Python' : m === 'javascript' ? 'JavaScript' : 'Web page'}
               </T>
             </Pressable>
           ))}
         </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }} style={{ flexGrow: 0 }}>
-          {SNIPPETS[lang].map((s) => (
-            <Pressable
-              key={s.label}
-              accessibilityRole="button"
-              accessibilityLabel={`Load ${s.label} example`}
-              onPress={() => {
-                setCode({ ...code, [lang]: s.code });
-                setResult(null);
-              }}
-              style={styles.snippet}>
-              <T variant="labelSm" color={colors.primary}>
-                {s.label}
-              </T>
-            </Pressable>
-          ))}
-        </ScrollView>
-        <CodeEditor value={code[lang]} onChange={(v) => setCode({ ...code, [lang]: v })} lang={lang} file={lang === 'python' ? 'main.py' : 'main.js'} minLines={10} />
-        {busy && lang === 'python' && !warmedPython ? (
-          <View style={styles.loading}>
-            <ActivityIndicator color={colors.primary} />
-            <T variant="bodySm" color={colors.ink2} style={{ flex: 1 }}>
-              Starting Python for the first time (about 10 MB, once).
-            </T>
-          </View>
-        ) : null}
-        {result ? (
-          <Animated.View entering={FadeInDown.duration(240)}>
-            <ConsoleView output={result.output} error={result.error} />
-          </Animated.View>
+        {mode === 'web' ? <WebPlayground /> : null}
+        {mode !== 'web' ? (
+          <>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }} style={{ flexGrow: 0 }}>
+              {SNIPPETS[lang].map((s) => (
+                <Pressable
+                  key={s.label}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Load ${s.label} example`}
+                  onPress={() => {
+                    setCode({ ...code, [lang]: s.code });
+                    setResult(null);
+                  }}
+                  style={styles.snippet}>
+                  <T variant="labelSm" color={colors.primary}>
+                    {s.label}
+                  </T>
+                </Pressable>
+              ))}
+            </ScrollView>
+            <CodeEditor value={code[lang]} onChange={(v) => setCode({ ...code, [lang]: v })} lang={lang} file={lang === 'python' ? 'main.py' : 'main.js'} minLines={10} />
+            {busy && lang === 'python' && !warmedPython ? (
+              <View style={styles.loading}>
+                <ActivityIndicator color={colors.primary} />
+                <T variant="bodySm" color={colors.ink2} style={{ flex: 1 }}>
+                  Starting Python for the first time (about 10 MB, once).
+                </T>
+              </View>
+            ) : null}
+            {result ? (
+              <Animated.View entering={FadeInDown.duration(240)}>
+                <ConsoleView output={result.output} error={result.error} />
+              </Animated.View>
+            ) : null}
+          </>
         ) : null}
       </ScrollView>
-      <View style={{ padding: 16, paddingTop: 8 }}>
-        <Button label={busy ? 'Running…' : 'Run'} icon={busy ? undefined : (c) => <Glyph name="play" size={18} color={c} />} disabled={busy} onPress={execute} />
-      </View>
+      {mode !== 'web' ? (
+        <View style={{ padding: 16, paddingTop: 8 }}>
+          <Button label={busy ? 'Running…' : 'Run'} icon={busy ? undefined : (c) => <Glyph name="play" size={18} color={c} />} disabled={busy} onPress={execute} />
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }

@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View, type NativeSyntheticEvent, type TextInputSelectionChangeEventData } from 'react-native';
 
 import { haptic } from '@/lib/haptics';
-import type { RunLang } from '@/lib/runner/harness';
+import { LANG_COLOR } from './Code';
 import { colors, fonts } from '@/theme';
 
 const C = colors.code;
 const CHAR_W = 8.15; // JetBrains Mono at 13.5px
 const LINE_H = 22;
 
-const KEYS: Record<RunLang, { label: string; insert: string; caret?: number }[]> = {
+export type EditorLang = 'python' | 'javascript' | 'html' | 'css' | 'sql';
+
+const LANG_NAME: Record<EditorLang, string> = { python: 'Python', javascript: 'JavaScript', html: 'HTML', css: 'CSS', sql: 'SQL' };
+
+const KEYS: Record<EditorLang, { label: string; insert: string; caret?: number }[]> = {
   python: [
     { label: 'Tab', insert: '    ' },
     { label: '( )', insert: '()', caret: 1 },
@@ -27,6 +31,32 @@ const KEYS: Record<RunLang, { label: string; insert: string; caret?: number }[]>
     { label: '" "', insert: '""', caret: 1 },
     { label: '=>', insert: ' => ' },
     { label: '[ ]', insert: '[]', caret: 1 },
+  ],
+  html: [
+    { label: 'Tab', insert: '  ' },
+    { label: '< >', insert: '<>', caret: 1 },
+    { label: '</', insert: '</' },
+    { label: '=', insert: '=' },
+    { label: '" "', insert: '""', caret: 1 },
+    { label: '/', insert: '/' },
+  ],
+  css: [
+    { label: 'Tab', insert: '  ' },
+    { label: '{ }', insert: '{}', caret: 1 },
+    { label: ':', insert: ': ' },
+    { label: ';', insert: ';' },
+    { label: '#', insert: '#' },
+    { label: '.', insert: '.' },
+    { label: 'px', insert: 'px' },
+  ],
+  sql: [
+    { label: 'SELECT', insert: 'SELECT ' },
+    { label: 'FROM', insert: 'FROM ' },
+    { label: 'WHERE', insert: 'WHERE ' },
+    { label: '*', insert: '*' },
+    { label: "' '", insert: "''", caret: 1 },
+    { label: ',', insert: ', ' },
+    { label: ';', insert: ';' },
   ],
 };
 
@@ -46,7 +76,7 @@ export function CodeEditor({
 }: {
   value: string;
   onChange: (v: string) => void;
-  lang: RunLang;
+  lang: EditorLang;
   file: string;
   minLines?: number;
 }) {
@@ -77,7 +107,7 @@ export function CodeEditor({
       const before = value.slice(0, selection.start);
       const line = before.slice(before.lastIndexOf('\n') + 1);
       const indent = line.match(/^\s*/)?.[0] ?? '';
-      const opens = /[:{]\s*$/.test(line);
+      const opens = lang === 'html' ? /<(?!\/|img|br|input|meta|link|hr)[^>]*[^/]>\s*$/.test(line) : /[:{]\s*$/.test(line);
       const extra = indent + (opens ? unit : '');
       if (extra) {
         place(next.slice(0, selection.start + 1) + extra + next.slice(selection.start + 1), selection.start + 1 + extra.length);
@@ -90,7 +120,7 @@ export function CodeEditor({
   return (
     <View style={styles.frame}>
       <View style={styles.head}>
-        <View style={[styles.dot, { backgroundColor: lang === 'python' ? '#60A5FA' : '#FACC15' }]} />
+        <View style={[styles.dot, { backgroundColor: LANG_COLOR[lang] }]} />
         <Text style={styles.file}>{file}</Text>
         <Text style={styles.meta}>{lines.length} lines</Text>
       </View>
@@ -116,7 +146,7 @@ export function CodeEditor({
             spellCheck={false}
             keyboardType="ascii-capable"
             textAlignVertical="top"
-            accessibilityLabel={`Code editor, ${lang === 'python' ? 'Python' : 'JavaScript'}`}
+            accessibilityLabel={`Code editor, ${LANG_NAME[lang]}`}
             style={[styles.input, { minHeight: height }]}
             selectionColor={colors.saffron}
           />

@@ -1,12 +1,19 @@
+import { sqlProgram } from '@/content/sqlFixture';
+
 // Wraps learner code with tests and reads the results back out of the output.
 
 export type RunLang = 'python' | 'javascript';
+/** Exercise languages: SQL is turned into a Python program before running. */
+export type ExerciseLang = RunLang | 'sql';
+
+export const runtimeOf = (lang: ExerciseLang): RunLang => (lang === 'sql' ? 'python' : lang);
 export type EditorTest = { call: string; expect: string } | { stdout: string };
 export type TestResult = { label: string; ok: boolean; got?: string; error?: string };
 
 const MARKER = '__CY_RESULTS__';
 
-export function buildProgram(lang: RunLang, code: string, tests: EditorTest[]): string {
+export function buildProgram(lang: ExerciseLang, code: string, tests: EditorTest[]): string {
+  if (lang === 'sql') return sqlProgram(code);
   const calls = tests.filter((t): t is { call: string; expect: string } => 'call' in t).map((t) => [t.call, t.expect]);
   if (!calls.length) return code;
   if (lang === 'python') {

@@ -7,14 +7,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '@/components/ui/Button';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { getLesson, type Lesson } from '@/content';
+import { buildReview, getLesson, type Lesson } from '@/content';
 import { CodeStep } from '@/features/lesson/CodeStep';
 import { CompleteView } from '@/features/lesson/CompleteView';
 import { ConceptStep } from '@/features/lesson/ConceptStep';
 import { EditorStep } from '@/features/lesson/EditorStep';
 import { PuzzleStep } from '@/features/lesson/PuzzleStep';
 import { QuizStep } from '@/features/lesson/QuizStep';
+import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/features/lesson/PracticeSteps';
 import { LessonTopBar } from '@/features/lesson/Shell';
+import { WebBuildStep } from '@/features/lesson/WebBuildStep';
 import { coinsFor } from '@/content/shop';
 import { useProgress } from '@/state/progress';
 import { nextStreak } from '@/state/streak';
@@ -22,7 +24,10 @@ import { colors } from '@/theme';
 
 export default function LessonRoute() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const lesson = getLesson(id);
+  const { state } = useProgress();
+  // The review is built once when opened, so fixing a mistake doesn't reshuffle it mid-way.
+  const [review] = useState(() => (id === 'review' ? buildReview(state.mistakes) : undefined));
+  const lesson = id === 'review' ? review : getLesson(id);
   const [attempt, setAttempt] = useState(0);
 
   if (!lesson) {
@@ -42,11 +47,19 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
   const toast = useToast();
   const [index, setIndex] = useState(0);
   const [mistakes, setMistakes] = useState(0);
+  const [missed, setMissed] = useState<Set<string>>(() => new Set());
   const [startedAt] = useState(() => Date.now());
   const [finishedAt, setFinishedAt] = useState<number | null>(null);
 
-  const onMistake = useCallback(() => setMistakes((m) => m + 1), []);
-  const xp = (lesson.kind === 'lesson' ? 25 : 15) + (mistakes === 0 ? 5 : 0);
+  const sourceOf = (i: number) => lesson.sources?.[i] ?? `${lesson.id}#${i}`;
+  const { recordMistake } = progress;
+  const stepKey = sourceOf(index);
+  const onMistake = useCallback(() => {
+    setMistakes((m) => m + 1);
+    setMissed((s) => new Set(s).add(stepKey));
+    recordMistake(stepKey);
+  }, [stepKey, recordMistake]);
+  const xp = (lesson.kind === 'project' ? 60 : lesson.kind === 'lesson' ? 25 : 15) + (mistakes === 0 ? 5 : 0);
   const accuracy = Math.max(50, 100 - mistakes * 12);
   const step = lesson.steps[index];
 
@@ -60,7 +73,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
     const predicted = nextStreak(state.streak, state.lastActive, today);
     return (
       <CompleteView
-        title={lesson.kind === 'lesson' ? 'Lesson complete!' : 'Practice complete!'}
+        title={lesson.kind === 'project' ? 'Project built!' : lesson.kind === 'lesson' ? 'Lesson complete!' : 'Practice complete!'}
         subtitle={`${lesson.title} · Well done!`}
         xp={xp}
         coins={coinsFor(lesson.kind, accuracy === 100)}
@@ -70,7 +83,9 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
         streak={predicted.streak}
         streakNote={predicted.extended ? (state.streak > 0 ? `Up from ${state.streak} · see you tomorrow` : 'Your streak starts today') : 'Already counted for today'}
         onContinue={() => {
-          const result = progress.completeLesson(lesson.id, xp, accuracy);
+          // Every step in the lesson was eventually answered right; ones missed this time stay for review.
+          const fixed = lesson.steps.map((_, i) => sourceOf(i)).filter((k) => !missed.has(k));
+          const result = progress.completeLesson(lesson.id, xp, accuracy, fixed);
           toast(result.extended ? `Streak: ${result.streak} ${result.streak === 1 ? 'day' : 'days'} · +${result.coins} coins` : `+${xp} XP · +${result.coins} coins`);
           if (result.certificate) router.replace({ pathname: '/certificate/[stageId]', params: { stageId: result.certificate.stageId } });
           else router.back();
@@ -90,6 +105,11 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
           {step.type === 'puzzle' && <PuzzleStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'code' && <CodeStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'editor' && <EditorStep step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'order' && <OrderLinesStep step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'bug' && <FindBugStep step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'predict' && <PredictOutputStep step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'tap' && <TapTokenStep step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'web' && <WebBuildStep step={step} onDone={next} onMistake={onMistake} />}
         </View>
       </Animated.View>
     </SafeAreaView>

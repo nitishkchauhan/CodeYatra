@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { DailyCards } from '@/components/DailyCards';
 import { StageSheet } from '@/components/StageSheet';
 import { TrackBadge } from '@/components/TrackBadge';
 import { TrackRail } from '@/components/TrackRail';
@@ -172,6 +173,10 @@ export default function LearnScreen() {
               {goalMet ? 'Done' : `+${DAILY_GOAL - todayXp} XP`}
             </T>
           </View>
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(200).duration(320)}>
+          <DailyCards />
         </Animated.View>
 
         <View style={styles.unitHead}>

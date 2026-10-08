@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import { allLessons, type EditorStep } from '..';
-import { buildProgram, readResults } from '@/lib/runner/harness';
+import { buildProgram, readResults, runtimeOf } from '@/lib/runner/harness';
 
 const steps = allLessons()
   .flatMap((l) => l.steps.filter((s): s is EditorStep => s.type === 'editor').map((s) => [`${l.id}: ${s.title}`, s] as const))
@@ -44,7 +44,7 @@ function runPy(code: string): string[] {
 
 const run = (step: EditorStep, code: string) => {
   const program = buildProgram(step.lang, code, step.tests);
-  return readResults(step.tests, step.lang === 'python' ? runPy(program) : runJs(program)).results;
+  return readResults(step.tests, runtimeOf(step.lang) === 'python' ? runPy(program) : runJs(program)).results;
 };
 
 describe('code editor exercises', () => {
@@ -54,13 +54,13 @@ describe('code editor exercises', () => {
   });
 
   it.each(steps)('%s passes every test with its solution', (_, step) => {
-    if (step.lang === 'python' && !python) return; // CI without Python: JS still runs
+    if (runtimeOf(step.lang) === 'python' && !python) return; // CI without Python: JS still runs
     const results = run(step, step.solution);
     expect(results.filter((r) => !r.ok)).toEqual([]);
   });
 
   it.each(steps)('%s does not pass with the starter code', (_, step) => {
-    if (step.lang === 'python' && !python) return;
+    if (runtimeOf(step.lang) === 'python' && !python) return;
     let results;
     try {
       results = run(step, step.starter);
