@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify a CodeYatra certificate</title>
+<link rel="icon" href="favicon.png">
+<style>
+  :root { --ink: #16142B; --muted: #5B5775; --line: #E4E2EE; --brand: #4B3FD8; --bg: #F6F5FA; --ok: #15803D; --bad: #B42318; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; display: grid; place-items: center; padding: 16px; }
+  .card { width: 100%; max-width: 480px; background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+  header { background: #06104A; color: #fff; padding: 20px; display: flex; align-items: center; gap: 12px; }
+  header img { width: 48px; height: 48px; border-radius: 12px; }
+  header b { font-size: 22px; } header b span { color: #FF9F1C; }
+  main { padding: 24px; text-align: center; }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; padding: 6px 14px; border-radius: 999px; }
+  .ok { background: #DCFCE7; color: var(--ok); } .bad { background: #FEE4E2; color: var(--bad); }
+  h1 { font-size: 28px; margin: 16px 0 4px; color: var(--brand); }
+  p { color: var(--muted); margin: 6px 0; }
+  .meta { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; }
+  .meta div { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+  .meta small { color: var(--muted); display: block; } .meta strong { overflow-wrap: anywhere; }
+  footer { border-top: 1px solid var(--line); padding: 14px; text-align: center; font-size: 13px; color: var(--muted); }
+  a { color: var(--brand); }
+</style>
+</head>
+<body>
+<div class="card">
+  <header><img src="favicon.png" alt=""><b>Code<span>Yatra</span></b></header>
+  <main id="out"><p>Checking certificate…</p></main>
+  <footer>Certificates are issued when a learner completes every module of a track. <a href="privacy.html">Privacy</a></footer>
+</div>
+<script>
+  // Public, read-only values (the same ones inside the app). Row-level security
+  // only allows reading certificate name, track and date.
+  const SUPABASE_URL = 'https://bcmszhriyklsdkyfuvmw.supabase.co';
+  const PUBLISHABLE_KEY = 'sb_publishable_IL4qxcmJDaFsQaK-4uoilg_CqeASlqA';
+  const TRACKS = {
+    foundations: 'Logic & Blocks', html: 'HTML', css: 'CSS', js: 'JavaScript', python: 'Python', c: 'C Programming',
+    java: 'Java', react: 'React', node: 'Node.js', next: 'Next.js', dsa: 'Data Structures & Algorithms',
+    sql: 'SQL & Databases', git: 'Git & GitHub', placement: 'Placement Prep',
+  };
+  const out = document.getElementById('out');
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const fail = (msg) => { out.innerHTML = '<span class="status bad">✗ Not verified</span><p style="margin-top:14px">' + esc(msg) + '</p>'; };
+
+  const id = new URLSearchParams(location.search).get('id') || '';
+  if (!/^[0-9a-f-]{36}$/i.test(id)) {
+    fail('This link is missing a valid certificate ID.');
+  } else {
+    fetch(SUPABASE_URL + '/rest/v1/certificates?select=name,stage_id,issued_on&id=eq.' + encodeURIComponent(id), {
+      headers: { apikey: PUBLISHABLE_KEY },
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((rows) => {
+        if (!rows.length) return fail('No certificate exists with this ID.');
+        const c = rows[0];
+        const date = new Date(c.issued_on + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+        document.title = esc(c.name) + ' · CodeYatra certificate';
+        out.innerHTML =
+          '<span class="status ok">✓ Verified certificate</span>' +
+          '<h1>' + esc(c.name) + '</h1>' +
+          '<p>completed <strong>' + esc(TRACKS[c.stage_id] || c.stage_id) + '</strong> on CodeYatra</p>' +
+          '<div class="meta"><div><small>Issued</small><strong>' + esc(date) + '</strong></div>' +
+          '<div><small>Certificate ID</small><strong>' + esc(id.slice(0, 8).toUpperCase()) + '</strong></div></div>';
+      })
+      .catch(() => fail('Could not reach the verification server. Please try again later.'));
+  }
+</script>
+</body>
+</html>

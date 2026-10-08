@@ -4,6 +4,7 @@ import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { ActionBar } from './Shell';
 import { LANG_COLOR } from '@/components/Code';
+import { AskYatri } from '@/components/AskYatri';
 import { CodeEditor } from '@/components/CodeEditor';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
@@ -145,6 +146,22 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
               </View>
             ) : null}
             <ConsoleView output={outcome.output} error={outcome.error} pass={pass} />
+            {!pass ? (
+              <AskYatri
+                build={() => ({
+                  lang: step.lang,
+                  title: step.title,
+                  instructions: step.instructions,
+                  code,
+                  problem: [
+                    ...outcome.results.filter((r) => !r.ok).map((r) => `${r.label} → ${r.error ?? `got ${r.got ?? 'nothing'}`}`),
+                    outcome.error ?? '',
+                  ]
+                    .filter(Boolean)
+                    .join('\n'),
+                })}
+              />
+            ) : null}
           </Animated.View>
         ) : null}
       </ScrollView>

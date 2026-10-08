@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { ActionBar, StepHeader } from './Shell';
+import { AskYatri } from '@/components/AskYatri';
 import { CodeEditor } from '@/components/CodeEditor';
 import { WebPreview } from '@/components/WebPreview';
 import { Button } from '@/components/ui/Button';
@@ -108,6 +109,21 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
               </View>
             ))}
           </Animated.View>
+        ) : null}
+
+        {checks && !pass ? (
+          <AskYatri
+            build={() => ({
+              lang: 'html/css/js',
+              title: step.title,
+              instructions: step.instructions,
+              code: (['html', 'css', 'js'] as WebFile[])
+                .filter((f) => files[f] !== undefined)
+                .map((f) => `--- ${FILE_NAME[f]} ---\n${files[f]}`)
+                .join('\n'),
+              problem: 'Checklist items not done yet:\n' + checks.filter((c) => !c.ok).map((c) => `- ${c.label}`).join('\n'),
+            })}
+          />
         ) : null}
 
         {showHint ? (

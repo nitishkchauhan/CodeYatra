@@ -1,18 +1,16 @@
 # CodeYatra
 
-A mobile app that teaches programming from first principles to full-stack
-development, in eight language tracks grouped into sections:
+A mobile app that teaches programming from first principles to placement-ready
+DSA, in 14 tracks of 10 modules each:
 
-| Section | Track | Modules | Practice style |
-|---|---|---|---|
-| Start here | Logic & Blocks | 6 | Isometric block puzzles with Yatri the robot |
-| Web basics | HTML | 5 | Fill-in code with a live preview |
-| Web basics | CSS | 5 | Live preview of colours, box model, Flexbox |
-| Web basics | JavaScript | 5 | Real code editor with tests |
-| Programming | Python | 6 | Real code editor with tests (Pyodide) |
-| Full-stack | React | 5 | Components, state, lists, events, effects |
-| Full-stack | Node.js | 5 | Modules, async, Express, JSON, API routes |
-| Full-stack | Next.js | 5 | Layouts, dynamic routes, server data, route handlers |
+| Section | Tracks | Practice style |
+|---|---|---|
+| Start here | Logic & Blocks | Block puzzles with Yatri, predict, order and debug |
+| Web basics | HTML, CSS, JavaScript | Live web-page builder, fill-in code, real JS editor |
+| Programming | Python, C, Java | Real Python editor; C and Java output, bug and order drills |
+| Full-stack | React, Node.js, Next.js | Fill-in code, find the bug, JS editor with tests |
+| CS core | DSA, SQL, Git | Python algorithms with tests, real SQL queries, command drills |
+| Placement | Placement Prep | Coding-round questions with tests, output and OOP questions |
 
 Every module follows the same rhythm: **read → quick check → practice → complete**.
 
@@ -20,23 +18,45 @@ Built with Expo SDK 57, Expo Router, Reanimated 4 and react-native-svg.
 
 ## What is inside
 
-- **8 tracks, 42 modules, 20 practice challenges**: switch languages from an icon row on Learn and Practice
-- **Profile**: photo from gallery or camera (synced via Supabase Storage when signed in), bio, avatar colour, main language
-- **Real code execution**: Python (Pyodide) and JavaScript run in a sandboxed worker with tests, line-numbered errors and an infinite-loop guard
-- **Code playground** for free coding
-- **Accounts (Supabase)**: email code or Google sign-in, progress sync across phones; guest mode works offline
-- **Weekly league**, shareable **certificates**, **coins + shop** (outfits, streak freezes), **daily reminders**
-- English UI, haptics, accessible labels, reduced-motion friendly animations
+- **14 tracks, 140 modules, 32 practice sets, 4 guided projects** (portfolio page, to-do app, quiz game, guessing game)
+- **8 exercise types**: reading cards, quizzes, fill the gap, real code editor, order the lines, find the bug, predict the output, tap the token, plus a live HTML/CSS/JS page builder and block puzzles
+- **Real code execution** in a sandbox: Python (Pyodide), JavaScript, and SQL (sqlite3 on a sample railway database)
+- **Ask Yatri**: AI hints from Claude through a Supabase Edge Function, with a daily quota
+- **Daily challenge** and **review my mistakes**
+- **Accounts (Supabase)**: email code sign-in, sync across phones; guest mode works offline
+- **Weekly league**, **verifiable certificates** with Add to LinkedIn, **invite codes**, **classes** for teachers, shareable progress card
+- **Profile**: photo, bio, avatar colour, main language; coins, shop and streak freezes; daily reminders
+- **Anonymous crash reports and events** (opt-out in Profile), English UI, accessible labels
+
+Every answer the app teaches is verified: the test suite runs each predicted output, ordered program and coding solution with Node, Python, gcc and sqlite.
 
 ## Turn on accounts (optional)
 
 1. Create a free project at supabase.com.
-2. SQL Editor → paste and run `supabase/schema.sql` (safe to re-run; it also creates the `avatars` storage bucket).
-3. Authentication → Emails → edit the Magic Link template to include `{{ .Token }}` so learners get a 6-digit code.
-4. (Google) Authentication → Providers → Google, and add `codeyatra://auth-callback` to Redirect URLs.
+2. SQL Editor → paste and run `supabase/schema.sql` (safe to re-run; creates tables, storage and functions).
+3. Authentication → Emails: connect SMTP, then put `{{ .Token }}` in the Magic Link template (a branded template is in `supabase/email-login-code.html`).
+4. Authentication → URL Configuration: add `codeyatra://auth-callback` to Redirect URLs.
 5. Copy `.env.example` to `.env` and fill in the URL and publishable key. Restart `npx expo start`.
 
 For EAS builds, add the same two values as EAS environment variables (`npx eas-cli@latest env:create`).
+
+## Turn on Ask Yatri (AI hints)
+
+1. Get an API key at console.anthropic.com.
+2. Install the Supabase CLI, then from this folder:
+
+```bash
+npx supabase login
+npx supabase link --project-ref YOUR-PROJECT-REF
+npx supabase secrets set ANTHROPIC_API_KEY=your-key
+npx supabase functions deploy ask-yatri
+```
+
+Each signed-in learner gets 20 questions a day (`DAILY_LIMIT` in `supabase/functions/ask-yatri/index.ts`).
+
+## Certificate verification and privacy pages
+
+Turn on GitHub Pages (Settings → Pages → branch `main`, folder `/docs`). Then `docs/verify.html` verifies certificates and `docs/privacy.html` is the privacy policy URL for Google Play.
 
 ## Publish on Google Play
 

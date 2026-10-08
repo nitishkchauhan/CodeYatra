@@ -2,6 +2,16 @@
 
 Play Console limit: 500 characters.
 
+## 1.2.0
+
+<en-IN>
+• 6 new tracks: C, Java, DSA, SQL, Git and Placement Prep (14 tracks, 140 modules)
+• New ways to practise: order the lines, find the bug, predict the output, tap the word
+• Ask Yatri: AI hints when you are stuck
+• Guided projects, live web editor, daily challenge and mistakes review
+• Verified certificates for LinkedIn, invite friends, classes for teachers
+</en-IN>
+
 ## 1.1.0
 
 <en-IN>

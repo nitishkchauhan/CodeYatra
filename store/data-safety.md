@@ -16,8 +16,13 @@ Answers match what the app actually does in v1.1. Update this file if features c
 | Personal info → Name | Yes (display name) | No | App functionality (league) | Yes |
 | Photos → Photos | Yes, only if the learner uploads a profile photo while signed in | No | App functionality | Yes |
 | App activity → App interactions | Yes (lesson progress, XP, streak) | No | App functionality | Yes (stays on device for guests) |
+| App activity → App interactions (anonymous events) | Yes, not linked to the user | No | Analytics | Yes (Profile → Help improve CodeYatra) |
+| App info and performance → Crash logs | Yes, not linked to the user | No | Analytics | Yes (same switch) |
+| App activity → Other user-generated content (code sent to Ask Yatri) | Yes, only when the learner taps Ask Yatri | Yes, with Anthropic (AI service provider) to generate the hint | App functionality | Yes |
 
-Not collected: location, contacts, phone number, financial info, health, messages, audio, files, calendar, device IDs, advertising ID. There are **no ads and no analytics SDKs**.
+Not collected: location, contacts, phone number, financial info, health, messages, audio, files, calendar, device IDs, advertising ID. There are **no ads and no third-party analytics SDKs**; anonymous events go to our own Supabase database.
+
+Note for "Data shared": sending data to a service provider that processes it on our behalf (Anthropic for AI hints) may not count as "sharing" under Play's definitions, but declaring it is the safer choice.
 
 ## Other declarations
 
@@ -30,3 +35,4 @@ Not collected: location, contacts, phone number, financial info, health, message
 - **Financial features**: None.
 - **Health**: None.
 - **Permissions used**: Notifications (daily reminder), Camera and Photos (only when choosing a profile picture), Internet.
+- **AI-generated content**: Ask Yatri produces AI-written hints. Play's AI-generated content policy applies: hints are limited to the exercise, and users can report problems via the support email.

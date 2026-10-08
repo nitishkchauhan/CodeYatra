@@ -18,6 +18,7 @@ import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/
 import { LessonTopBar } from '@/features/lesson/Shell';
 import { WebBuildStep } from '@/features/lesson/WebBuildStep';
 import { coinsFor } from '@/content/shop';
+import { track } from '@/lib/telemetry';
 import { useProgress } from '@/state/progress';
 import { nextStreak } from '@/state/streak';
 import { colors } from '@/theme';
@@ -86,6 +87,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
           // Every step in the lesson was eventually answered right; ones missed this time stay for review.
           const fixed = lesson.steps.map((_, i) => sourceOf(i)).filter((k) => !missed.has(k));
           const result = progress.completeLesson(lesson.id, xp, accuracy, fixed);
+          track('lesson_complete', { lesson: lesson.id.startsWith('daily-') ? 'daily' : lesson.id, accuracy, mistakes });
           toast(result.extended ? `Streak: ${result.streak} ${result.streak === 1 ? 'day' : 'days'} · +${result.coins} coins` : `+${xp} XP · +${result.coins} coins`);
           if (result.certificate) router.replace({ pathname: '/certificate/[stageId]', params: { stageId: result.certificate.stageId } });
           else router.back();

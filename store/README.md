@@ -16,7 +16,7 @@ New personal accounts must run a **closed test with at least 12 testers for 14 d
 1. **Create app** → name `CodeYatra – Learn to Code`, default language English (India), App, Free. The app is English-only.
 2. Package name is fixed by the first upload: `com.codeyatra.app`.
 3. Fill **Store listing** from [listing-en.md](listing-en.md).
-4. **Privacy policy URL**: host [privacy-policy.html](privacy-policy.html) (GitHub Pages works: Settings → Pages) and paste the link.
+4. **Privacy policy URL**: turn on GitHub Pages (repo Settings → Pages → Branch `main`, folder `/docs`). The policy is then live at `https://nitishkchauhan.github.io/CodeYatra/privacy.html`, and certificate verification at `/verify.html`.
 5. **App content** answers: see [data-safety.md](data-safety.md).
 
 ## 3. Graphics
@@ -24,7 +24,7 @@ New personal accounts must run a **closed test with at least 12 testers for 14 d
 | Asset | Size | Source |
 | --- | --- | --- |
 | App icon | 512 × 512 PNG | `assets/images/icon.png` (export at 512) |
-| Feature graphic | 1024 × 500 PNG/JPG | Logo on `#06104A`, tagline “Learn to Code. Play the Journey.” |
+| Feature graphic | 1024 × 500 PNG/JPG | Ready: [feature-graphic.png](feature-graphic.png) (regenerate with `node scripts/feature-graphic.js`) |
 | Phone screenshots | 2–8, 1080 × 1920 (9:16) | See shot list below |
 
 Shot list, in this order:

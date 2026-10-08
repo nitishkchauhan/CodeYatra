@@ -1,4 +1,5 @@
 import * as Sharing from 'expo-sharing';
+import * as Linking from 'expo-linking';
 import { useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
@@ -13,7 +14,10 @@ import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
 import { captureView } from '@/lib/capture';
-import { getLesson, STAGES } from '@/content';
+import { linkedInUrl, verifyUrl } from '@/lib/community';
+import { track } from '@/lib/telemetry';
+import { useAccount } from '@/state/account';
+import { findStage, getLesson } from '@/content';
 import { useProgress } from '@/state/progress';
 import { colors, fonts } from '@/theme';
 
@@ -25,11 +29,12 @@ const longDate = (key: string) => {
 export default function CertificateScreen() {
   const { stageId } = useLocalSearchParams<{ stageId: string }>();
   const { state } = useProgress();
+  const { session } = useAccount();
   const toast = useToast();
   const shot = useRef<View>(null);
   const [sharing, setSharing] = useState(false);
 
-  const stage = STAGES.find((s) => s.id === stageId) ?? STAGES[0];
+  const stage = findStage(stageId);
   const cert = state.certificates[stage.id];
   const written = stage.units.flatMap((u) => u.lessons).filter((l) => getLesson(l.id));
   const done = written.filter((l) => state.completed[l.id]).length;
@@ -80,7 +85,7 @@ export default function CertificateScreen() {
                       <View style={styles.footer}>
                         <View>
                           <T variant="label">{longDate(cert.date)}</T>
-                          <T variant="caption">Date</T>
+                          <T variant="caption">{cert.verifyId ? `ID ${cert.verifyId.slice(0, 8).toUpperCase()}` : 'Date'}</T>
                         </View>
                         <T style={{ fontFamily: fonts.display, fontSize: 18, color: colors.ink }}>
                           Code<T style={{ fontFamily: fonts.display, fontSize: 18, color: colors.saffronShadow }}>Yatra</T>
@@ -99,9 +104,26 @@ export default function CertificateScreen() {
                 disabled={sharing}
                 onPress={share}
               />
-              <T variant="caption" style={{ textAlign: 'center' }}>
-                Share it on WhatsApp, LinkedIn or with your teacher.
-              </T>
+              {cert.verifyId ? (
+                <>
+                  <Button
+                    variant="outline"
+                    label="Add to LinkedIn"
+                    icon={(c) => <T style={{ fontFamily: fonts.display, fontSize: 16, color: c }}>in</T>}
+                    onPress={() => {
+                      track('certificate_linkedin');
+                      Linking.openURL(linkedInUrl({ title: `${stage.name} · CodeYatra`, date: cert.date, verifyId: cert.verifyId! }));
+                    }}
+                  />
+                  <T variant="caption" style={{ textAlign: 'center' }} selectable>
+                    Anyone can verify it at {verifyUrl(cert.verifyId).replace('https://', '')}
+                  </T>
+                </>
+              ) : (
+                <T variant="caption" style={{ textAlign: 'center' }}>
+                  {session ? 'Getting your verification link…' : 'Sign in to get a verification link for LinkedIn.'}
+                </T>
+              )}
             </Animated.View>
           </>
         ) : (

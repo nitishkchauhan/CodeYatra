@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { getLesson, STAGES } from '@/content';
 import { coinsFor, STREAK_FREEZE, type OutfitId } from '@/content/shop';
 import { setHapticsEnabled } from '@/lib/haptics';
+import { setTelemetryEnabled } from '@/lib/telemetry';
 import { applyStreakFreezes, INITIAL, normalize, type Certificate, type LearnerLevel, type Progress } from './model';
 import { dayKey, nextStreak, visibleStreak } from './streak';
 
@@ -31,6 +32,10 @@ type ProgressApi = {
   finishOnboarding: (input: { name: string; level: LearnerLevel }) => void;
   completeLesson: (lessonId: string, xp: number, accuracy: number, reviewed?: string[]) => LessonResult;
   recordMistake: (key: string) => void;
+  /** Adds coins from outside a lesson, e.g. invite rewards. */
+  grantCoins: (coins: number, patch?: Partial<Pick<Progress, 'referralsCredited' | 'referred'>>) => void;
+  setCertificateVerifyId: (stageId: string, verifyId: string) => void;
+  setTelemetry: (on: boolean) => void;
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -77,6 +82,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     setHapticsEnabled(state.haptics);
   }, [state.haptics]);
 
+  useEffect(() => {
+    setTelemetryEnabled(state.telemetry);
+  }, [state.telemetry]);
+
   /** Applies a change and stamps it so the newest copy wins when syncing. */
   const update = (fn: (s: Progress) => Progress) => setState((s) => ({ ...fn(s), updatedAt: Date.now() }));
 
@@ -114,6 +123,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       }));
       return { ...streakResult, coins, certificate };
     },
+    grantCoins: (coins, patch = {}) => update((s) => ({ ...s, ...patch, coins: s.coins + coins })),
+    setCertificateVerifyId: (stageId, verifyId) =>
+      update((s) => (s.certificates[stageId] ? { ...s, certificates: { ...s.certificates, [stageId]: { ...s.certificates[stageId], verifyId } } } : s)),
+    setTelemetry: (on) => update((s) => ({ ...s, telemetry: on })),
     recordMistake: (key) => update((s) => ({ ...s, mistakes: { ...s.mistakes, [key]: today } })),
     setLevel: (level) => update((s) => ({ ...s, level })),
     setHaptics: (on) => update((s) => ({ ...s, haptics: on })),

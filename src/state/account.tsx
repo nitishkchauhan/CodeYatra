@@ -4,8 +4,9 @@ import * as WebBrowser from 'expo-web-browser';
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Platform } from 'react-native';
 
-import { mergeProgress, normalize, weekStart, weekXp, type Progress } from './model';
+import { countsAsLesson, mergeProgress, normalize, weekStart, weekXp, type Progress } from './model';
 import { useProgress } from './progress';
+import { INVITE_REWARD, referralCount, registerCertificate } from '@/lib/community';
 import { accountsEnabled, supabase } from '@/lib/supabase';
 
 WebBrowser.maybeCompleteAuthSession();
@@ -44,6 +45,8 @@ async function push(userId: string, state: Progress, today: string) {
       outfit: state.outfit,
       avatar_url: state.avatarUrl,
       bio: state.bio.slice(0, 80),
+      lessons_done: Object.keys(state.completed).filter(countsAsLesson).length,
+      stage_id: state.stageId,
       updated_at: new Date().toISOString(),
     }),
   ]);
@@ -93,6 +96,34 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     }, PUSH_DELAY_MS);
     return () => clearTimeout(t);
   }, [userId, progress.state, progress.today]);
+
+  // Latest progress API for effects that should only re-run when their data changes.
+  const latest = useRef(progress);
+  useEffect(() => {
+    latest.current = progress;
+  });
+
+  // Give certificates an online id so anyone can verify them.
+  const unregistered = Object.values(progress.state.certificates)
+    .filter((c) => !c.verifyId)
+    .map((c) => c.stageId)
+    .join(',');
+  useEffect(() => {
+    if (!userId || sync !== 'synced' || !unregistered) return;
+    for (const c of Object.values(latest.current.state.certificates)) {
+      if (c.verifyId) continue;
+      registerCertificate(userId, c.stageId, c.name, c.date).then((id) => id && latest.current.setCertificateVerifyId(c.stageId, id));
+    }
+  }, [userId, sync, unregistered]);
+
+  // Reward the learner for friends who joined with their invite code since last time.
+  useEffect(() => {
+    if (!userId || sync !== 'synced') return;
+    referralCount(userId).then((n) => {
+      const credited = latest.current.state.referralsCredited;
+      if (n > credited) latest.current.grantCoins((n - credited) * INVITE_REWARD, { referralsCredited: n });
+    });
+  }, [userId, sync]);
 
   const api: AccountApi = {
     enabled: accountsEnabled,

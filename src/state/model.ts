@@ -4,7 +4,8 @@ import { addDays } from './streak';
 export type LearnerLevel = 'school' | 'college' | 'curious';
 
 export type Completion = { xp: number; accuracy: number; at: string };
-export type Certificate = { stageId: string; name: string; date: string };
+/** verifyId is set once the certificate is registered online, so anyone can verify it. */
+export type Certificate = { stageId: string; name: string; date: string; verifyId?: string };
 
 export type Progress = {
   version: 1;
@@ -31,6 +32,12 @@ export type Progress = {
   bio: string;
   /** Steps answered wrong, as "lessonId#stepIndex" → day. Cleared when reviewed correctly. */
   mistakes: Record<string, string>;
+  /** Invite rewards already given for friends who joined with your code. */
+  referralsCredited: number;
+  /** Whether this learner has redeemed a friend's code (one per account). */
+  referred: boolean;
+  /** Anonymous crash reports and usage events. */
+  telemetry: boolean;
   reminder: { enabled: boolean; hour: number; minute: number };
   /** Milliseconds; the newer side wins settings when merging phone and cloud copies. */
   updatedAt: number;
@@ -58,6 +65,9 @@ export const INITIAL: Progress = {
   avatarColor: '#1F1B83',
   bio: '',
   mistakes: {},
+  referralsCredited: 0,
+  referred: false,
+  telemetry: true,
   reminder: { enabled: false, hour: 19, minute: 0 },
   updatedAt: 0,
 };
@@ -109,9 +119,18 @@ export function mergeProgress(local: Progress, remote: Progress): Progress {
     lastActive: streakSide.lastActive,
     dailyXp,
     completed,
-    certificates: { ...remote.certificates, ...local.certificates },
+    // Keep whichever copy of a certificate has its online verification id.
+    certificates: Object.fromEntries(
+      [...new Set([...Object.keys(remote.certificates), ...Object.keys(local.certificates)])].map((k) => {
+        const l = local.certificates[k];
+        const r = remote.certificates[k];
+        return [k, l && r ? { ...r, ...l, verifyId: l.verifyId ?? r.verifyId } : (l ?? r)];
+      }),
+    ),
     inventory: [...new Set([...remote.inventory, ...local.inventory])],
     mistakes: { ...remote.mistakes, ...local.mistakes },
+    referralsCredited: Math.max(local.referralsCredited, remote.referralsCredited),
+    referred: local.referred || remote.referred,
     avatar: local.avatar,
     updatedAt: Math.max(local.updatedAt, remote.updatedAt),
   };
