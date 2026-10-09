@@ -116,6 +116,7 @@ export default function EditProfileScreen() {
                       accessibilityRole="radio"
                       accessibilityLabel={`Colour ${c}`}
                       accessibilityState={{ checked: on }}
+                      hitSlop={4}
                       onPress={() => {
                         haptic.tap();
                         setProfile({ avatarColor: c });

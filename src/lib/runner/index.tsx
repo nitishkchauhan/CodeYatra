@@ -13,7 +13,9 @@ const RunnerContext = createContext<Runner | null>(null);
 const friendly = (error?: string) =>
   error === 'TIMEOUT'
     ? 'Your code ran for too long and was stopped. Is there a loop that never ends?'
-    : error;
+    : error === 'NO_PYTHON'
+      ? 'Could not download Python (about 10 MB, needed once). Check your internet connection and tap Run again.'
+      : error;
 
 /**
  * Runs Python (Pyodide) and JavaScript in a sandbox. The sandbox is created on

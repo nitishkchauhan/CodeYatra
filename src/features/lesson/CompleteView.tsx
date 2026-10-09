@@ -22,6 +22,7 @@ export function CompleteView({
   subtitle,
   xp,
   coins,
+  replay = false,
   accuracy,
   seconds,
   learned,
@@ -34,6 +35,8 @@ export function CompleteView({
   subtitle: string;
   xp: number;
   coins: number;
+  /** Replays earn practice XP only; the screen says so instead of showing 0 coins without explanation. */
+  replay?: boolean;
   accuracy: number;
   seconds: number;
   learned: string[];
@@ -100,6 +103,12 @@ export function CompleteView({
             </View>
           ))}
         </Animated.View>
+
+        {replay ? (
+          <T variant="bodySm" color={colors.ink2} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
+            You had already finished this. Replays earn 5 practice XP and no coins.
+          </T>
+        ) : null}
 
         <Animated.View entering={FadeInDown.delay(350)} style={styles.learned}>
           <T variant="label" style={{ fontSize: 13 }}>

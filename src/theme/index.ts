@@ -7,7 +7,8 @@ export const colors = {
   lineSoft: '#F0EEF6',
   ink: '#16142B',
   ink2: '#55526E',
-  ink3: '#8B88A3',
+  // Was #8B88A3 (3.2:1 on bg); #6E6A88 meets WCAG AA 4.5:1 for small text on bg and white.
+  ink3: '#6E6A88',
   inkBody: '#3B3856',
 
   primary: '#4B3FD8',
@@ -20,8 +21,9 @@ export const colors = {
   saffronSoft: '#FFF1DC',
   saffronInk: '#8A4B00',
 
-  success: '#16A34A',
-  successShadow: '#11823B',
+  // Was #16A34A (3.3:1); #15803D passes 4.5:1 as text and behind white button labels.
+  success: '#15803D',
+  successShadow: '#116530',
   successSoft: '#E3F6EA',
   successInk: '#14532D',
 
@@ -46,7 +48,7 @@ export const colors = {
     bar: '#1E1C40',
     line: '#23214A',
     text: '#E7E5F7',
-    gutter: '#6E6A9A',
+    gutter: '#8A85BC',
     keyword: '#FFB454',
     builtin: '#7DD3FC',
     func: '#5EEAD4',

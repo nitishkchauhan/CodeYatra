@@ -7,7 +7,14 @@ export const PYODIDE_URL = 'https://cdn.jsdelivr.net/pyodide/v314.0.7/full/';
 const WORKER_SOURCE = String.raw`
 const PY = '${PYODIDE_URL}';
 let py = null;
-const getPy = () => (py ??= import(PY + 'pyodide.mjs').then((m) => m.loadPyodide({ indexURL: PY })));
+// A failed download must not be cached, or Python stays broken until the app restarts.
+const getPy = () =>
+  (py ??= import(PY + 'pyodide.mjs')
+    .then((m) => m.loadPyodide({ indexURL: PY }))
+    .catch(() => {
+      py = null;
+      throw new Error('NO_PYTHON');
+    }));
 
 const fmt = (v) => {
   if (typeof v === 'string') return v;
@@ -40,7 +47,14 @@ self.onmessage = async (event) => {
       self.postMessage({ id, ok: true, output: out });
     }
   } catch (err) {
-    const message = lang === 'python' ? pythonError(err && err.message) : (err && err.name ? err.name + ': ' + err.message : String(err));
+    const message =
+      err && err.message === 'NO_PYTHON'
+        ? 'NO_PYTHON'
+        : lang === 'python'
+          ? pythonError(err && err.message)
+          : err && err.name
+            ? err.name + ': ' + err.message
+            : String(err);
     self.postMessage({ id, ok: false, output: out, error: message, pyReady: lang === 'python' && py !== null });
   }
 };
@@ -66,6 +80,13 @@ const HOST_SCRIPT = String.raw`
       if (m.pyReady) pyReady = true;
       clearTimeout(timers.get(m.id));
       timers.delete(m.id);
+      // Browsers remember a failed module import for the worker's lifetime, so after a
+      // failed Python download start a fresh worker; the next run downloads again.
+      if (m.error === 'NO_PYTHON') {
+        worker.terminate();
+        worker = null;
+        pyReady = false;
+      }
       send(m);
     };
     worker.onerror = (e) => send({ id: '*', ok: false, output: [], error: 'Runner error: ' + (e.message || 'unknown') });
@@ -74,12 +95,14 @@ const HOST_SCRIPT = String.raw`
   window.__run = (msg) => {
     if (!worker) spawn();
     // First Python run downloads the interpreter, so it gets much longer.
-    const limit = msg.lang === 'python' && !pyReady ? 120000 : 8000;
+    const loading = msg.lang === 'python' && !pyReady;
+    const limit = loading ? 120000 : 8000;
     timers.set(msg.id, setTimeout(() => {
       worker.terminate();
       worker = null;
       pyReady = false;
-      for (const [id, t] of timers) { clearTimeout(t); send({ id, ok: false, output: [], error: 'TIMEOUT' }); }
+      // A first Python run that times out was still downloading, not stuck in a loop.
+      for (const [id, t] of timers) { clearTimeout(t); send({ id, ok: false, output: [], error: id === msg.id && loading ? 'NO_PYTHON' : 'TIMEOUT' }); }
       timers.clear();
     }, limit));
     worker.postMessage(msg);

@@ -186,6 +186,15 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     },
     deleteAccount: async () => {
       if (!supabase) return null;
+      // Storage files are not removed when the account row is, so delete the profile photo first.
+      if (userId) {
+        const bucket = supabase.storage.from('avatars');
+        const { data: files } = await bucket.list(userId);
+        if (files?.length) {
+          const { error: photoError } = await bucket.remove(files.map((f) => `${userId}/${f.name}`));
+          if (photoError) return 'Could not delete your profile photo. Nothing was deleted; please try again.';
+        }
+      }
       const { error } = await supabase.rpc('delete_my_account');
       if (error) return error.message;
       pulledFor.current = null;

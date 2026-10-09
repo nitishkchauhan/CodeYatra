@@ -37,7 +37,7 @@ export default function LearnScreen() {
 
   const open = (id: string, status: LessonStatus) => {
     if (status === 'soon') toast('This lesson is being written. Check back soon!');
-    else if (status === 'locked') toast('Finish the lessons before this one to unlock it');
+    else if (status === 'locked') toast(`Finish “${currentLesson?.title ?? 'the current module'}” first. Modules unlock in order.`);
     else router.push({ pathname: '/lesson/[id]', params: { id } });
   };
 
@@ -219,7 +219,7 @@ export default function LearnScreen() {
               </View>
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel={`Module ${ui + 1}, ${unit.title}: ${l.title}, ${status}`}
+                accessibilityLabel={`Module ${ui + 1}, ${unit.title}: ${l.title}, ${status === 'locked' ? `locked, finish module ${ui} to unlock` : status}`}
                 onPress={() => open(l.id, status)}
                 style={({ pressed }) => [
                   styles.moduleCard,
@@ -237,7 +237,7 @@ export default function LearnScreen() {
                   <T variant="label" color={muted ? colors.ink3 : colors.ink}>
                     {l.title}
                   </T>
-                  <T variant="caption">{l.meta}</T>
+                  <T variant="caption">{status === 'locked' ? `Locked · unlocks after Module ${ui}` : l.meta}</T>
                 </View>
                 {status === 'current' ? (
                   <View style={[styles.nextPill, { backgroundColor: stage.color }]}>

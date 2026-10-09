@@ -14,6 +14,7 @@ import { buildMock, MOCK_TESTS, TOPIC_LABEL, TOPIC_TRACK, type MockKind, type Mo
 import { ActionBar } from '@/features/lesson/Shell';
 import { haptic } from '@/lib/haptics';
 import { track } from '@/lib/telemetry';
+import { useConfirmLeave } from '@/lib/useConfirmLeave';
 import { useProgress } from '@/state/progress';
 import { card, colors, fonts } from '@/theme';
 
@@ -38,6 +39,8 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [result, setResult] = useState<{ score: number; seconds: number; xp: number; coins: number } | null>(null);
+  const [claimId] = useState(() => `mock:${test.kind}:${Date.now()}:${Math.random().toString(36).slice(2)}`);
+  const guard = useConfirmLeave(startedAt !== null && result === null, 'Leave the test?', 'Your answers will not be saved.');
 
   const limit = test.minutes * 60;
   const left = startedAt ? limit - Math.floor((now - startedAt) / 1000) : limit;
@@ -52,7 +55,8 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
       t[1]++;
       if (answers[i] === 0) t[0]++;
     });
-    const reward = progress.finishMock({ kind: test.kind, score, total: paper.length, seconds, topics });
+    const reward = progress.finishMock({ kind: test.kind, score, total: paper.length, seconds, topics }, claimId);
+    guard.allow();
     haptic.success();
     track('mock_finish', { kind: test.kind, score, total: paper.length });
     setResult({ score, seconds, ...reward });
@@ -73,13 +77,8 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
     return () => clearInterval(id);
   }, [startedAt, result, limit]);
 
-  const exit = () => {
-    if (!startedAt || result || Platform.OS === 'web') return router.back();
-    Alert.alert('Leave the test?', 'Your answers will not be saved.', [
-      { text: 'Stay', style: 'cancel' },
-      { text: 'Leave', style: 'destructive', onPress: () => router.back() },
-    ]);
-  };
+  // Leaving mid-test asks first (close button and Android Back), via useConfirmLeave.
+  const exit = () => router.back();
 
   const confirmSubmit = () => {
     const blank = answers.filter((a) => a === null).length;
@@ -172,6 +171,7 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
             accessibilityLabel={`Question ${i + 1}${answers[i] !== null ? ', answered' : ''}`}
             accessibilityState={{ selected: i === index }}
             onPress={() => setIndex(i)}
+            hitSlop={{ top: 7, bottom: 7, left: 3, right: 3 }}
             style={[styles.dot, answers[i] !== null && styles.dotDone, i === index && styles.dotOn]}>
             <T variant="labelSm" color={i === index ? '#FFFFFF' : answers[i] !== null ? colors.primary : colors.ink2} style={{ fontSize: 12 }}>
               {i + 1}

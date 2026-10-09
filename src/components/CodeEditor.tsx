@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View, type NativeSyntheticEvent, type TextInputSelectionChangeEventData } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View, type NativeSyntheticEvent, type TextInputSelectionChangeEventData } from 'react-native';
 
 import { haptic } from '@/lib/haptics';
 import { LANG_COLOR } from './Code';
@@ -8,6 +8,8 @@ import { colors, fonts } from '@/theme';
 const C = colors.code;
 const CHAR_W = 8.1; // Roboto Mono at 13.5px
 const LINE_H = 22;
+/** Largest code size relative to normal; bigger stops fitting a phone even with scrolling. */
+const MAX_CODE_SCALE = 1.6;
 
 export type EditorLang = 'python' | 'javascript' | 'html' | 'css' | 'sql';
 
@@ -82,9 +84,13 @@ export function CodeEditor({
 }) {
   const [selection, setSelection] = useState<Selection>({ start: value.length, end: value.length });
   const [forced, setForced] = useState<Selection | undefined>(undefined);
+  // Respect the system text size, but scale the code, line numbers and width together
+  // (capped) so line numbers stay aligned and long lines are never cut off.
+  const scale = Math.min(useWindowDimensions().fontScale || 1, MAX_CODE_SCALE);
+  const lineH = LINE_H * scale;
   const lines = value.split('\n');
-  const width = Math.max(320, Math.max(...lines.map((l) => l.length)) * CHAR_W + 48);
-  const height = Math.max(minLines, lines.length) * LINE_H + 20;
+  const width = Math.max(320, Math.max(...lines.map((l) => l.length)) * CHAR_W * scale + 48);
+  const height = Math.max(minLines, lines.length) * lineH + 20;
   const unit = lang === 'python' ? '    ' : '  ';
 
   const place = (next: string, caret: number) => {
@@ -128,7 +134,7 @@ export function CodeEditor({
         <View style={{ flexDirection: 'row', width, minHeight: height }}>
           <View style={styles.gutter}>
             {lines.map((_, i) => (
-              <Text key={i} style={styles.lineNo}>
+              <Text key={i} allowFontScaling={false} style={[styles.lineNo, { fontSize: 12 * scale, lineHeight: lineH }]}>
                 {i + 1}
               </Text>
             ))}
@@ -147,7 +153,8 @@ export function CodeEditor({
             keyboardType="ascii-capable"
             textAlignVertical="top"
             accessibilityLabel={`Code editor, ${LANG_NAME[lang]}`}
-            style={[styles.input, { minHeight: height }]}
+            allowFontScaling={false}
+            style={[styles.input, { minHeight: height, fontSize: 13.5 * scale, lineHeight: lineH }]}
             selectionColor={colors.saffron}
           />
         </View>

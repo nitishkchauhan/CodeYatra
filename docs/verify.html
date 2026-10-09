@@ -29,7 +29,7 @@
 <div class="card">
   <header><img src="favicon.png" alt=""><b>Code<span>Yatra</span></b></header>
   <main id="out"><p>Checking certificate…</p></main>
-  <footer>Certificates are issued when a learner completes every module of a track. <a href="privacy.html">Privacy</a></footer>
+  <footer>This page confirms the certificate exists in CodeYatra's records. Certificates are issued in the app when a learner finishes every module of a track; they show learning progress, not a proctored exam. <a href="privacy.html">Privacy</a></footer>
 </div>
 <script>
   // Public, read-only values (the same ones inside the app). Row-level security
@@ -60,9 +60,9 @@
         const date = new Date(c.issued_on + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
         document.title = esc(c.name) + ' · CodeYatra certificate';
         out.innerHTML =
-          '<span class="status ok">✓ Verified certificate</span>' +
+          '<span class="status ok">✓ Certificate on record</span>' +
           '<h1>' + esc(c.name) + '</h1>' +
-          '<p>completed <strong>' + esc(TRACKS[c.stage_id] || c.stage_id) + '</strong> on CodeYatra</p>' +
+          '<p>was awarded the <strong>' + esc(TRACKS[c.stage_id] || c.stage_id) + '</strong> track certificate in the CodeYatra app</p>' +
           '<div class="meta"><div><small>Issued</small><strong>' + esc(date) + '</strong></div>' +
           '<div><small>Certificate ID</small><strong>' + esc(id.slice(0, 8).toUpperCase()) + '</strong></div></div>';
       })

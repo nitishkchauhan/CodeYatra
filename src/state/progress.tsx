@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { getLesson, STAGES } from '@/content';
-import { coinsFor, STREAK_FREEZE, type OutfitId } from '@/content/shop';
+import { STREAK_FREEZE, type OutfitId } from '@/content/shop';
 import { setHapticsEnabled } from '@/lib/haptics';
 import { setTelemetryEnabled } from '@/lib/telemetry';
-import { applyStreakFreezes, INITIAL, normalize, type Certificate, type LearnerLevel, type MockResult, type Progress } from './model';
+import { accuracyFor, applyStreakFreezes, INITIAL, isReplay, lessonReward, normalize, type Certificate, type LearnerLevel, type LessonKind, type MockResult, type Progress } from './model';
 import { dayKey, nextStreak, visibleStreak } from './streak';
 
 export type { LearnerLevel, Progress } from './model';
@@ -20,7 +20,17 @@ const RECOMMENDED_STAGE: Record<LearnerLevel, string> = {
   curious: 'foundations',
 };
 
-export type LessonResult = { streak: number; extended: boolean; coins: number; certificate: Certificate | null };
+export type LessonResult = { streak: number; extended: boolean; xp: number; coins: number; certificate: Certificate | null };
+
+export type LessonCompletion = {
+  lessonId: string;
+  kind: LessonKind;
+  mistakes: number;
+  /** Step keys answered right this time; matching saved mistakes are cleared. */
+  reviewed?: string[];
+  /** One id per attempt: calling again with the same id returns the first result and awards nothing. */
+  claimId: string;
+};
 
 type ProgressApi = {
   state: Progress;
@@ -30,14 +40,14 @@ type ProgressApi = {
   streak: number;
   recommendedStageId: string;
   finishOnboarding: (input: { name: string; level: LearnerLevel }) => void;
-  completeLesson: (lessonId: string, xp: number, accuracy: number, reviewed?: string[]) => LessonResult;
+  completeLesson: (completion: LessonCompletion) => LessonResult;
   recordMistake: (key: string) => void;
   /** Adds coins from outside a lesson, e.g. invite rewards. */
   grantCoins: (coins: number, patch?: Partial<Pick<Progress, 'referralsCredited' | 'referred'>>) => void;
   setCertificateVerifyId: (stageId: string, verifyId: string) => void;
   setTelemetry: (on: boolean) => void;
   /** Saves a mock test, adds XP and coins, and counts toward the streak. */
-  finishMock: (result: Omit<MockResult, 'at'>) => { xp: number; coins: number };
+  finishMock: (result: Omit<MockResult, 'at'>, claimId: string) => { xp: number; coins: number };
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -88,6 +98,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     setTelemetryEnabled(state.telemetry);
   }, [state.telemetry]);
 
+  // Rewards already given this session, by claim id, so a double tap can't award twice.
+  const claims = useRef(new Map<string, LessonResult | { xp: number; coins: number }>());
+
   /** Applies a change and stamps it so the newest copy wins when syncing. */
   const update = (fn: (s: Progress) => Progress) => setState((s) => ({ ...fn(s), updatedAt: Date.now() }));
 
@@ -99,10 +112,12 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     streak: visibleStreak(state.streak, state.lastActive, today),
     recommendedStageId: RECOMMENDED_STAGE[state.level],
     finishOnboarding: ({ name, level }) => update((s) => ({ ...s, onboarded: true, name: name.trim(), level, stageId: RECOMMENDED_STAGE[level] })),
-    completeLesson: (lessonId, xp, accuracy, reviewed = []) => {
-      const lesson = getLesson(lessonId);
+    completeLesson: ({ lessonId, kind, mistakes, reviewed = [], claimId }) => {
+      const claimed = claims.current.get(claimId);
+      if (claimed) return claimed as LessonResult;
+      const { xp, coins } = lessonReward(kind, mistakes, isReplay(state, lessonId));
+      const accuracy = accuracyFor(mistakes);
       const streakResult = nextStreak(state.streak, state.lastActive, today);
-      const coins = coinsFor(lesson?.kind ?? 'lesson', accuracy === 100);
       const prev = state.completed[lessonId];
       const completed = {
         ...state.completed,
@@ -123,15 +138,20 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         mistakes: reviewed.length ? Object.fromEntries(Object.entries(s.mistakes).filter(([k]) => !reviewed.includes(k))) : s.mistakes,
         certificates: certificate ? { ...s.certificates, [certificate.stageId]: certificate } : s.certificates,
       }));
-      return { ...streakResult, coins, certificate };
+      const result = { ...streakResult, xp, coins, certificate };
+      claims.current.set(claimId, result);
+      return result;
     },
     grantCoins: (coins, patch = {}) => update((s) => ({ ...s, ...patch, coins: s.coins + coins })),
     setCertificateVerifyId: (stageId, verifyId) =>
       update((s) => (s.certificates[stageId] ? { ...s, certificates: { ...s.certificates, [stageId]: { ...s.certificates[stageId], verifyId } } } : s)),
     setTelemetry: (on) => update((s) => ({ ...s, telemetry: on })),
-    finishMock: (result) => {
+    finishMock: (result, claimId) => {
+      const claimed = claims.current.get(claimId);
+      if (claimed) return claimed as { xp: number; coins: number };
       const xp = result.score * 3;
       const coins = result.score;
+      claims.current.set(claimId, { xp, coins });
       const streakResult = nextStreak(state.streak, state.lastActive, today);
       update((s) => ({
         ...s,

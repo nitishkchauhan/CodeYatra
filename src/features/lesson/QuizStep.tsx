@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, {
   FadeInDown,
@@ -24,16 +24,22 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
   const t = useT();
   const [pick, setPick] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);
+  // Wrong picks are ruled out for the retry; after two misses the answer is shown so nobody gets stuck.
+  const [ruledOut, setRuledOut] = useState<number[]>([]);
+  const checking = useRef(false);
   const shake = useSharedValue(0);
   const shakeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: shake.value }] }));
 
   const right = checked && pick === step.answer;
+  const reveal = checked && !right && ruledOut.length >= 2;
 
   const check = () => {
-    if (pick === null) return;
+    if (pick === null || checking.current) return;
+    checking.current = true;
     setChecked(true);
     if (pick === step.answer) haptic.success();
     else {
+      setRuledOut((r) => [...r, pick]);
       haptic.error();
       onMistake();
       shake.set(withSequence(
@@ -64,31 +70,45 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
           {optionOrder(step.prompt, step.options.length).map((i, shown) => {
             const option = step.options[i];
             const selected = pick === i;
+            const isRight = checked && i === step.answer && (right || reveal);
+            const isWrong = (checked && selected && !right) || (!selected && ruledOut.includes(i));
             let border: string = colors.line;
             let bg: string = colors.surface;
             let badge: string = colors.lineSoft;
             let badgeInk: string = colors.ink2;
             if (selected) [border, bg, badge, badgeInk] = [colors.primary, colors.surfaceTint, colors.primary, '#FFFFFF'];
-            if (checked && i === step.answer) [border, bg, badge, badgeInk] = [colors.success, colors.successSoft, colors.success, '#FFFFFF'];
-            else if (checked && selected) [border, bg, badge, badgeInk] = [colors.danger, colors.dangerSoft, colors.danger, '#FFFFFF'];
+            if (isRight) [border, bg, badge, badgeInk] = [colors.success, colors.successSoft, colors.success, '#FFFFFF'];
+            else if (isWrong) [border, bg, badge, badgeInk] = [colors.danger, colors.dangerSoft, colors.danger, '#FFFFFF'];
+            const status = isRight ? ', correct answer' : isWrong ? ', incorrect' : '';
             return (
               <Pressable
                 key={option}
                 accessibilityRole="radio"
-                accessibilityState={{ checked: selected, disabled: checked }}
-                disabled={checked}
+                accessibilityLabel={`Option ${'ABCD'[shown]}: ${option}${status}`}
+                accessibilityState={{ checked: selected, disabled: checked || ruledOut.includes(i) }}
+                disabled={checked || ruledOut.includes(i)}
                 onPress={() => {
                   haptic.tap();
                   setPick(i);
                 }}
                 style={({ pressed }) => [
                   styles.option,
-                  { borderColor: border, backgroundColor: bg, borderWidth: selected || (checked && i === step.answer) ? 2 : 1, transform: [{ scale: pressed ? 0.98 : 1 }] },
+                  {
+                    borderColor: border,
+                    backgroundColor: bg,
+                    borderWidth: selected || isRight || isWrong ? 2 : 1,
+                    opacity: !selected && ruledOut.includes(i) && !checked ? 0.6 : 1,
+                    transform: [{ scale: pressed ? 0.98 : 1 }],
+                  },
                 ]}>
                 <View style={[styles.badge, { backgroundColor: badge }]}>
-                  <T variant="labelSm" color={badgeInk}>
-                    {'ABCD'[shown]}
-                  </T>
+                  {isRight || isWrong ? (
+                    <Icon name={isRight ? 'check' : 'cross'} size={15} color="#FFFFFF" strokeWidth={3} />
+                  ) : (
+                    <T variant="labelSm" color={badgeInk}>
+                      {'ABCD'[shown]}
+                    </T>
+                  )}
                 </View>
                 <T style={[{ flex: 1, color: colors.ink }, step.mono ? { fontFamily: fonts.mono, fontSize: 15 } : { fontFamily: fonts.bodySemibold, fontSize: 15 }]}>
                   {option}
@@ -115,19 +135,30 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
                   {right ? 'Correct!' : 'Not quite'}
                 </T>
                 <T variant="bodySm" color={right ? '#1F5B36' : '#7A2A2C'} style={{ fontSize: 14, lineHeight: 20 }}>
-                  {right ? step.right : step.wrong}
+                  {right ? step.right : `${step.wrong}${reveal ? ' The right answer is marked with a tick.' : ' Have another go; your wrong pick is crossed out.'}`}
                 </T>
               </View>
             </View>
             {right ? (
               <Button variant="success" label={t('continue')} onPress={onDone} />
+            ) : reveal ? (
+              <Button
+                variant="danger"
+                label="Pick the right answer to continue"
+                onPress={() => {
+                  checking.current = false;
+                  setChecked(false);
+                  setPick(step.answer);
+                }}
+              />
             ) : (
               <Button
                 variant="danger"
                 label={t('tryAgain')}
                 onPress={() => {
+                  checking.current = false;
                   setChecked(false);
-                  setPick(null);
+                  setPick(reveal ? step.answer : null);
                 }}
               />
             )}

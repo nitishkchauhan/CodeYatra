@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,8 +17,9 @@ import { QuizStep } from '@/features/lesson/QuizStep';
 import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/features/lesson/PracticeSteps';
 import { LessonTopBar } from '@/features/lesson/Shell';
 import { WebBuildStep } from '@/features/lesson/WebBuildStep';
-import { coinsFor } from '@/content/shop';
 import { track } from '@/lib/telemetry';
+import { useConfirmLeave } from '@/lib/useConfirmLeave';
+import { accuracyFor, isReplay, lessonReward } from '@/state/model';
 import { useProgress } from '@/state/progress';
 import { nextStreak } from '@/state/streak';
 import { colors } from '@/theme';
@@ -51,6 +52,13 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
   const [missed, setMissed] = useState<Set<string>>(() => new Set());
   const [startedAt] = useState(() => Date.now());
   const [finishedAt, setFinishedAt] = useState<number | null>(null);
+  // One claim per attempt: a double tap on Continue can't award the lesson twice.
+  const [claimId] = useState(() => `${lesson.id}:${startedAt}:${Math.random().toString(36).slice(2)}`);
+  const leaving = useRef(false);
+  const [replay] = useState(() => isReplay(progress.state, lesson.id));
+  const reward = lessonReward(lesson.kind, mistakes, replay);
+  // Leaving after the first step loses this attempt, so ask first. Finishing is always allowed.
+  const guard = useConfirmLeave(index > 0 && finishedAt === null, 'Leave this lesson?', 'Your progress in this lesson will be lost.');
 
   const sourceOf = (i: number) => lesson.sources?.[i] ?? `${lesson.id}#${i}`;
   const { recordMistake } = progress;
@@ -60,8 +68,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
     setMissed((s) => new Set(s).add(stepKey));
     recordMistake(stepKey);
   }, [stepKey, recordMistake]);
-  const xp = (lesson.kind === 'project' ? 60 : lesson.kind === 'lesson' ? 25 : 15) + (mistakes === 0 ? 5 : 0);
-  const accuracy = Math.max(50, 100 - mistakes * 12);
+  const accuracy = accuracyFor(mistakes);
   const step = lesson.steps[index];
 
   const next = () => {
@@ -76,19 +83,23 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
       <CompleteView
         title={lesson.kind === 'project' ? 'Project built!' : lesson.kind === 'lesson' ? 'Lesson complete!' : 'Practice complete!'}
         subtitle={`${lesson.title} · Well done!`}
-        xp={xp}
-        coins={coinsFor(lesson.kind, accuracy === 100)}
+        xp={reward.xp}
+        coins={reward.coins}
+        replay={replay}
         accuracy={accuracy}
         seconds={Math.max(1, Math.round((finishedAt - startedAt) / 1000))}
         learned={lesson.learned}
         streak={predicted.streak}
         streakNote={predicted.extended ? (state.streak > 0 ? `Up from ${state.streak} · see you tomorrow` : 'Your streak starts today') : 'Already counted for today'}
         onContinue={() => {
+          if (leaving.current) return;
+          leaving.current = true;
           // Every step in the lesson was eventually answered right; ones missed this time stay for review.
           const fixed = lesson.steps.map((_, i) => sourceOf(i)).filter((k) => !missed.has(k));
-          const result = progress.completeLesson(lesson.id, xp, accuracy, fixed);
-          track('lesson_complete', { lesson: lesson.id.startsWith('daily-') ? 'daily' : lesson.id, accuracy, mistakes });
-          toast(result.extended ? `Streak: ${result.streak} ${result.streak === 1 ? 'day' : 'days'} · +${result.coins} coins` : `+${xp} XP · +${result.coins} coins`);
+          const result = progress.completeLesson({ lessonId: lesson.id, kind: lesson.kind, mistakes, reviewed: fixed, claimId });
+          track('lesson_complete', { lesson: lesson.id.startsWith('daily-') ? 'daily' : lesson.id, accuracy, mistakes, replay });
+          toast(result.extended ? `Streak: ${result.streak} ${result.streak === 1 ? 'day' : 'days'} · +${result.xp} XP` : `+${result.xp} XP${result.coins ? ` · +${result.coins} coins` : ''}`);
+          guard.allow();
           if (result.certificate) router.replace({ pathname: '/certificate/[stageId]', params: { stageId: result.certificate.stageId } });
           else router.back();
         }}
@@ -99,7 +110,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: step.type === 'puzzle' ? colors.bg : colors.surface }}>
-      <LessonTopBar steps={lesson.steps.length} index={index} xp={xp} onClose={() => router.back()} />
+      <LessonTopBar steps={lesson.steps.length} index={index} xp={reward.xp} onClose={() => router.back()} />
       <Animated.View key={index} entering={FadeIn.duration(220)} style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           {step.type === 'concept' && <ConceptStep step={step} onDone={next} />}

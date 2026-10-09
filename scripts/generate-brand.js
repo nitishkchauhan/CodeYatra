@@ -59,5 +59,17 @@ const soft = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3
   </defs>
   <g mask="url(#mv)"><g mask="url(#mh)"><image width="${W}" height="${H}" xlink:href="${href}"/></g></g>
 </svg>`;
-render(soft, 'logo.png', W * 2);
-render(soft, 'splash-icon.png', W * 2);
+// 1200px covers the largest screens; the old 2× render was 2.8 MB and a ~25 MB bitmap in memory.
+render(soft, 'logo.png', 1200);
+
+// Splash icon. Android 12+ (and the androidx compat splash) shows windowSplashScreenAnimatedIcon
+// masked to a centred circle two-thirds the size of the icon box. The logo's content reaches
+// 0.49 of its width from the centre, so at full size the circle cut off the wordmark and tagline.
+// Drawn at 62% of the canvas, everything sits inside the visible circle (0.62 × 0.49 ≈ 0.30 < 1/3).
+const SPLASH_SCALE = 0.62;
+const S = 1200;
+const inner = S * SPLASH_SCALE;
+const splash = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${S}" height="${S}">
+  <g transform="translate(${(S - inner) / 2} ${(S - inner) / 2}) scale(${inner / W})">${soft.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g>
+</svg>`;
+render(splash, 'splash-icon.png', S);
