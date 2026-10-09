@@ -112,7 +112,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     if (!userId || sync !== 'synced' || !unregistered) return;
     for (const c of Object.values(latest.current.state.certificates)) {
       if (c.verifyId) continue;
-      registerCertificate(userId, c.stageId, c.name, c.date).then((id) => id && latest.current.setCertificateVerifyId(c.stageId, id));
+      registerCertificate(c.stageId).then((id) => id && latest.current.setCertificateVerifyId(c.stageId, id));
     }
   }, [userId, sync, unregistered]);
 

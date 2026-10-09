@@ -7,14 +7,15 @@ export const verifyUrl = (id: string) => `${VERIFY_BASE}?id=${id}`;
 export const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.codeyatra.app';
 export const INVITE_REWARD = 50;
 
-/** Registers a certificate online (once) and returns its verification id. */
-export async function registerCertificate(userId: string, stageId: string, name: string, date: string): Promise<string | null> {
+/**
+ * Asks the server to issue this track's certificate and returns its verification id.
+ * The server checks the synced progress first, so this returns null until the
+ * finished lessons have synced; the caller retries after the next sync.
+ */
+export async function registerCertificate(stageId: string): Promise<string | null> {
   if (!supabase) return null;
-  // Certificates are never edited once issued, so look first and only insert when missing.
-  const existing = await supabase.from('certificates').select('id').eq('user_id', userId).eq('stage_id', stageId).maybeSingle();
-  if (existing.data) return existing.data.id as string;
-  const { data, error } = await supabase.from('certificates').insert({ user_id: userId, stage_id: stageId, name: name.slice(0, 24), issued_on: date }).select('id').single();
-  return error ? null : (data.id as string);
+  const { data, error } = await supabase.rpc('claim_certificate', { stage: stageId });
+  return error || !data ? null : (data as string);
 }
 
 /** LinkedIn's "Add licence or certification" form, pre-filled. */

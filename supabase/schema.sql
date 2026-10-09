@@ -347,3 +347,78 @@ $$;
 drop trigger if exists profiles_xp_guard on public.profiles;
 create trigger profiles_xp_guard before insert or update on public.profiles
   for each row execute function public.guard_profile_xp();
+
+-- ============================================================================
+-- v1.4: Certificates are issued by the server. Safe to re-run.
+-- Before, the app inserted certificate rows itself, so anyone signed in could
+-- create one for any track, name or date. Now only claim_certificate() issues
+-- them, and only when the learner's synced progress shows every lesson of the
+-- track finished. The name comes from their profile and the date from the
+-- server. Each track's lesson list is in supabase/track-lessons.sql.
+-- ============================================================================
+
+-- Which lessons finish each track (filled by supabase/track-lessons.sql).
+create table if not exists public.track_lessons (
+  stage_id text not null,
+  lesson_id text not null,
+  primary key (stage_id, lesson_id)
+);
+alter table public.track_lessons enable row level security;
+-- No policies: only claim_certificate() reads this table.
+
+-- The app can no longer insert certificates directly.
+drop policy if exists "own certificates" on public.certificates;
+
+create or replace function public.claim_certificate(stage text)
+returns uuid
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  uid uuid := auth.uid();
+  done jsonb;
+  learner_name text;
+  missing integer;
+  cert uuid;
+begin
+  if uid is null then
+    raise exception 'Sign in to get a certificate';
+  end if;
+
+  -- Already issued: return the same id (certificates are never re-issued or edited).
+  select id into cert from public.certificates where user_id = uid and stage_id = stage;
+  if cert is not null then
+    return cert;
+  end if;
+
+  if not exists (select 1 from public.track_lessons where stage_id = stage) then
+    raise exception 'Unknown track';
+  end if;
+
+  select s.state -> 'completed', coalesce(nullif(trim(p.display_name), ''), nullif(trim(s.state ->> 'name'), ''), 'Explorer')
+    into done, learner_name
+    from public.learner_state s
+    left join public.profiles p on p.user_id = s.user_id
+    where s.user_id = uid;
+
+  select count(*) into missing
+    from public.track_lessons t
+    where t.stage_id = stage and not (coalesce(done, '{}'::jsonb) ? t.lesson_id);
+  if missing > 0 then
+    raise exception 'Track not finished yet: % lessons to go', missing;
+  end if;
+
+  -- Dated in India time, where CodeYatra's learners are.
+  insert into public.certificates (user_id, stage_id, name, issued_on)
+    values (uid, stage, left(coalesce(learner_name, 'Explorer'), 24), (now() at time zone 'Asia/Kolkata')::date)
+    on conflict (user_id, stage_id) do nothing
+    returning id into cert;
+  if cert is null then
+    select id into cert from public.certificates where user_id = uid and stage_id = stage;
+  end if;
+  return cert;
+end;
+$$;
+revoke all on function public.claim_certificate(text) from public, anon;
+grant execute on function public.claim_certificate(text) to authenticated;
