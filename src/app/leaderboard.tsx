@@ -1,35 +1,36 @@
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/Avatar';
+import { LearnerSheet, type LeagueLearner } from '@/components/LearnerSheet';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Glyph } from '@/components/ui/Icon';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { T } from '@/components/ui/Text';
+import { blockedIds } from '@/lib/moderation';
 import { supabase } from '@/lib/supabase';
 import { useAccount } from '@/state/account';
 import { weekStart, weekXp } from '@/state/model';
 import { useProgress } from '@/state/progress';
 import { card, colors } from '@/theme';
 
-type Row = { user_id: string; display_name: string; week_xp: number; streak: number; outfit: string | null; avatar_url: string | null };
+type Row = LeagueLearner;
 
 const MEDAL = ['#F5B301', '#A8B0BD', '#D08A4E'];
 
-/** This week's league table, top 50 by XP. */
+/** This week's league table, top 50 by XP, without learners you have blocked. */
 async function fetchLeague(today: string): Promise<{ rows: Row[] | null; error: string | null }> {
   if (!supabase) return { rows: null, error: null };
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('user_id, display_name, week_xp, streak, outfit, avatar_url')
-    .eq('week_start', weekStart(today))
-    .order('week_xp', { ascending: false })
-    .limit(50);
-  return error ? { rows: null, error: 'Could not load the leaderboard. Pull down to try again.' } : { rows: data as Row[], error: null };
+  const [{ data, error }, blocked] = await Promise.all([
+    supabase.from('profiles').select('user_id, display_name, week_xp, streak, outfit, avatar_url').eq('week_start', weekStart(today)).order('week_xp', { ascending: false }).limit(50),
+    blockedIds(),
+  ]);
+  if (error) return { rows: null, error: 'Could not load the leaderboard. Pull down to try again.' };
+  return { rows: (data as Row[]).filter((r) => !blocked.includes(r.user_id)), error: null };
 }
 
 export default function LeaderboardScreen() {
@@ -38,6 +39,7 @@ export default function LeaderboardScreen() {
   const [rows, setRows] = useState<Row[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [selected, setSelected] = useState<Row | null>(null);
   const myXp = weekXp(state, today);
 
   const apply = useCallback((r: { rows: Row[] | null; error: string | null }) => {
@@ -108,6 +110,12 @@ export default function LeaderboardScreen() {
                 if (!r) return <View key={i} style={{ flex: 1 }} />;
                 return (
                   <Animated.View key={r.user_id} entering={ZoomIn.delay(100 + i * 120)} style={[styles.place, { paddingTop: i === 0 ? 0 : 24 }]}>
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={`Rank ${i + 1}, ${r.display_name}, ${r.week_xp} XP${r.user_id === me ? ' (you)' : ', open profile'}`}
+                      disabled={r.user_id === me}
+                      onPress={() => setSelected(r)}
+                      style={styles.placeInner}>
                     {r.avatar_url ? (
                       <Avatar uri={r.avatar_url} size={i === 0 ? 64 : 52} ring={MEDAL[i]} />
                     ) : (
@@ -122,6 +130,7 @@ export default function LeaderboardScreen() {
                       {r.display_name}
                     </T>
                     <T variant="caption">{r.week_xp} XP</T>
+                    </Pressable>
                   </Animated.View>
                 );
               })}
@@ -130,12 +139,13 @@ export default function LeaderboardScreen() {
               {rows.map((r, i) => {
                 const mine = r.user_id === me;
                 return (
-                  <Animated.View
-                    key={r.user_id}
-                    entering={FadeInDown.delay(Math.min(i, 10) * 40)}
-                    style={[styles.row, i > 0 && styles.divider, mine && { backgroundColor: colors.primarySoft }]}
-                    accessible
-                    accessibilityLabel={`Rank ${i + 1}, ${r.display_name}${mine ? ' (you)' : ''}, ${r.week_xp} XP`}>
+                  <Animated.View key={r.user_id} entering={FadeInDown.delay(Math.min(i, 10) * 40)} style={[i > 0 && styles.divider, mine && { backgroundColor: colors.primarySoft }]}>
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={`Rank ${i + 1}, ${r.display_name}${mine ? ' (you)' : ''}, ${r.week_xp} XP${mine ? '' : ', open profile'}`}
+                      disabled={mine}
+                      onPress={() => setSelected(r)}
+                      style={({ pressed }) => [styles.row, pressed && { backgroundColor: colors.lineSoft }]}>
                     <T variant="label" color={i < 3 ? MEDAL[i] : colors.ink3} style={{ width: 28 }}>
                       {i + 1}
                     </T>
@@ -154,10 +164,14 @@ export default function LeaderboardScreen() {
                     <T variant="label" color={colors.primary}>
                       {r.week_xp} XP
                     </T>
+                    </Pressable>
                   </Animated.View>
                 );
               })}
             </View>
+            <T variant="caption" style={{ textAlign: 'center' }}>
+              Tap a learner to see their profile, or to report or block them.
+            </T>
           </>
         ) : (
           <T variant="bodySm" color={colors.ink2} style={{ textAlign: 'center' }}>
@@ -165,6 +179,9 @@ export default function LeaderboardScreen() {
           </T>
         )}
       </ScrollView>
+      {selected ? (
+        <LearnerSheet key={selected.user_id} learner={selected} onClose={() => setSelected(null)} onBlocked={(id) => setRows((all) => all && all.filter((r) => r.user_id !== id))} />
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -172,7 +189,8 @@ export default function LeaderboardScreen() {
 const styles = StyleSheet.create({
   hero: { borderRadius: 22, backgroundColor: colors.hero, padding: 18, flexDirection: 'row', alignItems: 'center', gap: 12 },
   podium: { flexDirection: 'row', alignItems: 'flex-end', gap: 8 },
-  place: { flex: 1, alignItems: 'center', gap: 4 },
+  place: { flex: 1 },
+  placeInner: { alignItems: 'center', gap: 4 },
   medal: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', marginTop: -10, borderWidth: 2, borderColor: '#FFFFFF' },
   row: { minHeight: 54, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14 },
   divider: { borderTopWidth: 1, borderTopColor: colors.lineSoft },

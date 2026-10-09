@@ -10,6 +10,7 @@ import { Icon } from '@/components/ui/Icon';
 import { Segments } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { haptic } from '@/lib/haptics';
+import { hasBlockedWords } from '@/lib/moderation';
 import { useAccount } from '@/state/account';
 import { useProgress, type LearnerLevel } from '@/state/progress';
 import { colors, fonts } from '@/theme';
@@ -75,8 +76,10 @@ export default function Onboarding() {
   const [name, setName] = useState('');
   const [level, setLevel] = useState<LearnerLevel | null>(null);
 
+  const rude = hasBlockedWords(name);
+
   const finish = () => {
-    if (!level) return;
+    if (!level || rude) return;
     haptic.success();
     finishOnboarding({ name, level });
     router.replace('/');
@@ -139,8 +142,13 @@ export default function Onboarding() {
                 maxLength={24}
                 returnKeyType="done"
                 accessibilityLabel="Your first name"
-                style={styles.input}
+                style={[styles.input, rude && { borderColor: colors.danger }]}
               />
+              {rude ? (
+                <T variant="caption" color={colors.danger} accessibilityLiveRegion="polite">
+                  Other learners see this name. Please choose a different one.
+                </T>
+              ) : null}
             </View>
             <T variant="labelSm" color={colors.ink2}>
               Who are you?
@@ -160,7 +168,7 @@ export default function Onboarding() {
         </ScrollView>
 
         <View style={{ padding: 20, paddingTop: 8 }}>
-          <Button label={level ? 'Start learning' : 'Choose one to continue'} disabled={!level} onPress={finish} />
+          <Button label={level ? 'Start learning' : 'Choose one to continue'} disabled={!level || rude} onPress={finish} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

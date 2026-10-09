@@ -83,6 +83,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
       <CompleteView
         title={lesson.kind === 'project' ? 'Project built!' : lesson.kind === 'lesson' ? 'Lesson complete!' : 'Practice complete!'}
         subtitle={`${lesson.title} · Well done!`}
+        feedbackAbout={`lesson ${lesson.id}`}
         xp={reward.xp}
         coins={reward.coins}
         replay={replay}

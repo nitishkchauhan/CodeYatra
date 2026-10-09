@@ -14,6 +14,7 @@ import { useToast } from '@/components/ui/Toast';
 import { STAGES } from '@/content';
 import { deleteAvatarFile, pickAvatar, type PhotoSource } from '@/lib/avatar';
 import { haptic } from '@/lib/haptics';
+import { hasBlockedWords } from '@/lib/moderation';
 import { useAccount } from '@/state/account';
 import { BIO_MAX, useProgress, type LearnerLevel } from '@/state/progress';
 import { card, colors, fonts } from '@/theme';
@@ -32,6 +33,8 @@ export default function EditProfileScreen() {
   const [bio, setBio] = useState(state.bio);
   const [busy, setBusy] = useState(false);
   const photo = state.avatar ?? state.avatarUrl;
+  const rudeName = hasBlockedWords(name);
+  const rudeBio = hasBlockedWords(bio);
 
   const choose = async (source: PhotoSource) => {
     haptic.tap();
@@ -58,6 +61,7 @@ export default function EditProfileScreen() {
   };
 
   const save = () => {
+    if (rudeName || rudeBio) return;
     setProfile({ name, bio });
     haptic.success();
     toast('Profile saved');
@@ -132,7 +136,8 @@ export default function EditProfileScreen() {
 
           <Animated.View entering={FadeInDown.delay(80).duration(300)} style={{ gap: 8 }}>
             <T variant="label">Name</T>
-            <TextInput value={name} onChangeText={setName} maxLength={24} placeholder="Your name" placeholderTextColor={colors.ink3} autoComplete="name" accessibilityLabel="Name" style={styles.input} />
+            <TextInput value={name} onChangeText={setName} maxLength={24} placeholder="Your name" placeholderTextColor={colors.ink3} autoComplete="name" accessibilityLabel="Name" style={[styles.input, rudeName && { borderColor: colors.danger }]} />
+            {rudeName ? <Warning /> : null}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <T variant="label">About you</T>
               <T variant="caption">
@@ -147,8 +152,9 @@ export default function EditProfileScreen() {
               placeholder="e.g. Class 11 · learning Python to build games"
               placeholderTextColor={colors.ink3}
               accessibilityLabel="About you"
-              style={[styles.input, { height: 84, paddingTop: 14, textAlignVertical: 'top' }]}
+              style={[styles.input, { height: 84, paddingTop: 14, textAlignVertical: 'top' }, rudeBio && { borderColor: colors.danger }]}
             />
+            {rudeBio ? <Warning /> : null}
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(120).duration(300)} style={{ gap: 8 }}>
@@ -194,10 +200,19 @@ export default function EditProfileScreen() {
           </Animated.View>
         </ScrollView>
         <View style={styles.footer}>
-          <Button label="Save profile" disabled={!name.trim()} onPress={save} />
+          <Button label="Save profile" disabled={!name.trim() || rudeName || rudeBio} onPress={save} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
+  );
+}
+
+/** Shown under a name or bio that the word filter catches. */
+function Warning() {
+  return (
+    <T variant="caption" color={colors.danger} accessibilityLiveRegion="polite">
+      Other learners can see this. Please remove words that could hurt or upset someone.
+    </T>
   );
 }
 

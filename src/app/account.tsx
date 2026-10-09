@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
+import { blockedLearners, unblockLearner } from '@/lib/moderation';
 import { useAccount, type SyncStatus } from '@/state/account';
 import { useProgress } from '@/state/progress';
 import { card, colors, fonts } from '@/theme';
@@ -22,6 +23,41 @@ const SYNC_LABEL: Record<SyncStatus, { text: string; color: string }> = {
   synced: { text: 'Progress saved to your account', color: colors.success },
   error: { text: 'Could not sync. Will retry when you learn again', color: colors.danger },
 };
+
+/** Learners you blocked on the league, with a way to unblock them. Hidden when there are none. */
+function BlockedList() {
+  const toast = useToast();
+  const [people, setPeople] = useState<{ user_id: string; display_name: string }[]>([]);
+
+  useEffect(() => {
+    let alive = true;
+    blockedLearners().then((list) => alive && setPeople(list));
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  if (!people.length) return null;
+  const unblock = async (id: string, name: string) => {
+    const error = await unblockLearner(id);
+    if (error) return toast(error);
+    setPeople((all) => all.filter((p) => p.user_id !== id));
+    toast(`${name} is unblocked`);
+  };
+  return (
+    <View style={[card, { padding: 16, gap: 10 }]}>
+      <T variant="label">Blocked learners</T>
+      {people.map((p) => (
+        <View key={p.user_id} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <T variant="bodySm" style={{ flex: 1 }} numberOfLines={1}>
+            {p.display_name}
+          </T>
+          <Button variant="outline" height={40} label="Unblock" accessibilityLabel={`Unblock ${p.display_name}`} onPress={() => unblock(p.user_id, p.display_name)} />
+        </View>
+      ))}
+    </View>
+  );
+}
 
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
@@ -97,6 +133,7 @@ export default function AccountScreen() {
                   </T>
                 </View>
               </View>
+              <BlockedList />
               <Button
                 variant="outline"
                 label="Sign out"

@@ -422,3 +422,86 @@ end;
 $$;
 revoke all on function public.claim_certificate(text) from public, anon;
 grant execute on function public.claim_certificate(text) to authenticated;
+
+-- ============================================================================
+-- v1.5: Report and block learners. Safe to re-run.
+-- Learners can report a profile on the league or block someone. A profile
+-- reported by 3 different learners is hidden at once (name "Learner", no photo
+-- or bio) until you review it. Review in the dashboard:
+--   select p.user_id, p.display_name, p.hidden, count(*) as reports, array_agg(distinct r.reason) as reasons
+--   from public.reports r join public.profiles p on p.user_id = r.reported
+--   group by p.user_id, p.display_name, p.hidden order by reports desc;
+-- To restore a profile after review: update public.profiles set hidden = false where user_id = '<id>';
+-- ============================================================================
+
+alter table public.profiles add column if not exists hidden boolean not null default false;
+
+create table if not exists public.reports (
+  id bigint generated always as identity primary key,
+  reporter uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  reported uuid not null references auth.users (id) on delete cascade,
+  reason text not null check (reason in ('photo', 'name', 'spam', 'other')),
+  created_at timestamptz not null default now(),
+  unique (reporter, reported)
+);
+alter table public.reports enable row level security;
+-- Learners can send reports but never read them; you read them in the dashboard.
+drop policy if exists "send reports" on public.reports;
+create policy "send reports" on public.reports for insert to authenticated
+  with check (reporter = auth.uid() and reported <> auth.uid());
+
+create table if not exists public.blocks (
+  blocker uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  blocked uuid not null references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (blocker, blocked)
+);
+alter table public.blocks enable row level security;
+-- Each learner sees and manages only their own block list.
+drop policy if exists "own blocks" on public.blocks;
+create policy "own blocks" on public.blocks for all to authenticated
+  using (blocker = auth.uid())
+  with check (blocker = auth.uid() and blocked <> auth.uid());
+
+-- Three different reporters hide the profile straight away.
+create or replace function public.hide_reported_profile()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if (select count(*) from public.reports where reported = new.reported) >= 3 then
+    update public.profiles set hidden = true where user_id = new.reported and not hidden;
+  end if;
+  return new;
+end;
+$$;
+revoke all on function public.hide_reported_profile() from public, anon, authenticated;
+
+drop trigger if exists reports_hide_profile on public.reports;
+create trigger reports_hide_profile after insert on public.reports
+  for each row execute function public.hide_reported_profile();
+
+-- A hidden profile stays hidden when the app syncs again, and only you can un-hide it.
+create or replace function public.enforce_hidden_profile()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+begin
+  if tg_op = 'UPDATE' and old.hidden and current_user in ('authenticated', 'anon') then
+    new.hidden := true;
+  end if;
+  if new.hidden then
+    new.display_name := 'Learner';
+    new.avatar_url := null;
+    new.bio := '';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists profiles_hidden on public.profiles;
+create trigger profiles_hidden before insert or update on public.profiles
+  for each row execute function public.enforce_hidden_profile();

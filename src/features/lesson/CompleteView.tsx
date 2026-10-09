@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -6,7 +6,9 @@ import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
+import { useToast } from '@/components/ui/Toast';
 import { useT } from '@/i18n';
+import { sendFeedback, SUPPORT_EMAIL } from '@/lib/feedback';
 import { colors } from '@/theme';
 
 const CONFETTI = [
@@ -23,6 +25,7 @@ export function CompleteView({
   xp,
   coins,
   replay = false,
+  feedbackAbout,
   accuracy,
   seconds,
   learned,
@@ -37,6 +40,8 @@ export function CompleteView({
   coins: number;
   /** Replays earn practice XP only; the screen says so instead of showing 0 coins without explanation. */
   replay?: boolean;
+  /** What a "Something wrong?" email is about, e.g. the lesson id. */
+  feedbackAbout?: string;
   accuracy: number;
   seconds: number;
   learned: string[];
@@ -47,6 +52,7 @@ export function CompleteView({
 }) {
   const t = useT();
   const insets = useSafeAreaInsets();
+  const toast = useToast();
   const time = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
   const stats = [
     { label: 'XP', value: `+${xp}`, ink: colors.primary, bg: colors.surfaceTint, line: '#D9D5F7', glyph: true },
@@ -141,6 +147,20 @@ export function CompleteView({
       <View style={{ paddingHorizontal: 16, paddingBottom: 12 + insets.bottom, gap: 6 }}>
         <Button label={t('continue')} onPress={onContinue} />
         <Button variant="ghost" label="Replay this lesson" height={46} onPress={onReplay} />
+        {feedbackAbout ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityHint="Opens your email app"
+            hitSlop={6}
+            onPress={async () => {
+              if (!(await sendFeedback(feedbackAbout))) toast(`Email us at ${SUPPORT_EMAIL}`);
+            }}
+            style={{ minHeight: 36, alignItems: 'center', justifyContent: 'center' }}>
+            <T variant="caption" color={colors.ink2}>
+              Something wrong in this lesson? Tell us
+            </T>
+          </Pressable>
+        ) : null}
       </View>
     </View>
   );

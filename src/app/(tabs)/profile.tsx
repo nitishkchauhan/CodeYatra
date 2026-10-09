@@ -1,5 +1,5 @@
 import { router, type Href } from 'expo-router';
-import { Alert, Platform, Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { Alert, Linking, Platform, Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -10,7 +10,7 @@ import { Bar } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
 import { findStage, stageProgress, STAGES } from '@/content';
-import { useT } from '@/i18n';
+import { APP_VERSION, sendFeedback, SUPPORT_EMAIL } from '@/lib/feedback';
 import { haptic } from '@/lib/haptics';
 import { syncReminder } from '@/lib/reminders';
 import { useAccount } from '@/state/account';
@@ -38,7 +38,6 @@ const SHORTCUTS: { label: string; sub: string; href: Href; icon: string; tint: s
 ];
 
 export default function ProfileScreen() {
-  const t = useT();
   const toast = useToast();
   const { state, streak, today, setHaptics, setTelemetry, setReminder, setStage, reset } = useProgress();
   const account = useAccount();
@@ -278,6 +277,27 @@ export default function ProfileScreen() {
             </T>
             <Icon name="chevronRight" size={18} color={colors.ink3} />
           </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityHint="Opens your email app"
+            onPress={async () => {
+              if (!(await sendFeedback('Profile'))) toast(`Email us at ${SUPPORT_EMAIL}`);
+            }}
+            style={[styles.setting, styles.divider]}>
+            <Icon d="M4 6h16v12H4z M4 7l8 6 8-6" size={20} color={colors.primary} />
+            <View style={{ flex: 1 }}>
+              <T variant="label">Send feedback</T>
+              <T variant="caption">Found a bug or a confusing lesson? Tell us.</T>
+            </View>
+            <Icon name="chevronRight" size={18} color={colors.ink3} />
+          </Pressable>
+          <Pressable accessibilityRole="link" onPress={() => Linking.openURL(PRIVACY_URL)} style={[styles.setting, styles.divider]}>
+            <Icon d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z" size={20} color={colors.primary} />
+            <T variant="label" style={{ flex: 1 }}>
+              Privacy policy
+            </T>
+            <Icon name="chevronRight" size={18} color={colors.ink3} />
+          </Pressable>
           <Pressable accessibilityRole="button" onPress={confirmReset} style={[styles.setting, styles.divider]}>
             <Icon name="trash" size={20} color={colors.danger} />
             <T variant="label" color={colors.danger} style={{ flex: 1 }}>
@@ -286,12 +306,14 @@ export default function ProfileScreen() {
           </Pressable>
         </Animated.View>
         <T variant="caption" style={{ textAlign: 'center' }}>
-          CodeYatra · {t('learn')} · v1.1
+          CodeYatra · version {APP_VERSION}
         </T>
       </ScrollView>
     </SafeAreaView>
   );
 }
+
+const PRIVACY_URL = 'https://nitishkchauhan.github.io/CodeYatra/privacy.html';
 
 const styles = StyleSheet.create({
   hero: { borderRadius: 22, backgroundColor: colors.hero, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 14 },

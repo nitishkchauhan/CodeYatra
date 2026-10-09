@@ -8,6 +8,8 @@ import { colors, fonts } from '@/theme';
 const C = colors.code;
 const CHAR_W = 8.1; // Roboto Mono at 13.5px
 const LINE_H = 22;
+/** Width taken by the line-number gutter (34) and the input's side padding (4 + 14). */
+const CHROME_W = 34 + 4 + 14;
 /** Largest code size relative to normal; bigger stops fitting a phone even with scrolling. */
 const MAX_CODE_SCALE = 1.6;
 
@@ -89,7 +91,9 @@ export function CodeEditor({
   const scale = Math.min(useWindowDimensions().fontScale || 1, MAX_CODE_SCALE);
   const lineH = LINE_H * scale;
   const lines = value.split('\n');
-  const width = Math.max(320, Math.max(...lines.map((l) => l.length)) * CHAR_W * scale + 48);
+  // Gutter + input padding, plus two spare characters so a line never wraps (a wrapped
+  // line would push every later line out of step with its line number).
+  const width = Math.max(320, (Math.max(...lines.map((l) => l.length)) + 2) * CHAR_W * scale + CHROME_W);
   const height = Math.max(minLines, lines.length) * lineH + 20;
   const unit = lang === 'python' ? '    ' : '  ';
 
