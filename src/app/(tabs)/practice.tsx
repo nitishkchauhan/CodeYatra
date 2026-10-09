@@ -61,6 +61,25 @@ export default function PracticeScreen() {
           </Pressable>
         </Animated.View>
 
+        <Animated.View entering={FadeInDown.delay(60).duration(320)}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Placement mock tests: timed tests with a score report"
+            onPress={() => router.push('/mock')}
+            style={({ pressed }) => [styles.mock, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
+            <View style={styles.mockIcon}>
+              <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={24} color="#16142B" strokeWidth={2.2} />
+            </View>
+            <View style={{ flex: 1, gap: 2 }}>
+              <T variant="heading">Placement mock tests</T>
+              <T variant="bodySm" color={colors.ink2}>
+                {state.mockResults.length ? `Last score ${state.mockResults[0].score}/${state.mockResults[0].total} · try again` : 'Timed tests on C, Java, Python, DSA, SQL and CS basics'}
+              </T>
+            </View>
+            <Icon name="chevronRight" size={20} color={colors.saffronInk} />
+          </Pressable>
+        </Animated.View>
+
         <Animated.View entering={FadeInDown.delay(80).duration(320)}>
           <ProjectCards />
         </Animated.View>
@@ -158,6 +177,8 @@ export default function PracticeScreen() {
 }
 
 const styles = StyleSheet.create({
+  mock: { borderRadius: 20, backgroundColor: colors.saffronSoft, borderWidth: 1, borderColor: '#FFD9A3', padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  mockIcon: { width: 48, height: 48, borderRadius: 14, backgroundColor: colors.saffron, alignItems: 'center', justifyContent: 'center' },
   playground: {
     borderRadius: 20,
     backgroundColor: colors.hero,

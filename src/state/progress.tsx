@@ -5,7 +5,7 @@ import { getLesson, STAGES } from '@/content';
 import { coinsFor, STREAK_FREEZE, type OutfitId } from '@/content/shop';
 import { setHapticsEnabled } from '@/lib/haptics';
 import { setTelemetryEnabled } from '@/lib/telemetry';
-import { applyStreakFreezes, INITIAL, normalize, type Certificate, type LearnerLevel, type Progress } from './model';
+import { applyStreakFreezes, INITIAL, normalize, type Certificate, type LearnerLevel, type MockResult, type Progress } from './model';
 import { dayKey, nextStreak, visibleStreak } from './streak';
 
 export type { LearnerLevel, Progress } from './model';
@@ -36,6 +36,8 @@ type ProgressApi = {
   grantCoins: (coins: number, patch?: Partial<Pick<Progress, 'referralsCredited' | 'referred'>>) => void;
   setCertificateVerifyId: (stageId: string, verifyId: string) => void;
   setTelemetry: (on: boolean) => void;
+  /** Saves a mock test, adds XP and coins, and counts toward the streak. */
+  finishMock: (result: Omit<MockResult, 'at'>) => { xp: number; coins: number };
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -127,6 +129,21 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     setCertificateVerifyId: (stageId, verifyId) =>
       update((s) => (s.certificates[stageId] ? { ...s, certificates: { ...s.certificates, [stageId]: { ...s.certificates[stageId], verifyId } } } : s)),
     setTelemetry: (on) => update((s) => ({ ...s, telemetry: on })),
+    finishMock: (result) => {
+      const xp = result.score * 3;
+      const coins = result.score;
+      const streakResult = nextStreak(state.streak, state.lastActive, today);
+      update((s) => ({
+        ...s,
+        xp: s.xp + xp,
+        coins: s.coins + coins,
+        streak: streakResult.streak,
+        lastActive: today,
+        dailyXp: { ...s.dailyXp, [today]: (s.dailyXp[today] ?? 0) + xp },
+        mockResults: [{ ...result, at: today }, ...s.mockResults].slice(0, 30),
+      }));
+      return { xp, coins };
+    },
     recordMistake: (key) => update((s) => ({ ...s, mistakes: { ...s.mistakes, [key]: today } })),
     setLevel: (level) => update((s) => ({ ...s, level })),
     setHaptics: (on) => update((s) => ({ ...s, haptics: on })),

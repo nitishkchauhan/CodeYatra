@@ -5,6 +5,9 @@ export type LearnerLevel = 'school' | 'college' | 'curious';
 
 export type Completion = { xp: number; accuracy: number; at: string };
 /** verifyId is set once the certificate is registered online, so anyone can verify it. */
+/** One finished mock test. `topics` maps topic → [right, asked]. */
+export type MockResult = { kind: string; score: number; total: number; seconds: number; at: string; topics: Record<string, [number, number]> };
+
 export type Certificate = { stageId: string; name: string; date: string; verifyId?: string };
 
 export type Progress = {
@@ -38,6 +41,8 @@ export type Progress = {
   referred: boolean;
   /** Anonymous crash reports and usage events. */
   telemetry: boolean;
+  /** Newest first, at most 30. */
+  mockResults: MockResult[];
   reminder: { enabled: boolean; hour: number; minute: number };
   /** Milliseconds; the newer side wins settings when merging phone and cloud copies. */
   updatedAt: number;
@@ -68,6 +73,7 @@ export const INITIAL: Progress = {
   referralsCredited: 0,
   referred: false,
   telemetry: true,
+  mockResults: [],
   reminder: { enabled: false, hour: 19, minute: 0 },
   updatedAt: 0,
 };
@@ -131,6 +137,9 @@ export function mergeProgress(local: Progress, remote: Progress): Progress {
     mistakes: { ...remote.mistakes, ...local.mistakes },
     referralsCredited: Math.max(local.referralsCredited, remote.referralsCredited),
     referred: local.referred || remote.referred,
+    mockResults: [...new Map([...remote.mockResults, ...local.mockResults].map((r) => [`${r.at}|${r.kind}|${r.score}|${r.seconds}`, r])).values()]
+      .sort((a, b) => (a.at < b.at ? 1 : -1))
+      .slice(0, 30),
     avatar: local.avatar,
     updatedAt: Math.max(local.updatedAt, remote.updatedAt),
   };
