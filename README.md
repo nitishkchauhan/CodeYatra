@@ -1,15 +1,16 @@
 # CodeYatra
 
 A mobile app that teaches programming from first principles to placement-ready
-DSA, in 14 tracks of 10 modules each:
+DSA, in 16 tracks of 10 modules each:
 
 | Section | Tracks | Practice style |
 |---|---|---|
 | Start here | Logic & Blocks | Block puzzles with Yatri, predict, order and debug |
+| School | CBSE Computer Science | Class 11–12 Python syllabus, find-the-output, board coding questions |
 | Web basics | HTML, CSS, JavaScript | Live web-page builder, fill-in code, real JS editor |
 | Programming | Python, C, Java | Real Python editor; C and Java output, bug and order drills |
 | Full-stack | React, Node.js, Next.js | Fill-in code, find the bug, JS editor with tests |
-| CS core | DSA, SQL, Git | Python algorithms with tests, real SQL queries, command drills |
+| CS core | DSA, DSA Advanced, SQL, Git | Python algorithms with tests, real SQL queries, command drills |
 | Placement | Placement Prep | Coding-round questions with tests, output and OOP questions |
 
 Every module follows the same rhythm: **read → quick check → practice → complete**.
@@ -18,7 +19,7 @@ Built with Expo SDK 57, Expo Router, Reanimated 4 and react-native-svg.
 
 ## What is inside
 
-- **14 tracks, 140 modules, 32 practice sets, 4 guided projects** (portfolio page, to-do app, quiz game, guessing game)
+- **16 tracks, 160 modules, 36 practice sets, 4 guided projects, timed placement mock tests** (118-question bank) (portfolio page, to-do app, quiz game, guessing game)
 - **8 exercise types**: reading cards, quizzes, fill the gap, real code editor, order the lines, find the bug, predict the output, tap the token, plus a live HTML/CSS/JS page builder and block puzzles
 - **Real code execution** in a sandbox: Python (Pyodide), JavaScript, and SQL (sqlite3 on a sample railway database)
 - **Ask Yatri**: AI hints from Claude through a Supabase Edge Function, with a daily quota

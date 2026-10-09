@@ -191,7 +191,7 @@ export type PracticeRef = {
 /** A language track (HTML, Python, …). Tracks are grouped into sections for navigation. */
 export type Stage = {
   id: string;
-  section: 'Start here' | 'Web basics' | 'Programming' | 'Full-stack' | 'CS core' | 'Placement';
+  section: 'Start here' | 'School' | 'Web basics' | 'Programming' | 'Full-stack' | 'CS core' | 'Placement';
   /** Short label drawn in the track's badge, e.g. "JS" ("atom" draws the React logo). */
   badge: string;
   badgeBg: string;

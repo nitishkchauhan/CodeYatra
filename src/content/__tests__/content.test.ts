@@ -38,7 +38,7 @@ describe('lesson content', () => {
 
 describe('stages', () => {
   it('has a track per language, each with 10 playable modules', () => {
-    expect(STAGES.map((s) => s.id)).toEqual(['foundations', 'html', 'css', 'js', 'python', 'c', 'java', 'react', 'node', 'next', 'dsa', 'sql', 'git', 'placement']);
+    expect(STAGES.map((s) => s.id)).toEqual(['foundations', 'cbse', 'html', 'css', 'js', 'python', 'c', 'java', 'react', 'node', 'next', 'dsa', 'dsa2', 'sql', 'git', 'placement']);
     for (const stage of STAGES) {
       expect(stage.units.length).toBe(10);
       for (const u of stage.units) for (const l of u.lessons) expect(hasContent(l.id)).toBe(true);

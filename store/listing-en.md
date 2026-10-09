@@ -10,13 +10,17 @@ Learn Python, C, Java, DSA, Web & SQL in bite-size lessons, AI hints & projects
 
 Start your coding journey with Yatri, your robot guide. CodeYatra teaches real programming in short, playful lessons: from your first logic puzzle to placement-ready DSA.
 
-🧭 14 TRACKS, 140 MODULES
+🧭 16 TRACKS, 160 MODULES
 • Logic & Blocks: think like a programmer with puzzles
+• CBSE Computer Science: the Class 11–12 Python syllabus with find-the-output practice
 • Web: HTML, CSS and JavaScript with live previews
 • Programming: Python, C and Java
 • Full-stack: React, Node.js and Next.js
-• CS core: Data Structures & Algorithms, SQL & Databases, Git & GitHub
+• CS core: DSA, DSA Advanced (trees, graphs, DP), SQL & Databases, Git & GitHub
 • Placement Prep: the questions campus drives ask again and again
+
+⏱ PLACEMENT MOCK TESTS
+Timed tests on C, Java, Python, DSA, SQL, OOP, DBMS, OS and networks, with a score report and your weak topics.
 
 📖 READ, THEN PRACTISE, 8 WAYS
 Every module starts with a short reading card and a quick check. Then you practise for real:

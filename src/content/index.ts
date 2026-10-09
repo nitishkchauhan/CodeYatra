@@ -17,6 +17,8 @@ import { canteenBill, PYTHON_EXTRA } from './python3';
 import { REACT_LESSONS, trainList } from './react';
 import { PROJECTS } from './projects';
 import { C_LESSONS } from './tracks/c';
+import { CBSE_LESSONS } from './tracks/cbse';
+import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
 import { CSS_MORE } from './tracks/cssMore';
 import { balanced, binarySearch, DSA_LESSONS, firstRepeat } from './tracks/dsa';
 import { GIT_LESSONS } from './tracks/git';
@@ -205,6 +207,10 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
   drill('x-git-drill', 'Command drill', 'git', GIT_LESSONS, ['order', 'tap'], ['Remembered everyday Git commands']),
   drill('x-pl-output', 'Output round', 'placement', PLACEMENT_LESSONS, ['predict'], ['Handled tricky output questions']),
   drill('x-pl-code', 'Coding round', 'placement', PLACEMENT_LESSONS, ['editor'], ['Solved classic coding questions'], 4),
+  practice('x-dsa2-graph', 'Count the islands', 'dsa', 9, ['DFS marks a whole connected part'], islands),
+  practice('x-dsa2-dp', 'Fewest coins', 'dsa', 9, ['Build answers from smaller amounts'], minCoins),
+  drill('x-cbse-output', 'Find the output', 'python', CBSE_LESSONS, ['predict'], ['Traced programs like the board exam expects'], 6),
+  drill('x-cbse-code', 'Board coding questions', 'python', CBSE_LESSONS, ['editor'], ['Wrote board-style programs'], 5),
 ];
 
 const ALL: Lesson[] = [
@@ -237,6 +243,8 @@ const ALL: Lesson[] = [
   ...SQL_LESSONS,
   ...GIT_LESSONS,
   ...PLACEMENT_LESSONS,
+  ...DSA2_LESSONS,
+  ...CBSE_LESSONS,
   ...PRACTICE_LESSONS,
   ...TRACK_PRACTICE,
   ...NEW_TRACK_PRACTICE,
@@ -304,6 +312,38 @@ export const STAGES: Stage[] = [
       { id: 'x-corner', title: 'Corner run', kind: 'Blocks puzzle', difficulty: 'Easy', xp: 15 },
       { id: 'x-bazaar', title: 'Gem Bazaar', kind: 'Blocks puzzle', difficulty: 'Medium', xp: 15 },
       { id: 'x-stairs', title: 'Staircase climb', kind: 'Blocks puzzle', difficulty: 'Hard', xp: 15 },
+    ],
+  },
+  {
+    id: 'cbse',
+    section: 'School',
+    badge: 'XII',
+    badgeBg: '#0F766E',
+    badgeInk: '#FFFFFF',
+    name: 'CBSE Computer Science',
+    short: 'CBSE CS',
+    sub: 'Class 11–12 Python syllabus',
+    audience: 'Class 11 · Class 12',
+    blurb: 'Board-style Python: strings, lists, functions, files, stacks and SQL, with find-the-output practice.',
+    color: '#0F766E',
+    soft: '#DDF5F2',
+    accent: '#5EEAD4',
+    icon: 'M4 6l8-3 8 3-8 3z M8 8v5c2.5 2 5.5 2 8 0V8',
+    units: [
+      unit('cb1', 'Data types', ref('cbse-types', 'Data types and operators', 'Read + find the output · 6 min')),
+      unit('cb2', 'Flow of control', ref('cbse-flow', 'Flow of control', 'Read + code editor · 7 min')),
+      unit('cb3', 'Strings', ref('cbse-strings', 'Strings', 'Read + code editor · 7 min')),
+      unit('cb4', 'Lists', ref('cbse-lists', 'Lists', 'Read + code editor · 7 min')),
+      unit('cb5', 'Tuples and dictionaries', ref('cbse-dict', 'Tuples and dictionaries', 'Read + code editor · 7 min')),
+      unit('cb6', 'Functions', ref('cbse-functions', 'Functions and scope', 'Read + find the error · 7 min')),
+      unit('cb7', 'Exceptions', ref('cbse-exceptions', 'Exception handling', 'Read + code editor · 7 min')),
+      unit('cb8', 'File handling', ref('cbse-files', 'Text file handling', 'Read + code editor · 7 min')),
+      unit('cb9', 'Stack', ref('cbse-stack', 'Stack using a list', 'Read + code editor · 7 min')),
+      unit('cb10', 'SQL', ref('cbse-sql', 'SQL for board exams', 'Read + run a query · 8 min')),
+    ],
+    practice: [
+      { id: 'x-cbse-output', title: 'Find the output', kind: 'Board-style', difficulty: 'Medium', xp: 15 },
+      { id: 'x-cbse-code', title: 'Board coding questions', kind: 'Code editor', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -631,6 +671,38 @@ export const STAGES: Stage[] = [
     ],
   },
   {
+    id: 'dsa2',
+    section: 'CS core',
+    badge: 'O(1)',
+    badgeBg: '#4C1D95',
+    badgeInk: '#FFFFFF',
+    name: 'DSA Advanced',
+    short: 'DSA+',
+    sub: 'Trees, graphs and DP',
+    audience: 'B.Tech · BCA · Placements',
+    blurb: 'Trees, heaps, BFS, DFS, backtracking, dynamic programming and greedy: the coding-round core.',
+    color: '#5B21B6',
+    soft: '#EDE5FD',
+    accent: '#C4B5FD',
+    icon: 'M12 4v4 M12 8l-5 5 M12 8l5 5 M7 13v4 M17 13v4',
+    units: [
+      unit('da1', 'Binary trees', ref('dsa2-tree', 'Binary trees', 'Read + code editor · 8 min')),
+      unit('da2', 'BSTs', ref('dsa2-bst', 'Binary search trees', 'Read + code editor · 8 min')),
+      unit('da3', 'Heaps', ref('dsa2-heap', 'Heaps and priority queues', 'Read + code editor · 7 min')),
+      unit('da4', 'BFS', ref('dsa2-bfs', 'Graphs and BFS', 'Read + code editor · 8 min')),
+      unit('da5', 'DFS', ref('dsa2-dfs', 'DFS and connected parts', 'Read + code editor · 9 min')),
+      unit('da6', 'Backtracking', ref('dsa2-backtrack', 'Backtracking', 'Read + code editor · 9 min')),
+      unit('da7', 'DP: memoization', ref('dsa2-dp1', 'Dynamic programming: memoization', 'Read + code editor · 8 min')),
+      unit('da8', 'DP: tables', ref('dsa2-dp2', 'Dynamic programming: tables', 'Read + code editor · 9 min')),
+      unit('da9', 'Greedy', ref('dsa2-greedy', 'Greedy algorithms', 'Read + code editor · 7 min')),
+      unit('da10', 'Merge sort', ref('dsa2-merge', 'Merge sort', 'Read + order lines · 9 min')),
+    ],
+    practice: [
+      { id: 'x-dsa2-graph', title: 'Count the islands', kind: 'Code editor', difficulty: 'Hard', xp: 15 },
+      { id: 'x-dsa2-dp', title: 'Fewest coins', kind: 'Code editor', difficulty: 'Hard', xp: 15 },
+    ],
+  },
+  {
     id: 'sql',
     section: 'CS core',
     badge: 'SQL',
@@ -725,7 +797,7 @@ export const STAGES: Stage[] = [
   },
 ];
 
-export const SECTIONS = ['Start here', 'Web basics', 'Programming', 'Full-stack', 'CS core', 'Placement'] as const;
+export const SECTIONS = ['Start here', 'School', 'Web basics', 'Programming', 'Full-stack', 'CS core', 'Placement'] as const;
 
 /** Saves from v1 used four broad stages; map them to the matching track. */
 export const LEGACY_STAGE: Record<string, string> = {

@@ -45,8 +45,8 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
   <g mask="url(#m)"><image x="520" y="-40" width="560" height="560" xlink:href="${href}"/></g>
   <text x="64" y="150" font-family="Segoe UI, Arial, sans-serif" font-size="76" font-weight="800" fill="#FFFFFF">Code<tspan fill="#FF9F1C">Yatra</tspan></text>
   <text x="66" y="210" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="600" fill="#FFFFFF">Learn to code. Play the journey.</text>
-  <text x="66" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#B9B6F2">14 tracks · 140 bite-size lessons · real code editor</text>
-  <text x="66" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#B9B6F2">AI hints · certificates · placement prep</text>
+  <text x="66" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#B9B6F2">16 tracks · 160 lessons · real code editor</text>
+  <text x="66" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#B9B6F2">Placement mock tests · CBSE · certificates</text>
   ${chipSvg}
 </svg>`;
 

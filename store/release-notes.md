@@ -10,6 +10,7 @@ Play Console limit: 500 characters.
 • Ask Yatri: AI hints when you are stuck
 • Guided projects, live web editor, daily challenge and mistakes review
 • Verified certificates for LinkedIn, invite friends, classes for teachers
+• Placement mock tests, DSA Advanced and CBSE Computer Science tracks
 </en-IN>
 
 ## 1.1.0
