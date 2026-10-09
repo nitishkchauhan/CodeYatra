@@ -280,3 +280,70 @@ create table if not exists public.app_events (
 alter table public.app_events enable row level security;
 drop policy if exists "send events" on public.app_events;
 create policy "send events" on public.app_events for insert to anon, authenticated with check (true);
+
+-- ============================================================================
+-- v1.3: Leaderboard limits. Safe to re-run.
+-- XP is counted on the phone, so the server cannot prove each point was earned.
+-- These limits stop anyone from jumping to the top of the league: a card can
+-- gain at most 2000 XP per 24 hours (about 65 perfect lessons), and that
+-- allowance refills gradually. Points over the limit are not lost: the phone
+-- keeps them and they reach the board as the allowance refills.
+-- Over-limit values are trimmed, never rejected, so syncing never fails.
+-- ============================================================================
+
+-- When this card's XP allowance was last used (managed by the trigger below).
+alter table public.profiles add column if not exists xp_clock timestamptz;
+
+create or replace function public.guard_profile_xp()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+declare
+  daily_cap constant integer := 2000;          -- most XP a card can gain in 24 hours
+  refill constant interval := interval '24 hours';
+  max_start_total constant integer := 100000;  -- sanity limit for a brand-new card
+  now_ts constant timestamptz := now();
+  utc_now constant timestamp := now() at time zone 'UTC';
+  prev_week integer;
+  clock timestamptz;
+  budget integer;
+  allowed integer;
+begin
+  -- The server, not the phone, records when a card last changed.
+  new.updated_at := now_ts;
+
+  -- The phone sends its local Monday. Accept only the current week, allowing
+  -- for every time zone (UTC-12 to UTC+14). Anything else scores zero.
+  if new.week_start is null or new.week_start not in (date_trunc('week', utc_now - interval '12 hours')::date, date_trunc('week', utc_now + interval '14 hours')::date) then
+    new.week_start := date_trunc('week', utc_now)::date;
+    new.week_xp := 0;
+  end if;
+
+  if tg_op = 'INSERT' then
+    -- A new card may bring past progress, but this week only what one learner
+    -- could have earned in the days so far.
+    new.total_xp := least(new.total_xp, max_start_total);
+    new.week_xp := least(new.week_xp, new.total_xp, daily_cap * least(7, greatest(1, utc_now::date - new.week_start + 1)));
+    new.xp_clock := now_ts - refill;
+    return new;
+  end if;
+
+  -- Allowance refills from the last time it was used, up to one full day.
+  -- Always computed from the stored row, so a phone cannot reset it.
+  clock := greatest(coalesce(old.xp_clock, now_ts - refill), now_ts - refill);
+  budget := floor(daily_cap * extract(epoch from now_ts - clock) / extract(epoch from refill))::integer;
+  allowed := least(greatest(new.total_xp - old.total_xp, 0), budget);
+  prev_week := case when old.week_start = new.week_start then old.week_xp else 0 end;
+
+  -- Weekly XP is part of total XP, so neither may rise by more than the allowance.
+  new.total_xp := least(new.total_xp, old.total_xp + allowed);
+  new.week_xp := least(new.week_xp, prev_week + allowed);
+  new.xp_clock := clock + refill * (allowed::double precision / daily_cap);
+  return new;
+end;
+$$;
+
+drop trigger if exists profiles_xp_guard on public.profiles;
+create trigger profiles_xp_guard before insert or update on public.profiles
+  for each row execute function public.guard_profile_xp();
