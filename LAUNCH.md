@@ -53,7 +53,7 @@ Pushes to `main` should start the production build by themselves; today they don
 
 ## 5. Support email
 
-Tell Claude which address to show in the privacy policy and store listing (it replaces `support@codeyatra.app`).
+Support email: `codeyatra.support@gmail.com` (used in the privacy policy, deletion page and store listing).
 
 ## 6. Last: turn on Ask Yatri
 
