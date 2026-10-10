@@ -6,6 +6,7 @@ import { countSeats, styleButton, WEB_MORE } from './web2';
 import { FULLSTACK_LESSONS, trainCardProps } from './fullstack';
 import { PYTHON_LESSONS, trainFare } from './python';
 import { dailyLesson, reviewLesson } from './daily';
+import { drillBase, drillLesson, DRILL_PREFIX } from './drills';
 import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
 import { ticketHtml, WEB_LESSONS } from './web';
 import { CSS_LESSONS, flexRow } from './styling';
@@ -34,6 +35,7 @@ import { NEXT_MORE, NODE_MORE, REACT_MORE } from './tracks/stackMore';
 export * from './types';
 export { PROJECTS } from './projects';
 export { dailyDone, dailyId, DAILY_SIZE } from './daily';
+export { drillId, hasDrill } from './drills';
 export { isOrderCorrect, isPredictCorrect, normalizeOutput, optionOrder, runWebChecks, scrambledOrder } from './helpers';
 
 const PRACTICE_LESSONS: Lesson[] = [
@@ -262,11 +264,16 @@ export function getLesson(id: string): Lesson | undefined {
     const stage = STAGES.find((s) => s.id === daily[2]);
     return stage ? dailyLesson(daily[1], stage, findLesson) : undefined;
   }
+  if (id.startsWith(DRILL_PREFIX)) {
+    const moduleId = id.slice(DRILL_PREFIX.length);
+    const stage = STAGES.find((s) => s.units.some((u) => u.lessons.some((l) => l.id === moduleId)));
+    return drillLesson(moduleId, stage, findLesson);
+  }
   return findLesson(id);
 }
 export const buildReview = (mistakes: Record<string, string>) => reviewLesson(mistakes, findLesson);
 export const hasContent = (id: string) => BY_ID.has(id);
-export const allLessons = () => ALL;
+export const allLessons = () => [...ALL, ...DRILL_LESSONS];
 
 const ref = (id: string, title: string, meta: string): LessonRef => ({
   id,
@@ -847,6 +854,10 @@ export function stageProgress(stage: Stage, completed: Record<string, unknown>) 
     pct: Math.round((done / ids.length) * 100),
   };
 }
+
+// Module practice sets are stored like lessons, so saved mistakes in them can be reviewed later.
+const DRILL_LESSONS = STAGES.flatMap((s) => s.units.flatMap((u) => u.lessons)).flatMap((r) => drillBase(r.id, r.title) ?? []);
+for (const l of DRILL_LESSONS) BY_ID.set(l.id, l);
 
 export const SKILLS = STAGES.map((s) => ({
   key: s.id,

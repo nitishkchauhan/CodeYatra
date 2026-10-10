@@ -86,7 +86,8 @@ export function normalize(raw: Partial<Progress> | null | undefined): Progress {
 }
 
 /** Lessons that count toward progress: daily challenges and reviews are extra practice. */
-export const countsAsLesson = (id: string) => !id.startsWith('daily-') && id !== 'review';
+/** Module lessons and projects; not daily challenges, mistake reviews or module practice. */
+export const countsAsLesson = (id: string) => !id.startsWith('daily-') && !id.startsWith('drill-') && id !== 'review';
 
 export type LessonKind = 'lesson' | 'practice' | 'project';
 
@@ -98,6 +99,7 @@ export const accuracyFor = (mistakes: number) => Math.max(50, 100 - mistakes * 1
  * - First completion: lesson 25 XP / 10 coins, practice 15 / 5, project 60 / 30, plus 5 XP and 5 coins for no mistakes.
  * - Replaying something already finished: 5 XP and no coins, so rewards cannot be farmed.
  * - Daily challenges and mistake reviews are never replays: each one is a new set of exercises.
+ * - Module practice pays once; doing the same practice set again is a replay.
  */
 export function lessonReward(kind: LessonKind, mistakes: number, alreadyDone: boolean): { xp: number; coins: number } {
   if (alreadyDone) return { xp: 5, coins: 0 };
@@ -108,7 +110,8 @@ export function lessonReward(kind: LessonKind, mistakes: number, alreadyDone: bo
 }
 
 /** Whether finishing this lesson again counts as a replay. */
-export const isReplay = (p: Pick<Progress, 'completed'>, lessonId: string) => countsAsLesson(lessonId) && !!p.completed[lessonId];
+export const isReplay = (p: Pick<Progress, 'completed'>, lessonId: string) =>
+  (countsAsLesson(lessonId) || lessonId.startsWith('drill-')) && !!p.completed[lessonId];
 
 const LEGACY_STAGES: Record<string, string> = { web: 'html', fullstack: 'react' };
 

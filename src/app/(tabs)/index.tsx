@@ -14,7 +14,7 @@ import { Glyph, Icon } from '@/components/ui/Icon';
 import { Ring } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { findStage, stageLessonStatuses, stageProgress, type LessonStatus } from '@/content';
+import { drillId, findStage, hasDrill, stageLessonStatuses, stageProgress, type LessonStatus } from '@/content';
 import { greetingKey, useT } from '@/i18n';
 import { DAILY_GOAL, useProgress } from '@/state/progress';
 import { card, colors } from '@/theme';
@@ -111,20 +111,22 @@ export default function LearnScreen() {
                 </T>
               </View>
               <View style={styles.heroSegs}>
-                {stage.units.flatMap((u) => u.lessons).map((l) => {
-                  const s = statuses.get(l.id);
-                  return (
-                    <View
-                      key={l.id}
-                      style={[
-                        styles.heroSeg,
-                        {
-                          backgroundColor: s === 'done' ? colors.tealLight : s === 'current' ? '#FFFFFF' : colors.heroLine,
-                        },
-                      ]}
-                    />
-                  );
-                })}
+                {stage.units
+                  .flatMap((u) => u.lessons)
+                  .map((l) => {
+                    const s = statuses.get(l.id);
+                    return (
+                      <View
+                        key={l.id}
+                        style={[
+                          styles.heroSeg,
+                          {
+                            backgroundColor: s === 'done' ? colors.tealLight : s === 'current' ? '#FFFFFF' : colors.heroLine,
+                          },
+                        ]}
+                      />
+                    );
+                  })}
               </View>
               <Button
                 variant="white"
@@ -190,6 +192,8 @@ export default function LearnScreen() {
           const status = statuses.get(l.id) ?? 'locked';
           const muted = status === 'locked' || status === 'soon';
           const last = ui === stage.units.length - 1;
+          const practice = status === 'done' && hasDrill(l.id);
+          const practiced = !!state.completed[drillId(l.id)];
           return (
             <Animated.View key={unit.id} entering={FadeInDown.delay(220 + ui * 50).duration(320)} style={styles.moduleRow}>
               <View style={styles.rail}>
@@ -217,44 +221,61 @@ export default function LearnScreen() {
                 </View>
                 {!last ? <View style={[styles.railLine, status === 'done' && { backgroundColor: colors.success }]} /> : null}
               </View>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={`Module ${ui + 1}, ${unit.title}: ${l.title}, ${status === 'locked' ? `locked, finish module ${ui} to unlock` : status}`}
-                onPress={() => open(l.id, status)}
-                style={({ pressed }) => [
-                  styles.moduleCard,
-                  status === 'current' && {
-                    borderColor: stage.color,
-                    borderWidth: 2,
-                    backgroundColor: stage.soft,
-                  },
-                  pressed && { transform: [{ scale: 0.98 }] },
-                ]}>
-                <View style={{ flex: 1, gap: 2 }}>
-                  <T variant="kicker" color={muted ? colors.ink3 : stage.color}>
-                    MODULE {ui + 1} · {unit.title.toUpperCase()}
-                  </T>
-                  <T variant="label" color={muted ? colors.ink3 : colors.ink}>
-                    {l.title}
-                  </T>
-                  <T variant="caption">{status === 'locked' ? `Locked · unlocks after Module ${ui}` : l.meta}</T>
-                </View>
-                {status === 'current' ? (
-                  <View style={[styles.nextPill, { backgroundColor: stage.color }]}>
-                    <T variant="labelSm" color="#FFFFFF" style={{ fontSize: 11 }}>
-                      {t('upNext')}
+              <View style={{ flex: 1 }}>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Module ${ui + 1}, ${unit.title}: ${l.title}, ${status === 'locked' ? `locked, finish module ${ui} to unlock` : status}`}
+                  onPress={() => open(l.id, status)}
+                  style={({ pressed }) => [
+                    styles.moduleCard,
+                    status === 'current' && {
+                      borderColor: stage.color,
+                      borderWidth: 2,
+                      backgroundColor: stage.soft,
+                    },
+                    pressed && { transform: [{ scale: 0.98 }] },
+                  ]}>
+                  <View style={{ flex: 1, gap: 2 }}>
+                    <T variant="kicker" color={muted ? colors.ink3 : stage.color}>
+                      MODULE {ui + 1} · {unit.title.toUpperCase()}
                     </T>
+                    <T variant="label" color={muted ? colors.ink3 : colors.ink}>
+                      {l.title}
+                    </T>
+                    <T variant="caption">{status === 'locked' ? `Locked · unlocks after Module ${ui}` : l.meta}</T>
                   </View>
-                ) : status === 'done' ? (
-                  <T variant="labelSm" color={colors.success} style={{ fontSize: 11 }}>
-                    Review
-                  </T>
-                ) : status === 'soon' ? (
-                  <T variant="labelSm" color={colors.ink3} style={{ fontSize: 11 }}>
-                    {t('soon')}
-                  </T>
+                  {status === 'current' ? (
+                    <View style={[styles.nextPill, { backgroundColor: stage.color }]}>
+                      <T variant="labelSm" color="#FFFFFF" style={{ fontSize: 11 }}>
+                        {t('upNext')}
+                      </T>
+                    </View>
+                  ) : practice ? (
+                    <View style={{ width: 86 }} />
+                  ) : status === 'done' ? (
+                    <T variant="labelSm" color={colors.success} style={{ fontSize: 11 }}>
+                      Review
+                    </T>
+                  ) : status === 'soon' ? (
+                    <T variant="labelSm" color={colors.ink3} style={{ fontSize: 11 }}>
+                      {t('soon')}
+                    </T>
+                  ) : null}
+                </Pressable>
+                {practice ? (
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={`${practiced ? 'Practise again' : 'Practise'}: ${l.title}, new exercises`}
+                    onPress={() => router.push({ pathname: '/lesson/[id]', params: { id: drillId(l.id) } })}
+                    hitSlop={6}
+                    style={({ pressed }) => [styles.practicePill, { borderColor: stage.color, backgroundColor: pressed ? stage.soft : colors.surface }]}>
+                    <Glyph name="bolt" size={13} color={stage.color} />
+                    <T variant="labelSm" color={stage.color} style={{ fontSize: 11 }}>
+                      {practiced ? 'Again' : 'Practice'}
+                    </T>
+                  </Pressable>
                 ) : null}
-              </Pressable>
+              </View>
             </Animated.View>
           );
         })}
@@ -265,6 +286,19 @@ export default function LearnScreen() {
 }
 
 const styles = StyleSheet.create({
+  practicePill: {
+    position: 'absolute',
+    right: 12,
+    top: '50%',
+    marginTop: -17,
+    minHeight: 34,
+    paddingHorizontal: 10,
+    borderRadius: 17,
+    borderWidth: 1.5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
   content: { padding: 16, paddingBottom: 32, gap: 14 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   chip: {

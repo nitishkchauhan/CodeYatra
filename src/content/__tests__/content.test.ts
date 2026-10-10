@@ -60,7 +60,8 @@ describe('stages', () => {
 
   it('lists every written lesson in a stage or the projects', () => {
     const listed = new Set([...STAGES.flatMap((s) => [...s.units.flatMap((u) => u.lessons.map((l) => l.id)), ...s.practice.map((p) => p.id)]), ...PROJECTS.map((p) => p.id)]);
-    for (const lesson of lessons) expect(listed).toContain(lesson.id);
+    // Module practice sets (drill-<module>) belong to a listed module.
+    for (const lesson of lessons) expect(listed).toContain(lesson.id.replace(/^drill-/, ''));
   });
 
   it('starts each stage with its first playable lesson as current', () => {
