@@ -48,6 +48,10 @@ type ProgressApi = {
   setTelemetry: (on: boolean) => void;
   /** Saves a mock test, adds XP and coins, and counts toward the streak. */
   finishMock: (result: Omit<MockResult, 'at'>, claimId: string) => { xp: number; coins: number };
+  /** Follow a career path (null to stop following). */
+  setPath: (pathId: string | null) => void;
+  /** Tick or un-tick a path stop the learner already knows. */
+  togglePathMark: (pathId: string, stopId: string) => void;
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -164,6 +168,13 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       }));
       return { xp, coins };
     },
+    setPath: (pathId) => update((s) => ({ ...s, pathId })),
+    togglePathMark: (pathId, stopId) =>
+      update((s) => {
+        const key = `${pathId}/${stopId}`;
+        const { [key]: had, ...rest } = s.pathMarks;
+        return { ...s, pathMarks: had ? rest : { ...s.pathMarks, [key]: today } };
+      }),
     recordMistake: (key) => update((s) => ({ ...s, mistakes: { ...s.mistakes, [key]: today } })),
     setLevel: (level) => update((s) => ({ ...s, level })),
     setHaptics: (on) => update((s) => ({ ...s, haptics: on })),

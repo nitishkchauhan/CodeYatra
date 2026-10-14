@@ -44,6 +44,10 @@ export type Progress = {
   /** Newest first, at most 30. */
   mockResults: MockResult[];
   reminder: { enabled: boolean; hour: number; minute: number };
+  /** Career path the learner is following, e.g. "frontend". */
+  pathId: string | null;
+  /** Path stops ticked by the learner ("pathId/stopId" → day), e.g. topics they already know. */
+  pathMarks: Record<string, string>;
   /** Milliseconds; the newer side wins settings when merging phone and cloud copies. */
   updatedAt: number;
 };
@@ -75,6 +79,8 @@ export const INITIAL: Progress = {
   telemetry: true,
   mockResults: [],
   reminder: { enabled: false, hour: 19, minute: 0 },
+  pathId: null,
+  pathMarks: {},
   updatedAt: 0,
 };
 
@@ -160,6 +166,8 @@ export function mergeProgress(local: Progress, remote: Progress): Progress {
     ),
     inventory: [...new Set([...remote.inventory, ...local.inventory])],
     mistakes: { ...remote.mistakes, ...local.mistakes },
+    // Ticks from either phone are kept; un-ticking only applies on the phone where it happened.
+    pathMarks: { ...remote.pathMarks, ...local.pathMarks },
     referralsCredited: Math.max(local.referralsCredited, remote.referralsCredited),
     referred: local.referred || remote.referred,
     mockResults: [...new Map([...remote.mockResults, ...local.mockResults].map((r) => [`${r.at}|${r.kind}|${r.score}|${r.seconds}`, r])).values()]

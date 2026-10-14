@@ -13,6 +13,7 @@ type TabBarProps = Parameters<NonNullable<ComponentProps<typeof Tabs>['tabBar']>
 
 const ITEMS: Record<string, { label: StringKey; icon: IconName }> = {
   index: { label: 'learn', icon: 'learn' },
+  paths: { label: 'paths', icon: 'route' },
   practice: { label: 'practice', icon: 'practice' },
   profile: { label: 'profile', icon: 'profile' },
 };
