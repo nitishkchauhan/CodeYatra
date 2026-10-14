@@ -4,6 +4,8 @@ Important choices and why they were made. Newest first.
 
 | Date | Decision | Why |
 |---|---|---|
+| 14 Oct 2026 | Onboarding **recommends** a path from 3 answers but never forces it (“See all paths”, “Decide later”); the daily goal comes from minutes a day | Students should feel understood, while staying in control |
+| 14 Oct 2026 | No paywall or free-trial screens in onboarding (unlike Mimo and Enki) | CodeYatra is free to learn; revenue will come from rewarded ads |
 | 14 Oct 2026 | New features are built on a **separate branch** and merged into `main` after the owner checks them | Keeps store builds stable; work is still backed up on GitHub |
 | 14 Oct 2026 | Take ideas from Mimo, Enki and roadmap.sh, **never their assets, text or mascots**; no fake learner counts or reviews | Copyright, and Google Play bans misleading claims |
 | 14 Oct 2026 | Tech news shows **our own short summaries plus a link**, no copied articles or news photos, owner approves each item | Copyright; keeps the app from becoming a “news app” under Play rules |

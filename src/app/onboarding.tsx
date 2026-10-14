@@ -1,185 +1,625 @@
 import { Redirect, router } from 'expo-router';
-import { useState, type ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { Image } from 'expo-image';
-import Animated, { FadeInDown, FadeInRight, ZoomIn } from 'react-native-reanimated';
+import { useEffect, useRef, useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  useWindowDimensions,
+  View,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
+import Animated, { FadeIn, FadeInDown, FadeInRight, ZoomIn, useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
-import { Segments } from '@/components/ui/Progress';
+import { Bar } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
+import { useToast } from '@/components/ui/Toast';
+import { findPath, PATHS, pathSummary, type CareerPath } from '@/content/paths';
+import { goalForMinutes, levelFor, MINUTES, reasonFor, recommendPathId, startingStage, type Interest, type Minutes, type Who, type Why } from '@/content/paths/recommend';
 import { haptic } from '@/lib/haptics';
 import { hasBlockedWords } from '@/lib/moderation';
+import { syncReminder } from '@/lib/reminders';
+import { track } from '@/lib/telemetry';
 import { useAccount } from '@/state/account';
-import { useProgress, type LearnerLevel } from '@/state/progress';
+import { useProgress } from '@/state/progress';
 import { colors, fonts } from '@/theme';
 
-const LEVELS: { id: LearnerLevel; title: string; sub: string; icon: string; tint: string; ink: string }[] = [
+type Option<K extends string | number> = { id: K; title: string; sub?: string; icon: string; tint: string; ink: string };
+
+const WHO: Option<Who>[] = [
+  { id: 'school', title: 'Class 8 to 10', sub: 'Starting out at school', icon: 'M4 19V8l8-4 8 4v11 M9 19v-6h6v6', tint: '#E7EFFE', ink: '#1D4ED8' },
   {
-    id: 'school',
-    title: 'School student',
-    sub: 'Class 8 to 12 · start with logic',
-    icon: 'M3 9l9-5 9 5-9 5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5',
-    tint: '#E7EFFE',
-    ink: '#1D4ED8',
+    id: 'senior',
+    title: 'Class 11 or 12',
+    sub: 'Including CBSE Computer Science',
+    icon: 'M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z M4 21V5 M8 7h6 M8 11h6',
+    tint: colors.tealSoft,
+    ink: '#0E6B63',
   },
   {
     id: 'college',
     title: 'College student',
-    sub: 'B.Tech, BCA, BSc · web, Python, React',
+    sub: 'B.Tech, BCA, BSc or diploma',
     icon: 'M2 9l10-5 10 5-10 5z M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5 M22 9v6',
     tint: colors.primarySoft,
     ink: colors.primary,
   },
+  { id: 'working', title: 'Working', sub: 'In a job, any field', icon: 'M4 8h16v11H4z M9 8V5h6v3 M4 13h16', tint: '#FDF0DC', ink: '#975008' },
+  { id: 'other', title: 'Something else', icon: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z', tint: '#F1EAFE', ink: '#6227C9' },
+];
+
+const WHY: Option<Why>[] = [
+  { id: 'job', title: 'Get a job or crack placements', icon: 'M4 8h16v11H4z M9 8V5h6v3 M4 13h16', tint: '#E8EFFD', ink: '#1D4FD8' },
+  { id: 'exams', title: 'Do well in school or college exams', icon: 'M9 4h6l1 2h3v15H5V6h3z M9 12l2 2 4-4', tint: colors.tealSoft, ink: '#0E6B63' },
   {
-    id: 'curious',
-    title: 'Just curious',
-    sub: 'Exploring code for fun',
-    icon: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z',
-    tint: colors.tealSoft,
-    ink: '#0F766E',
+    id: 'build',
+    title: 'Build my own apps and websites',
+    icon: 'M5 19c3-1 4-3 4-6l6-6c2 0 3-1 4-4-3 1-4 2-4 4l-6 6c-3 0-5 1-6 4z M14 7l3 3',
+    tint: '#FDEDE7',
+    ink: '#B03A16',
+  },
+  { id: 'switch', title: 'Switch to a career in tech', icon: 'M4 7h13l-3-3 M20 17H7l3 3', tint: '#F1EAFE', ink: '#6227C9' },
+  { id: 'fun', title: 'Just for fun', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M8.5 14a4 4 0 0 0 7 0 M9 9.5h.01 M15 9.5h.01', tint: '#FEF6D8', ink: '#854D0E' },
+];
+
+const INTEREST: Option<Interest>[] = [
+  { id: 'web', title: 'Websites', sub: 'What people see in a browser', icon: 'M3 5h18v14H3z M3 9h18', tint: '#FDEDE7', ink: '#B03A16' },
+  { id: 'mobile', title: 'Mobile apps', sub: 'Apps for Android phones', icon: 'M7 3h10v18H7z M11 18h2', tint: '#E2F5EA', ink: '#05703B' },
+  { id: 'data', title: 'Data', sub: 'Numbers, charts and insights', icon: 'M4 20V10 M10 20V4 M16 20v-7 M22 20H2', tint: '#FDF0DC', ink: '#975008' },
+  { id: 'ai', title: 'AI', sub: 'Apps that use AI models', icon: 'M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z', tint: '#F1EAFE', ink: '#6227C9' },
+  { id: 'automation', title: 'Automating tasks', sub: 'Scripts that save time', icon: 'M4 6h10 M4 12h16 M4 18h7 M17 4v4 M14 6h6', tint: '#E6F0F8', ink: '#2B5E89' },
+  {
+    id: 'unsure',
+    title: 'Not sure yet',
+    sub: 'We’ll suggest a good start',
+    icon: 'M9 9a3 3 0 1 1 4 2.8c-.6.3-1 .9-1 1.6V14 M12 18h.01',
+    tint: colors.lineSoft,
+    ink: colors.ink2,
   },
 ];
 
-function Choice({ selected, onPress, children, label }: { selected: boolean; onPress: () => void; children: ReactNode; label: string }) {
-  return (
-    <Pressable
-      accessibilityRole="radio"
-      accessibilityState={{ checked: selected }}
-      accessibilityLabel={label}
-      onPress={() => {
-        haptic.tap();
-        onPress();
-      }}
-      style={({ pressed }) => [
-        styles.choice,
-        {
-          borderColor: selected ? colors.primary : colors.line,
-          borderWidth: selected ? 2 : 1,
-          backgroundColor: selected ? colors.surfaceTint : colors.surface,
-          transform: [{ scale: pressed ? 0.98 : 1 }],
-        },
-      ]}>
-      {children}
-      <View style={[styles.radio, selected && { borderColor: colors.primary, backgroundColor: colors.primary }]}>
-        {selected ? <Icon name="check" size={14} color="#FFFFFF" strokeWidth={3} /> : null}
-      </View>
-    </Pressable>
-  );
-}
+const MINUTE_TEXT: Record<Minutes, string> = { 5: 'Casual', 10: 'Regular', 20: 'Serious', 30: 'Intense' };
+
+const SLIDES = [
+  { title: 'Learn to code on your phone', body: 'Short lessons, from your first logic puzzle to placement-ready DSA.', mood: 'happy' as const },
+  { title: 'Practise with real code', body: 'Write Python, JavaScript and SQL and watch it run, right in the app.', mood: 'focus' as const },
+  { title: 'Follow a path to a job', body: 'Pick a career like Frontend Developer or Data Analyst and see every step.', mood: 'celebrate' as const },
+];
+
+/** The question steps, in order; the bar shows progress through them. */
+const STEPS = ['who', 'why', 'interest', 'minutes', 'result', 'name', 'reminder'] as const;
+type Step = 'welcome' | (typeof STEPS)[number] | 'building';
+
+const fmtTime = (h: number, m: number) => `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
 
 export default function Onboarding() {
   const { finishOnboarding, state } = useProgress();
   const { enabled: accountsEnabled } = useAccount();
-  const [step, setStep] = useState(0);
+  const toast = useToast();
+  const [step, setStep] = useState<Step>('welcome');
+  const [who, setWho] = useState<Who | null>(null);
+  const [why, setWhy] = useState<Why | null>(null);
+  const [interest, setInterest] = useState<Interest | null>(null);
+  const [minutes, setMinutes] = useState<Minutes>(10);
+  const [pathId, setPathId] = useState<string | null>(null);
   const [name, setName] = useState('');
-  const [level, setLevel] = useState<LearnerLevel | null>(null);
+  const [time, setTime] = useState({ hour: 19, minute: 0 });
+  const [remind, setRemind] = useState(false);
 
-  const rude = hasBlockedWords(name);
+  // Signing in on the welcome screen restores an onboarded account.
+  if (state.onboarded && step !== 'building') return <Redirect href="/" />;
+
+  const about = who && why && interest ? { who, why, interest } : null;
+  const go = (next: Step) => setStep(next);
+  const index = STEPS.indexOf(step as (typeof STEPS)[number]);
+  const back = () => go(index > 0 ? STEPS[index - 1] : 'welcome');
+
+  /** Pick an answer and move on, like a conversation. */
+  const answer = <K,>(set: (v: K) => void, value: K, next: Step) => {
+    haptic.tap();
+    set(value);
+    setTimeout(() => go(next), 220);
+  };
 
   const finish = () => {
-    if (!level || rude) return;
-    haptic.success();
-    finishOnboarding({ name, level });
+    if (!about) return;
+    finishOnboarding({
+      name,
+      level: levelFor(about.who),
+      stageId: startingStage(pathId ?? recommendPathId(about), about.who),
+      pathId,
+      dailyGoal: goalForMinutes(minutes),
+      about,
+      reminder: { enabled: remind, hour: time.hour, minute: time.minute },
+    });
+    track('onboarding_done', { who: about.who, why: about.why, interest: about.interest, minutes, path: pathId ?? 'none', reminder: remind });
     router.replace('/');
   };
 
-  // Signing in on the welcome screen restores an onboarded account.
-  if (state.onboarded) return <Redirect href="/" />;
-
-  if (step === 0) {
-    return (
-      <SafeAreaView style={[styles.screen, { backgroundColor: colors.brand }]}>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 10, paddingHorizontal: 16 }}>
-          <Animated.View entering={ZoomIn.springify().damping(14)} style={{ width: '100%', maxWidth: 420, aspectRatio: 1 }}>
-            <Image source={require('@/assets/images/logo.png')} style={{ width: '100%', height: '100%' }} contentFit="contain" accessibilityLabel="CodeYatra" />
-          </Animated.View>
-          <Animated.View entering={FadeInDown.delay(200)} style={{ alignItems: 'center', gap: 6, paddingHorizontal: 8 }}>
-            <T variant="body" color="#DCD8FF" style={{ textAlign: 'center' }}>
-              Learn to code from your first block to your first full-stack app.
-            </T>
-          </Animated.View>
-        </View>
-        <Animated.View entering={FadeInDown.delay(320)} style={{ padding: 20, gap: 4 }}>
-          <Button variant="saffron" label="Get started" onPress={() => setStep(1)} />
-          {accountsEnabled ? (
-            <Button variant="ghost" label="I already have an account" height={46} onPress={() => router.push('/account')} style={{ marginTop: 4 }} />
-          ) : null}
-        </Animated.View>
-      </SafeAreaView>
-    );
-  }
+  if (step === 'welcome') return <Welcome accountsEnabled={accountsEnabled} onStart={() => go('who')} />;
+  if (step === 'building') return <Building goal={goalForMinutes(minutes)} path={findPath(pathId)} onDone={finish} />;
 
   return (
     <SafeAreaView style={styles.screen}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
         <View style={styles.top}>
-          <Pressable accessibilityRole="button" accessibilityLabel="Back" onPress={() => setStep(step - 1)} hitSlop={6} style={styles.back}>
+          <Pressable accessibilityRole="button" accessibilityLabel="Back" onPress={back} hitSlop={6} style={styles.back}>
             <Icon name="back" size={22} color={colors.ink} />
           </Pressable>
-          <Segments count={1} done={0} current={0} />
+          <View style={{ flex: 1 }} accessible accessibilityLabel={`Step ${index + 1} of ${STEPS.length}`}>
+            <Bar value={(index + 1) / STEPS.length} color={colors.primary} />
+          </View>
         </View>
 
-        <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }} keyboardShouldPersistTaps="handled">
-          <Animated.View key="about" entering={FadeInRight.duration(260)} style={{ gap: 16 }}>
-            <View style={{ gap: 4 }}>
-              <T variant="display" accessibilityRole="header">
-                Tell Yatri about you
-              </T>
-            </View>
-            <View style={{ gap: 6 }}>
-              <T variant="labelSm" color={colors.ink2}>
-                What should Yatri call you?
-              </T>
-              <TextInput
-                value={name}
-                onChangeText={setName}
-                placeholder="Your first name"
-                placeholderTextColor={colors.ink3}
-                autoCapitalize="words"
-                autoComplete="given-name"
-                maxLength={24}
-                returnKeyType="done"
-                accessibilityLabel="Your first name"
-                style={[styles.input, rude && { borderColor: colors.danger }]}
-              />
-              {rude ? (
-                <T variant="caption" color={colors.danger} accessibilityLiveRegion="polite">
-                  Other learners see this name. Please choose a different one.
-                </T>
-              ) : null}
-            </View>
-            <T variant="labelSm" color={colors.ink2}>
-              Who are you?
-            </T>
-            {LEVELS.map((l) => (
-              <Choice key={l.id} selected={level === l.id} onPress={() => setLevel(l.id)} label={l.title}>
-                <View style={[styles.glyph, { backgroundColor: l.tint }]}>
-                  <Icon d={l.icon} size={26} color={l.ink} />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <T variant="heading">{l.title}</T>
-                  <T variant="caption">{l.sub}</T>
-                </View>
-              </Choice>
-            ))}
-          </Animated.View>
+        <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+          {step === 'who' ? (
+            <Question key="who" title="Which describes you best?" sub="So Yatri can pick the right starting point.">
+              {WHO.map((o) => (
+                <OptionCard key={o.id} option={o} selected={who === o.id} onPress={() => answer(setWho, o.id, 'why')} />
+              ))}
+            </Question>
+          ) : step === 'why' ? (
+            <Question key="why" title="Why are you learning to code?">
+              {WHY.map((o) => (
+                <OptionCard key={o.id} option={o} selected={why === o.id} onPress={() => answer(setWhy, o.id, 'interest')} />
+              ))}
+            </Question>
+          ) : step === 'interest' ? (
+            <Question key="interest" title="What sounds most interesting?">
+              {INTEREST.map((o) => (
+                <OptionCard
+                  key={o.id}
+                  option={o}
+                  selected={interest === o.id}
+                  onPress={() => {
+                    if (who && why) setPathId(recommendPathId({ who, why, interest: o.id }));
+                    answer(setInterest, o.id, 'minutes');
+                  }}
+                />
+              ))}
+            </Question>
+          ) : step === 'minutes' ? (
+            <Question key="minutes" title="How much time a day?" sub="Little and often works best. You can change it later.">
+              {MINUTES.map((m) => (
+                <OptionCard
+                  key={m}
+                  option={{
+                    id: m,
+                    title: `${m} minutes a day`,
+                    sub: `${MINUTE_TEXT[m]} · goal ${goalForMinutes(m)} XP`,
+                    icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7v5l3 2',
+                    tint: colors.primarySoft,
+                    ink: colors.primary,
+                  }}
+                  selected={minutes === m}
+                  onPress={() => answer(setMinutes, m, 'result')}
+                />
+              ))}
+            </Question>
+          ) : step === 'result' && about ? (
+            <Result about={about} pathId={pathId} onPick={setPathId} />
+          ) : step === 'name' ? (
+            <NameStep name={name} onChange={setName} />
+          ) : (
+            <ReminderStep time={time} onChange={setTime} />
+          )}
         </ScrollView>
 
-        <View style={{ padding: 20, paddingTop: 8 }}>
-          <Button label={level ? 'Start learning' : 'Choose one to continue'} disabled={!level || rude} onPress={finish} />
+        <View style={styles.footer}>
+          {step === 'result' ? (
+            <Button label={pathId ? 'Continue' : 'Continue without a path'} onPress={() => go('name')} />
+          ) : step === 'name' ? (
+            <Button label={name.trim() ? 'Continue' : 'Skip for now'} disabled={hasBlockedWords(name)} onPress={() => go('reminder')} />
+          ) : step === 'reminder' ? (
+            <>
+              <Button
+                label="Yes, remind me"
+                onPress={async () => {
+                  haptic.tap();
+                  const ok = await syncReminder({ enabled: true, ...time });
+                  setRemind(ok || Platform.OS === 'web');
+                  if (!ok && Platform.OS !== 'web') toast('Notifications are off. You can turn reminders on later in Profile.');
+                  go('building');
+                }}
+              />
+              <Button variant="ghost" height={46} label="Set later" onPress={() => go('building')} />
+            </>
+          ) : null}
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
+/* ---------- Welcome slides ---------- */
+
+function Welcome({ accountsEnabled, onStart }: { accountsEnabled: boolean; onStart: () => void }) {
+  const { width } = useWindowDimensions();
+  const [page, setPage] = useState(0);
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => setPage(Math.round(e.nativeEvent.contentOffset.x / Math.max(width, 1)));
+  return (
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.brand }]}>
+      <ScrollView
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={onScroll}
+        onScroll={Platform.OS === 'web' ? onScroll : undefined}
+        scrollEventThrottle={64}>
+        {SLIDES.map((s, i) => (
+          <View key={s.title} style={[styles.slide, { width }]} accessible accessibilityLabel={`${s.title}. ${s.body}`}>
+            <Animated.View entering={ZoomIn.springify().damping(14)} style={styles.halo}>
+              <Yatri size={170} mood={s.mood} dark bob={i === page} />
+            </Animated.View>
+            <T variant="display" color="#FFFFFF" style={{ textAlign: 'center' }}>
+              {s.title}
+            </T>
+            <T variant="body" color="#DCD8FF" style={{ textAlign: 'center', maxWidth: 320 }}>
+              {s.body}
+            </T>
+          </View>
+        ))}
+      </ScrollView>
+      <View style={styles.dots} accessibilityElementsHidden>
+        {SLIDES.map((s, i) => (
+          <View key={s.title} style={[styles.dot, i === page && styles.dotOn]} />
+        ))}
+      </View>
+      <Animated.View entering={FadeInDown.delay(200)} style={{ padding: 20, gap: 4 }}>
+        <Button variant="saffron" label="Get started" onPress={onStart} />
+        {accountsEnabled ? (
+          <Pressable accessibilityRole="button" onPress={() => router.push('/account')} style={styles.haveAccount} hitSlop={6}>
+            <T variant="label" color="#DCD8FF">
+              I already have an account
+            </T>
+          </Pressable>
+        ) : null}
+      </Animated.View>
+    </SafeAreaView>
+  );
+}
+
+/* ---------- Questions ---------- */
+
+function Question({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
+  return (
+    <Animated.View entering={FadeInRight.duration(260)} style={{ gap: 12 }}>
+      <View style={{ gap: 4, marginBottom: 6 }}>
+        <T variant="display" accessibilityRole="header">
+          {title}
+        </T>
+        {sub ? (
+          <T variant="bodySm" color={colors.ink2}>
+            {sub}
+          </T>
+        ) : null}
+      </View>
+      <View style={{ gap: 10 }} accessibilityRole="radiogroup">
+        {children}
+      </View>
+    </Animated.View>
+  );
+}
+
+function OptionCard<K extends string | number>({ option, selected, onPress }: { option: Option<K>; selected: boolean; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ checked: selected }}
+      accessibilityLabel={option.sub ? `${option.title}, ${option.sub}` : option.title}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.option,
+        selected && { borderColor: colors.primary, borderWidth: 2, backgroundColor: colors.surfaceTint },
+        { transform: [{ scale: pressed ? 0.98 : 1 }] },
+      ]}>
+      <View style={[styles.optionIcon, { backgroundColor: option.tint }]}>
+        <Icon d={option.icon} size={24} color={option.ink} />
+      </View>
+      <View style={{ flex: 1, gap: 2 }}>
+        <T variant="heading" style={{ fontSize: 16 }}>
+          {option.title}
+        </T>
+        {option.sub ? <T variant="caption">{option.sub}</T> : null}
+      </View>
+      {selected ? <Icon name="check" size={20} color={colors.primary} strokeWidth={3} /> : null}
+    </Pressable>
+  );
+}
+
+/* ---------- Recommendation ---------- */
+
+function Result({ about, pathId, onPick }: { about: Parameters<typeof reasonFor>[0]; pathId: string | null; onPick: (id: string | null) => void }) {
+  const [all, setAll] = useState(false);
+  const suggested = findPath(recommendPathId(about))!;
+  const chosen = findPath(pathId);
+  return (
+    <Animated.View entering={FadeIn.duration(300)} style={{ gap: 14 }}>
+      <View style={{ alignItems: 'center', gap: 6 }}>
+        <Yatri size={96} mood="celebrate" />
+        <T variant="display" accessibilityRole="header" style={{ textAlign: 'center' }}>
+          {chosen && chosen.id !== suggested.id ? `${chosen.title} it is!` : `${suggested.title} is a great fit for you!`}
+        </T>
+        <T variant="bodySm" color={colors.ink2} style={{ textAlign: 'center' }}>
+          {chosen && chosen.id !== suggested.id ? 'Good choice. You can switch paths any time.' : `${reasonFor(about)} You can switch paths any time.`}
+        </T>
+      </View>
+
+      {chosen ? <PathPreview path={chosen} /> : null}
+
+      <Pressable accessibilityRole="button" onPress={() => setAll((v) => !v)} style={styles.seeAll} hitSlop={6}>
+        <T variant="label" color={colors.primary}>
+          {all ? 'Hide other paths' : 'See all paths'}
+        </T>
+        <Icon name={all ? 'chevronDown' : 'chevronRight'} size={16} color={colors.primary} />
+      </Pressable>
+      {all ? (
+        <View style={{ gap: 8 }} accessibilityRole="radiogroup">
+          {PATHS.map((p) => (
+            <Pressable
+              key={p.id}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: pathId === p.id }}
+              accessibilityLabel={`${p.title}, ${p.months}`}
+              onPress={() => {
+                haptic.tap();
+                onPick(p.id);
+              }}
+              style={[styles.pathRow, pathId === p.id && { borderColor: p.color, borderWidth: 2 }]}>
+              <View style={[styles.pathBadge, { backgroundColor: p.soft }]}>
+                <Icon d={p.icon} size={18} color={p.color} />
+              </View>
+              <T variant="label" style={{ flex: 1 }}>
+                {p.title}
+              </T>
+              <T variant="caption">{p.months}</T>
+            </Pressable>
+          ))}
+          <Pressable
+            accessibilityRole="radio"
+            accessibilityState={{ checked: pathId === null }}
+            onPress={() => onPick(null)}
+            style={[styles.pathRow, pathId === null && { borderColor: colors.primary, borderWidth: 2 }]}>
+            <T variant="label" style={{ flex: 1 }}>
+              Decide later
+            </T>
+          </Pressable>
+        </View>
+      ) : null}
+    </Animated.View>
+  );
+}
+
+function PathPreview({ path }: { path: CareerPath }) {
+  const { stops, inAppPct } = pathSummary(path, {}, {});
+  const topics = path.sections.map((s) => s.title).filter((t) => !/^(before you start|foundations|get hired|pick |ship it|build and ship)/i.test(t));
+  return (
+    <Animated.View key={path.id} entering={ZoomIn.springify().damping(16)} style={[styles.preview, { borderColor: path.color }]}>
+      <View style={[styles.previewTop, { backgroundColor: path.soft }]}>
+        <View style={[styles.previewBadge, { backgroundColor: path.ink }]}>
+          <Icon d={path.icon} size={26} color="#FFFFFF" />
+        </View>
+        <View style={{ flex: 1, gap: 2 }}>
+          <T variant="title">{path.title}</T>
+          <T variant="caption" color={colors.inkBody}>
+            {path.months} · {stops} stops · {inAppPct}% in app
+          </T>
+        </View>
+      </View>
+      <View style={{ padding: 14, gap: 10 }}>
+        <T variant="bodySm" color={colors.inkBody}>
+          {path.tagline}.
+        </T>
+        <T variant="kicker" color={colors.ink3}>
+          WHAT YOU’LL LEARN
+        </T>
+        <View style={styles.chips}>
+          {topics.slice(0, 6).map((t) => (
+            <View key={t} style={[styles.chip, { backgroundColor: path.soft }]}>
+              <T variant="labelSm" color={path.ink} style={{ fontSize: 11 }}>
+                {t}
+              </T>
+            </View>
+          ))}
+        </View>
+      </View>
+    </Animated.View>
+  );
+}
+
+/* ---------- Name and reminder ---------- */
+
+function NameStep({ name, onChange }: { name: string; onChange: (v: string) => void }) {
+  const rude = hasBlockedWords(name);
+  return (
+    <Animated.View entering={FadeInRight.duration(260)} style={{ gap: 14 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 10 }}>
+        <Yatri size={78} mood="happy" />
+        <View style={styles.bubble}>
+          <T variant="label">Namaste! I’m Yatri.</T>
+          <T variant="bodySm" color={colors.ink2}>
+            What should I call you?
+          </T>
+        </View>
+      </View>
+      <TextInput
+        value={name}
+        onChangeText={onChange}
+        placeholder="Your first name"
+        placeholderTextColor={colors.ink3}
+        autoCapitalize="words"
+        autoComplete="given-name"
+        maxLength={24}
+        returnKeyType="done"
+        accessibilityLabel="Your first name"
+        style={[styles.input, rude && { borderColor: colors.danger }]}
+      />
+      {rude ? (
+        <T variant="caption" color={colors.danger} accessibilityLiveRegion="polite">
+          Other learners see this name. Please choose a different one.
+        </T>
+      ) : (
+        <T variant="caption">Shown on your profile and the weekly league if you sign in.</T>
+      )}
+    </Animated.View>
+  );
+}
+
+function ReminderStep({ time, onChange }: { time: { hour: number; minute: number }; onChange: (t: { hour: number; minute: number }) => void }) {
+  const shift = (mins: number) => {
+    haptic.tap();
+    const total = (time.hour * 60 + time.minute + mins + 24 * 60) % (24 * 60);
+    onChange({ hour: Math.floor(total / 60), minute: total % 60 });
+  };
+  const PRESETS = [
+    { hour: 7, minute: 0, label: 'Morning' },
+    { hour: 13, minute: 0, label: 'Lunch' },
+    { hour: 19, minute: 0, label: 'Evening' },
+    { hour: 21, minute: 30, label: 'Night' },
+  ];
+  return (
+    <Animated.View entering={FadeInRight.duration(260)} style={{ gap: 18, alignItems: 'center' }}>
+      <View style={{ gap: 4 }}>
+        <T variant="display" accessibilityRole="header" style={{ textAlign: 'center' }}>
+          Build a coding habit
+        </T>
+        <T variant="bodySm" color={colors.ink2} style={{ textAlign: 'center' }}>
+          Yatri will nudge you once a day. You can change the time later.
+        </T>
+      </View>
+      <Yatri size={110} mood="happy" bob />
+      <View style={styles.timeRow}>
+        <Pressable accessibilityRole="button" accessibilityLabel="30 minutes earlier" onPress={() => shift(-30)} style={styles.timeBtn} hitSlop={6}>
+          <Icon d="M5 12h14" size={22} color={colors.primary} strokeWidth={2.6} />
+        </Pressable>
+        <View style={styles.timeBox} accessible accessibilityLabel={`Reminder at ${fmtTime(time.hour, time.minute)}`} accessibilityLiveRegion="polite">
+          <T style={{ fontFamily: fonts.display, fontSize: 30, color: colors.ink }}>{fmtTime(time.hour, time.minute)}</T>
+        </View>
+        <Pressable accessibilityRole="button" accessibilityLabel="30 minutes later" onPress={() => shift(30)} style={styles.timeBtn} hitSlop={6}>
+          <Icon name="plus" size={22} color={colors.primary} strokeWidth={2.6} />
+        </Pressable>
+      </View>
+      <View style={styles.chips} accessibilityRole="radiogroup">
+        {PRESETS.map((p) => {
+          const on = p.hour === time.hour && p.minute === time.minute;
+          return (
+            <Pressable
+              key={p.label}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: on }}
+              accessibilityLabel={`${p.label}, ${fmtTime(p.hour, p.minute)}`}
+              onPress={() => {
+                haptic.tap();
+                onChange({ hour: p.hour, minute: p.minute });
+              }}
+              style={[styles.preset, on && { backgroundColor: colors.primary, borderColor: colors.primary }]}>
+              <T variant="labelSm" color={on ? '#FFFFFF' : colors.ink2}>
+                {p.label}
+              </T>
+            </Pressable>
+          );
+        })}
+      </View>
+    </Animated.View>
+  );
+}
+
+/* ---------- Building your plan ---------- */
+
+function Building({ goal, path, onDone }: { goal: number; path: CareerPath | undefined; onDone: () => void }) {
+  const reduce = useReducedMotion();
+  const lines = [path ? `Setting up the ${path.title} path` : 'Picking a good starting track', `Daily goal: ${goal} XP`, 'Getting your first lesson ready'];
+  const [shown, setShown] = useState(reduce ? lines.length : 0);
+  const done = useRef(false);
+  useEffect(() => {
+    const step = reduce ? 300 : 650;
+    const timers = lines.map((_, i) => setTimeout(() => setShown(i + 1), step * (i + 1)));
+    const end = setTimeout(
+      () => {
+        if (done.current) return;
+        done.current = true;
+        haptic.success();
+        onDone();
+      },
+      step * (lines.length + 1),
+    );
+    return () => {
+      [...timers, end].forEach(clearTimeout);
+    };
+    // Runs once: the plan is fixed by the time this screen shows.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return (
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.brand, justifyContent: 'center', alignItems: 'center', padding: 24, gap: 22 }]}>
+      <Yatri size={130} mood="focus" dark bob />
+      <T variant="title" color="#FFFFFF" style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
+        Building your plan…
+      </T>
+      <View style={{ gap: 12, alignSelf: 'stretch', maxWidth: 340, marginHorizontal: 'auto' }}>
+        {lines.map((l, i) => (
+          <View key={l} style={[styles.buildRow, { opacity: i < shown ? 1 : 0.35 }]}>
+            <View style={[styles.buildDot, i < shown && { backgroundColor: colors.tealLight, borderColor: colors.tealLight }]}>
+              {i < shown ? <Icon name="check" size={13} color={colors.brand} strokeWidth={3} /> : null}
+            </View>
+            <T variant="bodySm" color="#DCD8FF">
+              {l}
+            </T>
+          </View>
+        ))}
+      </View>
+    </SafeAreaView>
+  );
+}
+
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
-  circle: { position: 'absolute', borderRadius: 999, backgroundColor: '#2A247A' },
   top: { height: 56, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 16 },
   back: { width: 44, height: 44, marginLeft: -10, alignItems: 'center', justifyContent: 'center' },
+  body: { padding: 20, paddingTop: 8, paddingBottom: 24 },
+  footer: { padding: 20, paddingTop: 8, gap: 4 },
+  slide: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14, paddingHorizontal: 28 },
+  halo: { width: 230, height: 230, borderRadius: 115, backgroundColor: '#ffffff14', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
+  haveAccount: { minHeight: 48, alignItems: 'center', justifyContent: 'center', marginTop: 4 },
+  dots: { flexDirection: 'row', justifyContent: 'center', gap: 8, paddingVertical: 6 },
+  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#ffffff44' },
+  dotOn: { width: 22, backgroundColor: colors.saffron },
+  option: {
+    minHeight: 72,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.surface,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  optionIcon: { width: 48, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  seeAll: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, minHeight: 40 },
+  pathRow: {
+    minHeight: 52,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.line,
+    backgroundColor: colors.surface,
+  },
+  pathBadge: { width: 32, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  preview: { borderRadius: 20, borderWidth: 2, overflow: 'hidden', backgroundColor: colors.surface },
+  previewTop: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14 },
+  previewBadge: { width: 52, height: 52, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, justifyContent: 'center' },
+  chip: { minHeight: 26, paddingHorizontal: 10, borderRadius: 13, justifyContent: 'center' },
   bubble: {
     flex: 1,
     backgroundColor: colors.surface,
@@ -191,18 +631,30 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     gap: 2,
   },
-  choice: { minHeight: 76, borderRadius: 18, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 14 },
-  glyph: { width: 52, height: 52, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
-  radio: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: '#D6D2E4', alignItems: 'center', justifyContent: 'center' },
   input: {
-    height: 52,
+    height: 54,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.surface,
     paddingHorizontal: 14,
     fontFamily: fonts.bodySemibold,
-    fontSize: 16,
+    fontSize: 17,
     color: colors.ink,
   },
+  timeRow: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  timeBtn: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 1.5,
+    borderColor: colors.line,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surface,
+  },
+  timeBox: { minWidth: 160, minHeight: 64, paddingHorizontal: 18, borderRadius: 32, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
+  preset: { minHeight: 38, paddingHorizontal: 14, borderRadius: 19, borderWidth: 1, borderColor: colors.line, justifyContent: 'center', backgroundColor: colors.surface },
+  buildRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  buildDot: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: '#ffffff55', alignItems: 'center', justifyContent: 'center' },
 });

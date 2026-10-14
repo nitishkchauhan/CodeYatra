@@ -3,8 +3,12 @@
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
 ## In progress (branch `paths-feature`)
-- **Onboarding v2** (Phase 1): welcome slides, questions, path recommendation, reminder time. 🚧
-- **Project docs** added in `project-docs/` (this folder).
+Nothing half-done right now.
+
+## 14 Oct 2026 (branch `paths-feature`)
+- **Onboarding v2:** 3 welcome slides; questions (who, why, interest, minutes a day) with a progress bar and one-tap answers; a recommended career path with “See all paths”; optional name; daily reminder at any time; “Building your plan…”. Saves path, starting track, personal daily goal, answers and reminder.
+- Home shows the personal daily goal (“About 2 lessons to reach it” when one lesson isn’t enough). Profile shows the exact reminder time.
+- **Project docs** added in `project-docs/` (this folder). `118b457`
 
 ## 14 Oct 2026
 - **Career paths:** 13 job roadmaps with a roadmap.sh-style map view, stop cards, Home card, sync of path and ticks. 90 outside links checked. `c30ec90` (branch `paths-feature`)

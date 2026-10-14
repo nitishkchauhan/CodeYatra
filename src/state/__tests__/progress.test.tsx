@@ -104,4 +104,39 @@ describe('ProgressProvider', () => {
     expect(result.current.state.coins).toBe(12);
     expect(result.current.state.mockResults).toHaveLength(1);
   });
+
+  it('saves the onboarding answers, path, daily goal and reminder', async () => {
+    const hook = await renderHook(() => useProgress(), { wrapper });
+    await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
+    await act(async () => {
+      hook.result.current.finishOnboarding({
+        name: '  Ananya ',
+        level: 'college',
+        stageId: 'sql',
+        pathId: 'data-analyst',
+        dailyGoal: 40,
+        about: { who: 'college', why: 'job', interest: 'data' },
+        reminder: { enabled: true, hour: 20, minute: 30 },
+      });
+    });
+    expect(hook.result.current.state).toMatchObject({
+      onboarded: true,
+      name: 'Ananya',
+      stageId: 'sql',
+      pathId: 'data-analyst',
+      dailyGoal: 40,
+      about: { who: 'college', why: 'job', interest: 'data' },
+      reminder: { enabled: true, hour: 20, minute: 30 },
+    });
+    await waitFor(async () => expect((await stored()).pathId).toBe('data-analyst'));
+  });
+
+  it('keeps the old onboarding working without the new answers', async () => {
+    const hook = await renderHook(() => useProgress(), { wrapper });
+    await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
+    await act(async () => {
+      hook.result.current.finishOnboarding({ name: 'Ravi', level: 'school' });
+    });
+    expect(hook.result.current.state).toMatchObject({ onboarded: true, stageId: 'foundations', dailyGoal: 20, pathId: null, about: null });
+  });
 });

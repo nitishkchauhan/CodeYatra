@@ -86,9 +86,10 @@ The app is **not for children under 13** (Play target audience 13–15, 16–17,
 | ID | Requirement | Status |
 |---|---|---|
 | FR-O1 | Ask the learner’s name and level, and set a starting track | ✅ |
-| FR-O2 | Welcome slides, then questions (who, why, interests, minutes a day) with a progress bar | 🚧 |
-| FR-O3 | Recommend a career path from the answers, with “See all paths” | 🚧 |
-| FR-O4 | Daily reminder with any time chosen in onboarding | 🚧 |
+| FR-O2 | Welcome slides, then questions (who, why, interests, minutes a day) with a progress bar | 🧪 |
+| FR-O3 | Recommend a career path from the answers, with “See all paths” | 🧪 |
+| FR-O4 | Daily reminder with any time chosen in onboarding | 🧪 |
+| FR-O5 | Personal daily goal from minutes a day (10–60 XP) | 🧪 |
 
 ### 2.6 Accounts and sync (see [modules/06](modules/06-accounts-and-sync.md))
 | ID | Requirement | Status |
@@ -119,7 +120,7 @@ The app is **not for children under 13** (Play target audience 13–15, 16–17,
 | ID | Requirement | Status |
 |---|---|---|
 | FR-W1 | XP and coins per lesson; replays pay 5 XP and no coins; a double tap pays once | ✅ |
-| FR-W2 | Streaks, streak freezes (50 coins, hold up to 2), daily goal of 20 XP | ✅ |
+| FR-W2 | Streaks, streak freezes (50 coins, hold up to 2), daily goal (20 XP, or personal from onboarding 🧪) | ✅ |
 | FR-W3 | Shop with 4 outfits for Yatri | ✅ |
 | FR-W4 | Daily reminder at 7 AM, 5 PM, 7 PM or 9 PM | ✅ |
 | FR-M1 | Invite codes: both learners get 50 coins | ✅ |
@@ -144,7 +145,7 @@ The app is **not for children under 13** (Play target audience 13–15, 16–17,
 | NFR-4 **Privacy** | No ads or trackers today; no data sent for guests except anonymous events; account deletion removes everything | Privacy policy, data safety form |
 | NFR-5 **Security** | Row-level security on every table; secrets never in the app; the server checks certificates, XP and reports | SQL tested in a local Postgres (PGlite) |
 | NFR-6 **Safety for teens** | 13+ only; report, block and word filter; no personalised ads for under-18s when ads arrive | Play content rating and target audience |
-| NFR-7 **Quality** | Every change passes typecheck, lint and the automated tests (808) | `npx tsc --noEmit`, `npx expo lint`, `npx jest` |
+| NFR-7 **Quality** | Every change passes typecheck, lint and the automated tests (815) | `npx tsc --noEmit`, `npx expo lint`, `npx jest` |
 | NFR-8 **Content correctness** | Every predicted output, ordered program and solution is run with Node, Python, gcc and sqlite | Content tests |
 
 ---

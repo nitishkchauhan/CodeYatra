@@ -44,6 +44,10 @@ export type Progress = {
   /** Newest first, at most 30. */
   mockResults: MockResult[];
   reminder: { enabled: boolean; hour: number; minute: number };
+  /** XP a day the learner aims for (set from minutes a day in onboarding). */
+  dailyGoal: number;
+  /** Onboarding answers, kept to personalise suggestions. */
+  about: { who: string; why: string; interest: string } | null;
   /** Career path the learner is following, e.g. "frontend". */
   pathId: string | null;
   /** Path stops ticked by the learner ("pathId/stopId" → day), e.g. topics they already know. */
@@ -79,6 +83,8 @@ export const INITIAL: Progress = {
   telemetry: true,
   mockResults: [],
   reminder: { enabled: false, hour: 19, minute: 0 },
+  dailyGoal: 20,
+  about: null,
   pathId: null,
   pathMarks: {},
   updatedAt: 0,

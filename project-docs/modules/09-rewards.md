@@ -14,7 +14,7 @@
 - The completion screen shows exactly what is paid.
 
 ## Streaks and goals
-- **Daily goal:** 20 XP.
+- **Daily goal:** set in onboarding from minutes a day: 5 → 10 XP, 10 → 20, 20 → 40, 30 → 60 (20 XP for older accounts).
 - **Streak:** days in a row with at least one lesson.
 - **Streak freeze:** 50 coins, hold up to 2; used automatically on a missed day.
 
@@ -22,7 +22,7 @@
 4 outfits for Yatri: cricket cap (100), explorer hat (150), graduation cap (200), festive safa (300). Coins can’t be bought with money.
 
 ## Reminders
-A daily reminder at 7 AM, 5 PM, 7 PM or 9 PM (Profile). Planned: any time, chosen during onboarding.
+Chosen at any time during onboarding (in 30-minute steps); Profile shows the time and offers 7 AM, 5 PM, 7 PM or 9 PM.
 
 ## Where it lives in the code
 | Part | Files |

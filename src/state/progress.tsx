@@ -11,7 +11,6 @@ import { dayKey, nextStreak, visibleStreak } from './streak';
 export type { LearnerLevel, Progress } from './model';
 
 const STORAGE_KEY = 'codeyatra/progress/v1';
-export const DAILY_GOAL = 20;
 export const BIO_MAX = 80;
 
 const RECOMMENDED_STAGE: Record<LearnerLevel, string> = {
@@ -39,7 +38,16 @@ type ProgressApi = {
   todayXp: number;
   streak: number;
   recommendedStageId: string;
-  finishOnboarding: (input: { name: string; level: LearnerLevel }) => void;
+  finishOnboarding: (input: {
+    name: string;
+    level: LearnerLevel;
+    /** Starting track; defaults to the one recommended for the level. */
+    stageId?: string;
+    pathId?: string | null;
+    dailyGoal?: number;
+    about?: Progress['about'];
+    reminder?: Progress['reminder'];
+  }) => void;
   completeLesson: (completion: LessonCompletion) => LessonResult;
   recordMistake: (key: string) => void;
   /** Adds coins from outside a lesson, e.g. invite rewards. */
@@ -115,7 +123,18 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     todayXp: state.dailyXp[today] ?? 0,
     streak: visibleStreak(state.streak, state.lastActive, today),
     recommendedStageId: RECOMMENDED_STAGE[state.level],
-    finishOnboarding: ({ name, level }) => update((s) => ({ ...s, onboarded: true, name: name.trim(), level, stageId: RECOMMENDED_STAGE[level] })),
+    finishOnboarding: ({ name, level, stageId, pathId, dailyGoal, about, reminder }) =>
+      update((s) => ({
+        ...s,
+        onboarded: true,
+        name: name.trim(),
+        level,
+        stageId: stageId ?? RECOMMENDED_STAGE[level],
+        pathId: pathId === undefined ? s.pathId : pathId,
+        dailyGoal: dailyGoal ?? s.dailyGoal,
+        about: about ?? s.about,
+        reminder: reminder ?? s.reminder,
+      })),
     completeLesson: ({ lessonId, kind, mistakes, reviewed = [], claimId }) => {
       const claimed = claims.current.get(claimId);
       if (claimed) return claimed as LessonResult;

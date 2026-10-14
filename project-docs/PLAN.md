@@ -14,7 +14,7 @@ Status key: ✅ done · 🚧 in progress · 📋 next · 💤 later
 | Phase | What | Status |
 |---|---|---|
 | Career paths | 13 job roadmaps, roadmap map, stop cards | ✅ on branch `paths-feature` |
-| **1. Onboarding v2** | Welcome slides, questions, path recommendation, reminder time | 🚧 |
+| **1. Onboarding v2** | Welcome slides, questions, path recommendation, reminder time | ✅ on branch `paths-feature` |
 | 2. Friendlier lessons and Home | Big Yatri illustrations on concept screens, zigzag module path, celebrations | 📋 |
 | 5. Tech news and opportunities | Our own short summaries + links; hackathons, internships, contests; owner approves each item | 📋 |
 | 3. Dark mode | Follows the phone, toggle in Profile, contrast-tested | 📋 |

@@ -21,6 +21,8 @@ import { card, colors } from '@/theme';
 
 const LEVEL_LABEL: Record<LearnerLevel, string> = { school: 'School student', college: 'College student', curious: 'Curious learner' };
 const DAY = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const fmtTime = (h: number, m: number) => `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
+
 const REMINDER_TIMES = [
   { hour: 7, label: '7 AM' },
   { hour: 17, label: '5 PM' },
@@ -231,7 +233,9 @@ export default function ProfileScreen() {
             <Icon d="M18 16V11a6 6 0 0 0-12 0v5l-2 2h16z M10 21h4" size={20} color={colors.primary} />
             <View style={{ flex: 1 }}>
               <T variant="label">Daily reminder</T>
-              <T variant="caption">Protects your {streak}-day streak</T>
+              <T variant="caption">
+                {state.reminder.enabled ? `Every day at ${fmtTime(state.reminder.hour, state.reminder.minute)}` : `Protects your ${streak}-day streak`}
+              </T>
             </View>
             <Switch
               value={state.reminder.enabled}
@@ -244,7 +248,7 @@ export default function ProfileScreen() {
           {state.reminder.enabled ? (
             <View style={styles.times} accessibilityRole="radiogroup">
               {REMINDER_TIMES.map((r) => {
-                const on = state.reminder.hour === r.hour;
+                const on = state.reminder.hour === r.hour && state.reminder.minute === 0;
                 return (
                   <Pressable key={r.hour} accessibilityRole="radio" accessibilityState={{ checked: on }} onPress={() => updateReminder({ enabled: true, hour: r.hour, minute: 0 })} style={[styles.time, on && { backgroundColor: colors.primary, borderColor: colors.primary }]}>
                     <T variant="labelSm" color={on ? '#FFFFFF' : colors.ink2}>

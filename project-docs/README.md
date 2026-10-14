@@ -12,9 +12,9 @@ Start here, then open whichever file you need.
 |---|---|
 | **Live on Google Play** | Closed test with 12+ testers since 11 Oct 2026. Production access opens about 25 Oct 2026. |
 | **Latest store build** | Build 5 (v1.2.0). Build 6 not made yet. |
-| **Branch in progress** | `paths-feature`: Career paths, plus the new onboarding (Phase 1). Not merged into `main` yet. |
+| **Branch in progress** | `paths-feature`: Career paths and the new onboarding (Phase 1), both built and checked. Not merged into `main` yet. |
 | **Backend** | Supabase schema v1.5 (`supabase/schema.sql`). |
-| **Tests** | 808 automated tests, all passing. |
+| **Tests** | 815 automated tests, all passing. |
 
 ## Read in this order
 
@@ -27,7 +27,7 @@ Start here, then open whichever file you need.
    | 02 | [Practice](modules/02-practice.md) | Daily challenge, mistakes review, module practice, mock tests, projects |
    | 03 | [Code runner](modules/03-code-runner.md) | Running Python, JavaScript, SQL and web pages on the phone |
    | 04 | [Career paths](modules/04-career-paths.md) | 13 job roadmaps and the roadmap map |
-   | 05 | [Onboarding](modules/05-onboarding.md) | First-run questions and personal recommendation (in progress) |
+   | 05 | [Onboarding](modules/05-onboarding.md) | First-run questions, path recommendation, daily goal and reminder |
    | 06 | [Accounts and sync](modules/06-accounts-and-sync.md) | Sign-in, cloud copy, deleting an account |
    | 07 | [League and safety](modules/07-league-and-safety.md) | Weekly league, XP limits, report and block, word filter |
    | 08 | [Certificates](modules/08-certificates.md) | Earning and verifying certificates |

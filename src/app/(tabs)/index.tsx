@@ -17,7 +17,7 @@ import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
 import { drillId, findStage, hasDrill, stageLessonStatuses, stageProgress, type LessonStatus } from '@/content';
 import { greetingKey, useT } from '@/i18n';
-import { DAILY_GOAL, useProgress } from '@/state/progress';
+import { useProgress } from '@/state/progress';
 import { card, colors } from '@/theme';
 
 const fmt = (n: number) => n.toLocaleString('en-IN');
@@ -33,7 +33,8 @@ export default function LearnScreen() {
   const { pct } = stageProgress(stage, state.completed);
   const currentUnit = stage.units.find((u) => u.lessons.some((l) => statuses.get(l.id) === 'current'));
   const currentLesson = currentUnit?.lessons.find((l) => statuses.get(l.id) === 'current');
-  const goalMet = todayXp >= DAILY_GOAL;
+  const goal = state.dailyGoal;
+  const goalMet = todayXp >= goal;
   const name = state.name || 'Explorer';
 
   const open = (id: string, status: LessonStatus) => {
@@ -156,13 +157,13 @@ export default function LearnScreen() {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(180).duration(320)} style={[styles.goal, card]}>
-          <Ring value={todayXp / DAILY_GOAL} color={goalMet ? colors.success : colors.primary} />
+          <Ring value={todayXp / goal} color={goalMet ? colors.success : colors.primary} />
           <View style={{ flex: 1 }}>
             <T variant="label">
-              {t('dailyGoal')} · {Math.min(todayXp, 999)} / {DAILY_GOAL} XP
+              {t('dailyGoal')} · {Math.min(todayXp, 999)} / {goal} XP
             </T>
             <T variant="caption" color="#6E6A88">
-              {goalMet ? 'Goal reached. Great work today!' : 'One lesson is enough to reach it'}
+              {goalMet ? 'Goal reached. Great work today!' : goal - todayXp <= 30 ? 'One lesson is enough to reach it' : `About ${Math.ceil((goal - todayXp) / 25)} lessons to reach it`}
             </T>
           </View>
           <View
@@ -173,7 +174,7 @@ export default function LearnScreen() {
               },
             ]}>
             <T variant="labelSm" color={goalMet ? '#166534' : colors.saffronInk}>
-              {goalMet ? 'Done' : `+${DAILY_GOAL - todayXp} XP`}
+              {goalMet ? 'Done' : `+${goal - todayXp} XP`}
             </T>
           </View>
         </Animated.View>
