@@ -11,7 +11,6 @@ import { dayKey, nextStreak, visibleStreak } from './streak';
 export type { LearnerLevel, Progress } from './model';
 
 const STORAGE_KEY = 'codeyatra/progress/v1';
-export const DAILY_GOAL = 20;
 export const BIO_MAX = 80;
 
 const RECOMMENDED_STAGE: Record<LearnerLevel, string> = {
@@ -39,7 +38,16 @@ type ProgressApi = {
   todayXp: number;
   streak: number;
   recommendedStageId: string;
-  finishOnboarding: (input: { name: string; level: LearnerLevel }) => void;
+  finishOnboarding: (input: {
+    name: string;
+    level: LearnerLevel;
+    /** Starting track; defaults to the one recommended for the level. */
+    stageId?: string;
+    pathId?: string | null;
+    dailyGoal?: number;
+    about?: Progress['about'];
+    reminder?: Progress['reminder'];
+  }) => void;
   completeLesson: (completion: LessonCompletion) => LessonResult;
   recordMistake: (key: string) => void;
   /** Adds coins from outside a lesson, e.g. invite rewards. */
@@ -48,6 +56,12 @@ type ProgressApi = {
   setTelemetry: (on: boolean) => void;
   /** Saves a mock test, adds XP and coins, and counts toward the streak. */
   finishMock: (result: Omit<MockResult, 'at'>, claimId: string) => { xp: number; coins: number };
+  /** Change the learning plan answered in onboarding: who, why, interest, daily goal (and level from who). */
+  updatePlan: (plan: { about: NonNullable<Progress['about']>; dailyGoal: number; level: LearnerLevel }) => void;
+  /** Follow a career path (null to stop following). */
+  setPath: (pathId: string | null) => void;
+  /** Tick or un-tick a path stop the learner already knows. */
+  togglePathMark: (pathId: string, stopId: string) => void;
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -111,7 +125,18 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     todayXp: state.dailyXp[today] ?? 0,
     streak: visibleStreak(state.streak, state.lastActive, today),
     recommendedStageId: RECOMMENDED_STAGE[state.level],
-    finishOnboarding: ({ name, level }) => update((s) => ({ ...s, onboarded: true, name: name.trim(), level, stageId: RECOMMENDED_STAGE[level] })),
+    finishOnboarding: ({ name, level, stageId, pathId, dailyGoal, about, reminder }) =>
+      update((s) => ({
+        ...s,
+        onboarded: true,
+        name: name.trim(),
+        level,
+        stageId: stageId ?? RECOMMENDED_STAGE[level],
+        pathId: pathId === undefined ? s.pathId : pathId,
+        dailyGoal: dailyGoal ?? s.dailyGoal,
+        about: about ?? s.about,
+        reminder: reminder ?? s.reminder,
+      })),
     completeLesson: ({ lessonId, kind, mistakes, reviewed = [], claimId }) => {
       const claimed = claims.current.get(claimId);
       if (claimed) return claimed as LessonResult;
@@ -164,6 +189,14 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       }));
       return { xp, coins };
     },
+    updatePlan: ({ about, dailyGoal, level }) => update((s) => ({ ...s, about, dailyGoal, level })),
+    setPath: (pathId) => update((s) => ({ ...s, pathId })),
+    togglePathMark: (pathId, stopId) =>
+      update((s) => {
+        const key = `${pathId}/${stopId}`;
+        const { [key]: had, ...rest } = s.pathMarks;
+        return { ...s, pathMarks: had ? rest : { ...s.pathMarks, [key]: today } };
+      }),
     recordMistake: (key) => update((s) => ({ ...s, mistakes: { ...s.mistakes, [key]: today } })),
     setLevel: (level) => update((s) => ({ ...s, level })),
     setHaptics: (on) => update((s) => ({ ...s, haptics: on })),

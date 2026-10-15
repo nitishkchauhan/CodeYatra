@@ -156,7 +156,7 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
   const last = index === paper.length - 1;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <TopBar onClose={exit}>
         <View style={[styles.timer, left <= 120 && { backgroundColor: colors.dangerSoft }]} accessibilityLabel={`${clock(left)} left`}>
           <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={15} color={left <= 120 ? colors.danger : colors.primary} strokeWidth={2.4} />

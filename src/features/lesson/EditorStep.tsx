@@ -3,6 +3,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'reac
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { ActionBar } from './Shell';
+import { Yatri } from '@/components/Yatri';
 import { LANG_COLOR } from '@/components/Code';
 import { AskYatri } from '@/components/AskYatri';
 import { CodeEditor } from '@/components/CodeEditor';
@@ -109,11 +110,11 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
           </Animated.View>
         ) : null}
 
-        {busy && firstPython ? (
-          <View style={styles.loading}>
-            <ActivityIndicator color={colors.primary} />
+        {busy ? (
+          <View style={styles.loading} accessibilityLiveRegion="polite">
+            {firstPython ? <ActivityIndicator color={colors.primary} /> : <Yatri size={40} mood="focus" bob />}
             <T variant="bodySm" color={colors.ink2} style={{ flex: 1 }}>
-              Starting Python for the first time. This downloads about 10 MB once, then runs instantly.
+              {firstPython ? 'Starting Python for the first time. This downloads about 10 MB once, then runs instantly.' : 'Yatri is running your code…'}
             </T>
           </View>
         ) : null}

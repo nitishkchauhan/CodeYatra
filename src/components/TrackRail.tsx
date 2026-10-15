@@ -6,11 +6,26 @@ import { T } from './ui/Text';
 import { STAGES, stageProgress } from '@/content';
 import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
-import { colors } from '@/theme';
+import { colors, glass as g } from '@/theme';
 
-/** A horizontal row of language icons. Tapping one switches track; "All" opens the full picker. */
-export function TrackRail({ value, onChange, onMore }: { value: string; onChange: (id: string) => void; onMore?: () => void }) {
+/** A horizontal row of language icons. Tapping one switches track; "All" opens the full picker. `glass` styles it for dark glass screens. */
+export function TrackRail({
+  value,
+  onChange,
+  onMore,
+  glass = false,
+  first = [],
+}: {
+  value: string;
+  onChange: (id: string) => void;
+  onMore?: () => void;
+  glass?: boolean;
+  /** Tracks to show first (the learner's career path), in this order. */
+  first?: string[];
+}) {
   const { state } = useProgress();
+  const rank = (id: string) => (first.includes(id) ? first.indexOf(id) : first.length + STAGES.findIndex((s) => s.id === id));
+  const ordered = [...STAGES].sort((a, b) => rank(a.id) - rank(b.id));
   return (
     <ScrollView
       horizontal
@@ -18,7 +33,7 @@ export function TrackRail({ value, onChange, onMore }: { value: string; onChange
       style={{ marginHorizontal: -16, flexGrow: 0 }}
       contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
       accessibilityRole="tablist">
-      {STAGES.map((s) => {
+      {ordered.map((s) => {
         const on = s.id === value;
         const { pct } = stageProgress(s, state.completed);
         return (
@@ -26,7 +41,7 @@ export function TrackRail({ value, onChange, onMore }: { value: string; onChange
             key={s.id}
             accessibilityRole="tab"
             accessibilityState={{ selected: on }}
-            accessibilityLabel={`${s.name}, ${pct}% done`}
+            accessibilityLabel={`${s.name}${first.includes(s.id) ? ', in your path' : ''}, ${pct}% done`}
             onPress={() => {
               haptic.tap();
               onChange(s.id);
@@ -34,17 +49,18 @@ export function TrackRail({ value, onChange, onMore }: { value: string; onChange
             style={({ pressed }) => [
               styles.item,
               {
-                borderColor: on ? s.color : colors.line,
+                borderColor: glass ? (on ? s.color : g.border) : on ? s.color : colors.line,
                 borderWidth: on ? 2 : 1,
-                backgroundColor: on ? s.soft : colors.surface,
+                backgroundColor: glass ? (on ? s.soft : g.fill) : on ? s.soft : colors.surface,
               },
               pressed && { transform: [{ scale: 0.96 }] },
             ]}>
             <TrackBadge stage={s} size={34} />
-            <T variant="labelSm" numberOfLines={1} color={on ? colors.ink : colors.ink2} style={{ fontSize: 11.5 }}>
+            {first.includes(s.id) ? <View style={styles.pathDot} /> : null}
+            <T variant="labelSm" numberOfLines={1} color={glass ? (on ? g.text : g.text2) : on ? colors.ink : colors.ink2} style={{ fontSize: 11.5 }}>
               {s.short}
             </T>
-            <View style={styles.track}>
+            <View style={[styles.track, glass && { backgroundColor: g.track }]}>
               <View
                 style={[
                   styles.fill,
@@ -70,15 +86,15 @@ export function TrackRail({ value, onChange, onMore }: { value: string; onChange
             styles.item,
             {
               borderWidth: 1,
-              borderColor: colors.line,
-              backgroundColor: colors.surface,
+              borderColor: glass ? g.border : colors.line,
+              backgroundColor: glass ? g.fill : colors.surface,
             },
             pressed && { transform: [{ scale: 0.96 }] },
           ]}>
-          <View style={[styles.more]}>
-            <Icon name="chevronDown" size={18} color={colors.primary} />
+          <View style={[styles.more, glass && { backgroundColor: g.fillStrong }]}>
+            <Icon name="chevronDown" size={18} color={glass ? g.text : colors.primary} />
           </View>
-          <T variant="labelSm" color={colors.ink2} style={{ fontSize: 11.5 }}>
+          <T variant="labelSm" color={glass ? g.text2 : colors.ink2} style={{ fontSize: 11.5 }}>
             All
           </T>
           <View style={[styles.track, { backgroundColor: 'transparent' }]} />
@@ -106,6 +122,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   fill: { height: 4, borderRadius: 2 },
+  pathDot: { position: 'absolute', top: 6, right: 6, width: 8, height: 8, borderRadius: 4, backgroundColor: colors.saffron, borderWidth: 1.5, borderColor: '#FFFFFF' },
   more: {
     width: 34,
     height: 34,

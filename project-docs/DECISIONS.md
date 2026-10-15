@@ -1,0 +1,26 @@
+# Decisions
+
+Important choices and why they were made. Newest first.
+
+| Date | Decision | Why |
+|---|---|---|
+| 14 Oct 2026 | Onboarding **recommends** a path from 3 answers but never forces it (“See all paths”, “Decide later”); the daily goal comes from minutes a day | Students should feel understood, while staying in control |
+| 14 Oct 2026 | No paywall or free-trial screens in onboarding (unlike Mimo and Enki) | CodeYatra is free to learn; revenue will come from rewarded ads |
+| 14 Oct 2026 | New features are built on a **separate branch** and merged into `main` after the owner checks them | Keeps store builds stable; work is still backed up on GitHub |
+| 14 Oct 2026 | Take ideas from Mimo, Enki and roadmap.sh, **never their assets, text or mascots**; no fake learner counts or reviews | Copyright, and Google Play bans misleading claims |
+| 14 Oct 2026 | Tech news shows **our own short summaries plus a link**, no copied articles or news photos, owner approves each item | Copyright; keeps the app from becoming a “news app” under Play rules |
+| 13 Oct 2026 | Career paths are written by us, mobile-first (vertical map), and link to **free** resources only | roadmap.sh’s diagrams and text are their own work; students can’t pay for courses |
+| 13 Oct 2026 | No salary figures or job guarantees | Can’t be sourced reliably; Play and parents care about honest claims |
+| 13 Oct 2026 | **Rewarded ads only** when ads arrive; never inside lessons; no personalised ads for under-18s | Learning comes first; teen users; India’s DPDP Act and Google rules |
+| 10 Oct 2026 | Module practice uses **new exercises**, not reshuffled old ones | Modules only had about 2 exercises each, so reuse would just repeat |
+| 10 Oct 2026 | Profiles reported by 3 learners are **hidden automatically**, never deleted | Fast protection for teens, while the owner makes the final call |
+| 9 Oct 2026 | Certificates are **issued by the server**, checked against synced progress | The app could insert any certificate before |
+| 9 Oct 2026 | Leaderboard XP is **trimmed, not rejected**, above 2,000 a day | Stops instant cheating without ever breaking sync for honest learners |
+| 15 Oct 2026 | **Light Glass is the one design for the whole app** (light aurora, frosted cards); dark version reverted | Owner’s choice: keep the app light; one consistent look everywhere |
+| 15 Oct 2026 | Redesign in **glassmorphism**, built from translucent layers over an aurora background, **no live blur** | Live blur is slow on Android 11 and older and needs wrapper views; over soft glows the result looks the same |
+| 15 Oct 2026 | New logo **`< Y >` with an upward arrow**; Yatri becomes the animated logo, the robot is retired | Owner’s choice: code + journey in one mark, reads well as a small icon |
+| 15 Oct 2026 | Logo kept as a **vector master** (SVG); every PNG is generated from it | Crisp at every size; one place to change colours |
+| 9 Oct 2026 | Target audience **13+** only | Children’s apps fall under Google’s much stricter Families rules |
+| 9 Oct 2026 | Google sign-in stays **off** until an OAuth client is set up; reviewers use email code | Avoids a half-working sign-in button |
+| 8 Oct 2026 | Ask Yatri is **built but switched on last** | API costs; the core app comes first |
+| 7 Oct 2026 | Guest mode: **every lesson works without an account**, offline | Students on cheap phones and patchy internet; privacy |

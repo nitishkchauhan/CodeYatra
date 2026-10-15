@@ -7,10 +7,9 @@ import Animated, {
   useSharedValue,
   withSequence,
   withTiming,
-  ZoomIn,
 } from 'react-native-reanimated';
 
-import { ActionBar } from './Shell';
+import { ActionBar, VerdictYatri } from './Shell';
 import { CodeBlock } from '@/components/Code';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -127,9 +126,7 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
         <Animated.View entering={SlideInDown.springify().damping(20)}>
           <ActionBar tone={right ? 'success' : 'danger'}>
             <View style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }} accessibilityLiveRegion="polite">
-              <Animated.View entering={ZoomIn.delay(120)} style={[styles.verdict, { backgroundColor: right ? colors.success : colors.danger }]}>
-                <Icon name={right ? 'check' : 'cross'} size={18} color="#FFFFFF" strokeWidth={2.6} />
-              </Animated.View>
+              <VerdictYatri right={right} />
               <View style={{ flex: 1, gap: 2 }}>
                 <T variant="heading" color={right ? colors.successInk : colors.dangerInk} style={{ fontSize: 17 }}>
                   {right ? 'Correct!' : 'Not quite'}

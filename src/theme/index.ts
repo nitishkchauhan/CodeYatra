@@ -1,6 +1,7 @@
-// "Studio" design tokens from the CodeYatra v2/v3 canvas.
+// "Light Glass" design: one look across the whole app. Every screen sits on a soft light aurora
+// (see GlassBackground, mounted once in src/app/_layout.tsx), so `bg` is transparent and cards are frosted white.
 export const colors = {
-  bg: '#F6F5FA',
+  bg: 'transparent',
   surface: '#FFFFFF',
   surfaceTint: '#F7F6FE',
   line: '#E7E5F0',
@@ -36,7 +37,7 @@ export const colors = {
   warnLine: '#FFE3B8',
   warnInk: '#5A3D12',
 
-  brand: '#06104A',
+  brand: '#170E5C',
   hero: '#221D63',
   heroLine: '#3A3390',
   teal: '#0EA5A0',
@@ -80,9 +81,31 @@ export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 24 } as const;
 /** Minimum touch target from the UX rules. */
 export const TOUCH = 48;
 
+/** A frosted glass card: translucent white over the aurora, a soft edge and shadow. */
 export const card = {
-  backgroundColor: colors.surface,
+  backgroundColor: 'rgba(255,255,255,0.78)',
   borderRadius: radius.xl,
   borderWidth: 1,
-  borderColor: colors.line,
+  borderColor: 'rgba(22,20,43,0.07)',
+  boxShadow: '0 4px 16px rgba(45,35,120,0.06)',
+} as const;
+
+/** Light glass tokens (Home and the glass components). Text colours pass WCAG AA on a frosted card. */
+export const glass = {
+  bg: '#F3F1FB',
+  fill: 'rgba(255,255,255,0.66)',
+  fillStrong: 'rgba(255,255,255,0.84)',
+  border: 'rgba(255,255,255,0.95)',
+  borderStrong: '#FFFFFF',
+  shine: '#FFFFFF',
+  shadow: '0 6px 20px rgba(45,35,120,0.08)',
+  text: '#16142B',
+  text2: '#4A4766',
+  text3: '#6E6A88',
+  track: 'rgba(22,20,43,0.08)',
+  violet: '#4B3FD8',
+  violetLight: '#4B3FD8',
+  teal: '#2DD4BF',
+  tealLight: '#0F766E',
+  saffron: '#B45309',
 } as const;

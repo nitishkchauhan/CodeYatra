@@ -1,17 +1,12 @@
 import { useEffect } from 'react';
-import Animated, {
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withTiming,
-} from 'react-native-reanimated';
-import Svg, { Circle, Defs, Ellipse, Line, LinearGradient, Path, Polygon, Rect, Stop } from 'react-native-svg';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
+import Svg, { Circle, Ellipse, G, Path, Polygon, Rect } from 'react-native-svg';
+
+import { BRAND, MarkShapes } from './Logo';
 
 export type Mood = 'happy' | 'focus' | 'sad' | 'celebrate';
 
-/** Shop outfits drawn over Yatri's head. */
+/** Shop outfits drawn over the top of the logo. */
 function Outfit({ id }: { id: string | null | undefined }) {
   switch (id) {
     case 'cricket-cap':
@@ -53,35 +48,14 @@ function Outfit({ id }: { id: string | null | undefined }) {
   }
 }
 
-const EYE = '#5EEAD4';
+/** Four-point sparkle centred on (x, y). */
+const sparkle = (x: number, y: number, r: number) =>
+  `M${x} ${y - r} Q${x} ${y} ${x + r} ${y} Q${x} ${y} ${x} ${y + r} Q${x} ${y} ${x - r} ${y} Q${x} ${y} ${x} ${y - r} Z`;
 
-function Face({ mood }: { mood: Mood }) {
-  if (mood === 'focus') {
-    return (
-      <>
-        <Rect x={45} y={51} width={8} height={13} rx={4} fill={EYE} />
-        <Rect x={67} y={51} width={8} height={13} rx={4} fill={EYE} />
-      </>
-    );
-  }
-  if (mood === 'sad') {
-    return (
-      <>
-        <Circle cx={49} cy={58} r={5} fill="#FCA5A5" />
-        <Circle cx={71} cy={58} r={3.5} fill="#FCA5A5" />
-        <Path d="M51 70 q9 -6 18 0" stroke="#FCA5A5" strokeWidth={3} strokeLinecap="round" fill="none" />
-      </>
-    );
-  }
-  return (
-    <>
-      <Path d="M44 59 q5 -7 10 0 M66 59 q5 -7 10 0" stroke={EYE} strokeWidth={4} strokeLinecap="round" fill="none" />
-      {mood === 'celebrate' && <Path d="M53 66 q7 7 14 0" stroke={EYE} strokeWidth={3} strokeLinecap="round" fill="none" />}
-    </>
-  );
-}
-
-/** Yatri, the travelling robot. Drawn in a 120×140 box. */
+/**
+ * Yatri is the CodeYatra logo (< Y > with an arrow going up), drawn in a 120×140 box.
+ * Moods change its motion and colour: happy bobs, focus pulses, sad droops in grey, celebrate jumps with sparkles.
+ */
 export function Yatri({
   size = 120,
   mood = 'happy',
@@ -99,47 +73,61 @@ export function Yatri({
 }) {
   const reduce = useReducedMotion();
   const y = useSharedValue(0);
-  useEffect(() => {
-    if (!bob || reduce) return;
-    y.set(withRepeat(withSequence(withTiming(-5, { duration: 1300 }), withTiming(0, { duration: 1300 })), -1));
-  }, [bob, reduce, y]);
-  const style = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }] }));
+  const scale = useSharedValue(1);
+  const turn = useSharedValue(mood === 'sad' ? -8 : 0);
+  const celebrate = armsUp || mood === 'celebrate';
 
-  const limb = dark ? '#B9B2F7' : '#4B3FD8';
+  useEffect(() => {
+    turn.set(mood === 'sad' ? -8 : 0);
+    if (!bob || reduce) {
+      y.set(0);
+      scale.set(1);
+      return;
+    }
+    const ease = Easing.inOut(Easing.quad);
+    if (celebrate) {
+      y.set(
+        withRepeat(
+          withSequence(
+            withTiming(-10, { duration: 320, easing: Easing.out(Easing.quad) }),
+            withTiming(0, { duration: 380, easing: Easing.in(Easing.quad) }),
+            withTiming(0, { duration: 700 }),
+          ),
+          -1,
+        ),
+      );
+      turn.set(withRepeat(withSequence(withTiming(-5, { duration: 320 }), withTiming(4, { duration: 380 }), withTiming(0, { duration: 700 })), -1));
+    } else if (mood === 'focus') {
+      scale.set(withRepeat(withSequence(withTiming(1.05, { duration: 900, easing: ease }), withTiming(1, { duration: 900, easing: ease })), -1));
+    } else if (mood === 'sad') {
+      y.set(withRepeat(withSequence(withTiming(3, { duration: 1600, easing: ease }), withTiming(0, { duration: 1600, easing: ease })), -1));
+    } else {
+      y.set(withRepeat(withSequence(withTiming(-5, { duration: 1300, easing: ease }), withTiming(0, { duration: 1300, easing: ease })), -1));
+    }
+  }, [bob, reduce, mood, celebrate, y, scale, turn]);
+
+  const style = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }, { scale: scale.value }, { rotate: `${turn.value}deg` }] }));
+
+  // With a hat on, the mark shrinks a little and sits lower so the hat has room.
+  const k = outfit ? 0.86 : 1;
+  const markX = (120 - 120 * k) / 2;
+  const markY = outfit ? 46 : 26;
   return (
-    <Animated.View style={style}>
+    <Animated.View style={style} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <Svg width={size} height={(size * 140) / 120} viewBox="0 0 120 140">
-        <Defs>
-          <LinearGradient id="ybody" x1="0" y1="0" x2="1" y2="1">
-            <Stop offset="0" stopColor="#FFFFFF" />
-            <Stop offset="1" stopColor="#D8D3FB" />
-          </LinearGradient>
-          <LinearGradient id="ypack" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0" stopColor="#FFB547" />
-            <Stop offset="1" stopColor="#EE8400" />
-          </LinearGradient>
-        </Defs>
-        <Ellipse cx={60} cy={133} rx={30} ry={4.5} fill="#16142B" opacity={dark ? 0 : 0.12} />
-        <Rect x={70} y={40} width={36} height={52} rx={13} fill="url(#ypack)" />
-        <Rect x={74} y={34} width={28} height={10} rx={5} fill="#0EA5A0" />
-        <Line x1={60} y1={24} x2={60} y2={11} stroke={limb} strokeWidth={3.5} strokeLinecap="round" />
-        <Circle cx={60} cy={9} r={5.5} fill="#FF9F1C" />
-        {armsUp ? (
+        <Ellipse cx={60} cy={134} rx={30} ry={4} fill="#16142B" opacity={dark ? 0 : 0.1} />
+        {celebrate ? (
           <>
-            <Path d="M24 72 q-13 -6 -10 -24" stroke={limb} strokeWidth={7} strokeLinecap="round" fill="none" />
-            <Path d="M96 72 q13 -6 10 -24" stroke={limb} strokeWidth={7} strokeLinecap="round" fill="none" />
+            <Path d={sparkle(10, 30, 7)} fill={BRAND.gold} />
+            <Path d={sparkle(110, 24, 6)} fill={BRAND.teal} />
+            <Path d={sparkle(8, 96, 5)} fill={dark ? BRAND.violetOnDark : BRAND.violet} />
+            <Path d={sparkle(112, 98, 7)} fill={BRAND.gold} />
           </>
-        ) : (
-          <Path d="M23 76 q-12 -4 -11 -22" stroke={limb} strokeWidth={7} strokeLinecap="round" fill="none" />
-        )}
-        <Rect x={38} y={114} width={16} height={16} rx={8} fill={dark ? '#8F86F2' : '#4B3FD8'} />
-        <Rect x={66} y={114} width={16} height={16} rx={8} fill={dark ? '#8F86F2' : '#4B3FD8'} />
-        <Rect x={22} y={22} width={76} height={98} rx={38} fill="url(#ybody)" stroke="#CBC5F6" strokeWidth={1.5} />
-        <Rect x={31} y={38} width={58} height={40} rx={17} fill="#16142B" />
-        <Path d="M38 46 q4 -3 9 -3" stroke="#FFFFFF" strokeOpacity={0.3} strokeWidth={2.5} strokeLinecap="round" fill="none" />
-        <Face mood={mood} />
-        <Circle cx={60} cy={97} r={6} fill="#0EA5A0" />
-        <Circle cx={60} cy={97} r={2.5} fill="#B9F4EE" />
+        ) : null}
+        <G transform={`translate(${markX} ${markY}) scale(${k})`}>
+          <MarkShapes id={`yatri-${mood}-${dark ? 'd' : 'l'}-${outfit ?? 'none'}`} dark={dark} muted={mood === 'sad'} />
+        </G>
+        {mood === 'focus' ? <Circle cx={100} cy={markY + 8} r={3} fill={BRAND.teal} opacity={0.9} /> : null}
         <Outfit id={outfit} />
       </Svg>
     </Animated.View>

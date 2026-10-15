@@ -5,6 +5,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { ConceptVisual } from './ConceptVisual';
 import { ActionBar } from './Shell';
+import { Yatri } from '@/components/Yatri';
 import { CodeBlock } from '@/components/Code';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
@@ -145,7 +146,9 @@ export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }
 
         {step.tip ? (
           <Animated.View entering={FadeInDown.delay(240).duration(320)} style={styles.tip}>
-            <Icon name="bulb" size={22} color={colors.saffronShadow} strokeWidth={1.8} />
+            <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ marginTop: -4 }}>
+              <Yatri size={32} mood="happy" />
+            </View>
             <T variant="bodySm" color={colors.warnInk} style={{ flex: 1 }}>
               {step.tip}
             </T>

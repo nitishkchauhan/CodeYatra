@@ -10,13 +10,14 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
+import { GlassBackground } from '@/components/ui/Glass';
 import { T } from '@/components/ui/Text';
 import { ToastProvider } from '@/components/ui/Toast';
 import { reportError } from '@/lib/telemetry';
 import { CodeRunnerProvider } from '@/lib/runner';
 import { AccountProvider } from '@/state/account';
 import { ProgressProvider, useProgress } from '@/state/progress';
-import { colors } from '@/theme';
+import { colors, glass } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,7 +27,7 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
     reportError(error, 'screen');
   }, [error]);
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12, backgroundColor: colors.bg }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12, backgroundColor: glass.bg }}>
       <Yatri size={96} mood="sad" />
       <T variant="title" style={{ textAlign: 'center' }}>
         Yatri tripped over a bug
@@ -70,7 +71,15 @@ export default function RootLayout() {
             <CodeRunnerProvider>
             <ToastProvider>
               <StatusBar style="dark" />
-              <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
+              {/* Every screen sits on the same light aurora background (Light Glass design). */}
+              <Stack
+                screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+                screenLayout={({ children }) => (
+                  <View style={{ flex: 1, backgroundColor: glass.bg }}>
+                    <GlassBackground />
+                    {children}
+                  </View>
+                )}>
                 <Stack.Screen name="(tabs)" />
                 <Stack.Screen name="onboarding" options={{ animation: 'fade' }} />
                 {/* Lessons hide the bottom navigation, per the UX rules. */}
@@ -81,6 +90,7 @@ export default function RootLayout() {
                 <Stack.Screen name="certificate/[stageId]" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
                 <Stack.Screen name="playground" options={{ animation: 'slide_from_right' }} />
                 <Stack.Screen name="edit-profile" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+                <Stack.Screen name="plan" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
                 <Stack.Screen name="invite" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
                 <Stack.Screen name="classes" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
                 <Stack.Screen name="share-progress" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />

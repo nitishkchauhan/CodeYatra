@@ -7,17 +7,18 @@ import { Icon, type IconName } from './ui/Icon';
 import { T } from './ui/Text';
 import { useT, type StringKey } from '@/i18n';
 import { haptic } from '@/lib/haptics';
-import { colors } from '@/theme';
+import { glass } from '@/theme';
 
 type TabBarProps = Parameters<NonNullable<ComponentProps<typeof Tabs>['tabBar']>>[0];
 
 const ITEMS: Record<string, { label: StringKey; icon: IconName }> = {
   index: { label: 'learn', icon: 'learn' },
+  paths: { label: 'paths', icon: 'route' },
   practice: { label: 'practice', icon: 'practice' },
   profile: { label: 'profile', icon: 'profile' },
 };
 
-/** Material-style bottom bar with a pill behind the active icon. */
+/** Frosted bottom bar with a soft violet pill behind the active icon. */
 export function TabBar({ state, navigation }: TabBarProps) {
   const t = useT();
   const insets = useSafeAreaInsets();
@@ -27,7 +28,7 @@ export function TabBar({ state, navigation }: TabBarProps) {
         const item = ITEMS[route.name];
         if (!item) return null;
         const focused = state.index === i;
-        const color = focused ? colors.primary : '#6E6A88';
+        const color = focused ? glass.violet : glass.text3;
         return (
           <Pressable
             key={route.key}
@@ -42,7 +43,7 @@ export function TabBar({ state, navigation }: TabBarProps) {
               }
             }}
             style={styles.item}>
-            <View style={[styles.pill, focused && { backgroundColor: colors.primarySoft }]}>
+            <View style={[styles.pill, focused && styles.pillOn]}>
               <Icon name={item.icon} size={22} color={color} />
             </View>
             <T variant="labelSm" color={color}>
@@ -56,7 +57,15 @@ export function TabBar({ state, navigation }: TabBarProps) {
 }
 
 const styles = StyleSheet.create({
-  bar: { flexDirection: 'row', backgroundColor: colors.surface, borderTopWidth: 1, borderTopColor: colors.line, paddingTop: 8, paddingHorizontal: 10 },
+  bar: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255,255,255,0.94)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(22,20,43,0.08)',
+    paddingTop: 8,
+    paddingHorizontal: 10,
+  },
   item: { flex: 1, alignItems: 'center', gap: 4, minHeight: 52 },
-  pill: { width: 60, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  pill: { width: 60, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'transparent' },
+  pillOn: { backgroundColor: '#EEECFD', borderColor: 'rgba(75,63,216,0.18)' },
 });

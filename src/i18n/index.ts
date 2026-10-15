@@ -6,6 +6,7 @@ const STRINGS = {
     evening: 'Good evening',
     learn: 'Learn',
     practice: 'Practice',
+    paths: 'Paths',
     profile: 'Profile',
     continueLesson: 'Continue lesson',
     startLesson: 'Start lesson',
