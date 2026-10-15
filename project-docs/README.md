@@ -41,6 +41,7 @@ Start here, then open whichever file you need.
 3. **[ARCHITECTURE.md](ARCHITECTURE.md)**: how the code is organised, the tech stack, the database and how builds are made.
 4. **[CHANGELOG.md](CHANGELOG.md)**: what changed, day by day, with the matching Git commits.
 5. **[PLAN.md](PLAN.md)**: what is next, phase by phase, with status.
+   - **[CONTENT-PLAN.md](CONTENT-PLAN.md)**: proposal to focus on 5 in-demand paths with complete lessons (needs owner decisions).
 6. **[DECISIONS.md](DECISIONS.md)**: the important choices and the reasons for them.
 
 ## Other useful files in the project
