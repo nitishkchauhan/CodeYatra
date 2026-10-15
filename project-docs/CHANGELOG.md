@@ -2,8 +2,11 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
-## In progress (branch `paths-feature`)
-Nothing half-done right now.
+## In progress
+Build 6 (v1.3.0) building on EAS.
+
+## 15 Oct 2026: merged into `main`
+- `paths-feature` merged (`303ea9b`); version 1.3.0 and release notes (`a30f912`); build 6 started.
 
 ## 15 Oct 2026 (branch `paths-feature`)
 - **Onboarding answers now drive the app:** “Made for you” card on Home (placements → mock tests, exams → CBSE or mocks, build → projects, switch → your path, fun → playground); your path’s tracks first in the track rail (saffron dot); daily reminder uses your name, minutes and path. **Your learning plan** screen (from Profile) to change the answers any time.

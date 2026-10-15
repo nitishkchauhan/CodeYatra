@@ -61,7 +61,7 @@ SQL changes are tested in a local Postgres (PGlite) before handing over.
 | `paths-feature` | Career paths + new onboarding, merged into `main` when approved |
 | Build 4 (v1.2.0) | First closed-test build |
 | Build 5 (v1.2.0) | Report/block, feedback links, editor fix |
-| Build 6 | Next: module practice, blocked permissions, and whatever is merged by then |
+| Build 6 | v1.3.0, 15 Oct 2026, EAS `1f0e9f82-d2f4-4ddb-b8de-ea0aae595a8b`: career paths, onboarding v2, new logo, Light Glass design, learning plan, Yatri in lessons, module practice, blocked permissions |
 
 Build a store bundle: `npx eas-cli@latest build --platform android --profile production`
 Build a test APK: `npx eas-cli@latest build --platform android --profile preview`

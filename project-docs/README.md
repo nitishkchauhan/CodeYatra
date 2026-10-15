@@ -6,15 +6,15 @@ Start here, then open whichever file you need.
 > These docs are kept up to date with every change. The code is the final word;
 > if a doc and the code ever disagree, the code is right and the doc needs fixing.
 
-## Where things stand (14 Oct 2026)
+## Where things stand (15 Oct 2026)
 
 | | |
 |---|---|
 | **Live on Google Play** | Closed test with 12+ testers since 11 Oct 2026. Production access opens about 25 Oct 2026. |
-| **Latest store build** | Build 5 (v1.2.0). Build 6 not made yet. |
-| **Branch in progress** | `paths-feature`: Career paths and the new onboarding (Phase 1), both built and checked. Not merged into `main` yet. |
+| **Latest store build** | Build 6 (v1.3.0) started 15 Oct 2026 (EAS `1f0e9f82`); upload it to the closed test when it finishes. Build 5 (v1.2.0) is what testers have now. |
+| **Branch** | `paths-feature` merged into `main` on 15 Oct 2026 (career paths, onboarding v2, new logo, Light Glass design, learning plan, Yatri in lessons). |
 | **Backend** | Supabase schema v1.5 (`supabase/schema.sql`). |
-| **Tests** | 815 automated tests, all passing. |
+| **Tests** | 822 automated tests, all passing. |
 
 ## Read in this order
 
