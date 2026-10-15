@@ -11,6 +11,9 @@ import { Bar } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
 import { findStage, stageProgress, STAGES } from '@/content';
+import { findPath } from '@/content/paths';
+import { minutesForGoal } from '@/content/paths/recommend';
+import { INTEREST, WHY } from '@/content/plan';
 import { APP_VERSION, sendFeedback, SUPPORT_EMAIL } from '@/lib/feedback';
 import { haptic } from '@/lib/haptics';
 import { syncReminder } from '@/lib/reminders';
@@ -55,8 +58,16 @@ export default function ProfileScreen() {
   const maxXp = Math.max(30, ...week.map((w) => w.xp));
   const weekTotal = week.reduce((sum, w) => sum + w.xp, 0);
 
+  const myPath = findPath(state.pathId);
+  const planRows = [
+    { label: 'Career path', value: myPath?.title ?? 'Not chosen yet' },
+    { label: 'Daily goal', value: `${minutesForGoal(state.dailyGoal)} min a day · ${state.dailyGoal} XP` },
+    { label: 'Learning for', value: WHY.find((w) => w.id === state.about?.why)?.title ?? 'Not set' },
+    { label: 'Interested in', value: INTEREST.find((i) => i.id === state.about?.interest)?.title ?? 'Not set' },
+  ];
+
   const updateReminder = async (next: typeof state.reminder) => {
-    const ok = await syncReminder(next);
+    const ok = await syncReminder(next, { name: state.name, minutes: minutesForGoal(state.dailyGoal), pathTitle: findPath(state.pathId)?.title });
     if (!ok && next.enabled) {
       toast(Platform.OS === 'web' ? 'Reminders work in the Android app' : 'Allow notifications to get reminders');
       setReminder({ ...next, enabled: false });
@@ -124,6 +135,37 @@ export default function ProfileScreen() {
               </T>
             </View>
           ))}
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(80).duration(320)}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Your learning plan: ${planRows.map((r) => `${r.label} ${r.value}`).join(', ')}. Tap to change`}
+            onPress={() => {
+              haptic.tap();
+              router.push('/plan');
+            }}
+            style={({ pressed }) => [card, styles.plan, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <T variant="heading">Your learning plan</T>
+              <View style={styles.planEdit}>
+                <T variant="labelSm" color={colors.primary}>
+                  Change
+                </T>
+                <Icon name="chevronRight" size={14} color={colors.primary} />
+              </View>
+            </View>
+            {planRows.map((r) => (
+              <View key={r.label} style={styles.planRow}>
+                <T variant="caption" style={{ width: 92 }}>
+                  {r.label}
+                </T>
+                <T variant="label" style={{ flex: 1, fontSize: 13 }} numberOfLines={1}>
+                  {r.value}
+                </T>
+              </View>
+            ))}
+          </Pressable>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(100).duration(320)} style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
@@ -338,6 +380,9 @@ const styles = StyleSheet.create({
   segment: { flexDirection: 'row', gap: 2, backgroundColor: colors.lineSoft, borderRadius: 10, padding: 3 },
   segmentBtn: { minHeight: 34, paddingHorizontal: 12, borderRadius: 8, justifyContent: 'center' },
   segmentOn: { backgroundColor: '#FFFFFF', boxShadow: '0 1px 2px rgba(22,20,43,0.12)' },
+  plan: { padding: 14, gap: 8 },
+  planEdit: { flexDirection: 'row', alignItems: 'center', gap: 2 },
+  planRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   times: { flexDirection: 'row', gap: 8, paddingHorizontal: 14, paddingBottom: 12 },
   time: { flex: 1, minHeight: 40, borderRadius: 12, borderWidth: 1, borderColor: colors.line, alignItems: 'center', justifyContent: 'center' },
 });

@@ -5,6 +5,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { DailyCards } from '@/components/DailyCards';
+import { ForYouCard } from '@/components/ForYouCard';
 import { ModulePath } from '@/components/ModulePath';
 import { MyPathCard } from '@/components/MyPathCard';
 import { StageSheet } from '@/components/StageSheet';
@@ -18,6 +19,7 @@ import { Ring } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
 import { findStage, stageLessonStatuses, stageProgress, type LessonStatus } from '@/content';
+import { pathStageIds } from '@/content/paths/recommend';
 import { greetingKey, useT } from '@/i18n';
 import { useProgress } from '@/state/progress';
 import { glass } from '@/theme';
@@ -77,7 +79,7 @@ export default function LearnScreen() {
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(60).duration(320)} style={{ gap: 10 }}>
-            <TrackRail glass value={stage.id} onChange={setStage} onMore={() => setSheet(true)} />
+            <TrackRail glass first={pathStageIds(state.pathId)} value={stage.id} onChange={setStage} onMore={() => setSheet(true)} />
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(120).duration(320)}>
@@ -175,6 +177,10 @@ export default function LearnScreen() {
 
           <Animated.View entering={FadeInDown.delay(200).duration(320)}>
             <MyPathCard />
+          </Animated.View>
+
+          <Animated.View entering={FadeInDown.delay(210).duration(320)}>
+            <ForYouCard />
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(220).duration(320)}>

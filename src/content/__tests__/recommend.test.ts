@@ -1,8 +1,22 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { STAGES } from '..';
-import { findPath } from '../paths';
-import { goalForMinutes, levelFor, reasonFor, recommendPathId, startingStage, type About, type Interest, type Who, type Why } from '../paths/recommend';
+import { findPath, PATHS } from '../paths';
+import {
+  goalForMinutes,
+  levelFor,
+  MINUTES,
+  minutesForGoal,
+  pathStageIds,
+  reasonFor,
+  recommendPathId,
+  startingStage,
+  suggestionFor,
+  type About,
+  type Interest,
+  type Who,
+  type Why,
+} from '../paths/recommend';
 
 const WHO: Who[] = ['school', 'senior', 'college', 'working', 'other'];
 const WHY: Why[] = ['job', 'exams', 'build', 'switch', 'fun'];
@@ -47,5 +61,39 @@ describe('path recommendation', () => {
     expect(goalForMinutes(30)).toBe(60);
     expect(reasonFor({ who: 'college', why: 'job', interest: 'web' })).toBe('Because you want a job in tech and like websites.');
     expect(reasonFor({ who: 'college', why: 'fun', interest: 'unsure' })).toBe('Because you code for fun.');
+  });
+});
+
+describe('answers personalise the app', () => {
+  it('gives every combination of answers a suggestion that opens something real', () => {
+    for (const a of every) {
+      const s = suggestionFor(a, 'frontend');
+      expect(s).not.toBeNull();
+      expect(['mock', 'cbse', 'projects', 'path', 'playground']).toContain(s!.id);
+    }
+    expect(suggestionFor(null, null)).toBeNull();
+  });
+
+  it('matches the suggestion to why they learn', () => {
+    expect(suggestionFor({ who: 'college', why: 'job', interest: 'web' }, null)!.id).toBe('mock');
+    expect(suggestionFor({ who: 'senior', why: 'exams', interest: 'data' }, null)!.id).toBe('cbse');
+    expect(suggestionFor({ who: 'college', why: 'exams', interest: 'data' }, null)!.id).toBe('mock');
+    expect(suggestionFor({ who: 'working', why: 'build', interest: 'web' }, null)!.id).toBe('projects');
+    expect(suggestionFor({ who: 'working', why: 'switch', interest: 'web' }, 'fullstack')!.cta).toBe('Open my path');
+    expect(suggestionFor({ who: 'other', why: 'fun', interest: 'unsure' }, null)!.id).toBe('playground');
+  });
+
+  it('lists the tracks each path uses, in order, all real', () => {
+    expect(pathStageIds('data-analyst')[0]).toBe('sql');
+    const fe = pathStageIds('frontend');
+    expect(fe.indexOf('html')).toBeGreaterThanOrEqual(0);
+    expect(fe.indexOf('html')).toBeLessThan(fe.indexOf('css'));
+    for (const p of PATHS) for (const id of pathStageIds(p.id)) expect(STAGES.some((s) => s.id === id)).toBe(true);
+    expect(pathStageIds(null)).toEqual([]);
+  });
+
+  it('turns a daily goal back into minutes', () => {
+    for (const m of MINUTES) expect(minutesForGoal(goalForMinutes(m))).toBe(m);
+    expect(minutesForGoal(25)).toBe(10);
   });
 });

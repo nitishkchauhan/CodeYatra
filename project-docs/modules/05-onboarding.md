@@ -29,6 +29,18 @@ Questions 2–5 move on as soon as an answer is tapped. A progress bar and a Bac
 
 **Level** (used elsewhere in the app): Class 8–12 → school, College → college, others → curious.
 
+## How the answers are used
+| Answer | Where it shows up |
+|---|---|
+| Who (class / college / working) | Level (Profile caption, recommended track), starting track, CBSE suggestion for school students |
+| Why | **Made for you** card on Home: placements → timed mock test, exams → CBSE track (school) or mock tests, build → guided projects, switch → your path, fun → playground |
+| Interest | The recommended career path; that path’s tracks come first in the Home track rail (saffron dot) |
+| Minutes a day | Daily goal (Home ring), and the reminder text (“20 minutes of code today…”) |
+| Name, path | Greeting and the daily reminder (“Ananya, Yatri is waiting for you”, “One lesson closer to becoming a Data Analyst”) |
+
+## Your learning plan (change answers later)
+Profile → **Your learning plan** opens `src/app/plan.tsx`: the same questions, pre-filled. Saving updates the daily goal and level, reschedules the reminder text, and the Home suggestion changes at once. It also shows the path that fits the new answers with **Switch to …**. Learners from the old onboarding start with answers guessed from their level.
+
 ## What is saved
 `name`, `level`, `stageId` (starting track), `pathId`, `dailyGoal`, `about` (the three answers), `reminder`. All sync with the account. An anonymous `onboarding_done` event records the answers (no name).
 
@@ -41,13 +53,20 @@ Questions 2–5 move on as soon as an answer is tapped. A progress bar and a Bac
 ## Where it lives in the code
 | Part | Files |
 |---|---|
-| Screens | `src/app/onboarding.tsx` |
+| Screens | `src/app/onboarding.tsx`, `src/app/plan.tsx` |
+| Question options | `src/content/plan.ts` |
+| Suggestions, path tracks | `suggestionFor`, `pathStageIds`, `minutesForGoal` in `src/content/paths/recommend.ts`; `src/components/ForYouCard.tsx` |
+| Reminder text | `reminderMessage` in `src/lib/reminders.ts` |
 | Recommendation rules | `src/content/paths/recommend.ts` |
 | Saving | `finishOnboarding` in `src/state/progress.tsx`; `dailyGoal`, `about` in `src/state/model.ts` |
 | Personal daily goal on Home | `src/app/(tabs)/index.tsx` |
 | Reminder time in Profile | `src/app/(tabs)/profile.tsx` |
 
 ## Tests
+- `recommend.test.ts` also: every answer combination gets a real suggestion; path tracks are real and in order; goal ↔ minutes.
+- `progress.test.tsx`: changing the plan updates goal and level.
+- `src/lib/__tests__/reminders.test.ts`: reminder text with and without name and path.
+- Browser walkthrough (15 Oct 2026): Home suggestion, track order, Profile plan card, changing and saving the plan, Home updating.
 - `src/content/__tests__/recommend.test.ts`: all 150 answer combinations give a real path and starting track; the rules above.
 - `src/state/__tests__/progress.test.tsx`: onboarding saves answers, path, goal and reminder; the old call still works.
 - Walked through end to end in a browser at phone size (14 Oct 2026): every screen, saved values, Home.

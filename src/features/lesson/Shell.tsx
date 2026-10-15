@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { SlideInDown, ZoomIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { Segments } from '@/components/ui/Progress';
@@ -37,15 +38,25 @@ export function ActionBar({ children, tone }: { children: ReactNode; tone?: 'suc
   );
 }
 
+/** Yatri reacting to an answer: cheering when right, drooping when wrong, with a small tick or cross. */
+export function VerdictYatri({ right }: { right: boolean }) {
+  return (
+    <Animated.View entering={ZoomIn.delay(120).springify().damping(12)} style={styles.yatri} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <Yatri size={48} mood={right ? 'celebrate' : 'sad'} bob />
+      <View style={[styles.verdict, styles.badge, { backgroundColor: right ? colors.success : colors.danger }]}>
+        <Icon name={right ? 'check' : 'cross'} size={12} color="#FFFFFF" strokeWidth={3} />
+      </View>
+    </Animated.View>
+  );
+}
+
 /** The answer bar every checked exercise shares: verdict, explanation, then Continue or Try again. */
 export function VerdictBar({ right, title, message, onContinue, onRetry }: { right: boolean; title?: string; message: string; onContinue: () => void; onRetry: () => void }) {
   return (
     <Animated.View entering={SlideInDown.springify().damping(20)}>
       <ActionBar tone={right ? 'success' : 'danger'}>
         <View style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }} accessibilityLiveRegion="polite">
-          <Animated.View entering={ZoomIn.delay(120)} style={[styles.verdict, { backgroundColor: right ? colors.success : colors.danger }]}>
-            <Icon name={right ? 'check' : 'cross'} size={18} color="#FFFFFF" strokeWidth={2.6} />
-          </Animated.View>
+          <VerdictYatri right={right} />
           <View style={{ flex: 1, gap: 2 }}>
             <T variant="heading" color={right ? colors.successInk : colors.dangerInk} style={{ fontSize: 17 }}>
               {title ?? (right ? 'Correct!' : 'Not quite')}
@@ -82,6 +93,8 @@ export function StepHeader({ kicker, title, instructions, color }: { kicker: str
 
 const styles = StyleSheet.create({
   verdict: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  yatri: { width: 52, height: 58, marginTop: -6 },
+  badge: { position: 'absolute', right: -4, bottom: 0, width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: '#FFFFFF' },
   top: { height: 56, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 16 },
   close: { width: 44, height: 44, marginLeft: -10, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   xp: { height: 28, paddingHorizontal: 10, borderRadius: 14, backgroundColor: colors.saffronSoft, justifyContent: 'center' },

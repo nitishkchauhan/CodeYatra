@@ -56,6 +56,8 @@ type ProgressApi = {
   setTelemetry: (on: boolean) => void;
   /** Saves a mock test, adds XP and coins, and counts toward the streak. */
   finishMock: (result: Omit<MockResult, 'at'>, claimId: string) => { xp: number; coins: number };
+  /** Change the learning plan answered in onboarding: who, why, interest, daily goal (and level from who). */
+  updatePlan: (plan: { about: NonNullable<Progress['about']>; dailyGoal: number; level: LearnerLevel }) => void;
   /** Follow a career path (null to stop following). */
   setPath: (pathId: string | null) => void;
   /** Tick or un-tick a path stop the learner already knows. */
@@ -187,6 +189,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       }));
       return { xp, coins };
     },
+    updatePlan: ({ about, dailyGoal, level }) => update((s) => ({ ...s, about, dailyGoal, level })),
     setPath: (pathId) => update((s) => ({ ...s, pathId })),
     togglePathMark: (pathId, stopId) =>
       update((s) => {

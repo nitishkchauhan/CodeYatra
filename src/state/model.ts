@@ -1,5 +1,6 @@
 // The learner's saved state, and the pure rules that change it.
 import { addDays } from './streak';
+import type { About } from '@/content/paths/recommend';
 
 export type LearnerLevel = 'school' | 'college' | 'curious';
 
@@ -47,7 +48,7 @@ export type Progress = {
   /** XP a day the learner aims for (set from minutes a day in onboarding). */
   dailyGoal: number;
   /** Onboarding answers, kept to personalise suggestions. */
-  about: { who: string; why: string; interest: string } | null;
+  about: About | null;
   /** Career path the learner is following, e.g. "frontend". */
   pathId: string | null;
   /** Path stops ticked by the learner ("pathId/stopId" → day), e.g. topics they already know. */

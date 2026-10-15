@@ -17,7 +17,8 @@ Status key: ✅ done · 🚧 in progress · 📋 next · 💤 later
 | **1. Onboarding v2** | Welcome slides, questions, path recommendation, reminder time | ✅ on branch `paths-feature` |
 | Redesign 1: glass design + Home | Glass design system, Home with zigzag journey, glass tab bar | ✅ on branch `paths-feature` |
 | Redesign 2: Light Glass on every screen | One light design across the whole app | ✅ on branch `paths-feature` |
-| 2. Friendlier lessons | Big Yatri illustrations on concept screens, glass result panels, celebrations | 📋 |
+| 2. Friendlier lessons | Yatri reactions on answers, while code runs and in tips | ✅ on branch `paths-feature` (bigger concept illustrations later) |
+| Onboarding answers fully used | Made-for-you card, path tracks first, personal reminders, editable learning plan | ✅ on branch `paths-feature` |
 | 5. Tech news and opportunities | Our own short summaries + links; hackathons, internships, contests; owner approves each item | 📋 |
 | 3. Dark mode | Follows the phone, toggle in Profile, contrast-tested | 📋 |
 | 4. Code studio | File tabs, `input()`, saved programs, sharing, starters | 📋 |

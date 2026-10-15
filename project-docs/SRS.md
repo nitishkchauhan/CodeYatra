@@ -90,6 +90,9 @@ The app is **not for children under 13** (Play target audience 13–15, 16–17,
 | FR-O3 | Recommend a career path from the answers, with “See all paths” | 🧪 |
 | FR-O4 | Daily reminder with any time chosen in onboarding | 🧪 |
 | FR-O5 | Personal daily goal from minutes a day (10–60 XP) | 🧪 |
+| FR-O6 | Answers personalise the app: “Made for you” card on Home (from why they learn), path tracks first in the track rail, reminder text with name, minutes and path | 🧪 |
+| FR-O7 | “Your learning plan” (Profile): change class, reason, interest and minutes any time; updates goal and level and suggests a better-fitting path | 🧪 |
+| FR-L9 | Yatri reacts in lessons: cheers on a right answer, droops on a wrong one, thinks while code runs, gives concept tips | 🧪 |
 
 ### 2.6 Accounts and sync (see [modules/06](modules/06-accounts-and-sync.md))
 | ID | Requirement | Status |

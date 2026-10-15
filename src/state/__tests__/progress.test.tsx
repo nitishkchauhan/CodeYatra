@@ -139,4 +139,16 @@ describe('ProgressProvider', () => {
     });
     expect(hook.result.current.state).toMatchObject({ onboarded: true, stageId: 'foundations', dailyGoal: 20, pathId: null, about: null });
   });
+  it('lets learners change their plan later, which updates goal and level', async () => {
+    const hook = await renderHook(() => useProgress(), { wrapper });
+    await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
+    await act(async () => {
+      hook.result.current.finishOnboarding({ name: 'Ravi', level: 'school', dailyGoal: 20, about: { who: 'senior', why: 'exams', interest: 'data' } });
+    });
+    await act(async () => {
+      hook.result.current.updatePlan({ about: { who: 'college', why: 'job', interest: 'web' }, dailyGoal: 60, level: 'college' });
+    });
+    expect(hook.result.current.state).toMatchObject({ dailyGoal: 60, level: 'college', about: { who: 'college', why: 'job', interest: 'web' }, name: 'Ravi' });
+    await waitFor(async () => expect((await stored()).dailyGoal).toBe(60));
+  });
 });

@@ -72,3 +72,78 @@ const INTEREST_TEXT: Record<Interest, string> = {
 export function reasonFor({ why, interest }: About): string {
   return interest === 'unsure' ? `Because ${WHY_TEXT[why]}.` : `Because ${WHY_TEXT[why]} and like ${INTEREST_TEXT[interest]}.`;
 }
+
+/** The minutes choice that gives a daily goal (the reverse of `goalForMinutes`). */
+export const minutesForGoal = (goal: number): Minutes =>
+  MINUTES.reduce((best, m) => (Math.abs(goalForMinutes(m) - goal) < Math.abs(goalForMinutes(best) - goal) ? m : best), MINUTES[0]);
+
+/** The tracks a career path teaches in the app, in the order the path reaches them. */
+export function pathStageIds(pathId: string | null | undefined): string[] {
+  const ids: string[] = [];
+  for (const stop of findPath(pathId)?.sections.flatMap((s) => s.stops) ?? []) {
+    for (const m of stop.modules ?? []) {
+      const id = stageOf(m);
+      if (id && !ids.includes(id)) ids.push(id);
+    }
+  }
+  return ids;
+}
+
+export type Suggestion = { id: 'mock' | 'cbse' | 'projects' | 'path' | 'playground'; kicker: string; title: string; body: string; cta: string };
+
+/** A "Made for you" suggestion on Home, from why the learner is learning (and their class). */
+export function suggestionFor(about: About | null, pathId: string | null): Suggestion | null {
+  if (!about) return null;
+  switch (about.why) {
+    case 'job':
+      return {
+        id: 'mock',
+        kicker: 'FOR YOUR PLACEMENTS',
+        title: 'Practise a timed placement round',
+        body: 'Real campus-style questions against the clock, then see your weak topics.',
+        cta: 'Start a mock test',
+      };
+    case 'exams':
+      return about.who === 'senior' || about.who === 'school'
+        ? {
+            id: 'cbse',
+            kicker: 'FOR YOUR EXAMS',
+            title: 'CBSE Computer Science',
+            body: 'Class 11 and 12 Python, SQL and theory, chapter by chapter.',
+            cta: 'Open CBSE track',
+          }
+        : {
+            id: 'mock',
+            kicker: 'FOR YOUR EXAMS',
+            title: 'Test yourself under time',
+            body: 'Timed rounds on C, Java, Python, DSA, SQL and CS basics.',
+            cta: 'Start a mock test',
+          };
+    case 'build':
+      return {
+        id: 'projects',
+        kicker: 'FOR BUILDERS',
+        title: 'Build a real project',
+        body: 'Guided projects you can finish and show your friends.',
+        cta: 'See projects',
+      };
+    case 'switch':
+      return pathId
+        ? {
+            id: 'path',
+            kicker: 'FOR YOUR CAREER SWITCH',
+            title: 'See your full route',
+            body: 'Every step to your new job, with what you already know ticked off.',
+            cta: 'Open my path',
+          }
+        : { id: 'path', kicker: 'FOR YOUR CAREER SWITCH', title: 'Pick a job to aim for', body: 'Thirteen career paths with every step laid out.', cta: 'See paths' };
+    case 'fun':
+      return {
+        id: 'playground',
+        kicker: 'JUST FOR FUN',
+        title: 'Play in the code playground',
+        body: 'Write anything in Python or JavaScript and watch it run.',
+        cta: 'Open playground',
+      };
+  }
+}
