@@ -55,9 +55,9 @@ export function CompleteView({
   const toast = useToast();
   const time = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
   const stats = [
-    { label: 'XP', value: `+${xp}`, ink: colors.primary, bg: colors.surfaceTint, line: 'rgba(255,255,255,0.22)', glyph: true },
-    { label: 'COINS', value: `+${coins}`, ink: colors.saffronInk, bg: colors.warnSoft, line: 'rgba(255,178,63,0.35)', glyph: false },
-    { label: 'ACCURACY', value: `${accuracy}%`, ink: '#6EE7B7', bg: 'rgba(52,211,153,0.12)', line: 'rgba(52,211,153,0.35)', glyph: false },
+    { label: 'XP', value: `+${xp}`, ink: colors.primary, bg: colors.surfaceTint, line: '#D9D5F7', glyph: true },
+    { label: 'COINS', value: `+${coins}`, ink: colors.saffronInk, bg: colors.warnSoft, line: '#FFD9A3', glyph: false },
+    { label: 'ACCURACY', value: `${accuracy}%`, ink: '#166534', bg: '#F1FAF4', line: '#BFE8CC', glyph: false },
     { label: 'TIME', value: time, ink: colors.ink2, bg: colors.bg, line: colors.line, glyph: false },
   ];
 
@@ -168,8 +168,8 @@ export function CompleteView({
 
 const styles = StyleSheet.create({
   hero: { height: 180, alignItems: 'center', justifyContent: 'center' },
-  halo: { position: 'absolute', width: 170, height: 170, borderRadius: 85, backgroundColor: 'rgba(140,116,255,0.14)' },
+  halo: { position: 'absolute', width: 170, height: 170, borderRadius: 85, backgroundColor: '#F1EFFE' },
   stat: { flex: 1, borderRadius: 16, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 4, alignItems: 'center', gap: 2 },
   learned: { borderRadius: 18, borderWidth: 1, borderColor: colors.line, padding: 14, gap: 9 },
-  streak: { borderRadius: 18, backgroundColor: colors.hero, borderWidth: 1, borderColor: colors.line, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  streak: { borderRadius: 18, backgroundColor: colors.ink, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 12 },
 });

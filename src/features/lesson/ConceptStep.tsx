@@ -92,7 +92,7 @@ export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }
                         haptic.tap();
                         setTab(i);
                       }}
-                      style={[styles.tab, tab === i && { backgroundColor: 'rgba(255,255,255,0.16)' }]}>
+                      style={[styles.tab, tab === i && { backgroundColor: '#FFFFFF' }]}>
                       <T variant="labelSm" color={tab === i ? colors.ink : '#B9B5D9'}>
                         {c.label}
                       </T>

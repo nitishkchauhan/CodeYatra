@@ -1,59 +1,52 @@
-// "Aurora Glass" design tokens: one dark glass look across the whole app.
-// Screens sit on a shared aurora background (navy with soft violet, teal and saffron glows),
-// so `bg` is transparent. Text on any coloured fill is navy (`onColor`): every accent below is
-// light enough to read as text on navy AND to carry navy text on top of it (both pass WCAG AA).
-
-/** The navy under the aurora; also the text colour on coloured fills. */
-export const NAVY = '#0E0937';
-
+// "Studio" design tokens from the CodeYatra v2/v3 canvas.
 export const colors = {
-  bg: 'transparent',
-  /** Solid panel for sheets, inputs and anything that must hide what is behind it. */
-  surface: '#1B1452',
-  surfaceTint: 'rgba(255,255,255,0.10)',
-  line: 'rgba(255,255,255,0.14)',
-  lineSoft: 'rgba(255,255,255,0.08)',
-  ink: '#FFFFFF',
-  ink2: '#D6D2F7',
-  ink3: '#A9A3DA',
-  inkBody: '#E4E1FA',
-  onColor: NAVY,
+  bg: '#F6F5FA',
+  surface: '#FFFFFF',
+  surfaceTint: '#F7F6FE',
+  line: '#E7E5F0',
+  lineSoft: '#F0EEF6',
+  ink: '#16142B',
+  ink2: '#55526E',
+  // Was #8B88A3 (3.2:1 on bg); #6E6A88 meets WCAG AA 4.5:1 for small text on bg and white.
+  ink3: '#6E6A88',
+  inkBody: '#3B3856',
 
-  primary: '#9B88FF',
-  primaryShadow: '#4A35B8',
-  primarySoft: 'rgba(155,136,255,0.18)',
-  primaryMuted: '#6E61B8',
+  primary: '#4B3FD8',
+  primaryShadow: '#3328A8',
+  primarySoft: '#EEECFD',
+  primaryMuted: '#A9A2F0',
 
-  saffron: '#FFB23F',
-  saffronShadow: '#B86E00',
-  saffronSoft: 'rgba(255,178,63,0.16)',
-  saffronInk: '#FFC870',
+  saffron: '#FF9F1C',
+  saffronShadow: '#C26A00',
+  saffronSoft: '#FFF1DC',
+  saffronInk: '#8A4B00',
 
-  success: '#34D399',
-  successShadow: '#0F8A63',
-  successSoft: 'rgba(52,211,153,0.16)',
-  successInk: '#6EE7B7',
+  // Was #16A34A (3.3:1); #15803D passes 4.5:1 as text and behind white button labels.
+  success: '#15803D',
+  successShadow: '#116530',
+  successSoft: '#E3F6EA',
+  successInk: '#14532D',
 
-  danger: '#FB7185',
-  dangerShadow: '#B4233F',
-  dangerSoft: 'rgba(251,113,133,0.16)',
-  dangerInk: '#FDA4AF',
+  danger: '#D93036',
+  dangerShadow: '#B4232A',
+  dangerSoft: '#FDECEC',
+  dangerInk: '#7F1D1D',
 
-  warnSoft: 'rgba(255,178,63,0.12)',
-  warnLine: 'rgba(255,178,63,0.35)',
-  warnInk: '#FFD9A0',
+  warnSoft: '#FFF8EC',
+  warnLine: '#FFE3B8',
+  warnInk: '#5A3D12',
 
   brand: '#170E5C',
-  hero: 'rgba(108,76,245,0.22)',
-  heroLine: 'rgba(255,255,255,0.18)',
-  teal: '#2DD4BF',
+  hero: '#221D63',
+  heroLine: '#3A3390',
+  teal: '#0EA5A0',
   tealLight: '#5EEAD4',
-  tealSoft: 'rgba(45,212,191,0.16)',
+  tealSoft: '#DDF5F2',
 
   code: {
-    bg: '#0A0726',
-    bar: '#1A1446',
-    line: '#262055',
+    bg: '#121128',
+    bar: '#1E1C40',
+    line: '#23214A',
     text: '#E7E5F7',
     gutter: '#8A85BC',
     keyword: '#FFB454',
@@ -63,7 +56,7 @@ export const colors = {
     string: '#86EFAC',
     tag: '#F9A8D4',
     comment: '#8E89C4',
-    console: '#07051C',
+    console: '#0C0B1D',
   },
 } as const;
 
@@ -87,17 +80,16 @@ export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 24 } as const;
 /** Minimum touch target from the UX rules. */
 export const TOUCH = 48;
 
-/** A glass card: translucent fill, light edge. */
 export const card = {
-  backgroundColor: 'rgba(255,255,255,0.07)',
+  backgroundColor: colors.surface,
   borderRadius: radius.xl,
   borderWidth: 1,
   borderColor: colors.line,
 } as const;
 
-/** Glass design tokens (used by the glass components and Home). */
+/** Glass design (dark aurora background, translucent cards). Text colours pass WCAG AA on a glass card over `bg`. */
 export const glass = {
-  bg: NAVY,
+  bg: '#0E0937',
   fill: 'rgba(255,255,255,0.07)',
   fillStrong: 'rgba(255,255,255,0.12)',
   border: 'rgba(255,255,255,0.14)',
@@ -113,40 +105,3 @@ export const glass = {
   tealLight: '#5EEAD4',
   saffron: '#FFB23F',
 } as const;
-
-/* ---------- Colour helpers ---------- */
-
-const rgbOf = (hex: string) => {
-  const n = parseInt(hex.slice(1), 16);
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-};
-const lum = ([r, g, b]: number[]) => {
-  const c = (v: number) => {
-    const s = v / 255;
-    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
-  };
-  return 0.2126 * c(r) + 0.7152 * c(g) + 0.0722 * c(b);
-};
-const hexOf = (rgb: number[]) => '#' + rgb.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('').toUpperCase();
-
-/** WCAG contrast ratio between two `#RRGGBB` colours. */
-export function contrast(a: string, b: string) {
-  const [x, y] = [lum(rgbOf(a)), lum(rgbOf(b))].sort((p, q) => q - p);
-  return (x + 0.05) / (y + 0.05);
-}
-
-/** `#RRGGBB` → `rgba(r,g,b,a)`. */
-export function alpha(hex: string, a: number) {
-  const [r, g, b] = rgbOf(hex);
-  return `rgba(${r},${g},${b},${a})`;
-}
-
-/**
- * A content colour (track, path) lifted until it reads with at least 4.6:1 contrast on the lightest
- * glass panel (`#262060`), so it also reads on navy and carries navy text. Bright colours come back unchanged.
- */
-export function onDark(hex: string) {
-  let rgb = rgbOf(hex);
-  for (let i = 0; i < 40 && contrast(hexOf(rgb), '#262060') < 4.6; i++) rgb = rgb.map((v) => v + (255 - v) * 0.06);
-  return hexOf(rgb);
-}

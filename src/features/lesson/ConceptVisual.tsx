@@ -80,16 +80,16 @@ export function ConceptVisual({ kind }: { kind: NonNullable<ConceptStep['visual'
       </View>
     );
     return (
-      <View style={[styles.panel, { backgroundColor: 'rgba(255,178,63,0.14)', flexDirection: 'row', justifyContent: 'center', gap: 6 }]}>
-        {part('<h1>', 'opening tag', '#FDBA74')}
+      <View style={[styles.panel, { backgroundColor: '#FFEDE3', flexDirection: 'row', justifyContent: 'center', gap: 6 }]}>
+        {part('<h1>', 'opening tag', '#C2410C')}
         {part('Hello', 'content', colors.primary)}
-        {part('</h1>', 'closing tag', '#FDBA74')}
+        {part('</h1>', 'closing tag', '#C2410C')}
       </View>
     );
   }
   return (
     <View style={[styles.panel, { backgroundColor: colors.tealSoft }]}>
-      <T variant="kicker" color="#5EEAD4" style={{ letterSpacing: 0.5 }}>
+      <T variant="kicker" color="#0F766E" style={{ letterSpacing: 0.5 }}>
         ONE COMPONENT, MANY CARDS
       </T>
       {[
@@ -98,11 +98,11 @@ export function ConceptVisual({ kind }: { kind: NonNullable<ConceptStep['visual'
       ].map(([from, to]) => (
         <View key={from} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <View style={styles.props}>
-            <T style={{ fontFamily: fonts.mono, fontSize: 11, color: '#5EEAD4' }}>
+            <T style={{ fontFamily: fonts.mono, fontSize: 11, color: '#0F766E' }}>
               from=&quot;{from}&quot; to=&quot;{to}&quot;
             </T>
           </View>
-          <Icon name="chevronRight" size={16} color="#5EEAD4" />
+          <Icon name="chevronRight" size={16} color="#0F766E" />
           <View style={styles.miniCard}>
             <T variant="labelSm">
               {from} → {to}
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: 10 },
   panel: { flex: 1, borderRadius: 16, padding: 12, gap: 6 },
   stepNo: { width: 24, height: 24, borderRadius: 12, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
-  tagBox: { paddingHorizontal: 10, paddingVertical: 8, borderRadius: 10, borderWidth: 1.5, backgroundColor: 'rgba(255,255,255,0.10)' },
-  props: { flex: 1, paddingHorizontal: 8, paddingVertical: 6, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.10)' },
-  miniCard: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.10)', borderWidth: 1, borderColor: 'rgba(94,234,212,0.4)' },
+  tagBox: { paddingHorizontal: 10, paddingVertical: 8, borderRadius: 10, borderWidth: 1.5, backgroundColor: '#FFFFFF' },
+  props: { flex: 1, paddingHorizontal: 8, paddingVertical: 6, borderRadius: 8, backgroundColor: '#FFFFFF' },
+  miniCard: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#B7E4DE' },
 });

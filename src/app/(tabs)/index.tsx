@@ -1,5 +1,6 @@
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { setStatusBarStyle } from 'expo-status-bar';
+import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,7 +13,7 @@ import { TrackBadge } from '@/components/TrackBadge';
 import { TrackRail } from '@/components/TrackRail';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
-import { alpha, GlassCard } from '@/components/ui/Glass';
+import { alpha, GlassBackground, GlassCard } from '@/components/ui/Glass';
 import { Glyph } from '@/components/ui/Icon';
 import { Ring } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
@@ -30,6 +31,14 @@ export default function LearnScreen() {
   const { state, todayXp, streak, setStage } = useProgress();
   const [sheet, setSheet] = useState(false);
 
+  // Light status bar icons over the dark glass background, only while Home is showing.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('light');
+      return () => setStatusBarStyle('dark');
+    }, []),
+  );
+
   const stage = findStage(state.stageId);
   const statuses = stageLessonStatuses(stage, state.completed);
   const { pct } = stageProgress(stage, state.completed);
@@ -46,7 +55,8 @@ export default function LearnScreen() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: glass.bg }}>
+      <GlassBackground />
       <SafeAreaView edges={['top']} style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.content}>
           <Animated.View entering={FadeInDown.duration(320)} style={styles.header}>

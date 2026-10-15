@@ -123,7 +123,7 @@ export function CodeStep({ step, onDone, onMistake }: { step: Step; onDone: () =
                 {result.checks.map((c, i) => (
                   <Animated.View key={c.label} entering={FadeInDown.delay(i * 70)} style={styles.check}>
                     <View style={[styles.checkDot, { backgroundColor: c.ok ? colors.success : colors.danger }]}>
-                      <Icon name={c.ok ? 'check' : 'cross'} size={12} color={colors.onColor} strokeWidth={3} />
+                      <Icon name={c.ok ? 'check' : 'cross'} size={12} color="#FFFFFF" strokeWidth={3} />
                     </View>
                     <T style={{ flex: 1, fontFamily: fonts.mono, fontSize: 12.5, color: c.ok ? colors.ink : colors.dangerInk }}>{c.label}</T>
                   </Animated.View>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   editorHead: { height: 36, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, borderBottomWidth: 1, borderBottomColor: colors.code.line },
   fileDot: { width: 7, height: 7, borderRadius: 4 },
   tokens: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  token: { minWidth: 64, flexGrow: 1, height: 50, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.22)', backgroundColor: 'rgba(255,255,255,0.08)', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
+  token: { minWidth: 64, flexGrow: 1, height: 50, borderRadius: 12, borderWidth: 1, borderColor: '#D9D5F7', backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
   checks: { borderRadius: 16, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, padding: 12, gap: 10 },
   check: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   checkDot: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },

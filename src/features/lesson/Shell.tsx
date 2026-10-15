@@ -31,7 +31,7 @@ export function LessonTopBar({ steps, index, xp, onClose }: { steps: number; ind
 export function ActionBar({ children, tone }: { children: ReactNode; tone?: 'success' | 'danger' }) {
   const insets = useSafeAreaInsets();
   const bg = tone === 'success' ? colors.successSoft : tone === 'danger' ? colors.dangerSoft : colors.surface;
-  const line = tone === 'success' ? 'rgba(52,211,153,0.35)' : tone === 'danger' ? 'rgba(251,113,133,0.35)' : colors.lineSoft;
+  const line = tone === 'success' ? '#BFE8CC' : tone === 'danger' ? '#F7C7C8' : colors.lineSoft;
   return (
     <View style={[styles.bar, { backgroundColor: bg, borderTopColor: line, paddingBottom: 16 + insets.bottom }]}>{children}</View>
   );
@@ -44,13 +44,13 @@ export function VerdictBar({ right, title, message, onContinue, onRetry }: { rig
       <ActionBar tone={right ? 'success' : 'danger'}>
         <View style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }} accessibilityLiveRegion="polite">
           <Animated.View entering={ZoomIn.delay(120)} style={[styles.verdict, { backgroundColor: right ? colors.success : colors.danger }]}>
-            <Icon name={right ? 'check' : 'cross'} size={18} color={colors.onColor} strokeWidth={2.6} />
+            <Icon name={right ? 'check' : 'cross'} size={18} color="#FFFFFF" strokeWidth={2.6} />
           </Animated.View>
           <View style={{ flex: 1, gap: 2 }}>
             <T variant="heading" color={right ? colors.successInk : colors.dangerInk} style={{ fontSize: 17 }}>
               {title ?? (right ? 'Correct!' : 'Not quite')}
             </T>
-            <T variant="bodySm" color={right ? '#6EE7B7' : '#FDA4AF'} style={{ fontSize: 14, lineHeight: 20 }}>
+            <T variant="bodySm" color={right ? '#1F5B36' : '#7A2A2C'} style={{ fontSize: 14, lineHeight: 20 }}>
               {message}
             </T>
           </View>

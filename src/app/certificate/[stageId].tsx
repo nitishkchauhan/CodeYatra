@@ -69,26 +69,26 @@ export default function CertificateScreen() {
                       <View style={[styles.seal, { backgroundColor: stage.color }]}>
                         <Yatri size={52} mood="celebrate" outfit="grad-cap" dark />
                       </View>
-                      <T variant="kicker" color={PAPER.ink3} style={{ letterSpacing: 2, marginTop: 8 }}>
+                      <T variant="kicker" color={colors.ink3} style={{ letterSpacing: 2, marginTop: 8 }}>
                         CERTIFICATE OF COMPLETION
                       </T>
-                      <T variant="bodySm" color={PAPER.ink2} style={{ marginTop: 12 }}>
+                      <T variant="bodySm" color={colors.ink2} style={{ marginTop: 12 }}>
                         This certifies that
                       </T>
                       <T style={styles.name} numberOfLines={1} adjustsFontSizeToFit>
                         {cert.name}
                       </T>
                       <View style={[styles.rule, { backgroundColor: colors.saffron }]} />
-                      <T variant="bodySm" color={PAPER.body} style={{ textAlign: 'center' }}>
-                        completed <T variant="label" color={PAPER.ink}>{stage.name}</T> on CodeYatra, covering {stage.sub}.
+                      <T variant="bodySm" color={colors.inkBody} style={{ textAlign: 'center' }}>
+                        completed <T variant="label">{stage.name}</T> on CodeYatra, covering {stage.sub}.
                       </T>
                       <View style={styles.footer}>
                         <View>
-                          <T variant="label" color={PAPER.ink}>{longDate(cert.date)}</T>
-                          <T variant="caption" color={PAPER.ink3}>{cert.verifyId ? `ID ${cert.verifyId.slice(0, 8).toUpperCase()}` : 'Date'}</T>
+                          <T variant="label">{longDate(cert.date)}</T>
+                          <T variant="caption">{cert.verifyId ? `ID ${cert.verifyId.slice(0, 8).toUpperCase()}` : 'Date'}</T>
                         </View>
-                        <T style={{ fontFamily: fonts.display, fontSize: 18, color: PAPER.ink }}>
-                          Code<T style={{ fontFamily: fonts.display, fontSize: 18, color: PAPER.saffron }}>Yatra</T>
+                        <T style={{ fontFamily: fonts.display, fontSize: 18, color: colors.ink }}>
+                          Code<T style={{ fontFamily: fonts.display, fontSize: 18, color: colors.saffronShadow }}>Yatra</T>
                         </T>
                       </View>
                     </View>
@@ -145,15 +145,12 @@ export default function CertificateScreen() {
   );
 }
 
-/** The certificate is printed-paper style (light), whatever the app theme, so it shares and prints well. */
-const PAPER = { ink: '#16142B', ink2: '#55526E', ink3: '#6E6A88', body: '#3B3856', primary: '#4B3FD8', saffron: '#C26A00' };
-
 const styles = StyleSheet.create({
   paper: { backgroundColor: '#FFFDF7', borderRadius: 20, padding: 10 },
   border: { borderWidth: 2, borderRadius: 14, padding: 4 },
   inner: { borderWidth: 1, borderStyle: 'dashed', borderColor: '#C9C4F6', borderRadius: 10, padding: 18, alignItems: 'center' },
   seal: { width: 76, height: 76, borderRadius: 38, alignItems: 'center', justifyContent: 'center', borderWidth: 4, borderColor: '#FFC56B' },
-  name: { fontFamily: fonts.display, fontSize: 30, lineHeight: 38, color: PAPER.primary, marginTop: 2 },
+  name: { fontFamily: fonts.display, fontSize: 30, lineHeight: 38, color: colors.primary, marginTop: 2 },
   rule: { width: 140, height: 2, borderRadius: 1, marginVertical: 10 },
   footer: { alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 22 },
   locked: { alignItems: 'center', gap: 10, padding: 24, borderRadius: 22, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.line },

@@ -16,7 +16,7 @@ import { useProgress } from '@/state/progress';
 import { card, colors } from '@/theme';
 
 const DIFFICULTY = {
-  Easy: { bg: colors.successSoft, ink: '#6EE7B7' },
+  Easy: { bg: colors.successSoft, ink: '#166534' },
   Medium: { bg: colors.saffronSoft, ink: colors.saffronInk },
   Hard: { bg: colors.dangerSoft, ink: colors.dangerInk },
 } as const;
@@ -35,7 +35,7 @@ export default function PracticeScreen() {
           <T variant="display" accessibilityRole="header">
             {t('practice')}
           </T>
-          <T variant="bodySm" color="#A9A3DA">
+          <T variant="bodySm" color="#6E6A88">
             Short challenges that sharpen each skill
           </T>
         </Animated.View>
@@ -47,7 +47,7 @@ export default function PracticeScreen() {
             onPress={() => router.push('/playground')}
             style={({ pressed }) => [styles.playground, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
             <View style={styles.playIcon}>
-              <Icon name="practice" size={24} color={colors.onColor} />
+              <Icon name="practice" size={24} color="#FFFFFF" />
             </View>
             <View style={{ flex: 1, gap: 2 }}>
               <T variant="heading" color="#FFFFFF">
@@ -68,7 +68,7 @@ export default function PracticeScreen() {
             onPress={() => router.push('/mock')}
             style={({ pressed }) => [styles.mock, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
             <View style={styles.mockIcon}>
-              <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={24} color="#0E0937" strokeWidth={2.2} />
+              <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={24} color="#16142B" strokeWidth={2.2} />
             </View>
             <View style={{ flex: 1, gap: 2 }}>
               <T variant="heading">Placement mock tests</T>
@@ -125,7 +125,7 @@ export default function PracticeScreen() {
                   style={({ pressed }) => [styles.item, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
                   <TrackBadge stage={stage} size={44} dimmed={!available} />
                   <View style={{ flex: 1, gap: 4 }}>
-                    <T variant="label" color={available ? colors.ink : '#A9A3DA'}>
+                    <T variant="label" color={available ? colors.ink : '#6E6A88'}>
                       {p.title}
                     </T>
                     <View
@@ -177,7 +177,7 @@ export default function PracticeScreen() {
 }
 
 const styles = StyleSheet.create({
-  mock: { borderRadius: 20, backgroundColor: colors.saffronSoft, borderWidth: 1, borderColor: 'rgba(255,178,63,0.35)', padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  mock: { borderRadius: 20, backgroundColor: colors.saffronSoft, borderWidth: 1, borderColor: '#FFD9A3', padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   mockIcon: { width: 48, height: 48, borderRadius: 14, backgroundColor: colors.saffron, alignItems: 'center', justifyContent: 'center' },
   playground: {
     borderRadius: 20,

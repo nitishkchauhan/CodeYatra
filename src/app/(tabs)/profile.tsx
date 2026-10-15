@@ -34,10 +34,10 @@ const REMINDER_TIMES = [
 const SHORTCUTS: { label: string; sub: string; href: Href; icon: string; tint: string; ink: string }[] = [
   { label: 'Shop', sub: 'Outfits, freezes', href: '/shop', icon: 'M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z M9 8a3 3 0 0 1 6 0', tint: colors.saffronSoft, ink: colors.saffronShadow },
   { label: 'League', sub: 'Weekly ranks', href: '/leaderboard', icon: 'M8 21h8 M12 17v4 M7 4h10v5a5 5 0 0 1-10 0z M7 6H4a3 3 0 0 0 3 4 M17 6h3a3 3 0 0 1-3 4', tint: colors.primarySoft, ink: colors.primary },
-  { label: 'Playground', sub: 'Run any code', href: '/playground', icon: 'M8 8l-4 4 4 4 M16 8l4 4-4 4 M13.5 5l-3 14', tint: colors.tealSoft, ink: '#5EEAD4' },
-  { label: 'Invite', sub: '+50 coins each', href: '/invite', icon: 'M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1 M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19 8v6 M22 11h-6', tint: 'rgba(249,168,212,0.12)', ink: '#F9A8D4' },
-  { label: 'Classes', sub: 'Join or teach', href: '/classes', icon: 'M3 9l9-5 9 5-9 5z M7 11v5c3 2 7 2 10 0v-5', tint: 'rgba(125,211,252,0.12)', ink: '#7DD3FC' },
-  { label: 'Share', sub: 'Your progress', href: '/share-progress', icon: 'M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7 M12 3v13 M7 8l5-5 5 5', tint: colors.successSoft, ink: '#6EE7B7' },
+  { label: 'Playground', sub: 'Run any code', href: '/playground', icon: 'M8 8l-4 4 4 4 M16 8l4 4-4 4 M13.5 5l-3 14', tint: colors.tealSoft, ink: '#0F766E' },
+  { label: 'Invite', sub: '+50 coins each', href: '/invite', icon: 'M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1 M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19 8v6 M22 11h-6', tint: '#FCE7F3', ink: '#BE185D' },
+  { label: 'Classes', sub: 'Join or teach', href: '/classes', icon: 'M3 9l9-5 9 5-9 5z M7 11v5c3 2 7 2 10 0v-5', tint: '#E0F2FE', ink: '#0369A1' },
+  { label: 'Share', sub: 'Your progress', href: '/share-progress', icon: 'M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7 M12 3v13 M7 8l5-5 5 5', tint: colors.successSoft, ink: '#166534' },
 ];
 
 export default function ProfileScreen() {
@@ -185,11 +185,11 @@ export default function ProfileScreen() {
                   accessibilityLabel={`${s.name} certificate, ${earned ? 'earned' : 'locked'}`}
                   onPress={() => router.push({ pathname: '/certificate/[stageId]', params: { stageId: s.id } })}
                   style={[styles.cert, { backgroundColor: earned ? s.color : colors.surface, borderColor: earned ? s.color : colors.line }]}>
-                  <Icon d={earned ? 'M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12z M8.5 14L7 22l5-3 5 3-1.5-8' : 'M6 11h12v10H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3'} size={24} color={earned ? colors.onColor : colors.ink3} />
-                  <T variant="label" color={earned ? colors.onColor : colors.ink2} numberOfLines={2} style={{ fontSize: 13 }}>
+                  <Icon d={earned ? 'M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12z M8.5 14L7 22l5-3 5 3-1.5-8' : 'M6 11h12v10H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3'} size={24} color={earned ? '#FFFFFF' : colors.ink3} />
+                  <T variant="label" color={earned ? '#FFFFFF' : colors.ink2} numberOfLines={2} style={{ fontSize: 13 }}>
                     {s.name}
                   </T>
-                  <T variant="caption" color={earned ? 'rgba(14,9,55,0.75)' : colors.ink3}>
+                  <T variant="caption" color={earned ? '#FFFFFFCC' : colors.ink3}>
                     {earned ? 'Earned · tap to share' : 'Locked'}
                   </T>
                 </Pressable>
@@ -241,7 +241,7 @@ export default function ProfileScreen() {
             <Switch
               value={state.reminder.enabled}
               onValueChange={(on) => updateReminder({ ...state.reminder, enabled: on })}
-              trackColor={{ true: colors.primary, false: 'rgba(255,255,255,0.25)' }}
+              trackColor={{ true: colors.primary, false: '#D9D6E6' }}
               thumbColor="#FFFFFF"
               accessibilityLabel="Daily reminder"
             />
@@ -252,7 +252,7 @@ export default function ProfileScreen() {
                 const on = state.reminder.hour === r.hour && state.reminder.minute === 0;
                 return (
                   <Pressable key={r.hour} accessibilityRole="radio" accessibilityState={{ checked: on }} onPress={() => updateReminder({ enabled: true, hour: r.hour, minute: 0 })} style={[styles.time, on && { backgroundColor: colors.primary, borderColor: colors.primary }]}>
-                    <T variant="labelSm" color={on ? colors.onColor : colors.ink2}>
+                    <T variant="labelSm" color={on ? '#FFFFFF' : colors.ink2}>
                       {r.label}
                     </T>
                   </Pressable>
@@ -265,7 +265,7 @@ export default function ProfileScreen() {
             <T variant="label" style={{ flex: 1 }}>
               Vibration feedback
             </T>
-            <Switch value={state.haptics} onValueChange={setHaptics} trackColor={{ true: colors.primary, false: 'rgba(255,255,255,0.25)' }} thumbColor="#FFFFFF" accessibilityLabel="Vibration feedback" />
+            <Switch value={state.haptics} onValueChange={setHaptics} trackColor={{ true: colors.primary, false: '#D9D6E6' }} thumbColor="#FFFFFF" accessibilityLabel="Vibration feedback" />
           </View>
           <View style={[styles.setting, styles.divider]}>
             <Icon d="M3 3v18h18 M7 15l4-4 3 3 5-6" size={20} color={colors.primary} />
@@ -273,7 +273,7 @@ export default function ProfileScreen() {
               <T variant="label">Help improve CodeYatra</T>
               <T variant="caption">Anonymous crash reports and usage. No name or email.</T>
             </View>
-            <Switch value={state.telemetry} onValueChange={setTelemetry} trackColor={{ true: colors.primary, false: 'rgba(255,255,255,0.25)' }} thumbColor="#FFFFFF" accessibilityLabel="Share anonymous usage data" />
+            <Switch value={state.telemetry} onValueChange={setTelemetry} trackColor={{ true: colors.primary, false: '#D9D6E6' }} thumbColor="#FFFFFF" accessibilityLabel="Share anonymous usage data" />
           </View>
           <Pressable accessibilityRole="button" onPress={() => router.push('/account')} style={[styles.setting, styles.divider]}>
             <Icon name="profile" size={20} color={colors.primary} />
@@ -311,7 +311,7 @@ export default function ProfileScreen() {
           </Pressable>
         </Animated.View>
         <View style={{ alignItems: 'center', gap: 6, paddingTop: 4 }}>
-          <Logo height={22} dark />
+          <Logo height={22} />
           <T variant="caption" style={{ textAlign: 'center' }}>
             version {APP_VERSION}
           </T>
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
   divider: { borderTopWidth: 1, borderTopColor: colors.lineSoft },
   segment: { flexDirection: 'row', gap: 2, backgroundColor: colors.lineSoft, borderRadius: 10, padding: 3 },
   segmentBtn: { minHeight: 34, paddingHorizontal: 12, borderRadius: 8, justifyContent: 'center' },
-  segmentOn: { backgroundColor: 'rgba(255,255,255,0.16)' },
+  segmentOn: { backgroundColor: '#FFFFFF', boxShadow: '0 1px 2px rgba(22,20,43,0.12)' },
   times: { flexDirection: 'row', gap: 8, paddingHorizontal: 14, paddingBottom: 12 },
   time: { flex: 1, minHeight: 40, borderRadius: 12, borderWidth: 1, borderColor: colors.line, alignItems: 'center', justifyContent: 'center' },
 });

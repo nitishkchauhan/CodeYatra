@@ -51,7 +51,7 @@ function Journey({ path }: { path: CareerPath }) {
         <Animated.View entering={FadeInDown.duration(320)} style={[styles.hero, { backgroundColor: path.soft }]}>
           <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
             <View style={[styles.badge, { backgroundColor: path.color }]}>
-              <Icon d={path.icon} size={26} color={colors.onColor} />
+              <Icon d={path.icon} size={26} color="#FFFFFF" />
             </View>
             <T variant="bodySm" color={colors.inkBody} style={{ flex: 1 }}>
               {path.job}
@@ -64,7 +64,7 @@ function Journey({ path }: { path: CareerPath }) {
                 {summary.pct}% · {summary.done} of {summary.total}
               </T>
             </View>
-            <Bar value={summary.pct / 100} color={path.color} track="rgba(255,255,255,0.14)" height={10} />
+            <Bar value={summary.pct / 100} color={path.color} track="#FFFFFF" height={10} />
           </View>
           {following ? (
             <View style={styles.following}>
@@ -106,7 +106,7 @@ function Journey({ path }: { path: CareerPath }) {
               <Animated.View key={section.title} entering={FadeInDown.delay(60 + si * 40).duration(320)} style={{ gap: 0 }}>
                 <View style={styles.sectionHead}>
                   <View style={[styles.sectionNum, { backgroundColor: path.color }]}>
-                    <T variant="labelSm" color={colors.onColor}>
+                    <T variant="labelSm" color="#FFFFFF">
                       {si + 1}
                     </T>
                   </View>
@@ -177,10 +177,10 @@ function Station({
             styles.stationDot,
             stop.optional && { borderStyle: 'dashed', borderColor: colors.ink3 },
             done && { backgroundColor: colors.success, borderColor: colors.success },
-            isNext && { borderColor: path.color, borderWidth: 3, backgroundColor: colors.onColor },
+            isNext && { borderColor: path.color, borderWidth: 3, backgroundColor: '#FFFFFF' },
           ]}>
           {done ? (
-            <Icon name="check" size={14} color={colors.onColor} strokeWidth={3} />
+            <Icon name="check" size={14} color="#FFFFFF" strokeWidth={3} />
           ) : status === 'progress' ? (
             <Ring value={progress} size={22} stroke={3} color={path.color} track={colors.lineSoft} />
           ) : stop.project ? (
@@ -222,7 +222,7 @@ function Station({
 function Tag({ text, color, solid }: { text: string; color: string; solid?: boolean }) {
   return (
     <View style={[styles.tag, solid ? { backgroundColor: color } : { borderColor: color, borderWidth: 1 }]}>
-      <T variant="labelSm" color={solid ? colors.onColor : color} style={{ fontSize: 10.5 }}>
+      <T variant="labelSm" color={solid ? '#FFFFFF' : color} style={{ fontSize: 10.5 }}>
         {text}
       </T>
     </View>
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   hero: { borderRadius: 22, padding: 16, gap: 14 },
   badge: { width: 52, height: 52, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  following: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 40, paddingHorizontal: 12, borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.12)' },
+  following: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 40, paddingHorizontal: 12, borderRadius: 12, backgroundColor: '#FFFFFF' },
   sectionHead: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 },
   sectionNum: { width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginLeft: 6 },
   station: { flexDirection: 'row', gap: 10 },
@@ -269,6 +269,6 @@ const styles = StyleSheet.create({
   tag: { minHeight: 20, paddingHorizontal: 7, borderRadius: 10, justifyContent: 'center' },
   segment: { flexDirection: 'row', gap: 2, backgroundColor: colors.lineSoft, borderRadius: 12, padding: 3 },
   segmentBtn: { flex: 1, minHeight: 38, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  segmentOn: { backgroundColor: 'rgba(255,255,255,0.16)' },
+  segmentOn: { backgroundColor: '#FFFFFF', boxShadow: '0 1px 2px rgba(22,20,43,0.12)' },
   end: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: 16 },
 });

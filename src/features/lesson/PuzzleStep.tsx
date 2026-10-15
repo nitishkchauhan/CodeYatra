@@ -38,9 +38,9 @@ const RESULT: Record<Outcome, { title: string; body: string; tone: 'ok' | 'warn'
 };
 
 const TONE = {
-  ok: { bg: colors.successSoft, line: 'rgba(52,211,153,0.35)', ink: colors.successInk, icon: colors.success, glyph: 'check' as const },
+  ok: { bg: colors.successSoft, line: '#BFE8CC', ink: colors.successInk, icon: colors.success, glyph: 'check' as const },
   warn: { bg: colors.warnSoft, line: colors.warnLine, ink: colors.warnInk, icon: colors.saffron, glyph: 'alert' as const },
-  bad: { bg: colors.dangerSoft, line: 'rgba(251,113,133,0.35)', ink: colors.dangerInk, icon: colors.danger, glyph: 'cross' as const },
+  bad: { bg: colors.dangerSoft, line: '#F7C7C8', ink: colors.dangerInk, icon: colors.danger, glyph: 'cross' as const },
 };
 
 export function PuzzleStep({ step, onDone, onMistake }: { step: Step; onDone: () => void; onMistake: () => void }) {
@@ -116,9 +116,9 @@ export function PuzzleStep({ step, onDone, onMistake }: { step: Step; onDone: ()
 
   const ring = (id: string, shadow: string) =>
     id === failId
-      ? `0 0 0 2px #0E0937, 0 0 0 4px ${colors.danger}`
+      ? `0 0 0 2px #FFFFFF, 0 0 0 4px ${colors.danger}`
       : id === activeId
-        ? `0 0 0 2px #0E0937, 0 0 0 4px ${colors.saffron}`
+        ? `0 0 0 2px #FFFFFF, 0 0 0 4px ${colors.saffron}`
         : `0 2px 0 ${shadow}`;
 
   const chip = (b: Block, label: string) => {
@@ -155,7 +155,7 @@ export function PuzzleStep({ step, onDone, onMistake }: { step: Step; onDone: ()
       <Animated.View key={b.id} entering={FadeInDown.duration(220)} layout={LinearTransition}>
         <View style={styles.row}>
           <T style={styles.lineNo}>{headLine}</T>
-          <View style={[styles.repeatHead, { backgroundColor: m.color, boxShadow: isTarget ? `0 0 0 2px #0E0937, 0 0 0 4px ${colors.primary}` : ring(b.id, m.shadow) }]}>
+          <View style={[styles.repeatHead, { backgroundColor: m.color, boxShadow: isTarget ? `0 0 0 2px #FFFFFF, 0 0 0 4px ${colors.primary}` : ring(b.id, m.shadow) }]}>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={isTarget ? 'Repeat block, adding inside. Tap to stop' : 'Repeat block. Tap to add blocks inside'}
@@ -179,7 +179,7 @@ export function PuzzleStep({ step, onDone, onMistake }: { step: Step; onDone: ()
               }}
               hitSlop={6}
               style={styles.times}>
-              <T variant="labelSm" color="#FDBA74" style={{ fontSize: 13 }}>
+              <T variant="labelSm" color="#9A3412" style={{ fontSize: 13 }}>
                 ×{b.times}
               </T>
             </Pressable>
@@ -200,7 +200,7 @@ export function PuzzleStep({ step, onDone, onMistake }: { step: Step; onDone: ()
                     chip(inner, BLOCK_META[inner.type].label)
                   ) : (
                     <View style={styles.emptyInner}>
-                      <T variant="labelSm" color="#5EEAD4">
+                      <T variant="labelSm" color="#0F766E">
                         {isTarget ? 'Tap blocks below' : 'Tap Repeat to add inside'}
                       </T>
                     </View>
@@ -235,7 +235,7 @@ export function PuzzleStep({ step, onDone, onMistake }: { step: Step; onDone: ()
         {level.gems.length ? (
           <View style={styles.gemChip}>
             <Icon name="gem" size={12} color={colors.teal} strokeWidth={2.4} />
-            <T variant="labelSm" color="#5EEAD4">
+            <T variant="labelSm" color="#0F766E">
               {current.got.length}/{level.gems.length}
             </T>
           </View>
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
   wsHead: { height: 50, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 8, borderBottomWidth: 1, borderBottomColor: colors.lineSoft },
   segment: { flexDirection: 'row', gap: 2, backgroundColor: colors.lineSoft, borderRadius: 10, padding: 3 },
   segmentBtn: { minHeight: 34, paddingHorizontal: 12, borderRadius: 8, justifyContent: 'center' },
-  segmentOn: { backgroundColor: 'rgba(255,255,255,0.16)' },
+  segmentOn: { backgroundColor: '#FFFFFF', boxShadow: '0 1px 2px rgba(22,20,43,0.12)' },
   doneChip: { minHeight: 34, paddingHorizontal: 12, borderRadius: 10, backgroundColor: colors.primarySoft, justifyContent: 'center' },
   empty: { marginTop: 12, minHeight: 110, borderRadius: 14, borderWidth: 1.5, borderStyle: 'dashed', borderColor: '#C9C6D9', alignItems: 'center', justifyContent: 'center', gap: 6, padding: 16 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 6 },
@@ -423,13 +423,13 @@ const styles = StyleSheet.create({
     paddingRight: 4,
   },
   repeatLabel: { flex: 1, height: '100%', flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 10 },
-  times: { minWidth: 36, height: 30, borderRadius: 7, backgroundColor: 'rgba(255,255,255,0.9)', alignItems: 'center', justifyContent: 'center' },
+  times: { minWidth: 36, height: 30, borderRadius: 7, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
   removeRepeat: { width: 30, height: 30, alignItems: 'center', justifyContent: 'center' },
-  emptyInner: { height: 38, borderRadius: 10, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.teal, backgroundColor: 'rgba(45,212,191,0.12)', alignItems: 'center', justifyContent: 'center' },
+  emptyInner: { height: 38, borderRadius: 10, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.teal, backgroundColor: '#ECFAF8', alignItems: 'center', justifyContent: 'center' },
   repeatFoot: { flex: 1, height: 10, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, borderTopRightRadius: 10 },
   palette: { flexDirection: 'row', gap: 6, paddingHorizontal: 12, paddingVertical: 10, justifyContent: 'center' },
   paletteBtn: { flex: 1, maxWidth: 90, height: 56, borderRadius: 12, alignItems: 'center', justifyContent: 'center', gap: 3 },
   result: { marginHorizontal: 12, marginVertical: 10, borderRadius: 16, borderWidth: 1, padding: 12, flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
   resultIcon: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
-  editBtn: { minHeight: 36, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, backgroundColor: 'rgba(255,255,255,0.10)', justifyContent: 'center' },
+  editBtn: { minHeight: 36, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, backgroundColor: '#FFFFFF', justifyContent: 'center' },
 });

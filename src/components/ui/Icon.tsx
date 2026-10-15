@@ -41,7 +41,7 @@ export function Icon({
   name,
   d,
   size = 22,
-  color = '#FFFFFF',
+  color = '#16142B',
   strokeWidth = 2,
 }: {
   name?: IconName;
@@ -64,7 +64,7 @@ export function Icon({
   );
 }
 
-export function Glyph({ name, size = 18, color = '#FFFFFF' }: { name: GlyphName; size?: number; color?: ColorValue }) {
+export function Glyph({ name, size = 18, color = '#16142B' }: { name: GlyphName; size?: number; color?: ColorValue }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24">
       <Path d={GLYPHS[name]} fill={color} />

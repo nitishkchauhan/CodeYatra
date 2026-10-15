@@ -110,7 +110,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
   }
 
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.bg }}>
+    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: step.type === 'puzzle' ? colors.bg : colors.surface }}>
       <LessonTopBar steps={lesson.steps.length} index={index} xp={reward.xp} onClose={() => router.back()} />
       <Animated.View key={index} entering={FadeIn.duration(220)} style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>

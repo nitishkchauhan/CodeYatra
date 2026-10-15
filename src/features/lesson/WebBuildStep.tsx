@@ -101,7 +101,7 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
             {checks.map((c) => (
               <View key={c.label} style={styles.check}>
                 <View style={[styles.checkDot, { backgroundColor: c.ok ? colors.success : colors.danger }]}>
-                  <Icon name={c.ok ? 'check' : 'cross'} size={12} color={colors.onColor} strokeWidth={3} />
+                  <Icon name={c.ok ? 'check' : 'cross'} size={12} color="#FFFFFF" strokeWidth={3} />
                 </View>
                 <T variant="bodySm" color={c.ok ? colors.ink : colors.dangerInk} style={{ flex: 1 }}>
                   {c.label}
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   dot: { width: 8, height: 8, borderRadius: 4 },
   tabs: { flexDirection: 'row', gap: 2, backgroundColor: colors.lineSoft, borderRadius: 12, padding: 3 },
   tab: { flex: 1, minHeight: 38, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  tabOn: { backgroundColor: 'rgba(255,255,255,0.16)' },
+  tabOn: { backgroundColor: '#FFFFFF', boxShadow: '0 1px 2px rgba(22,20,43,0.12)' },
   console: { borderRadius: 12, backgroundColor: colors.code.console, padding: 10, gap: 2 },
   consoleText: { fontFamily: fonts.mono, fontSize: 12.5, color: colors.code.text },
   checks: { borderRadius: 16, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, padding: 12, gap: 10 },

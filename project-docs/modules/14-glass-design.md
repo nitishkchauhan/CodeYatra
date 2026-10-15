@@ -1,48 +1,47 @@
-# 14 · Aurora Glass design (whole app)
+# 14 · Glass design (redesign)
 
-**Status:** 🧪 built on branch `paths-feature`, 15 Oct 2026. **One design across every screen.** Not in a store build yet.
+**Status:** 🧪 redesign phase 1 built on branch `paths-feature`, 15 Oct 2026: design system, Home, tab bar. Other screens are still the light style.
 
-## The choice
-**Aurora Glass:** a dark navy background with soft violet, teal and saffron glows, and see-through glass cards on top. Chosen by us for CodeYatra because:
-- it matches the navy `< Y >` logo and app icon;
-- coding apps learners like (Mimo, Enki, VS Code) are dark, and the code editor already was;
-- it is easier on the eyes at night, when many students study;
-- it uses less battery on OLED phones, common in India.
-
-## The rules (follow these for every new screen)
-| Rule | How |
-|---|---|
-| Background | Never set one. Every screen already sits on the shared aurora (`screenLayout` in `src/app/_layout.tsx`). Use `colors.bg` (transparent). |
-| Cards | `card` from the theme, or `GlassCard` / `GlassButton`. Translucent white, 1 px light edge. |
-| Solid panels | Sheets, inputs, toasts: `colors.surface` (`#1B1452`) so content behind doesn’t show through. |
-| Text | `colors.ink` (white), `ink2`, `ink3` for hints. |
-| **Text on a coloured fill** | Always **navy** (`colors.onColor`). Every accent is light enough to carry navy text and to read as text on navy. |
-| Accents | `primary` violet `#9B88FF`, `saffron` `#FFB23F`, `success` `#34D399`, `danger` `#FB7185`, `teal` `#2DD4BF`. Soft versions are translucent. |
-| Track and path colours | Lifted automatically by `onDark()` so they read on glass. Use them as given. |
-| Selected chip or tab | White at 16% (`rgba(255,255,255,0.16)`), not a white pill. |
-| Exceptions (keep their own colours) | The certificate (printed paper), web page previews (a real page is white), the puzzle board, avatar colours, project cards. |
-
-All colours are checked by tests: `src/theme/__tests__/contrast.test.ts` (text and accents on navy and on the lightest glass, navy on every accent) and the track/path colour tests in `src/content/__tests__/paths.test.ts`.
+## The look
+- **Aurora background:** deep navy `#0E0937` with soft violet (top left), teal (right) and saffron (bottom left) glows.
+- **Glass cards:** white at 7% (12% for the main card) over the aurora, a 1 px light edge and a thin shine along the top. Cards can carry a colour wash (e.g. the track colour at 16%).
+- **Text on glass:** white, `#D6D2F7` for secondary and `#A9A3DA` for hints. All pass WCAG AA on a glass card.
+- **Accents:** saffron for actions and the daily goal, teal for finished, violet for the active tab.
 
 ### Why no live blur
-`expo-blur` (SDK 57) only blurs on Android inside a special wrapper view and is slow on Android 11 and older. Over soft gradient glows, translucent cards look the same and scroll smoothly on cheap phones.
+`expo-blur` (SDK 57) only blurs on Android inside a special wrapper view, and is slow on Android 11 and older, which many students use. Over soft gradient glows a translucent card looks the same as a blurred one, so the glass is built from layers and costs nothing while scrolling.
 
-## Home
-Header chips, glass track rail, hero card with Yatri and **Continue lesson**, daily goal ring, path card, daily cards, and **Your journey**: modules as a zigzag trail of glossy 3D nodes (teal trail when finished, pulsing next module with Yatri, Practise chips).
+## Home (redesigned)
+| Part | What it does |
+|---|---|
+| Header | Greeting and name, glass chips for streak and XP |
+| Track rail | Glass tiles for every track |
+| Hero card | Track, % done ring, current module, animated Yatri, saffron **Continue lesson** button |
+| Daily goal | Glass card with a ring that fills; teal when done |
+| Path card | Your career path, next stop, progress bar |
+| Daily cards | Daily challenge (saffron tint) and Review (violet tint) |
+| **Your journey** | Modules as a **zigzag trail**: glossy 3D nodes, the finished part of the trail glows teal, the next module pulses with Yatri beside it, locked ones are glass with a lock. Finished modules with exercises show a **Practise** chip. |
+
+The status bar turns light while Home is showing.
+
+## Tab bar
+Dark glass on every screen, with a glowing violet pill behind the active tab.
 
 ## Code
 | Part | File |
 |---|---|
-| Tokens, `card`, `glass`, `alpha()`, `onDark()`, `contrast()` | `src/theme/index.ts` |
-| Aurora background, glass card/button | `src/components/ui/Glass.tsx` |
-| Shared background for every screen | `src/app/_layout.tsx` (`screenLayout`) |
+| Tokens | `glass` in `src/theme/index.ts` |
+| Background, cards, buttons, `alpha()` | `src/components/ui/Glass.tsx` (`GlassBackground`, `GlassCard`, `GlassButton`) |
 | Zigzag trail | `src/components/ModulePath.tsx` |
-| Buttons (navy text on colour) | `src/components/ui/Button.tsx` |
+| Home | `src/app/(tabs)/index.tsx` |
+| Glass versions | `DailyCards`, `MyPathCard`, `TrackRail` (`glass` option), `TabBar` |
 
 ## Checks (15 Oct 2026)
-- Screenshotted at phone size with a demo learner: Home, Paths, a path map, Practice, Profile, Shop, League, lessons (concept, quiz, wrong answer, block puzzle), Playground, Mock tests, Certificate, Edit profile, Account, Invite, Share, onboarding. No errors.
-- Typecheck and lint clean; 850 tests pass (35 new colour checks).
+- Home, Paths and Profile screenshotted at phone size with a demo learner: no errors.
+- Typecheck and lint clean; 815 tests pass.
+- Reduce-motion stops the pulse and Yatri's movement.
 
-## Next
-- Friendlier lesson screens (big Yatri reactions, from the design board).
-- A light theme option later, if learners ask for it.
+## Next phases
+1. Paths and Practice tabs in glass.
+2. Profile, leaderboard and shop in glass.
+3. Lesson screens: friendlier concept screens, glass result panels and Yatri reactions (from the design board).

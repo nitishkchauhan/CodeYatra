@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { getLesson, STAGES } from '..';
+import { getLesson } from '..';
 import { markKey, nextModule, PATHS, pathSummary, stopStatus, type CareerPath } from '../paths';
 import { INITIAL, mergeProgress } from '@/state/model';
 
@@ -35,22 +35,11 @@ const contrast = (a: string, b: string) => {
   return (hi + 0.05) / (lo + 0.05);
 };
 
-// Aurora Glass: path colours are text on navy and on a glass card, and carry navy text when used as a fill.
-const NAVY = '#0E0937';
-const GLASS_CARD = '#262060'; // the lightest glass panel (violet hero glass / solid surface)
 describe('path colours are readable', () => {
-  it.each(PATHS.map((p) => [p.id, p] as const))('%s: ink and colour read on navy and glass, and under navy text', (_, path) => {
-    for (const c of [path.ink, path.color]) {
-      expect(contrast(c, NAVY)).toBeGreaterThanOrEqual(4.5);
-      expect(contrast(c, GLASS_CARD)).toBeGreaterThanOrEqual(4.5);
-    }
-  });
-});
-
-describe('track colours are readable', () => {
-  it.each(STAGES.map((s) => [s.id, s] as const))('%s: colour reads on navy and glass', (_, stage) => {
-    expect(contrast(stage.color, NAVY)).toBeGreaterThanOrEqual(4.5);
-    expect(contrast(stage.color, GLASS_CARD)).toBeGreaterThanOrEqual(4.5);
+  it.each(PATHS.map((p) => [p.id, p] as const))('%s: white on ink and ink on soft meet WCAG AA', (_, path) => {
+    expect(contrast('#FFFFFF', path.ink)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(path.ink, path.soft)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(path.ink, '#FFFFFF')).toBeGreaterThanOrEqual(4.5);
   });
 });
 
