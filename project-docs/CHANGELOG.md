@@ -3,7 +3,7 @@
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
 ## In progress
-Build 6 (v1.3.0) building on EAS.
+Nothing half-done right now. Build 6 (v1.3.0, versionCode 6) is built and ready to upload.
 
 ## 15 Oct 2026: merged into `main`
 - `paths-feature` merged (`303ea9b`); version 1.3.0 and release notes (`a30f912`); build 6 started.
