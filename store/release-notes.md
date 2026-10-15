@@ -2,6 +2,17 @@
 
 Play Console limit: 500 characters.
 
+## 1.3.0
+
+<en-IN>
+• Career paths: 13 job roadmaps, from Frontend to AI, with every step
+• A new start: tell us your goal and get a path, daily goal and reminder
+• Made for you: suggestions on Home that match why you learn
+• Fresh new look and logo, with a lesson trail on Home
+• Yatri cheers when you get it right and helps when you don't
+• Practise each module with new Python exercises
+</en-IN>
+
 ## 1.2.0
 
 <en-IN>
