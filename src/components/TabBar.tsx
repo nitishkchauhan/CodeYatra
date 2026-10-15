@@ -18,7 +18,7 @@ const ITEMS: Record<string, { label: StringKey; icon: IconName }> = {
   profile: { label: 'profile', icon: 'profile' },
 };
 
-/** Dark glass bottom bar with a glowing pill behind the active icon. */
+/** Frosted bottom bar with a soft violet pill behind the active icon. */
 export function TabBar({ state, navigation }: TabBarProps) {
   const t = useT();
   const insets = useSafeAreaInsets();
@@ -28,7 +28,7 @@ export function TabBar({ state, navigation }: TabBarProps) {
         const item = ITEMS[route.name];
         if (!item) return null;
         const focused = state.index === i;
-        const color = focused ? glass.text : glass.text3;
+        const color = focused ? glass.violet : glass.text3;
         return (
           <Pressable
             key={route.key}
@@ -57,8 +57,8 @@ export function TabBar({ state, navigation }: TabBarProps) {
 }
 
 const styles = StyleSheet.create({
-  bar: { flexDirection: 'row', backgroundColor: 'rgba(14,9,55,0.96)', borderTopWidth: 1, borderTopColor: glass.border, paddingTop: 8, paddingHorizontal: 10 },
+  bar: { flexDirection: 'row', backgroundColor: 'rgba(255,255,255,0.94)', borderTopWidth: 1, borderTopColor: 'rgba(22,20,43,0.08)', paddingTop: 8, paddingHorizontal: 10 },
   item: { flex: 1, alignItems: 'center', gap: 4, minHeight: 52 },
   pill: { width: 60, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'transparent' },
-  pillOn: { backgroundColor: 'rgba(108,76,245,0.45)', borderColor: 'rgba(165,148,255,0.6)', boxShadow: '0 0 14px rgba(108,76,245,0.55)' },
+  pillOn: { backgroundColor: '#EEECFD', borderColor: 'rgba(75,63,216,0.18)' },
 });

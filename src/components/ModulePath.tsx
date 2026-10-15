@@ -33,13 +33,13 @@ function Pulse({ color }: { color: string }) {
 function Node({ status, color, index }: { status: LessonStatus; color: string; index: number }) {
   const done = status === 'done';
   const current = status === 'current';
-  const fill = done ? glass.teal : current ? color : 'rgba(255,255,255,0.10)';
+  const fill = done ? glass.teal : current ? color : 'rgba(255,255,255,0.85)';
   return (
     <View style={{ width: NODE, height: NODE + 6 }}>
       {current ? <Pulse color={color} /> : null}
-      <View style={[styles.nodeBase, { backgroundColor: done ? '#0B7F68' : current ? alpha('#000000', 0.45) : 'rgba(0,0,0,0.35)' }]} />
-      <View style={[styles.node, { backgroundColor: fill, borderColor: current ? '#FFFFFF' : done ? glass.tealLight : glass.border, borderWidth: current ? 3 : 1.5 }]}>
-        <View pointerEvents="none" style={[styles.gloss, !done && !current && { backgroundColor: 'rgba(255,255,255,0.06)' }]} />
+      <View style={[styles.nodeBase, { backgroundColor: done ? '#0B7F68' : current ? 'rgba(22,20,43,0.35)' : 'rgba(45,35,120,0.14)' }]} />
+      <View style={[styles.node, { backgroundColor: fill, borderColor: current ? '#FFFFFF' : done ? '#5EEAD4' : 'rgba(22,20,43,0.10)', borderWidth: current ? 3 : 1.5 }]}>
+        <View pointerEvents="none" style={[styles.gloss, !done && !current && { backgroundColor: 'rgba(255,255,255,0.5)' }]} />
         {done ? (
           <Icon name="check" size={28} color="#0E0937" strokeWidth={3.4} />
         ) : current ? (
@@ -93,7 +93,7 @@ export function ModulePath({
                 key={i}
                 d={s.d}
                 fill="none"
-                stroke={s.done ? glass.teal : 'rgba(255,255,255,0.22)'}
+                stroke={s.done ? glass.teal : 'rgba(75,63,216,0.25)'}
                 strokeWidth={s.done ? 5 : 3}
                 strokeDasharray={s.done ? undefined : '2 9'}
                 strokeLinecap="round"
@@ -159,7 +159,7 @@ export function ModulePath({
 
                 {status === 'current' ? (
                   <View pointerEvents="none" style={[styles.yatri, labelLeft ? { left: nodeLeft + NODE + 6 } : { left: nodeLeft - 56 }]}>
-                    <Yatri size={50} bob dark />
+                    <Yatri size={50} bob />
                   </View>
                 ) : null}
               </Animated.View>
@@ -187,8 +187,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: alpha('#FFB23F', 0.5),
-    backgroundColor: alpha('#FFB23F', 0.1),
+    borderColor: alpha('#F59E0B', 0.45),
+    backgroundColor: alpha('#FFF7E8', 0.9),
     alignSelf: 'flex-start',
   },
   yatri: { position: 'absolute', top: -2 },

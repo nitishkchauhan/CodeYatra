@@ -7,7 +7,7 @@ import { T } from './ui/Text';
 import { dailyDone, dailyId, DAILY_SIZE, findStage } from '@/content';
 import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
-import { glass } from '@/theme';
+import { colors, glass } from '@/theme';
 
 /** Daily challenge and mistakes review: two short reasons to open the app every day. Glass cards for Home. */
 export function DailyCards() {
@@ -25,10 +25,10 @@ export function DailyCards() {
           haptic.tap();
           router.push({ pathname: '/lesson/[id]', params: { id: dailyId(today, stage.id) } });
         }}
-        tint={alpha(done ? glass.teal : glass.saffron, 0.12)}
+        tint={alpha(done ? '#16A34A' : '#FF9F1C', 0.1)}
         style={styles.card}>
-        <View style={[styles.icon, { backgroundColor: done ? glass.teal : glass.saffron }]}>
-          {done ? <Icon name="check" size={18} color="#0E0937" strokeWidth={3} /> : <Glyph name="bolt" size={18} color="#0E0937" />}
+        <View style={[styles.icon, { backgroundColor: done ? colors.success : colors.saffron }]}>
+          {done ? <Icon name="check" size={18} color="#FFFFFF" strokeWidth={3} /> : <Glyph name="bolt" size={18} color="#FFFFFF" />}
         </View>
         <T variant="label" color={glass.text} style={{ fontSize: 14 }}>
           Daily challenge
@@ -47,8 +47,8 @@ export function DailyCards() {
         }}
         tint={toReview ? alpha(glass.violet, 0.16) : undefined}
         style={styles.card}>
-        <View style={[styles.icon, { backgroundColor: toReview ? glass.violetLight : 'rgba(255,255,255,0.12)' }]}>
-          <Icon d="M4 12a8 8 0 1 0 2.3-5.6 M4 4v4h4" size={18} color={toReview ? '#0E0937' : glass.text3} strokeWidth={2.2} />
+        <View style={[styles.icon, { backgroundColor: toReview ? colors.primary : colors.lineSoft }]}>
+          <Icon d="M4 12a8 8 0 1 0 2.3-5.6 M4 4v4h4" size={18} color={toReview ? '#FFFFFF' : glass.text3} strokeWidth={2.2} />
         </View>
         <T variant="label" color={glass.text} style={{ fontSize: 14 }}>
           {toReview ? `Review · ${toReview}` : 'Review'}

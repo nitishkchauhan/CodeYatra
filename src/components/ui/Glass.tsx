@@ -5,7 +5,7 @@ import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { glass } from '@/theme';
 
 /**
- * The dark aurora behind glass screens: a deep navy base with soft violet, teal and saffron glows.
+ * The light aurora behind every screen: a pale lavender base with soft violet, teal and saffron glows.
  * Drawn once with SVG gradients, so it costs nothing while scrolling (no live blur, which is slow on older Android).
  */
 export function GlassBackground() {
@@ -14,15 +14,15 @@ export function GlassBackground() {
       <Svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 100">
         <Defs>
           <RadialGradient id="g-violet" cx="12" cy="8" r="62" gradientUnits="userSpaceOnUse">
-            <Stop offset="0" stopColor="#6C4CF5" stopOpacity="0.55" />
+            <Stop offset="0" stopColor="#7C5CFF" stopOpacity="0.22" />
             <Stop offset="1" stopColor="#6C4CF5" stopOpacity="0" />
           </RadialGradient>
           <RadialGradient id="g-teal" cx="98" cy="42" r="48" gradientUnits="userSpaceOnUse">
-            <Stop offset="0" stopColor="#14C9A4" stopOpacity="0.28" />
+            <Stop offset="0" stopColor="#14C9A4" stopOpacity="0.16" />
             <Stop offset="1" stopColor="#14C9A4" stopOpacity="0" />
           </RadialGradient>
           <RadialGradient id="g-saffron" cx="6" cy="88" r="52" gradientUnits="userSpaceOnUse">
-            <Stop offset="0" stopColor="#FF8A00" stopOpacity="0.22" />
+            <Stop offset="0" stopColor="#FF9F1C" stopOpacity="0.16" />
             <Stop offset="1" stopColor="#FF8A00" stopOpacity="0" />
           </RadialGradient>
         </Defs>
@@ -49,7 +49,7 @@ function Shine({ radius }: { radius: number }) {
   return <View pointerEvents="none" style={[styles.shine, { left: radius * 0.6, right: radius * 0.6 }]} />;
 }
 
-/** A translucent card with a light edge and a shine along the top. */
+/** A frosted card: translucent white with a bright edge, a shine along the top and a soft shadow. */
 export function GlassCard({ children, style, strong, tint, radius = 20 }: GlassProps) {
   return (
     <View
@@ -90,6 +90,6 @@ export function alpha(hex: string, a: number) {
 }
 
 const styles = StyleSheet.create({
-  card: { borderWidth: 1, overflow: 'hidden' },
+  card: { borderWidth: 1, overflow: 'hidden', boxShadow: glass.shadow },
   shine: { position: 'absolute', top: 0, height: 1, backgroundColor: glass.shine },
 });

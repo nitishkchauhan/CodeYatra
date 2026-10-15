@@ -34,9 +34,9 @@ export function TrackRail({ value, onChange, onMore, glass = false }: { value: s
             style={({ pressed }) => [
               styles.item,
               {
-                borderColor: glass ? (on ? 'rgba(255,255,255,0.75)' : g.border) : on ? s.color : colors.line,
+                borderColor: glass ? (on ? s.color : g.border) : on ? s.color : colors.line,
                 borderWidth: on ? 2 : 1,
-                backgroundColor: glass ? (on ? g.fillStrong : g.fill) : on ? s.soft : colors.surface,
+                backgroundColor: glass ? (on ? s.soft : g.fill) : on ? s.soft : colors.surface,
               },
               pressed && { transform: [{ scale: 0.96 }] },
             ]}>

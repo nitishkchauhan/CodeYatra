@@ -1,6 +1,7 @@
-// "Studio" design tokens from the CodeYatra v2/v3 canvas.
+// "Light Glass" design: one look across the whole app. Every screen sits on a soft light aurora
+// (see GlassBackground, mounted once in src/app/_layout.tsx), so `bg` is transparent and cards are frosted white.
 export const colors = {
-  bg: '#F6F5FA',
+  bg: 'transparent',
   surface: '#FFFFFF',
   surfaceTint: '#F7F6FE',
   line: '#E7E5F0',
@@ -80,28 +81,31 @@ export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 24 } as const;
 /** Minimum touch target from the UX rules. */
 export const TOUCH = 48;
 
+/** A frosted glass card: translucent white over the aurora, a soft edge and shadow. */
 export const card = {
-  backgroundColor: colors.surface,
+  backgroundColor: 'rgba(255,255,255,0.78)',
   borderRadius: radius.xl,
   borderWidth: 1,
-  borderColor: colors.line,
+  borderColor: 'rgba(22,20,43,0.07)',
+  boxShadow: '0 4px 16px rgba(45,35,120,0.06)',
 } as const;
 
-/** Glass design (dark aurora background, translucent cards). Text colours pass WCAG AA on a glass card over `bg`. */
+/** Light glass tokens (Home and the glass components). Text colours pass WCAG AA on a frosted card. */
 export const glass = {
-  bg: '#0E0937',
-  fill: 'rgba(255,255,255,0.07)',
-  fillStrong: 'rgba(255,255,255,0.12)',
-  border: 'rgba(255,255,255,0.14)',
-  borderStrong: 'rgba(255,255,255,0.26)',
-  shine: 'rgba(255,255,255,0.35)',
-  text: '#FFFFFF',
-  text2: '#D6D2F7',
-  text3: '#A9A3DA',
-  track: 'rgba(255,255,255,0.14)',
-  violet: '#6C4CF5',
-  violetLight: '#A594FF',
-  teal: '#14C9A4',
-  tealLight: '#5EEAD4',
-  saffron: '#FFB23F',
+  bg: '#F3F1FB',
+  fill: 'rgba(255,255,255,0.66)',
+  fillStrong: 'rgba(255,255,255,0.84)',
+  border: 'rgba(255,255,255,0.95)',
+  borderStrong: '#FFFFFF',
+  shine: '#FFFFFF',
+  shadow: '0 6px 20px rgba(45,35,120,0.08)',
+  text: '#16142B',
+  text2: '#4A4766',
+  text3: '#6E6A88',
+  track: 'rgba(22,20,43,0.08)',
+  violet: '#4B3FD8',
+  violetLight: '#4B3FD8',
+  teal: '#2DD4BF',
+  tealLight: '#0F766E',
+  saffron: '#B45309',
 } as const;
