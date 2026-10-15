@@ -86,3 +86,22 @@ export const card = {
   borderWidth: 1,
   borderColor: colors.line,
 } as const;
+
+/** Glass design (dark aurora background, translucent cards). Text colours pass WCAG AA on a glass card over `bg`. */
+export const glass = {
+  bg: '#0E0937',
+  fill: 'rgba(255,255,255,0.07)',
+  fillStrong: 'rgba(255,255,255,0.12)',
+  border: 'rgba(255,255,255,0.14)',
+  borderStrong: 'rgba(255,255,255,0.26)',
+  shine: 'rgba(255,255,255,0.35)',
+  text: '#FFFFFF',
+  text2: '#D6D2F7',
+  text3: '#A9A3DA',
+  track: 'rgba(255,255,255,0.14)',
+  violet: '#6C4CF5',
+  violetLight: '#A594FF',
+  teal: '#14C9A4',
+  tealLight: '#5EEAD4',
+  saffron: '#FFB23F',
+} as const;

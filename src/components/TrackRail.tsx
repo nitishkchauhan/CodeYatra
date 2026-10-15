@@ -6,10 +6,10 @@ import { T } from './ui/Text';
 import { STAGES, stageProgress } from '@/content';
 import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
-import { colors } from '@/theme';
+import { colors, glass as g } from '@/theme';
 
-/** A horizontal row of language icons. Tapping one switches track; "All" opens the full picker. */
-export function TrackRail({ value, onChange, onMore }: { value: string; onChange: (id: string) => void; onMore?: () => void }) {
+/** A horizontal row of language icons. Tapping one switches track; "All" opens the full picker. `glass` styles it for dark glass screens. */
+export function TrackRail({ value, onChange, onMore, glass = false }: { value: string; onChange: (id: string) => void; onMore?: () => void; glass?: boolean }) {
   const { state } = useProgress();
   return (
     <ScrollView
@@ -34,17 +34,17 @@ export function TrackRail({ value, onChange, onMore }: { value: string; onChange
             style={({ pressed }) => [
               styles.item,
               {
-                borderColor: on ? s.color : colors.line,
+                borderColor: glass ? (on ? 'rgba(255,255,255,0.75)' : g.border) : on ? s.color : colors.line,
                 borderWidth: on ? 2 : 1,
-                backgroundColor: on ? s.soft : colors.surface,
+                backgroundColor: glass ? (on ? g.fillStrong : g.fill) : on ? s.soft : colors.surface,
               },
               pressed && { transform: [{ scale: 0.96 }] },
             ]}>
             <TrackBadge stage={s} size={34} />
-            <T variant="labelSm" numberOfLines={1} color={on ? colors.ink : colors.ink2} style={{ fontSize: 11.5 }}>
+            <T variant="labelSm" numberOfLines={1} color={glass ? (on ? g.text : g.text2) : on ? colors.ink : colors.ink2} style={{ fontSize: 11.5 }}>
               {s.short}
             </T>
-            <View style={styles.track}>
+            <View style={[styles.track, glass && { backgroundColor: g.track }]}>
               <View
                 style={[
                   styles.fill,
@@ -70,15 +70,15 @@ export function TrackRail({ value, onChange, onMore }: { value: string; onChange
             styles.item,
             {
               borderWidth: 1,
-              borderColor: colors.line,
-              backgroundColor: colors.surface,
+              borderColor: glass ? g.border : colors.line,
+              backgroundColor: glass ? g.fill : colors.surface,
             },
             pressed && { transform: [{ scale: 0.96 }] },
           ]}>
-          <View style={[styles.more]}>
-            <Icon name="chevronDown" size={18} color={colors.primary} />
+          <View style={[styles.more, glass && { backgroundColor: g.fillStrong }]}>
+            <Icon name="chevronDown" size={18} color={glass ? g.text : colors.primary} />
           </View>
-          <T variant="labelSm" color={colors.ink2} style={{ fontSize: 11.5 }}>
+          <T variant="labelSm" color={glass ? g.text2 : colors.ink2} style={{ fontSize: 11.5 }}>
             All
           </T>
           <View style={[styles.track, { backgroundColor: 'transparent' }]} />
