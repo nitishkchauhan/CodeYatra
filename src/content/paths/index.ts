@@ -13,11 +13,32 @@ import { QA } from './qa';
 import { SDE } from './sde';
 import { SECURITY } from './security';
 import type { CareerPath, PathStop, StopStatus } from './types';
+import { alpha, onDark } from '@/theme';
 
 export * from './types';
 
 /** Most-chosen first: placements and web, then data and AI, then specialist paths. */
-export const PATHS: CareerPath[] = [SDE, FRONTEND, BACKEND, FULLSTACK, PYTHON_DEV, DATA_ANALYST, DATA_SCIENTIST, AI_ENGINEER, ANDROID, DEVOPS, SECURITY, QA, CBSE_PATH];
+/** Path colours lifted for the dark glass design: readable as text on navy and under navy text. */
+export const PATHS: CareerPath[] = [
+  SDE,
+  FRONTEND,
+  BACKEND,
+  FULLSTACK,
+  PYTHON_DEV,
+  DATA_ANALYST,
+  DATA_SCIENTIST,
+  AI_ENGINEER,
+  ANDROID,
+  DEVOPS,
+  SECURITY,
+  QA,
+  CBSE_PATH,
+].map((p) => ({
+  ...p,
+  color: onDark(p.color),
+  ink: onDark(p.ink),
+  soft: alpha(onDark(p.color), 0.16),
+}));
 
 export const findPath = (id: string | null | undefined) => PATHS.find((p) => p.id === id);
 

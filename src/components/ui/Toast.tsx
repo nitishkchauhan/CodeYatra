@@ -54,8 +54,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 11,
     borderRadius: 14,
-    backgroundColor: colors.ink,
-    boxShadow: '0 10px 30px rgba(22,20,43,0.3)',
+    backgroundColor: '#2A2275',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.18)',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.45)',
     maxWidth: 340,
   },
 });

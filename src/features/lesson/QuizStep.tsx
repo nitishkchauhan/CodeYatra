@@ -76,9 +76,9 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
             let bg: string = colors.surface;
             let badge: string = colors.lineSoft;
             let badgeInk: string = colors.ink2;
-            if (selected) [border, bg, badge, badgeInk] = [colors.primary, colors.surfaceTint, colors.primary, '#FFFFFF'];
-            if (isRight) [border, bg, badge, badgeInk] = [colors.success, colors.successSoft, colors.success, '#FFFFFF'];
-            else if (isWrong) [border, bg, badge, badgeInk] = [colors.danger, colors.dangerSoft, colors.danger, '#FFFFFF'];
+            if (selected) [border, bg, badge, badgeInk] = [colors.primary, colors.surfaceTint, colors.primary, colors.onColor];
+            if (isRight) [border, bg, badge, badgeInk] = [colors.success, colors.successSoft, colors.success, colors.onColor];
+            else if (isWrong) [border, bg, badge, badgeInk] = [colors.danger, colors.dangerSoft, colors.danger, colors.onColor];
             const status = isRight ? ', correct answer' : isWrong ? ', incorrect' : '';
             return (
               <Pressable
@@ -103,7 +103,7 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
                 ]}>
                 <View style={[styles.badge, { backgroundColor: badge }]}>
                   {isRight || isWrong ? (
-                    <Icon name={isRight ? 'check' : 'cross'} size={15} color="#FFFFFF" strokeWidth={3} />
+                    <Icon name={isRight ? 'check' : 'cross'} size={15} color={colors.onColor} strokeWidth={3} />
                   ) : (
                     <T variant="labelSm" color={badgeInk}>
                       {'ABCD'[shown]}
@@ -128,13 +128,13 @@ export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () =
           <ActionBar tone={right ? 'success' : 'danger'}>
             <View style={{ flexDirection: 'row', gap: 10, alignItems: 'flex-start' }} accessibilityLiveRegion="polite">
               <Animated.View entering={ZoomIn.delay(120)} style={[styles.verdict, { backgroundColor: right ? colors.success : colors.danger }]}>
-                <Icon name={right ? 'check' : 'cross'} size={18} color="#FFFFFF" strokeWidth={2.6} />
+                <Icon name={right ? 'check' : 'cross'} size={18} color={colors.onColor} strokeWidth={2.6} />
               </Animated.View>
               <View style={{ flex: 1, gap: 2 }}>
                 <T variant="heading" color={right ? colors.successInk : colors.dangerInk} style={{ fontSize: 17 }}>
                   {right ? 'Correct!' : 'Not quite'}
                 </T>
-                <T variant="bodySm" color={right ? '#1F5B36' : '#7A2A2C'} style={{ fontSize: 14, lineHeight: 20 }}>
+                <T variant="bodySm" color={right ? '#6EE7B7' : '#FDA4AF'} style={{ fontSize: 14, lineHeight: 20 }}>
                   {right ? step.right : `${step.wrong}${reveal ? ' The right answer is marked with a tick.' : ' Have another go; your wrong pick is crossed out.'}`}
                 </T>
               </View>

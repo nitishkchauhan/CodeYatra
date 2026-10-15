@@ -134,7 +134,7 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
                   <Animated.View key={r.label} entering={FadeInDown.delay(i * 60)} style={{ gap: 2 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                       <View style={[styles.dot, { backgroundColor: r.ok ? colors.success : colors.danger }]}>
-                        <Icon name={r.ok ? 'check' : 'cross'} size={12} color="#FFFFFF" strokeWidth={3} />
+                        <Icon name={r.ok ? 'check' : 'cross'} size={12} color={colors.onColor} strokeWidth={3} />
                       </View>
                       <T style={{ flex: 1, fontFamily: fonts.mono, fontSize: 12.5, color: r.ok ? colors.ink : colors.dangerInk }}>{r.label}</T>
                     </View>

@@ -16,11 +16,10 @@ Status key: ✅ done · 🚧 in progress · 📋 next · 💤 later
 | Career paths | 13 job roadmaps, roadmap map, stop cards | ✅ on branch `paths-feature` |
 | **1. Onboarding v2** | Welcome slides, questions, path recommendation, reminder time | ✅ on branch `paths-feature` |
 | Redesign 1: glass design + Home | Glass design system, Home with zigzag journey, glass tab bar | ✅ on branch `paths-feature` |
-| Redesign 2: Paths and Practice in glass | | 📋 |
-| Redesign 3: Profile, league, shop in glass | | 📋 |
+| Redesign 2: Aurora Glass on every screen | One design across tabs, lessons, shop, league, mocks, account | ✅ on branch `paths-feature` |
 | 2. Friendlier lessons | Big Yatri illustrations on concept screens, glass result panels, celebrations | 📋 |
 | 5. Tech news and opportunities | Our own short summaries + links; hackathons, internships, contests; owner approves each item | 📋 |
-| 3. Dark mode | Follows the phone, toggle in Profile, contrast-tested | 📋 |
+| 3. Light theme option | The app is dark (Aurora Glass) now; add a light option only if learners ask | 💤 |
 | 4. Code studio | File tabs, `input()`, saved programs, sharing, starters | 📋 |
 | Roadmap depth | Sub-topic checklists, recommended options, time per stop, skill roadmaps, GATE CSE | 📋 |
 | Module practice for more tracks | C, DSA, CBSE, Java, then the rest | 📋 |

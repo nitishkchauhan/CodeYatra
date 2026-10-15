@@ -31,8 +31,8 @@ export function RoadmapMap({ path, nextId, onOpen }: { path: CareerPath; nextId:
           return (
             <Animated.View key={section.title} entering={FadeIn.delay(si * 60)} style={{ gap: 10, marginBottom: 22 }}>
               <View style={[styles.topic, { backgroundColor: sectionDone ? colors.success : path.ink }]} accessibilityRole="header">
-                {sectionDone ? <Icon name="check" size={16} color="#FFFFFF" strokeWidth={3} /> : null}
-                <T variant="label" color="#FFFFFF" style={{ textAlign: 'center' }}>
+                {sectionDone ? <Icon name="check" size={16} color={colors.onColor} strokeWidth={3} /> : null}
+                <T variant="label" color={colors.onColor} style={{ textAlign: 'center' }}>
                   {section.title}
                 </T>
               </View>

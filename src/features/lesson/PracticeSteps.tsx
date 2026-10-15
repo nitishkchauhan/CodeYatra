@@ -334,8 +334,8 @@ export function TapTokenStep({ step, onDone, onMistake }: Props<TapStep>) {
                           setPick({ line: li, index: ti, text: tok.text });
                         }}
                         hitSlop={4}
-                        style={[styles.tapToken, selected && { backgroundColor: correct ? '#14532D' : verdict === false ? '#7F1D1D' : colors.primary }]}>
-                        <Text style={[styles.code, { color: selected ? '#FFFFFF' : tok.color }]}>{tok.text}</Text>
+                        style={[styles.tapToken, selected && { backgroundColor: correct ? colors.success : verdict === false ? colors.danger : colors.primary }]}>
+                        <Text style={[styles.code, { color: selected ? colors.onColor : tok.color }]}>{tok.text}</Text>
                       </Pressable>
                     );
                   })}
@@ -388,14 +388,14 @@ const styles = StyleSheet.create({
     minHeight: 48,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#D9D5F7',
-    backgroundColor: '#FFFFFF',
+    borderColor: 'rgba(255,255,255,0.22)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
     justifyContent: 'center',
     paddingHorizontal: 14,
     paddingVertical: 8,
   },
   bugRow: { flexDirection: 'row', alignItems: 'flex-start', paddingHorizontal: 14, paddingVertical: 6, minHeight: 36 },
-  fixRow: { marginTop: 4, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6, backgroundColor: '#14532D' },
+  fixRow: { marginTop: 4, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6, backgroundColor: '#6EE7B7' },
   tapRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, minHeight: 34 },
   tapToken: { borderRadius: 6, paddingHorizontal: 1, paddingVertical: 2 },
   pickNote: { flexDirection: 'row', alignItems: 'center', gap: 6 },

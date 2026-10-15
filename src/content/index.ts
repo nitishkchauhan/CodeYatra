@@ -8,6 +8,7 @@ import { PYTHON_LESSONS, trainFare } from './python';
 import { dailyLesson, reviewLesson } from './daily';
 import { drillBase, drillLesson, DRILL_PREFIX } from './drills';
 import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
+import { alpha, onDark } from '@/theme';
 import { ticketHtml, WEB_LESSONS } from './web';
 import { CSS_LESSONS, flexRow } from './styling';
 import { HTML_LESSONS, searchForm } from './html';
@@ -287,7 +288,7 @@ const unit = (id: string, title: string, lesson: LessonRef): Unit => ({
 });
 
 /** Language tracks, grouped into sections. Each track has ten modules of reading plus practice. */
-export const STAGES: Stage[] = [
+const TRACKS: Stage[] = [
   {
     id: 'foundations',
     section: 'Start here',
@@ -803,6 +804,9 @@ export const STAGES: Stage[] = [
     ],
   },
 ];
+
+/** Track colours lifted for the dark glass design: readable as text on navy and under navy text. */
+export const STAGES: Stage[] = TRACKS.map((s) => ({ ...s, color: onDark(s.color), accent: onDark(s.accent), soft: alpha(onDark(s.color), 0.16) }));
 
 export const SECTIONS = ['Start here', 'School', 'Web basics', 'Programming', 'Full-stack', 'CS core', 'Placement'] as const;
 

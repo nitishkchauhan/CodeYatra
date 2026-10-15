@@ -7,13 +7,14 @@ import { colors, radius, TOUCH } from '@/theme';
 
 type Variant = 'primary' | 'success' | 'danger' | 'saffron' | 'white' | 'outline' | 'ghost';
 
+// Text on every coloured button is navy: it reads on all the light accents (Aurora Glass).
 const V: Record<Variant, { bg: string; ink: string; shadow?: string; border?: string }> = {
-  primary: { bg: colors.primary, ink: '#FFFFFF', shadow: colors.primaryShadow },
-  success: { bg: colors.success, ink: '#FFFFFF', shadow: colors.successShadow },
-  danger: { bg: colors.danger, ink: '#FFFFFF', shadow: colors.dangerShadow },
-  saffron: { bg: colors.saffron, ink: colors.ink, shadow: colors.saffronShadow },
-  white: { bg: '#FFFFFF', ink: colors.hero, shadow: '#B9B2F7' },
-  outline: { bg: '#FFFFFF', ink: colors.ink, border: colors.line },
+  primary: { bg: colors.primary, ink: colors.onColor, shadow: colors.primaryShadow },
+  success: { bg: colors.success, ink: colors.onColor, shadow: colors.successShadow },
+  danger: { bg: colors.danger, ink: colors.onColor, shadow: colors.dangerShadow },
+  saffron: { bg: colors.saffron, ink: colors.onColor, shadow: colors.saffronShadow },
+  white: { bg: '#FFFFFF', ink: colors.onColor, shadow: '#8C7FD6' },
+  outline: { bg: 'rgba(255,255,255,0.06)', ink: colors.ink, border: 'rgba(255,255,255,0.22)' },
   ghost: { bg: 'transparent', ink: colors.primary },
 };
 
@@ -37,7 +38,7 @@ export function Button({
   style?: StyleProp<ViewStyle>;
   accessibilityLabel?: string;
 }) {
-  const v = disabled ? { bg: colors.line, ink: colors.ink3, shadow: '#D9D6E6', border: undefined } : V[variant];
+  const v = disabled ? { bg: 'rgba(255,255,255,0.10)', ink: colors.ink3, shadow: 'rgba(0,0,0,0.25)', border: undefined } : V[variant];
   return (
     <Pressable
       accessibilityRole="button"

@@ -98,7 +98,7 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
         <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
           <Animated.View entering={ZoomIn.springify().damping(16)} style={styles.introCard}>
             <View style={styles.introIcon}>
-              <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={34} color="#16142B" strokeWidth={2.2} />
+              <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={34} color="#0E0937" strokeWidth={2.2} />
             </View>
             <T variant="title" color="#FFFFFF" style={{ textAlign: 'center' }}>
               {test.title}
@@ -156,7 +156,7 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
   const last = index === paper.length - 1;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <TopBar onClose={exit}>
         <View style={[styles.timer, left <= 120 && { backgroundColor: colors.dangerSoft }]} accessibilityLabel={`${clock(left)} left`}>
           <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={15} color={left <= 120 ? colors.danger : colors.primary} strokeWidth={2.4} />
@@ -173,7 +173,7 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
             onPress={() => setIndex(i)}
             hitSlop={{ top: 7, bottom: 7, left: 3, right: 3 }}
             style={[styles.dot, answers[i] !== null && styles.dotDone, i === index && styles.dotOn]}>
-            <T variant="labelSm" color={i === index ? '#FFFFFF' : answers[i] !== null ? colors.primary : colors.ink2} style={{ fontSize: 12 }}>
+            <T variant="labelSm" color={i === index ? colors.onColor : answers[i] !== null ? colors.primary : colors.ink2} style={{ fontSize: 12 }}>
               {i + 1}
             </T>
           </Pressable>
@@ -207,7 +207,7 @@ function MockTest({ test, onRetake }: { test: (typeof MOCK_TESTS)[number]; onRet
                   }}
                   style={[styles.option, on && styles.optionOn]}>
                   <View style={[styles.badge, on && { backgroundColor: colors.primary }]}>
-                    <T variant="labelSm" color={on ? '#FFFFFF' : colors.ink2}>
+                    <T variant="labelSm" color={on ? colors.onColor : colors.ink2}>
                       {'ABCD'[shown]}
                     </T>
                   </View>
@@ -346,7 +346,7 @@ function Report({
             <Animated.View key={q.id} entering={FadeInDown.delay(Math.min(i, 8) * 40)} style={[card, { padding: 14, gap: 8 }]}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                 <View style={[styles.mark, { backgroundColor: right ? colors.success : a === null ? colors.ink3 : colors.danger }]}>
-                  <Icon name={right ? 'check' : 'cross'} size={12} color="#FFFFFF" strokeWidth={3} />
+                  <Icon name={right ? 'check' : 'cross'} size={12} color={colors.onColor} strokeWidth={3} />
                 </View>
                 <T variant="labelSm" color={colors.ink3} style={{ flex: 1 }}>
                   Q{i + 1} · {TOPIC_LABEL[q.topic]}
@@ -363,8 +363,8 @@ function Report({
                   {a === null ? 'Not answered' : `Your answer: ${q.options[a]}`}
                 </T>
               ) : null}
-              <T variant="bodySm" color="#166534">
-                Correct: <T style={{ fontFamily: q.code ? fonts.mono : fonts.bodySemibold, color: '#166534' }}>{q.options[0]}</T>
+              <T variant="bodySm" color="#6EE7B7">
+                Correct: <T style={{ fontFamily: q.code ? fonts.mono : fonts.bodySemibold, color: '#6EE7B7' }}>{q.options[0]}</T>
               </T>
               <T variant="caption" style={{ fontSize: 13, lineHeight: 19 }}>
                 {q.explain}

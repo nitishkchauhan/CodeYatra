@@ -79,7 +79,7 @@ export function PathStopSheet({ path, stop, onClose }: { path: CareerPath; stop:
                 return (
                   <View key={m} style={styles.lesson} accessible accessibilityLabel={`${getLesson(m)?.title ?? m}, ${done ? 'done' : 'not done yet'}`}>
                     <View style={[styles.dot, done ? { backgroundColor: colors.success, borderColor: colors.success } : null]}>
-                      {done ? <Icon name="check" size={12} color="#FFFFFF" strokeWidth={3} /> : null}
+                      {done ? <Icon name="check" size={12} color={colors.onColor} strokeWidth={3} /> : null}
                     </View>
                     <T variant="bodySm" color={done ? colors.ink2 : colors.ink} style={{ flex: 1 }} numberOfLines={1}>
                       {getLesson(m)?.title ?? m}

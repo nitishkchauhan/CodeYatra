@@ -17,7 +17,7 @@ import { haptic } from '@/lib/haptics';
 import { hasBlockedWords } from '@/lib/moderation';
 import { useAccount } from '@/state/account';
 import { BIO_MAX, useProgress, type LearnerLevel } from '@/state/progress';
-import { card, colors, fonts } from '@/theme';
+import { card, colors, fonts, glass } from '@/theme';
 
 const LEVELS: { id: LearnerLevel; label: string }[] = [
   { id: 'school', label: 'School' },
@@ -125,7 +125,7 @@ export default function EditProfileScreen() {
                         haptic.tap();
                         setProfile({ avatarColor: c });
                       }}
-                      style={[styles.swatch, { backgroundColor: c }, on && { boxShadow: `0 0 0 3px ${colors.bg}, 0 0 0 5px ${c}` }]}>
+                      style={[styles.swatch, { backgroundColor: c }, on && { boxShadow: `0 0 0 3px ${glass.bg}, 0 0 0 5px #FFFFFF` }]}>
                       {on ? <Icon name="check" size={16} color="#FFFFFF" strokeWidth={3} /> : null}
                     </Pressable>
                   );
@@ -164,7 +164,7 @@ export default function EditProfileScreen() {
                 const on = state.level === l.id;
                 return (
                   <Pressable key={l.id} accessibilityRole="radio" accessibilityState={{ checked: on }} onPress={() => setLevel(l.id)} style={[styles.segmentBtn, on && styles.segmentOn]}>
-                    <T variant="labelSm" color={on ? colors.ink : '#6E6A88'}>
+                    <T variant="labelSm" color={on ? colors.ink : '#A9A3DA'}>
                       {l.label}
                     </T>
                   </Pressable>
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   photoCard: { borderRadius: 22, padding: 20, alignItems: 'center', gap: 14 },
   photoActions: { flexDirection: 'row', gap: 10, alignSelf: 'stretch' },
   swatches: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
-  swatch: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+  swatch: { width: 40, height: 40, borderRadius: 20, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.35)', alignItems: 'center', justifyContent: 'center' },
   input: {
     height: 52,
     borderRadius: 14,
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   },
   segment: { flexDirection: 'row', gap: 2, backgroundColor: colors.lineSoft, borderRadius: 12, padding: 3 },
   segmentBtn: { flex: 1, minHeight: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  segmentOn: { backgroundColor: '#FFFFFF', boxShadow: '0 1px 2px rgba(22,20,43,0.12)' },
+  segmentOn: { backgroundColor: 'rgba(255,255,255,0.16)' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   lang: { width: '23%', flexGrow: 1, borderRadius: 14, paddingVertical: 10, alignItems: 'center', gap: 5 },
   footer: { padding: 16, paddingTop: 10, borderTopWidth: 1, borderTopColor: colors.lineSoft, backgroundColor: colors.bg },

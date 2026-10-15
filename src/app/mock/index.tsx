@@ -48,7 +48,7 @@ export default function MockHub() {
                 }}
                 style={({ pressed }) => [styles.test, t.kind === 'full' && styles.featured, pressed && { transform: [{ scale: 0.98 }] }]}>
                 <View style={[styles.icon, { backgroundColor: t.kind === 'full' ? colors.saffron : colors.primarySoft }]}>
-                  <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={22} color={t.kind === 'full' ? '#16142B' : colors.primary} strokeWidth={2.2} />
+                  <Icon d="M12 8v4l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" size={22} color={t.kind === 'full' ? '#0E0937' : colors.primary} strokeWidth={2.2} />
                 </View>
                 <View style={{ flex: 1, gap: 2 }}>
                   <T variant="label">{t.title}</T>
@@ -58,7 +58,7 @@ export default function MockHub() {
                 </View>
                 {best !== null ? (
                   <View style={[styles.best, { backgroundColor: best >= 70 ? colors.successSoft : colors.saffronSoft }]}>
-                    <T variant="labelSm" color={best >= 70 ? '#166534' : colors.saffronInk}>
+                    <T variant="labelSm" color={best >= 70 ? '#6EE7B7' : colors.saffronInk}>
                       {best}%
                     </T>
                   </View>

@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   preview: { borderRadius: 22, backgroundColor: colors.hero, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 14 },
   remove: { alignSelf: 'flex-start', minHeight: 32, justifyContent: 'center' },
   freeze: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12 },
-  freezeIcon: { width: 46, height: 46, borderRadius: 14, backgroundColor: '#E0F2FE', alignItems: 'center', justifyContent: 'center' },
+  freezeIcon: { width: 46, height: 46, borderRadius: 14, backgroundColor: 'rgba(125,211,252,0.12)', alignItems: 'center', justifyContent: 'center' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   item: { width: '48%', flexGrow: 1, padding: 12, gap: 6 },
   itemArt: { height: 92, borderRadius: 14, backgroundColor: colors.surfaceTint, alignItems: 'center', justifyContent: 'center' },

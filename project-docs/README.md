@@ -36,7 +36,7 @@ Start here, then open whichever file you need.
    | 11 | [Ask Yatri](modules/11-ask-yatri.md) | AI hints (built, not switched on) |
    | 12 | [Privacy, feedback and telemetry](modules/12-privacy-feedback-telemetry.md) | Data collected, feedback links, Play declarations |
    | 13 | [Brand and logo](modules/13-brand-and-logo.md) | The `< Y >` logo, animated Yatri, icons and how to regenerate them |
-   | 14 | [Glass design](modules/14-glass-design.md) | The glassmorphism redesign: tokens, glass cards, Home and the zigzag journey |
+   | 14 | [Aurora Glass design](modules/14-glass-design.md) | The one design used on every screen, its rules and colour tests |
 
 3. **[ARCHITECTURE.md](ARCHITECTURE.md)**: how the code is organised, the tech stack, the database and how builds are made.
 4. **[CHANGELOG.md](CHANGELOG.md)**: what changed, day by day, with the matching Git commits.

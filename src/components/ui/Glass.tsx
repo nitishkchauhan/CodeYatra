@@ -83,11 +83,7 @@ export function GlassButton({ children, style, strong, tint, radius = 20, ...res
   );
 }
 
-/** `#RRGGBB` → `rgba(r,g,b,a)`, for tinting glass with a track or path colour. */
-export function alpha(hex: string, a: number) {
-  const n = parseInt(hex.slice(1), 16);
-  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
-}
+export { alpha } from '@/theme';
 
 const styles = StyleSheet.create({
   card: { borderWidth: 1, overflow: 'hidden' },

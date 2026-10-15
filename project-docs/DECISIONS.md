@@ -16,6 +16,7 @@ Important choices and why they were made. Newest first.
 | 10 Oct 2026 | Profiles reported by 3 learners are **hidden automatically**, never deleted | Fast protection for teens, while the owner makes the final call |
 | 9 Oct 2026 | Certificates are **issued by the server**, checked against synced progress | The app could insert any certificate before |
 | 9 Oct 2026 | Leaderboard XP is **trimmed, not rejected**, above 2,000 a day | Stops instant cheating without ever breaking sync for honest learners |
+| 15 Oct 2026 | **Aurora Glass is the one design for the whole app** (dark, glass cards, navy text on colour) | Matches the logo; coding apps are dark; easy on eyes at night; saves battery on OLED; one consistent look |
 | 15 Oct 2026 | Redesign in **glassmorphism**, built from translucent layers over an aurora background, **no live blur** | Live blur is slow on Android 11 and older and needs wrapper views; over soft glows the result looks the same |
 | 15 Oct 2026 | New logo **`< Y >` with an upward arrow**; Yatri becomes the animated logo, the robot is retired | Owner’s choice: code + journey in one mark, reads well as a small icon |
 | 15 Oct 2026 | Logo kept as a **vector master** (SVG); every PNG is generated from it | Crisp at every size; one place to change colours |
