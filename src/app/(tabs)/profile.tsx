@@ -4,6 +4,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/Avatar';
+import { Logo } from '@/components/Logo';
 import { TrackBadge } from '@/components/TrackBadge';
 import { Glyph, Icon } from '@/components/ui/Icon';
 import { Bar } from '@/components/ui/Progress';
@@ -309,9 +310,12 @@ export default function ProfileScreen() {
             </T>
           </Pressable>
         </Animated.View>
-        <T variant="caption" style={{ textAlign: 'center' }}>
-          CodeYatra · version {APP_VERSION}
-        </T>
+        <View style={{ alignItems: 'center', gap: 6, paddingTop: 4 }}>
+          <Logo height={22} />
+          <T variant="caption" style={{ textAlign: 'center' }}>
+            version {APP_VERSION}
+          </T>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

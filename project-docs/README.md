@@ -35,6 +35,7 @@ Start here, then open whichever file you need.
    | 10 | [Community](modules/10-community.md) | Invites, classes, sharing |
    | 11 | [Ask Yatri](modules/11-ask-yatri.md) | AI hints (built, not switched on) |
    | 12 | [Privacy, feedback and telemetry](modules/12-privacy-feedback-telemetry.md) | Data collected, feedback links, Play declarations |
+   | 13 | [Brand and logo](modules/13-brand-and-logo.md) | The `< Y >` logo, animated Yatri, icons and how to regenerate them |
 
 3. **[ARCHITECTURE.md](ARCHITECTURE.md)**: how the code is organised, the tech stack, the database and how builds are made.
 4. **[CHANGELOG.md](CHANGELOG.md)**: what changed, day by day, with the matching Git commits.

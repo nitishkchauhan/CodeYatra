@@ -16,6 +16,8 @@ Important choices and why they were made. Newest first.
 | 10 Oct 2026 | Profiles reported by 3 learners are **hidden automatically**, never deleted | Fast protection for teens, while the owner makes the final call |
 | 9 Oct 2026 | Certificates are **issued by the server**, checked against synced progress | The app could insert any certificate before |
 | 9 Oct 2026 | Leaderboard XP is **trimmed, not rejected**, above 2,000 a day | Stops instant cheating without ever breaking sync for honest learners |
+| 15 Oct 2026 | New logo **`< Y >` with an upward arrow**; Yatri becomes the animated logo, the robot is retired | Owner’s choice: code + journey in one mark, reads well as a small icon |
+| 15 Oct 2026 | Logo kept as a **vector master** (SVG); every PNG is generated from it | Crisp at every size; one place to change colours |
 | 9 Oct 2026 | Target audience **13+** only | Children’s apps fall under Google’s much stricter Families rules |
 | 9 Oct 2026 | Google sign-in stays **off** until an OAuth client is set up; reviewers use email code | Avoids a half-working sign-in button |
 | 8 Oct 2026 | Ask Yatri is **built but switched on last** | API costs; the core app comes first |

@@ -36,7 +36,7 @@ export const colors = {
   warnLine: '#FFE3B8',
   warnInk: '#5A3D12',
 
-  brand: '#06104A',
+  brand: '#170E5C',
   hero: '#221D63',
   heroLine: '#3A3390',
   teal: '#0EA5A0',

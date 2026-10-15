@@ -15,6 +15,7 @@ import {
 import Animated, { FadeIn, FadeInDown, FadeInRight, ZoomIn, useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Logo } from '@/components/Logo';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -246,6 +247,9 @@ function Welcome({ accountsEnabled, onStart }: { accountsEnabled: boolean; onSta
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => setPage(Math.round(e.nativeEvent.contentOffset.x / Math.max(width, 1)));
   return (
     <SafeAreaView style={[styles.screen, { backgroundColor: colors.brand }]}>
+      <View style={{ alignItems: 'center', paddingTop: 18 }}>
+        <Logo height={30} dark />
+      </View>
       <ScrollView
         horizontal
         pagingEnabled

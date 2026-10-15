@@ -42,9 +42,9 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.
   </defs>
   <rect width="${W}" height="${H}" fill="url(#bg)"/>
   <circle cx="800" cy="250" r="230" fill="#FF9F1C" opacity="0.08"/>
-  <g mask="url(#m)"><image x="520" y="-40" width="560" height="560" xlink:href="${href}"/></g>
+  <image x="590" y="40" width="420" height="420" xlink:href="${href}"/>
   <text x="64" y="150" font-family="Segoe UI, Arial, sans-serif" font-size="76" font-weight="800" fill="#FFFFFF">Code<tspan fill="#FF9F1C">Yatra</tspan></text>
-  <text x="66" y="210" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="600" fill="#FFFFFF">Learn to code. Play the journey.</text>
+  <text x="66" y="210" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="600" fill="#FFFFFF">Learn to code. Follow your path.</text>
   <text x="66" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#B9B6F2">16 tracks · 160 lessons · real code editor</text>
   <text x="66" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#B9B6F2">Placement mock tests · CBSE · certificates</text>
   ${chipSvg}
