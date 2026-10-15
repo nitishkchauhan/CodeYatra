@@ -57,7 +57,14 @@ export function TabBar({ state, navigation }: TabBarProps) {
 }
 
 const styles = StyleSheet.create({
-  bar: { flexDirection: 'row', backgroundColor: 'rgba(255,255,255,0.94)', borderTopWidth: 1, borderTopColor: 'rgba(22,20,43,0.08)', paddingTop: 8, paddingHorizontal: 10 },
+  bar: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255,255,255,0.94)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(22,20,43,0.08)',
+    paddingTop: 8,
+    paddingHorizontal: 10,
+  },
   item: { flex: 1, alignItems: 'center', gap: 4, minHeight: 52 },
   pill: { width: 60, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'transparent' },
   pillOn: { backgroundColor: '#EEECFD', borderColor: 'rgba(75,63,216,0.18)' },
