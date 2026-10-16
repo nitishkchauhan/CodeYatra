@@ -22,6 +22,7 @@ Every module follows **read → quick check → practice → complete**:
 **Exercise types:** quiz, fill the gap, real code editor with tests, order the lines, find the bug, predict the output, tap the token, live web page builder, block puzzle with Yatri.
 
 ## Yatri in lessons
+- **Progress** at the top of a lesson is a row of footprints: saffron done, indigo current, faint ahead.
 - **Right answer:** Yatri jumps with sparkles and a green tick; **wrong:** turns grey and droops with a red cross (`VerdictYatri` in `src/features/lesson/Shell.tsx`, used by every checked exercise).
 - **Running code:** “Yatri is running your code…” with a thinking Yatri.
 - **Concept tips** come from Yatri instead of a light bulb.

@@ -28,7 +28,7 @@ export default function ShopScreen() {
             <Yatri size={110} mood="celebrate" outfit={state.outfit} bob dark />
           </Animated.View>
           <View style={{ flex: 1, gap: 4 }}>
-            <T variant="kicker" color="#7BE3D8">
+            <T variant="kicker" color="#A594FF">
               YATRI IS WEARING
             </T>
             <T variant="title" color="#FFFFFF">

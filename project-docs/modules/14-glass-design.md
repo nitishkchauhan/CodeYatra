@@ -20,8 +20,22 @@
 ### Why no live blur
 `expo-blur` (SDK 57) only blurs on Android inside a special wrapper view and is slow on Android 11 and older. Over soft gradient glows, translucent cards look the same and scroll smoothly on cheap phones.
 
-## Home
-Header chips, track rail, hero card with Yatri and **Continue lesson**, daily goal ring, path card, daily cards, and **Your journey**: modules as a zigzag trail of glossy 3D nodes (teal trail when finished, pulsing next module with Yatri, Practise chips).
+## Footprints: the app's visual language (16 Oct 2026)
+The logo's footprints are used across the app, so it feels like one journey:
+- **Your journey** (Home): saffron footprints lead up to the module to do next, faint indigo ones lie ahead. Finished modules are indigo, like the logo's y.
+- **Walking to the next module:** after finishing a lesson, coming back to Home shows footprints landing one by one to the next module, then Yatri arrives there celebrating (light vibration). Only when progress grows on the same track; off with reduce motion.
+- **Lesson progress:** the bar at the top of a lesson is footprints: saffron done, a bigger indigo one for the current step, faint ahead (`FootSteps` in `src/components/ui/Progress.tsx`).
+
+## Home (tidied 16 Oct 2026)
+| Part | What it does |
+|---|---|
+| Header | Greeting and name; chips for the **daily goal ring** (tap for how many lessons are left), streak and XP |
+| Track rail | Glass tiles for every track; your path’s tracks first |
+| Hero card | Track, % done ring (indigo), current module, tappable Yatri, saffron **Continue lesson** |
+| **Today** row | One swipeable row: your career path, Made for you, daily challenge and review |
+| **Your journey** | The zigzag footprint trail, visible on the first screen |
+
+Logo colours everywhere: indigo for progress and finished, saffron for actions and footprints, navy for text. Green only means “correct”.
 
 ## Code
 | Part | File |
@@ -29,7 +43,7 @@ Header chips, track rail, hero card with Yatri and **Continue lesson**, daily go
 | Tokens, `card` (frosted), `glass` | `src/theme/index.ts` |
 | Light aurora, glass card/button, `alpha()` | `src/components/ui/Glass.tsx` |
 | Shared background for every screen | `src/app/_layout.tsx` (`screenLayout`) |
-| Zigzag trail | `src/components/ModulePath.tsx` |
+| Zigzag footprint trail and the walk | `src/components/ModulePath.tsx` |
 | Glass versions | `DailyCards`, `MyPathCard`, `TrackRail` (`glass` option), `TabBar` |
 
 ## Checks (15 Oct 2026)

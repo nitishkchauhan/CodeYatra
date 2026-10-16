@@ -18,8 +18,8 @@ export function GlassBackground() {
             <Stop offset="1" stopColor="#6C4CF5" stopOpacity="0" />
           </RadialGradient>
           <RadialGradient id="g-teal" cx="98" cy="42" r="48" gradientUnits="userSpaceOnUse">
-            <Stop offset="0" stopColor="#14C9A4" stopOpacity="0.16" />
-            <Stop offset="1" stopColor="#14C9A4" stopOpacity="0" />
+            <Stop offset="0" stopColor="#A594FF" stopOpacity="0.2" />
+            <Stop offset="1" stopColor="#A594FF" stopOpacity="0" />
           </RadialGradient>
           <RadialGradient id="g-saffron" cx="6" cy="88" r="52" gradientUnits="userSpaceOnUse">
             <Stop offset="0" stopColor="#FF9F1C" stopOpacity="0.16" />

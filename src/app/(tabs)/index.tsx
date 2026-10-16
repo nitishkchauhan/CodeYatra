@@ -19,12 +19,14 @@ import { Ring } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
 import { findStage, stageLessonStatuses, stageProgress, type LessonStatus } from '@/content';
-import { pathStageIds } from '@/content/paths/recommend';
+import { pathStageIds, suggestionFor } from '@/content/paths/recommend';
 import { greetingKey, useT } from '@/i18n';
 import { useProgress } from '@/state/progress';
 import { glass } from '@/theme';
 
 const fmt = (n: number) => n.toLocaleString('en-IN');
+/** Width of a card in the swipeable Today row. */
+const TODAY_W = 270;
 
 export default function LearnScreen() {
   const t = useT();
@@ -40,6 +42,11 @@ export default function LearnScreen() {
   const goal = state.dailyGoal;
   const goalMet = todayXp >= goal;
   const name = state.name || 'Explorer';
+  const goalNote = goalMet
+    ? 'Goal reached. Great work today!'
+    : goal - todayXp <= 30
+      ? 'One lesson is enough to reach it'
+      : `About ${Math.ceil((goal - todayXp) / 25)} lessons to reach it`;
 
   const open = (id: string, status: LessonStatus) => {
     if (status === 'soon') toast('This lesson is being written. Check back soon!');
@@ -60,6 +67,21 @@ export default function LearnScreen() {
                 {name}
               </T>
             </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`${t('dailyGoal')}: ${Math.min(todayXp, 999)} of ${goal} XP. ${goalNote}`}
+              onPress={() => toast(`${t('dailyGoal')} ${Math.min(todayXp, 999)} / ${goal} XP · ${goalNote}`)}
+              style={[styles.chip, { paddingLeft: 5 }]}>
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Ring value={todayXp / goal} size={30} stroke={4} color={goalMet ? glass.violet : '#FF9F1C'} track={glass.track} />
+                <View style={{ position: 'absolute' }}>
+                  <Glyph name={goalMet ? 'star' : 'bolt'} size={12} color={goalMet ? glass.violet : '#E07B00'} />
+                </View>
+              </View>
+              <T variant="labelSm" color={glass.text}>
+                {Math.min(todayXp, 999)}/{goal}
+              </T>
+            </Pressable>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={`${streak} day streak`}
@@ -87,7 +109,7 @@ export default function LearnScreen() {
               <View style={styles.heroTop}>
                 <TrackBadge stage={stage} size={40} />
                 <View style={{ flex: 1 }}>
-                  <T variant="kicker" color={glass.tealLight} numberOfLines={1}>
+                  <T variant="kicker" color={glass.violet} numberOfLines={1}>
                     {stage.section.toUpperCase()} · {stage.audience.toUpperCase()}
                   </T>
                   <T variant="heading" color={glass.text} style={{ fontSize: 18 }}>
@@ -95,7 +117,7 @@ export default function LearnScreen() {
                   </T>
                 </View>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Ring value={pct / 100} color={glass.tealLight} track={glass.track} size={48} />
+                  <Ring value={pct / 100} color={glass.violet} track={glass.track} size={48} />
                   <T variant="labelSm" color={glass.text} style={{ position: 'absolute', fontSize: 11 }}>
                     {pct}%
                   </T>
@@ -147,44 +169,29 @@ export default function LearnScreen() {
             </GlassCard>
           </Animated.View>
 
-          <Animated.View entering={FadeInDown.delay(180).duration(320)}>
-            <GlassCard style={styles.goal}>
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Ring value={todayXp / goal} color={goalMet ? glass.teal : glass.saffron} track={glass.track} />
-                <View style={{ position: 'absolute' }}>
-                  <Glyph name={goalMet ? 'star' : 'bolt'} size={16} color={goalMet ? glass.teal : glass.saffron} />
+          <Animated.View entering={FadeInDown.delay(180).duration(320)} style={{ gap: 8 }}>
+            <T variant="heading" color={glass.text} style={{ paddingHorizontal: 2 }}>
+              Today
+            </T>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              snapToInterval={TODAY_W + 10}
+              decelerationRate="fast"
+              style={{ marginHorizontal: -16, flexGrow: 0 }}
+              contentContainerStyle={{ paddingHorizontal: 16, gap: 10, alignItems: 'stretch' }}>
+              <View style={{ width: TODAY_W }}>
+                <MyPathCard style={{ flex: 1 }} />
+              </View>
+              {suggestionFor(state.about, state.pathId) ? (
+                <View style={{ width: TODAY_W }}>
+                  <ForYouCard style={{ flex: 1 }} />
                 </View>
+              ) : null}
+              <View style={{ width: TODAY_W + 30 }}>
+                <DailyCards style={{ flex: 1 }} />
               </View>
-              <View style={{ flex: 1 }}>
-                <T variant="label" color={glass.text}>
-                  {t('dailyGoal')} · {Math.min(todayXp, 999)} / {goal} XP
-                </T>
-                <T variant="caption" color={glass.text2}>
-                  {goalMet
-                    ? 'Goal reached. Great work today!'
-                    : goal - todayXp <= 30
-                      ? 'One lesson is enough to reach it'
-                      : `About ${Math.ceil((goal - todayXp) / 25)} lessons to reach it`}
-                </T>
-              </View>
-              <View style={[styles.goalChip, { backgroundColor: goalMet ? alpha(glass.teal, 0.2) : alpha(glass.saffron, 0.18) }]}>
-                <T variant="labelSm" color={goalMet ? glass.tealLight : glass.saffron}>
-                  {goalMet ? 'Done' : `+${goal - todayXp} XP`}
-                </T>
-              </View>
-            </GlassCard>
-          </Animated.View>
-
-          <Animated.View entering={FadeInDown.delay(200).duration(320)}>
-            <MyPathCard />
-          </Animated.View>
-
-          <Animated.View entering={FadeInDown.delay(210).duration(320)}>
-            <ForYouCard />
-          </Animated.View>
-
-          <Animated.View entering={FadeInDown.delay(220).duration(320)}>
-            <DailyCards />
+            </ScrollView>
           </Animated.View>
 
           <View style={styles.unitHead}>
@@ -205,7 +212,7 @@ export default function LearnScreen() {
 
 const styles = StyleSheet.create({
   content: { padding: 16, paddingBottom: 40, gap: 14 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  header: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   chip: {
     minHeight: 40,
     paddingHorizontal: 12,
@@ -220,7 +227,5 @@ const styles = StyleSheet.create({
   hero: { padding: 16, gap: 14 },
   heroTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   heroBody: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  goal: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12 },
-  goalChip: { height: 28, paddingHorizontal: 10, borderRadius: 14, justifyContent: 'center' },
   unitHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', paddingHorizontal: 2, marginTop: 6 },
 });

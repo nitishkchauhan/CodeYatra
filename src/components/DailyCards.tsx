@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { alpha, GlassButton } from './ui/Glass';
 import { Glyph, Icon } from './ui/Icon';
@@ -10,14 +10,14 @@ import { useProgress } from '@/state/progress';
 import { colors, glass } from '@/theme';
 
 /** Daily challenge and mistakes review: two short reasons to open the app every day. Glass cards for Home. */
-export function DailyCards() {
+export function DailyCards({ style }: { style?: StyleProp<ViewStyle> } = {}) {
   const { state, today } = useProgress();
   const stage = findStage(state.stageId);
   const done = dailyDone(state.completed, today);
   const toReview = Object.keys(state.mistakes).length;
 
   return (
-    <View style={{ flexDirection: 'row', gap: 10 }}>
+    <View style={[{ flexDirection: 'row', gap: 10 }, style]}>
       <GlassButton
         accessibilityRole="button"
         accessibilityLabel={done ? 'Daily challenge done for today' : `Daily challenge: ${DAILY_SIZE} ${stage.short} exercises`}

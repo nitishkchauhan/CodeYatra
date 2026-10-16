@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
-import { Segments } from '@/components/ui/Progress';
+import { FootSteps } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { colors } from '@/theme';
 
@@ -17,7 +17,7 @@ export function LessonTopBar({ steps, index, xp, onClose }: { steps: number; ind
         <Icon name="close" size={22} color={colors.ink2} strokeWidth={2.2} />
       </Pressable>
       <View accessibilityRole="progressbar" accessibilityLabel={`Step ${index + 1} of ${steps}`} style={{ flex: 1 }}>
-        <Segments count={steps} done={index} current={index} />
+        <FootSteps count={steps} done={index} />
       </View>
       <View style={styles.xp}>
         <T variant="labelSm" color={colors.saffronInk}>

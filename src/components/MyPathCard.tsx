@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { alpha, GlassButton } from './ui/Glass';
 import { Icon } from './ui/Icon';
@@ -10,13 +10,13 @@ import { useProgress } from '@/state/progress';
 import { glass } from '@/theme';
 
 /** Home card: the learner's career path and its next stop, or an invite to pick one. */
-export function MyPathCard() {
+export function MyPathCard({ style }: { style?: StyleProp<ViewStyle> } = {}) {
   const { state } = useProgress();
   const path = findPath(state.pathId);
 
   if (!path) {
     return (
-      <GlassButton accessibilityRole="button" accessibilityLabel="Choose a career path" onPress={() => router.push('/paths')} style={styles.card}>
+      <GlassButton accessibilityRole="button" accessibilityLabel="Choose a career path" onPress={() => router.push('/paths')} style={[styles.card, style]}>
         <View style={[styles.badge, { backgroundColor: alpha(glass.violet, 0.35) }]}>
           <Icon name="route" size={22} color="#FFFFFF" />
         </View>
@@ -39,7 +39,7 @@ export function MyPathCard() {
       accessibilityRole="button"
       accessibilityLabel={`Your path: ${path.title}, ${s.pct}% job-ready${s.next ? `, next stop ${s.next.title}` : ''}`}
       onPress={() => router.push({ pathname: '/path/[id]', params: { id: path.id } })}
-      style={styles.card}>
+      style={[styles.card, style]}>
       <View style={[styles.badge, { backgroundColor: path.soft }]}>
         <Icon d={path.icon} size={22} color={path.ink} />
       </View>

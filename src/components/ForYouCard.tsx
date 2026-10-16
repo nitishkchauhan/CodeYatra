@@ -1,5 +1,5 @@
 import { router, type Href } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { alpha, GlassButton } from './ui/Glass';
 import { Icon } from './ui/Icon';
@@ -18,7 +18,7 @@ const LOOK: Record<Suggestion['id'], { icon: string; color: string }> = {
 };
 
 /** "Made for you": one suggestion on Home that follows why the learner is learning (from onboarding or their plan). */
-export function ForYouCard() {
+export function ForYouCard({ style }: { style?: StyleProp<ViewStyle> } = {}) {
   const { state, setStage } = useProgress();
   const s = suggestionFor(state.about, state.pathId);
   if (!s) return null;
@@ -46,7 +46,7 @@ export function ForYouCard() {
       accessibilityLabel={`Made for you: ${s.title}. ${s.body} ${s.cta}`}
       onPress={open}
       tint={alpha(look.color, 0.06)}
-      style={styles.card}>
+      style={[styles.card, style]}>
       <View style={[styles.icon, { backgroundColor: alpha(look.color, 0.12) }]}>
         <Icon d={look.icon} size={22} color={look.color} />
       </View>

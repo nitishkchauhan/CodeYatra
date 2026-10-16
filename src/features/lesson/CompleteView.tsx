@@ -13,7 +13,7 @@ import { colors } from '@/theme';
 
 const CONFETTI = [
   { left: '20%', top: 26, size: 9, color: colors.saffron, rotate: '20deg', round: false },
-  { left: '74%', top: 44, size: 10, color: colors.teal, rotate: '-25deg', round: false },
+  { left: '74%', top: 44, size: 10, color: colors.primary, rotate: '-25deg', round: false },
   { left: '16%', top: 128, size: 7, color: colors.primary, rotate: '0deg', round: true },
   { left: '78%', top: 134, size: 9, color: '#DB2777', rotate: '40deg', round: false },
   { left: '50%', top: 4, size: 6, color: '#2563EB', rotate: '0deg', round: true },

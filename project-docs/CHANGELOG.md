@@ -3,6 +3,9 @@
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
 ## 16 Oct 2026
+- **Footprints across the app:** the journey trail is saffron footprints (faint ahead); after a lesson, Yatri walks to the next module, leaving footprints one by one. Lesson progress at the top is footprints too.
+- **Tidier Home:** daily goal is a ring in the header; path, Made for you, daily challenge and review are one swipeable **Today** row; **Your journey** shows on the first screen.
+- **Logo colours everywhere:** finished modules and progress rings in indigo, footprints and actions in saffron; leftover teal removed (green only for correct answers).
 - **Final logo: “cy, leaving footprints”**, chosen by the owner after several rounds on the design canvas. New app icon, adaptive and themed icons, white splash with tagline “Your journey in code”, favicon, store icon, light feature graphic, brand logos.
 - **Animated Yatri v2:** the footprints walk (happy), hop like typing dots (thinking), pop (celebrate) or sink (sad); tap Yatri on the welcome screens and Home to make it hop and celebrate.
 - Welcome and “Building your plan” screens are now light, matching the white splash.

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { View } from 'react-native';
-import Animated, { useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming, ZoomIn } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
 import { colors } from '@/theme';
@@ -82,6 +82,37 @@ export function Segments({ count, done, current, color = colors.primary, gap = 4
           }}
         />
       ))}
+    </View>
+  );
+}
+
+/**
+ * Lesson progress as footprints (the logo's motif): saffron for finished steps, a bigger indigo
+ * footprint for the step you are on, faint ones ahead. They zig-zag slightly, like real steps.
+ */
+export function FootSteps({ count, done }: { count: number; done: number }) {
+  return (
+    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', height: 18 }}>
+      {Array.from({ length: count }, (_, i) => {
+        const state = i < done ? 'done' : i === done ? 'current' : 'ahead';
+        const d = state === 'current' ? 13 : state === 'done' ? 10 : 8;
+        return (
+          <View key={i} style={{ flex: 1, alignItems: 'center' }}>
+            <Animated.View
+              key={`${i}-${state}`}
+              entering={state === 'ahead' ? undefined : ZoomIn.duration(220)}
+              style={{
+                width: d,
+                height: d,
+                borderRadius: d / 2,
+                transform: [{ translateY: i % 2 ? 2.5 : -2.5 }],
+                backgroundColor: state === 'done' ? '#FF9F1C' : state === 'current' ? colors.primary : 'rgba(75,63,216,0.18)',
+                boxShadow: state === 'current' ? '0 0 0 3px rgba(75,63,216,0.18)' : undefined,
+              }}
+            />
+          </View>
+        );
+      })}
     </View>
   );
 }

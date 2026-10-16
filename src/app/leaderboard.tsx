@@ -73,7 +73,7 @@ export default function LeaderboardScreen() {
         refreshControl={session ? <RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor={colors.primary} /> : undefined}>
         <Animated.View entering={FadeInDown} style={styles.hero}>
           <View style={{ flex: 1, gap: 4 }}>
-            <T variant="kicker" color="#7BE3D8">
+            <T variant="kicker" color="#A594FF">
               THIS WEEK
             </T>
             <T variant="display" color="#FFFFFF">

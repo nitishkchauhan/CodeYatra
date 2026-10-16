@@ -37,7 +37,7 @@ export default function PathsScreen() {
               onPress={() => open(mine.id)}
               style={({ pressed }) => [styles.mine, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
               <View style={{ flex: 1, gap: 4 }}>
-                <T variant="kicker" color={colors.tealLight}>
+                <T variant="kicker" color="#A594FF">
                   YOUR PATH
                 </T>
                 <T variant="title" color="#FFFFFF">
@@ -48,7 +48,7 @@ export default function PathsScreen() {
                 </T>
               </View>
               <View style={styles.ring}>
-                <Ring value={mySummary.pct / 100} size={64} stroke={6} color={colors.tealLight} track={colors.heroLine} />
+                <Ring value={mySummary.pct / 100} size={64} stroke={6} color="#FF9F1C" track={colors.heroLine} />
                 <View style={styles.ringLabel} pointerEvents="none">
                   <T variant="label" color="#FFFFFF">
                     {mySummary.pct}%
