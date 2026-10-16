@@ -1,14 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" width="120" height="100">
-  <!-- CodeYatra mark: < Y > where the Y's right arm is an arrow going up. Same shapes as src/components/Logo.tsx. -->
-  <defs>
-    <linearGradient id="cy-y" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#FFD84A"/>
-      <stop offset="1" stop-color="#FF8A00"/>
-    </linearGradient>
-  </defs>
-  <path d="M31 29 L12 51 L31 73" fill="none" stroke="#6C4CF5" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M89 31 L108 53 L89 75" fill="none" stroke="#14C9A4" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M39 23 L50 39" fill="none" stroke="#FFC233" stroke-width="13" stroke-linecap="round"/>
-  <path d="M56 91 V65 C56 51 62 40 74 24" fill="none" stroke="url(#cy-y)" stroke-width="14" stroke-linecap="round"/>
-  <path d="M88 3 L87 29 L64 14 Z" fill="#FFD84A" stroke="#FFD84A" stroke-width="5" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- CodeYatra mark: a lowercase "cy" whose y-tail leaves three saffron footprints. Same shapes as src/components/Logo.tsx. -->
+  <path d="M56.8 38.1 A17 17 0 1 0 56.8 65.9" fill="none" stroke="#170E5C" stroke-width="11" stroke-linecap="round"/>
+  <path d="M67 36 L79 58 M93 36 L75 76 Q69 88 55 88" fill="none" stroke="#4B3FD8" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="42" cy="90" r="4.3" fill="#FF9F1C"/>
+  <circle cx="30.5" cy="88.5" r="3.7" fill="#FF9F1C" opacity="0.7"/>
+  <circle cx="20.5" cy="85" r="3.1" fill="#FF9F1C" opacity="0.45"/>
 </svg>

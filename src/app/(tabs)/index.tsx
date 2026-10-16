@@ -130,7 +130,7 @@ export default function LearnScreen() {
                     </>
                   )}
                 </View>
-                <Yatri size={78} bob mood={currentLesson ? 'happy' : 'celebrate'} />
+                <Yatri size={78} bob interactive mood={currentLesson ? 'happy' : 'celebrate'} />
               </View>
 
               {currentLesson && currentUnit ? (

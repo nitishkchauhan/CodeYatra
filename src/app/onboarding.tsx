@@ -192,9 +192,9 @@ function Welcome({ accountsEnabled, onStart }: { accountsEnabled: boolean; onSta
   const [page, setPage] = useState(0);
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => setPage(Math.round(e.nativeEvent.contentOffset.x / Math.max(width, 1)));
   return (
-    <SafeAreaView style={[styles.screen, { backgroundColor: colors.brand }]}>
+    <SafeAreaView style={styles.screen}>
       <View style={{ alignItems: 'center', paddingTop: 18 }}>
-        <Logo height={30} dark />
+        <Logo height={30} />
       </View>
       <ScrollView
         horizontal
@@ -206,12 +206,12 @@ function Welcome({ accountsEnabled, onStart }: { accountsEnabled: boolean; onSta
         {SLIDES.map((s, i) => (
           <View key={s.title} style={[styles.slide, { width }]} accessible accessibilityLabel={`${s.title}. ${s.body}`}>
             <Animated.View entering={ZoomIn.springify().damping(14)} style={styles.halo}>
-              <Yatri size={170} mood={s.mood} dark bob={i === page} />
+              <Yatri size={170} mood={s.mood} bob={i === page} interactive />
             </Animated.View>
-            <T variant="display" color="#FFFFFF" style={{ textAlign: 'center' }}>
+            <T variant="display" style={{ textAlign: 'center' }}>
               {s.title}
             </T>
-            <T variant="body" color="#DCD8FF" style={{ textAlign: 'center', maxWidth: 320 }}>
+            <T variant="body" color={colors.ink2} style={{ textAlign: 'center', maxWidth: 320 }}>
               {s.body}
             </T>
           </View>
@@ -226,7 +226,7 @@ function Welcome({ accountsEnabled, onStart }: { accountsEnabled: boolean; onSta
         <Button variant="saffron" label="Get started" onPress={onStart} />
         {accountsEnabled ? (
           <Pressable accessibilityRole="button" onPress={() => router.push('/account')} style={styles.haveAccount} hitSlop={6}>
-            <T variant="label" color="#DCD8FF">
+            <T variant="label" color={colors.primary}>
               I already have an account
             </T>
           </Pressable>
@@ -507,18 +507,18 @@ function Building({ goal, path, onDone }: { goal: number; path: CareerPath | und
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <SafeAreaView style={[styles.screen, { backgroundColor: colors.brand, justifyContent: 'center', alignItems: 'center', padding: 24, gap: 22 }]}>
-      <Yatri size={130} mood="focus" dark bob />
-      <T variant="title" color="#FFFFFF" style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
+    <SafeAreaView style={[styles.screen, { justifyContent: 'center', alignItems: 'center', padding: 24, gap: 22 }]}>
+      <Yatri size={130} mood="focus" bob />
+      <T variant="title" style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
         Building your plan…
       </T>
       <View style={{ gap: 12, alignSelf: 'stretch', maxWidth: 340, marginHorizontal: 'auto' }}>
         {lines.map((l, i) => (
           <View key={l} style={[styles.buildRow, { opacity: i < shown ? 1 : 0.35 }]}>
-            <View style={[styles.buildDot, i < shown && { backgroundColor: colors.tealLight, borderColor: colors.tealLight }]}>
-              {i < shown ? <Icon name="check" size={13} color={colors.brand} strokeWidth={3} /> : null}
+            <View style={[styles.buildDot, i < shown && { backgroundColor: colors.success, borderColor: colors.success }]}>
+              {i < shown ? <Icon name="check" size={13} color="#FFFFFF" strokeWidth={3} /> : null}
             </View>
-            <T variant="bodySm" color="#DCD8FF">
+            <T variant="bodySm" color={colors.ink2}>
               {l}
             </T>
           </View>
@@ -535,10 +535,10 @@ const styles = StyleSheet.create({
   body: { padding: 20, paddingTop: 8, paddingBottom: 24 },
   footer: { padding: 20, paddingTop: 8, gap: 4 },
   slide: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14, paddingHorizontal: 28 },
-  halo: { width: 230, height: 230, borderRadius: 115, backgroundColor: '#ffffff14', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
+  halo: { width: 230, height: 230, borderRadius: 115, backgroundColor: 'rgba(255,255,255,0.75)', borderWidth: 1, borderColor: 'rgba(75,63,216,0.12)', boxShadow: '0 10px 30px rgba(45,35,120,0.10)', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
   haveAccount: { minHeight: 48, alignItems: 'center', justifyContent: 'center', marginTop: 4 },
   dots: { flexDirection: 'row', justifyContent: 'center', gap: 8, paddingVertical: 6 },
-  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#ffffff44' },
+  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: 'rgba(75,63,216,0.22)' },
   dotOn: { width: 22, backgroundColor: colors.saffron },
   option: {
     minHeight: 72,
@@ -606,5 +606,5 @@ const styles = StyleSheet.create({
   timeBox: { minWidth: 160, minHeight: 64, paddingHorizontal: 18, borderRadius: 32, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   preset: { minHeight: 38, paddingHorizontal: 14, borderRadius: 19, borderWidth: 1, borderColor: colors.line, justifyContent: 'center', backgroundColor: colors.surface },
   buildRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  buildDot: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: '#ffffff55', alignItems: 'center', justifyContent: 'center' },
+  buildDot: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: 'rgba(75,63,216,0.3)', alignItems: 'center', justifyContent: 'center' },
 });

@@ -35,18 +35,18 @@ const chipSvg = chips
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}" height="${H}">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#06104A"/><stop offset="0.65" stop-color="#14186A"/><stop offset="1" stop-color="#3B2FC0"/>
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset="0.6" stop-color="#F3F1FB"/><stop offset="1" stop-color="#E2DCFF"/>
     </linearGradient>
     <radialGradient id="fade" cx="0.5" cy="0.5" r="0.5"><stop offset="0.7" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
     <mask id="m"><circle cx="790" cy="245" r="250" fill="url(#fade)"/></mask>
   </defs>
   <rect width="${W}" height="${H}" fill="url(#bg)"/>
-  <circle cx="800" cy="250" r="230" fill="#FF9F1C" opacity="0.08"/>
+  <circle cx="800" cy="250" r="230" fill="#4B3FD8" opacity="0.08"/>
   <image x="590" y="40" width="420" height="420" xlink:href="${href}"/>
-  <text x="64" y="150" font-family="Segoe UI, Arial, sans-serif" font-size="76" font-weight="800" fill="#FFFFFF">Code<tspan fill="#FF9F1C">Yatra</tspan></text>
-  <text x="66" y="210" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="600" fill="#FFFFFF">Learn to code. Follow your path.</text>
-  <text x="66" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#B9B6F2">16 tracks · 160 lessons · real code editor</text>
-  <text x="66" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#B9B6F2">Placement mock tests · CBSE · certificates</text>
+  <text x="64" y="150" font-family="Segoe UI, Arial, sans-serif" font-size="76" font-weight="800" fill="#170E5C">Code<tspan fill="#4B3FD8">Yatra</tspan></text>
+  <text x="66" y="210" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="600" fill="#170E5C">Your journey in code.</text>
+  <text x="66" y="262" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#55526E">16 tracks · 160 lessons · real code editor</text>
+  <text x="66" y="296" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#55526E">Placement mock tests · CBSE · certificates</text>
   ${chipSvg}
 </svg>`;
 

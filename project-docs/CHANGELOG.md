@@ -2,6 +2,11 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 16 Oct 2026
+- **Final logo: “cy, leaving footprints”**, chosen by the owner after several rounds on the design canvas. New app icon, adaptive and themed icons, white splash with tagline “Your journey in code”, favicon, store icon, light feature graphic, brand logos.
+- **Animated Yatri v2:** the footprints walk (happy), hop like typing dots (thinking), pop (celebrate) or sink (sad); tap Yatri on the welcome screens and Home to make it hop and celebrate.
+- Welcome and “Building your plan” screens are now light, matching the white splash.
+
 ## In progress
 Nothing half-done right now. Build 6 (v1.3.0, versionCode 6) is built and ready to upload.
 

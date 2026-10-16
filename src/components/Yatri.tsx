@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
-import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Pressable, View } from 'react-native';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import Svg, { Circle, Ellipse, G, Path, Polygon, Rect } from 'react-native-svg';
 
-import { BRAND, MarkShapes } from './Logo';
+import { BRAND, MARK, markColors, MarkShapes } from './Logo';
+import { haptic } from '@/lib/haptics';
 
 export type Mood = 'happy' | 'focus' | 'sad' | 'celebrate';
 
@@ -53,16 +55,117 @@ const sparkle = (x: number, y: number, r: number) =>
   `M${x} ${y - r} Q${x} ${y} ${x + r} ${y} Q${x} ${y} ${x} ${y + r} Q${x} ${y} ${x - r} ${y} Q${x} ${y} ${x} ${y - r} Z`;
 
 /**
- * Yatri is the CodeYatra logo (< Y > with an arrow going up), drawn in a 120×140 box.
- * Moods change its motion and colour: happy bobs, focus pulses, sad droops in grey, celebrate jumps with sparkles.
+ * One footprint, animated on its own so the mark can "walk":
+ * happy: footprints land one by one, farthest first; focus: they hop like a typing indicator;
+ * celebrate: they pop; sad: they sink and fade.
+ */
+function Footprint({
+  index,
+  mood,
+  moving,
+  left,
+  top,
+  d,
+  color,
+  opacity,
+}: {
+  index: number;
+  mood: Mood;
+  moving: boolean;
+  left: number;
+  top: number;
+  d: number;
+  color: string;
+  opacity: number;
+}) {
+  const o = useSharedValue(opacity);
+  const ty = useSharedValue(0);
+  const sc = useSharedValue(1);
+
+  useEffect(() => {
+    o.set(mood === 'sad' ? opacity * 0.6 : opacity);
+    ty.set(mood === 'sad' ? d * 0.4 : 0);
+    sc.set(1);
+    if (!moving) return;
+    const ease = Easing.inOut(Easing.quad);
+    if (mood === 'happy') {
+      // A 2.4 s walk: the farthest footprint lands first, the nearest last, then all fade together.
+      const T = 2400;
+      const at = (2 - index) * 260;
+      o.set(
+        withRepeat(
+          withSequence(
+            withTiming(0.12, { duration: 0 }),
+            withDelay(at, withTiming(opacity, { duration: 240 })),
+            withDelay(T - at - 640, withTiming(0.12, { duration: 400 })),
+          ),
+          -1,
+        ),
+      );
+      sc.set(
+        withRepeat(
+          withSequence(
+            withTiming(0.6, { duration: 0 }),
+            withDelay(at, withTiming(1, { duration: 240, easing: Easing.out(Easing.back(2)) })),
+            withDelay(T - at - 240, withTiming(1, { duration: 0 })),
+          ),
+          -1,
+        ),
+      );
+    } else if (mood === 'focus') {
+      // Typing dots: each one hops in turn.
+      o.set(Math.max(opacity, 0.75));
+      ty.set(
+        withRepeat(
+          withSequence(
+            withDelay((2 - index) * 150, withTiming(-d * 0.9, { duration: 240, easing: ease })),
+            withTiming(0, { duration: 240, easing: ease }),
+            withDelay(index * 150 + 300, withTiming(0, { duration: 0 })),
+          ),
+          -1,
+        ),
+      );
+    } else if (mood === 'celebrate') {
+      sc.set(
+        withRepeat(
+          withSequence(
+            withDelay(index * 120, withTiming(1.6, { duration: 220 })),
+            withTiming(1, { duration: 260 }),
+            withDelay((2 - index) * 120 + 600, withTiming(1, { duration: 0 })),
+          ),
+          -1,
+        ),
+      );
+    }
+  }, [mood, moving, index, opacity, d, o, ty, sc]);
+
+  const style = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ translateY: ty.value }, { scale: sc.value }] }));
+  return <Animated.View pointerEvents="none" style={[{ position: 'absolute', left, top, width: d, height: d, borderRadius: d / 2, backgroundColor: color }, style]} />;
+}
+
+/** Wraps Yatri in a button when it can be tapped. */
+function Tappable({ on, onTap, children }: { on: boolean; onTap: () => void; children: ReactNode }) {
+  if (!on) return <>{children}</>;
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel="Yatri. Tap to say hello" onPress={onTap} hitSlop={8}>
+      {children}
+    </Pressable>
+  );
+}
+
+/**
+ * Yatri is the CodeYatra logo (a lowercase "cy" leaving footprints), drawn in a 120×140 box.
+ * Moods change its motion: happy walks its footprints, focus "types" them, sad greys out and droops,
+ * celebrate jumps with sparkles. With `interactive`, a tap makes it hop and celebrate for a moment.
  */
 export function Yatri({
   size = 120,
-  mood = 'happy',
-  armsUp = mood === 'celebrate',
+  mood: moodProp = 'happy',
+  armsUp,
   bob = false,
   dark = false,
   outfit,
+  interactive = false,
 }: {
   size?: number;
   mood?: Mood;
@@ -70,16 +173,24 @@ export function Yatri({
   bob?: boolean;
   dark?: boolean;
   outfit?: string | null;
+  /** Tap to make Yatri hop and celebrate. */
+  interactive?: boolean;
 }) {
   const reduce = useReducedMotion();
+  const [cheer, setCheer] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const mood: Mood = cheer || armsUp ? 'celebrate' : moodProp;
+  const celebrate = mood === 'celebrate';
+  const moving = (bob || cheer) && !reduce;
+
   const y = useSharedValue(0);
   const scale = useSharedValue(1);
-  const turn = useSharedValue(mood === 'sad' ? -8 : 0);
-  const celebrate = armsUp || mood === 'celebrate';
+  const turn = useSharedValue(mood === 'sad' ? -6 : 0);
 
   useEffect(() => {
-    turn.set(mood === 'sad' ? -8 : 0);
-    if (!bob || reduce) {
+    turn.set(mood === 'sad' ? -6 : 0);
+    if (!moving) {
       y.set(0);
       scale.set(1);
       return;
@@ -89,47 +200,81 @@ export function Yatri({
       y.set(
         withRepeat(
           withSequence(
-            withTiming(-10, { duration: 320, easing: Easing.out(Easing.quad) }),
+            withTiming(-12, { duration: 300, easing: Easing.out(Easing.quad) }),
             withTiming(0, { duration: 380, easing: Easing.in(Easing.quad) }),
-            withTiming(0, { duration: 700 }),
+            withTiming(0, { duration: 600 }),
           ),
           -1,
         ),
       );
-      turn.set(withRepeat(withSequence(withTiming(-5, { duration: 320 }), withTiming(4, { duration: 380 }), withTiming(0, { duration: 700 })), -1));
+      turn.set(withRepeat(withSequence(withTiming(-5, { duration: 300 }), withTiming(4, { duration: 380 }), withTiming(0, { duration: 600 })), -1));
     } else if (mood === 'focus') {
-      scale.set(withRepeat(withSequence(withTiming(1.05, { duration: 900, easing: ease }), withTiming(1, { duration: 900, easing: ease })), -1));
+      scale.set(withRepeat(withSequence(withTiming(1.04, { duration: 900, easing: ease }), withTiming(1, { duration: 900, easing: ease })), -1));
     } else if (mood === 'sad') {
       y.set(withRepeat(withSequence(withTiming(3, { duration: 1600, easing: ease }), withTiming(0, { duration: 1600, easing: ease })), -1));
     } else {
-      y.set(withRepeat(withSequence(withTiming(-5, { duration: 1300, easing: ease }), withTiming(0, { duration: 1300, easing: ease })), -1));
+      y.set(withRepeat(withSequence(withTiming(-4, { duration: 1300, easing: ease }), withTiming(0, { duration: 1300, easing: ease })), -1));
     }
-  }, [bob, reduce, mood, celebrate, y, scale, turn]);
+  }, [moving, mood, celebrate, y, scale, turn]);
 
   const style = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }, { scale: scale.value }, { rotate: `${turn.value}deg` }] }));
 
+  const tap = () => {
+    haptic.tap();
+    if (reduce) return;
+    setCheer(true);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCheer(false), 1600);
+  };
+
   // With a hat on, the mark shrinks a little and sits lower so the hat has room.
-  const k = outfit ? 0.86 : 1;
+  const k = outfit ? 0.84 : 1;
   const markX = (120 - 120 * k) / 2;
-  const markY = outfit ? 46 : 26;
+  const markY = outfit ? 30 : 24;
+  const u = size / 120;
+  const height = (size * 140) / 120;
+  const stepColor = markColors({ dark, muted: mood === 'sad' }).step;
+
   return (
-    <Animated.View style={style} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-      <Svg width={size} height={(size * 140) / 120} viewBox="0 0 120 140">
-        <Ellipse cx={60} cy={134} rx={30} ry={4} fill="#16142B" opacity={dark ? 0 : 0.1} />
-        {celebrate ? (
-          <>
-            <Path d={sparkle(10, 30, 7)} fill={BRAND.gold} />
-            <Path d={sparkle(110, 24, 6)} fill={BRAND.teal} />
-            <Path d={sparkle(8, 96, 5)} fill={dark ? BRAND.violetOnDark : BRAND.violet} />
-            <Path d={sparkle(112, 98, 7)} fill={BRAND.gold} />
-          </>
-        ) : null}
-        <G transform={`translate(${markX} ${markY}) scale(${k})`}>
-          <MarkShapes id={`yatri-${mood}-${dark ? 'd' : 'l'}-${outfit ?? 'none'}`} dark={dark} muted={mood === 'sad'} />
-        </G>
-        {mood === 'focus' ? <Circle cx={100} cy={markY + 8} r={3} fill={BRAND.teal} opacity={0.9} /> : null}
-        <Outfit id={outfit} />
-      </Svg>
-    </Animated.View>
+    <Tappable on={interactive} onTap={tap}>
+      <Animated.View
+        style={[{ width: size, height }, style]}
+        accessibilityElementsHidden={!interactive}
+        importantForAccessibility={interactive ? 'auto' : 'no-hide-descendants'}>
+        <Svg width={size} height={height} viewBox="0 0 120 140">
+          <Ellipse cx={60} cy={130} rx={30} ry={4} fill="#16142B" opacity={dark ? 0 : 0.08} />
+          {celebrate ? (
+            <>
+              <Path d={sparkle(14, 34, 7)} fill={BRAND.gold} />
+              <Path d={sparkle(108, 26, 6)} fill={BRAND.teal} />
+              <Path d={sparkle(110, 96, 7)} fill={BRAND.gold} />
+              <Path d={sparkle(100, 118, 4)} fill={dark ? BRAND.lavender : BRAND.indigo} />
+            </>
+          ) : null}
+          <G transform={`translate(${markX} ${markY}) scale(${k})`}>
+            <MarkShapes dark={dark} muted={mood === 'sad'} footprints={false} />
+          </G>
+          <Outfit id={outfit} />
+        </Svg>
+        <View pointerEvents="none" style={{ position: 'absolute', left: 0, top: 0, width: size, height }}>
+          {MARK.steps.map((s, i) => {
+            const d = 2 * s.r * k * u;
+            return (
+              <Footprint
+                key={s.x}
+                index={i}
+                mood={mood}
+                moving={moving}
+                left={(markX + k * s.x) * u - d / 2}
+                top={(markY + k * s.y) * u - d / 2}
+                d={d}
+                color={stepColor}
+                opacity={s.o}
+              />
+            );
+          })}
+        </View>
+      </Animated.View>
+    </Tappable>
   );
 }
