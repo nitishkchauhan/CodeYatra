@@ -7,7 +7,7 @@ Status key: ✅ done · 🚧 in progress · 📋 next · 💤 later
 |---|---|
 | Closed test with 12+ testers for 14 days (started 11 Oct 2026) | 🚧 ends about 25 Oct |
 | Run schema v1.4 (certificates) and v1.5 (report/block) in Supabase | Owner to confirm |
-| Build 6 (v1.3.0): everything on `paths-feature` plus module practice and blocked permissions | ✅ built 15 Oct (versionCode 6); owner to upload to closed test |
+| Build 6 (v1.3.0): everything on `paths-feature` plus module practice and blocked permissions | Replaced by **build 10** (17 Oct, versionCode 10, final logo): owner to upload `builds/CodeYatra-1.3.0.aab` to the closed test |
 | Apply for production access, then production release | 📋 after 25 Oct |
 
 ## Product phases (agreed 14 Oct 2026)

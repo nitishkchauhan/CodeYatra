@@ -3,6 +3,7 @@
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
 ## 17 Oct 2026
+- **Build 10** (v1.3.0, Play bundle) built locally with `eas build --local`: final logo, footprint journey, tidier Home. Ready to upload to the closed test.
 - EAS free Android builds used up for October; set up **local builds in WSL** (`scripts/wsl/`). Test APK v1.3.0 with the final logo and footprint UI built locally.
 
 ## 16 Oct 2026

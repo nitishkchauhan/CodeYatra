@@ -63,6 +63,7 @@ SQL changes are tested in a local Postgres (PGlite) before handing over.
 | Build 5 (v1.2.0) | Report/block, feedback links, editor fix |
 | Build 6 | v1.3.0, 15 Oct 2026, EAS `1f0e9f82-d2f4-4ddb-b8de-ea0aae595a8b`: career paths, onboarding v2, new logo, Light Glass design, learning plan, Yatri in lessons, module practice, blocked permissions |
 
+| **Build 10** (Play) | v1.3.0, versionCode 10, 17 Oct 2026, built locally in WSL with `eas build --local` (profile `production-local`): final cy logo, footprint trail, tidier Home, plus everything in build 6. File: `C:\Users\Lenovo\Desktop\CodeY\builds\CodeYatra-1.3.0.aab`. Builds 7–9 were started and stopped (only their numbers were used) |
 | Test APK (local) | v1.3.0, 17 Oct 2026, built in WSL: final cy logo, footprint trail, tidier Home. File: `C:\Users\Lenovo\Desktop\CodeY\builds\CodeYatra-1.3.0-test.apk` |
 
 Build a store bundle: `npx eas-cli@latest build --platform android --profile production`
@@ -72,9 +73,10 @@ Build a test APK: `npx eas-cli@latest build --platform android --profile preview
 The free EAS plan allows a limited number of Android builds a month (it ran out on 17 Oct 2026; resets 1 Nov). Builds can also run locally in **WSL Ubuntu**:
 1. One-time setup (Java 17, Node 22, Android SDK 36 in `~/tools`, about 2 GB plus Gradle caches):
    `wsl -d Ubuntu -- bash /mnt/c/Users/Lenovo/Desktop/CodeY/codeyatra-app/scripts/wsl/setup-android.sh`
-2. Test APK: `wsl -d Ubuntu -- bash /mnt/c/Users/Lenovo/Desktop/CodeY/codeyatra-app/scripts/wsl/build-apk.sh` (copies the project into Ubuntu, runs `expo prebuild` and Gradle; the APK lands in `C:\Users\Lenovo\Desktop\CodeY\builds`).
+2. Play bundle: `wsl -d Ubuntu -- bash /mnt/c/Users/Lenovo/Desktop/CodeY/codeyatra-app/scripts/wsl/build-aab.sh` (needs a one-time `npx eas-cli login` inside Ubuntu, typed by the owner; downloads the upload key from EAS and bumps the remote versionCode; output `builds/CodeYatra-<version>.aab`). Run it in a Terminal tab so nothing cuts it off.
+3. Test APK: `wsl -d Ubuntu -- bash /mnt/c/Users/Lenovo/Desktop/CodeY/codeyatra-app/scripts/wsl/build-apk.sh` (copies the project into Ubuntu, runs `expo prebuild` and Gradle; the APK lands in `C:\Users\Lenovo\Desktop\CodeY\builds`).
 
-Lessons learned: keep a terminal attached to WSL for the whole build (Ubuntu shuts down when idle and kills it); WSL has 7 GB, so build **arm64 only** with 4 workers and a 2 GB Gradle heap (more crashed WSL); local test APKs are signed with the debug key, so uninstall the Play version before installing. Play bundles (.aab) need the upload key from EAS credentials.
+Lessons learned: `C:\Users\Lenovo\.wslconfig` caps Ubuntu at 5 GB RAM, 8 GB swap and 8 cores, because Windows ran out of RAM and Ubuntu crashed (delete it and run `wsl --shutdown` to undo); EAS must work in `~/eas-build-work`, not `/tmp` (a 2.5 GB RAM disk); every started Play build uses up a versionCode; keep a terminal attached to WSL for the whole build (Ubuntu shuts down when idle and kills it); WSL has 7 GB, so build **arm64 only** with 4 workers and a 2 GB Gradle heap (more crashed WSL); local test APKs are signed with the debug key, so uninstall the Play version before installing. Play bundles (.aab) need the upload key from EAS credentials.
 
 
 ## Checks before every commit
