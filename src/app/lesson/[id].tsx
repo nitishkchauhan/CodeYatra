@@ -7,7 +7,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '@/components/ui/Button';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { buildReview, getLesson, type Lesson } from '@/content';
+import { buildReview, getLesson, nextLessonAfter, type Lesson } from '@/content';
+import { CHECKPOINT_PREFIX, PASS_MARK, scoreCheckpoint } from '@/content/checkpoints';
 import { CodeStep } from '@/features/lesson/CodeStep';
 import { CompleteView } from '@/features/lesson/CompleteView';
 import { ConceptStep } from '@/features/lesson/ConceptStep';
@@ -80,6 +81,22 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
   if (finishedAt !== null) {
     const { state, today } = progress;
     const predicted = nextStreak(state.streak, state.lastActive, today);
+    // A checkpoint is scored on first-time answers; every other lesson just completes.
+    const topics = (lesson as Lesson & { topics?: string[] }).topics;
+    const checkpoint = lesson.id.startsWith(CHECKPOINT_PREFIX) && topics ? scoreCheckpoint(topics, lesson.steps.map((_, i) => missed.has(sourceOf(i))), today) : null;
+    const following = lesson.kind === 'lesson' || lesson.kind === 'project' ? nextLessonAfter(lesson.id) : null;
+    const save = () => {
+      if (leaving.current) return null;
+      leaving.current = true;
+      // Every step in the lesson was eventually answered right; ones missed this time stay for review.
+      const fixed = lesson.steps.map((_, i) => sourceOf(i)).filter((k) => !missed.has(k));
+      const result = progress.completeLesson({ lessonId: lesson.id, kind: lesson.kind, mistakes, reviewed: fixed, claimId });
+      if (checkpoint) progress.recordCheckpoint(lesson.id, checkpoint);
+      track('lesson_complete', { lesson: lesson.id.startsWith('daily-') ? 'daily' : lesson.id, accuracy, mistakes, replay });
+      toast(result.extended ? `Streak: ${result.streak} ${result.streak === 1 ? 'day' : 'days'} · +${result.xp} XP` : `+${result.xp} XP${result.coins ? ` · +${result.coins} coins` : ''}`);
+      guard.allow();
+      return result;
+    };
     return (
       <CompleteView
         title={lesson.kind === 'project' ? 'Project built!' : lesson.kind === 'lesson' ? 'Lesson complete!' : 'Practice complete!'}
@@ -88,23 +105,44 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
         xp={reward.xp}
         coins={reward.coins}
         replay={replay}
-        accuracy={accuracy}
+        accuracy={checkpoint ? Math.round((checkpoint.score / checkpoint.total) * 100) : accuracy}
         seconds={Math.max(1, Math.round((finishedAt - startedAt) / 1000))}
         learned={lesson.learned}
         streak={predicted.streak}
         streakNote={predicted.extended ? (state.streak > 0 ? `Up from ${state.streak} · see you tomorrow` : 'Your streak starts today') : 'Already counted for today'}
         onContinue={() => {
-          if (leaving.current) return;
-          leaving.current = true;
-          // Every step in the lesson was eventually answered right; ones missed this time stay for review.
-          const fixed = lesson.steps.map((_, i) => sourceOf(i)).filter((k) => !missed.has(k));
-          const result = progress.completeLesson({ lessonId: lesson.id, kind: lesson.kind, mistakes, reviewed: fixed, claimId });
-          track('lesson_complete', { lesson: lesson.id.startsWith('daily-') ? 'daily' : lesson.id, accuracy, mistakes, replay });
-          toast(result.extended ? `Streak: ${result.streak} ${result.streak === 1 ? 'day' : 'days'} · +${result.xp} XP` : `+${result.xp} XP${result.coins ? ` · +${result.coins} coins` : ''}`);
-          guard.allow();
+          const result = save();
+          if (!result) return;
           if (result.certificate) router.replace({ pathname: '/certificate/[stageId]', params: { stageId: result.certificate.stageId } });
           else router.back();
         }}
+        next={
+          following
+            ? {
+                title: following.title,
+                onPress: () => {
+                  const result = save();
+                  if (!result) return;
+                  if (result.certificate) router.replace({ pathname: '/certificate/[stageId]', params: { stageId: result.certificate.stageId } });
+                  else router.replace({ pathname: '/lesson/[id]', params: { id: following.id } });
+                },
+              }
+            : undefined
+        }
+        assessment={
+          checkpoint
+            ? {
+                ...checkpoint,
+                passMark: PASS_MARK,
+                rows: Object.entries(checkpoint.byModule).map(([m, [right, asked]]) => ({ label: getLesson(m)?.title ?? m, right, asked })),
+                revise: checkpoint.weak.map((m) => ({ id: m, title: getLesson(m)?.title ?? m })),
+                onRevise: (m) => {
+                  if (!save()) return;
+                  router.replace({ pathname: '/lesson/[id]', params: { id: m } });
+                },
+              }
+            : undefined
+        }
         onReplay={onReplay}
       />
     );

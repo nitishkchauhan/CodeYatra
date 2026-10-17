@@ -1,14 +1,22 @@
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/ui/Icon';
 import { Bar, Ring } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
-import { findPath, PATHS, pathSummary, type CareerPath } from '@/content/paths';
+import { findPath, findPaths, PATHS, pathSummary, type CareerPath, type PathFilter } from '@/content/paths';
 import { useProgress } from '@/state/progress';
-import { card, colors } from '@/theme';
+import { card, colors, fonts } from '@/theme';
+
+const FILTERS: { value: PathFilter; text: string }[] = [
+  { value: 'all', text: 'All' },
+  { value: 'Beginner', text: 'Beginner' },
+  { value: 'Intermediate', text: 'Intermediate' },
+  { value: 'started', text: 'Started' },
+];
 
 const open = (id: string) => router.push({ pathname: '/path/[id]', params: { id } });
 
@@ -16,6 +24,9 @@ export default function PathsScreen() {
   const { state } = useProgress();
   const mine = findPath(state.pathId);
   const mySummary = mine ? pathSummary(mine, state.completed, state.pathMarks) : null;
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState<PathFilter>('all');
+  const shown = findPaths(PATHS, query, filter, state.completed, state.pathMarks);
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.bg }}>
@@ -66,10 +77,46 @@ export default function PathsScreen() {
           </Animated.View>
         )}
 
+        <View style={styles.search}>
+          <Icon name="search" size={18} color={colors.ink3} />
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            placeholder="Search paths or skills, e.g. sql"
+            placeholderTextColor={colors.ink3}
+            accessibilityLabel="Search career paths"
+            style={styles.searchInput}
+          />
+          {query ? (
+            <Pressable accessibilityRole="button" accessibilityLabel="Clear search" hitSlop={8} onPress={() => setQuery('')}>
+              <Icon name="close" size={18} color={colors.ink3} />
+            </Pressable>
+          ) : null}
+        </View>
+        <View style={styles.filters} accessibilityRole="radiogroup">
+          {FILTERS.map((f) => (
+            <Pressable
+              key={f.value}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: filter === f.value }}
+              onPress={() => setFilter(f.value)}
+              style={[styles.filter, filter === f.value && { backgroundColor: colors.primary, borderColor: colors.primary }]}>
+              <T variant="labelSm" color={filter === f.value ? '#FFFFFF' : colors.ink2}>
+                {f.text}
+              </T>
+            </Pressable>
+          ))}
+        </View>
+
         <T variant="kicker" color={colors.ink3} style={{ marginTop: 4 }}>
-          ALL PATHS · {PATHS.length}
+          {query || filter !== 'all' ? `MATCHING · ${shown.length}` : `ALL PATHS · ${PATHS.length}`}
         </T>
-        {PATHS.map((p, i) => (
+        {!shown.length ? (
+          <T variant="bodySm" color={colors.ink2}>
+            No paths match. Try another word, or pick All.
+          </T>
+        ) : null}
+        {shown.map((p, i) => (
           <Animated.View key={p.id} entering={FadeInDown.delay(80 + i * 40).duration(320)}>
             <PathCard path={p} following={p.id === state.pathId} pct={pathSummary(p, state.completed, state.pathMarks).pct} />
           </Animated.View>
@@ -100,11 +147,13 @@ function PathCard({ path, following, pct }: { path: CareerPath; following: boole
         <Icon name="chevronRight" size={18} color={colors.ink3} />
       </View>
       <View style={styles.meta}>
-        <Chip text={path.months} />
+        <Chip text={path.level} tint={colors.primary} />
+        <Chip text={`~${path.months}`} />
         <Chip text={`${stops} stops`} />
         <Chip text={`${inAppPct}% in app`} tint={path.ink} />
         {following ? <Chip text="Your path" tint={colors.success} /> : null}
       </View>
+      <T variant="caption">Before you start: {path.before}</T>
       {pct > 0 ? (
         <View style={{ gap: 4 }}>
           <Bar value={pct / 100} color={path.color} />
@@ -134,5 +183,9 @@ const styles = StyleSheet.create({
   top: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   badge: { width: 48, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
   meta: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  search: { flexDirection: 'row', alignItems: 'center', gap: 8, minHeight: 48, paddingHorizontal: 14, borderRadius: 24, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface },
+  searchInput: { flex: 1, minHeight: 46, fontFamily: fonts.body, fontSize: 15, color: colors.ink },
+  filters: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  filter: { minHeight: 40, paddingHorizontal: 14, borderRadius: 20, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, justifyContent: 'center' },
   chip: { minHeight: 26, paddingHorizontal: 9, borderRadius: 13, borderWidth: 1, borderColor: colors.line, justifyContent: 'center' },
 });

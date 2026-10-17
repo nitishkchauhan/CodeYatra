@@ -40,7 +40,8 @@ export type ConceptStep = {
   kicker: string;
   title: string;
   body: string;
-  visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps';
+  /** An interactive diagram shown with the card. The Python ones step through code. */
+  visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps' | 'variables' | 'listIndex' | 'callFlow';
   code?: CodeSample[];
   /** "Watch it run": highlights a line once per round and shows the loop variable. */
   demo?: {

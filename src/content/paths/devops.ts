@@ -11,6 +11,9 @@ export const DEVOPS: CareerPath = {
   color: '#0369A1',
   ink: '#075985',
   soft: '#E0F2FE',
+  level: 'Intermediate',
+  before: 'Linux basics and one language',
+  keywords: 'docker cloud ci cd kubernetes',
   sections: [
     {
       title: 'Foundations',

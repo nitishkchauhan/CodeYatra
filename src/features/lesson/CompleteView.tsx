@@ -33,6 +33,8 @@ export function CompleteView({
   streakNote,
   onContinue,
   onReplay,
+  assessment,
+  next,
 }: {
   title: string;
   subtitle: string;
@@ -49,6 +51,10 @@ export function CompleteView({
   streakNote: string;
   onContinue: () => void;
   onReplay: () => void;
+  /** A scored checkpoint: the score, how each module went, and what to revise. */
+  assessment?: { score: number; total: number; pass: boolean; passMark: number; rows: { label: string; right: number; asked: number }[]; revise: { id: string; title: string }[]; onRevise: (id: string) => void };
+  /** The next lesson on the track, opened straight from here. */
+  next?: { title: string; onPress: () => void };
 }) {
   const t = useT();
   const insets = useSafeAreaInsets();
@@ -116,6 +122,50 @@ export function CompleteView({
           </T>
         ) : null}
 
+        {assessment ? (
+          <Animated.View entering={FadeInDown.delay(300)} style={[styles.learned, { borderColor: assessment.pass ? '#BFE8CC' : '#FFD9A3', backgroundColor: assessment.pass ? '#F1FAF4' : colors.warnSoft }]}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <T variant="label" style={{ fontSize: 13 }}>
+                {assessment.pass ? 'Passed · section mastered' : `Not yet · ${Math.round(assessment.passMark * 100)}% passes`}
+              </T>
+              <T variant="heading" color={assessment.pass ? colors.successInk : colors.saffronInk} style={{ fontSize: 18 }}>
+                {assessment.score} / {assessment.total}
+              </T>
+            </View>
+            <T variant="caption" color={colors.ink2}>
+              Only answers right the first time count.
+            </T>
+            {assessment.rows.map((r) => (
+              <View key={r.label} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }} accessible accessibilityLabel={`${r.label}: ${r.right} of ${r.asked} right`}>
+                <Icon name={r.right === r.asked ? 'check' : 'cross'} size={16} color={r.right === r.asked ? colors.success : colors.danger} strokeWidth={2.6} />
+                <T variant="bodySm" color={colors.inkBody} style={{ flex: 1, fontSize: 13 }} numberOfLines={1}>
+                  {r.label}
+                </T>
+                <T variant="labelSm" color={colors.ink2}>
+                  {r.right}/{r.asked}
+                </T>
+              </View>
+            ))}
+            {assessment.revise.length ? (
+              <View style={{ gap: 6, marginTop: 4 }}>
+                <T variant="labelSm" color={colors.ink2}>
+                  REVISE THESE
+                </T>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+                  {assessment.revise.map((m) => (
+                    <Pressable key={m.id} accessibilityRole="button" accessibilityLabel={`Revise ${m.title}`} onPress={() => assessment.onRevise(m.id)} style={styles.revise}>
+                      <T variant="labelSm" color={colors.primary}>
+                        {m.title}
+                      </T>
+                      <Icon name="chevronRight" size={14} color={colors.primary} />
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+            ) : null}
+          </Animated.View>
+        ) : null}
+
         <Animated.View entering={FadeInDown.delay(350)} style={styles.learned}>
           <T variant="label" style={{ fontSize: 13 }}>
             What you learned
@@ -145,8 +195,15 @@ export function CompleteView({
         </Animated.View>
       </ScrollView>
       <View style={{ paddingHorizontal: 16, paddingBottom: 12 + insets.bottom, gap: 6 }}>
-        <Button label={t('continue')} onPress={onContinue} />
-        <Button variant="ghost" label="Replay this lesson" height={46} onPress={onReplay} />
+        {next ? (
+          <>
+            <Button label={`Next: ${next.title}`} icon={(c) => <Glyph name="play" size={18} color={c} />} onPress={next.onPress} />
+            <Button variant="outline" label={t('continue')} height={46} onPress={onContinue} />
+          </>
+        ) : (
+          <Button label={t('continue')} onPress={onContinue} />
+        )}
+        <Button variant="ghost" label={assessment ? 'Retake the checkpoint' : 'Replay this lesson'} height={46} onPress={onReplay} />
         {feedbackAbout ? (
           <Pressable
             accessibilityRole="button"
@@ -171,5 +228,6 @@ const styles = StyleSheet.create({
   halo: { position: 'absolute', width: 170, height: 170, borderRadius: 85, backgroundColor: '#F1EFFE' },
   stat: { flex: 1, borderRadius: 16, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 4, alignItems: 'center', gap: 2 },
   learned: { borderRadius: 18, borderWidth: 1, borderColor: colors.line, padding: 14, gap: 9 },
+  revise: { minHeight: 36, flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 12, borderRadius: 18, backgroundColor: colors.primarySoft },
   streak: { borderRadius: 18, backgroundColor: colors.ink, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 12 },
 });

@@ -55,9 +55,8 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
     read({
       kicker: LEARN(2),
       title: 'Variables are labelled boxes',
-      body: 'A variable stores a value under a name so you can use it later. price = 12 means “put 12 in a box called price”. Here = means store, not equals. After that, writing price anywhere gives you 12.',
-      lang: 'python',
-      code: ['price = 12', 'cups = 40', 'print(price * cups)   # 480'],
+      body: 'A variable stores a value under a name so you can use it later. price = 12 means “put 12 in a box called price”. Here = means store, not equals. Run the program below line by line and watch the boxes.',
+      visual: 'variables',
     }),
     read({
       kicker: LEARN(3),
@@ -520,9 +519,8 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
     read({
       kicker: LEARN(1),
       title: 'Many values, in order',
-      body: 'A list holds many values in order, inside square brackets. Each item has a position called an index, and counting starts at 0. runs[0] is the first item and runs[-1] is the last.',
-      lang: 'python',
-      code: ['runs = [4, 1, 0, 6, 2, 1]', 'print(runs[0])     # 4', 'print(runs[-1])    # 1', 'print(len(runs))   # 6'],
+      body: 'A list holds many values in order, inside square brackets. Each item has a position called an index, and counting starts at 0. runs[0] is the first item and runs[-1] is the last. Tap the boxes to try it.',
+      visual: 'listIndex',
     }),
     read({
       kicker: LEARN(2),
@@ -684,9 +682,8 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
     read({
       kicker: LEARN(3),
       title: 'return sends an answer back',
-      body: 'print only shows a value. return hands it back to the code that called the function, so you can store it, add it or pass it on. A function stops as soon as it reaches return.',
-      lang: 'python',
-      code: ['def square(n):', '    return n * n', '', 'area = square(5) + square(2)', 'print(area)   # 29'],
+      body: 'print only shows a value. return hands it back to the code that called the function, so you can store it, add it or pass it on. A function stops as soon as it reaches return. Step through a call below.',
+      visual: 'callFlow',
       tip: 'A function with no return gives back None.',
     }),
     tryIt({

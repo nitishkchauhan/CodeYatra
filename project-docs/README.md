@@ -14,7 +14,7 @@ Start here, then open whichever file you need.
 | **Latest store build** | Build 10 (v1.3.0, versionCode 10), built 17 Oct 2026 on this PC: `C:\Users\Lenovo\Desktop\CodeY\builds\CodeYatra-1.3.0.aab`. Upload it to the closed test. Testers have build 5 (v1.2.0). |
 | **Branch** | `paths-feature` merged into `main` on 15 Oct 2026 (career paths, onboarding v2, new logo, Light Glass design, learning plan, Yatri in lessons). |
 | **Backend** | Supabase schema v1.5 (`supabase/schema.sql`). |
-| **Tests** | 822 automated tests, all passing. |
+| **Tests** | 927 automated tests, all passing (branch `content-v2`). |
 
 ## Read in this order
 
@@ -35,7 +35,7 @@ Start here, then open whichever file you need.
    | 10 | [Community](modules/10-community.md) | Invites, classes, sharing |
    | 11 | [Ask Yatri](modules/11-ask-yatri.md) | AI hints (built, not switched on) |
    | 12 | [Privacy, feedback and telemetry](modules/12-privacy-feedback-telemetry.md) | Data collected, feedback links, Play declarations |
-   | 13 | [Brand and logo](modules/13-brand-and-logo.md) | The `< Y >` logo, animated Yatri, icons and how to regenerate them |
+   | 13 | [Brand and logo](modules/13-brand-and-logo.md) | The cy logo, animated Yatri, icons and how to regenerate them |
    | 14 | [Light Glass design](modules/14-glass-design.md) | The one light glass design used on every screen, and its rules |
 
 3. **[ARCHITECTURE.md](ARCHITECTURE.md)**: how the code is organised, the tech stack, the database and how builds are made.

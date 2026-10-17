@@ -21,6 +21,8 @@ export type PathStop = {
   project?: boolean;
   /** Nice to have: doesn't count toward job-ready %. */
   optional?: boolean;
+  /** Stop ids this one builds on. Leave out to build on the required stops of the section before. */
+  needs?: string[];
   /** Stops that share a label are alternatives: finishing any one of them is enough, e.g. "Framework". */
   choice?: string;
 };
@@ -42,6 +44,12 @@ export type CareerPath = {
   /** Darker shade of color for small text (4.5:1 on white and on soft). */
   ink: string;
   soft: string;
+  /** Where the path starts from, for the Paths list filters. */
+  level: 'Beginner' | 'Intermediate';
+  /** What to know before starting, in a few words ("Nothing" for a first path). */
+  before: string;
+  /** Search words beyond the title, e.g. "pandas excel". */
+  keywords?: string;
   sections: PathSection[];
 };
 

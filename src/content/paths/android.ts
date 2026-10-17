@@ -11,6 +11,9 @@ export const ANDROID: CareerPath = {
   color: '#078A4A',
   ink: '#05703B',
   soft: '#E2F5EA',
+  level: 'Beginner',
+  before: 'Nothing',
+  keywords: 'mobile app kotlin',
   sections: [
     {
       title: 'Programming',

@@ -5,7 +5,7 @@
 ## What it does
 Answers “What do I learn to become X?” with a roadmap for each job, connected to CodeYatra lessons.
 
-## The 13 paths
+## The paths (6 shown, 7 paused on 17 Oct 2026; see CONTENT-PLAN.md)
 | Path | Stops | Taught in CodeYatra |
 |---|---|---|
 | Software Engineer (Placements) | 17 | 76% |
@@ -23,6 +23,15 @@ Answers “What do I learn to become X?” with a roadmap for each job, connecte
 | CBSE Computer Science (11–12) | 14 | 86% |
 
 Stops not taught in the app link to **free** outside material (official docs, freeCodeCamp, Kaggle Learn, Google courses, Hindi YouTube channels). 90 links in total.
+
+## The roadmap as a graph (17 Oct 2026, branch `content-v2`)
+- **Prerequisites:** a stop builds on the required stops of the section before it (a "pick one" counts once), or on the stops in its own `needs` list. Python Foundations is one chain, module to module.
+- **Node states:** done, in progress, ready to learn, later (what it builds on isn't done yet: still openable, never hidden), and **needs revision** when there is evidence (a saved wrong answer in its lessons or practice, or a failed checkpoint).
+- **Search** highlights matching stops and lists them as chips; **My stop** scrolls to the next stop; **saved stops** (bookmark in the stop sheet) show under the search box and on the Revise screen.
+- **What to do next:** up to three suggestions from fixed rules, each with its reason: revise weak stops, finish a started stop, take a section checkpoint, start the first ready stop. No AI involved.
+- **Checkpoints:** each section whose lessons have practice sets ends with a scored checkpoint (`src/content/checkpoints.ts`). Passing (70% right first time) marks the section mastered with a star. Completion (lessons done) and mastery (checkpoint passed) are shown separately.
+- Pan and zoom are not used: the map is a vertical scroll, which works one-handed on 360 dp phones; search and My stop do the navigating.
+- Logic and tests: `src/content/paths/graph.ts`, `src/content/__tests__/graph.test.ts`.
 
 ## How it works for the learner
 1. **Paths tab:** all paths with duration, stops and “% in app”. The path they follow is shown at the top.
@@ -47,7 +56,9 @@ Stops not taught in the app link to **free** outside material (official docs, fr
 | Roadmap map | `src/components/RoadmapMap.tsx` |
 | Stop card | `src/components/PathStopSheet.tsx` |
 | Home card | `src/components/MyPathCard.tsx` |
-| Saved state | `pathId`, `pathMarks` in `src/state/model.ts`; `setPath`, `togglePathMark` in `src/state/progress.tsx` |
+| Graph logic (prerequisites, states, search, suggestions) | `src/content/paths/graph.ts` |
+| Checkpoints | `src/content/checkpoints.ts` (opened as lessons with id `check-<path>-<section>`) |
+| Saved state | `pathId`, `pathMarks`, `bookmarks`, `checkpoints` in `src/state/model.ts`; `setPath`, `togglePathMark`, `toggleBookmark`, `recordCheckpoint` in `src/state/progress.tsx` |
 
 ## How to add or change a path
 1. Edit or add a file in `src/content/paths/`, then add it to `PATHS` in `index.ts`.

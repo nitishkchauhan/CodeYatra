@@ -53,6 +53,8 @@ const sample: CareerPath = {
   color: '#000000',
   ink: '#000000',
   soft: '#FFFFFF',
+  level: 'Beginner',
+  before: 'Nothing',
   sections: [
     {
       title: 'One',

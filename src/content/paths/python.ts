@@ -14,33 +14,36 @@ export const PYTHON_FOUNDATIONS_PATH: CareerPath = {
   color: '#3776AB',
   ink: '#2B5E89',
   soft: '#E6F0F8',
+  level: 'Beginner',
+  before: 'Nothing',
+  keywords: 'programming basics first language start',
   sections: [
     {
       title: 'The basics',
       stops: [
         logicStop,
-        { id: 'first', title: 'Your first program', why: 'print() and variables: store a value, use it, change it.', modules: [VAR] },
-        { id: 'numbers', title: 'Numbers and maths', why: 'Do sums, split things into groups and leftovers, and turn text into numbers.', modules: [NUM] },
-        { id: 'text', title: 'Text and f-strings', why: 'Build messages with values inside and tidy up text people type.', modules: [STR] },
-        { id: 'decisions', title: 'Making decisions', why: 'Compare values and choose what happens next with if, elif and else.', modules: [IF] },
+        { id: 'first', needs: [], title: 'Your first program', why: 'print() and variables: store a value, use it, change it.', modules: [VAR] },
+        { id: 'numbers', needs: ['first'], title: 'Numbers and maths', why: 'Do sums, split things into groups and leftovers, and turn text into numbers.', modules: [NUM] },
+        { id: 'text', needs: ['numbers'], title: 'Text and f-strings', why: 'Build messages with values inside and tidy up text people type.', modules: [STR] },
+        { id: 'decisions', needs: ['text'], title: 'Making decisions', why: 'Compare values and choose what happens next with if, elif and else.', modules: [IF] },
       ],
     },
     {
       title: 'Repeat and collect',
       stops: [
-        { id: 'for', title: 'for loops and range()', why: 'Repeat work a set number of times, and keep running totals.', modules: [FOR] },
-        { id: 'while', title: 'while loops', why: 'Keep going until something is true, and stop early with break.', modules: [WHILE] },
-        { id: 'lists', title: 'Lists', why: 'Keep many values in order, change them and loop over them.', modules: [LIST] },
-        { id: 'dicts', title: 'Dictionaries', why: 'Look values up by name, like prices on a menu, and count things.', modules: [DICT] },
+        { id: 'for', needs: ['decisions'], title: 'for loops and range()', why: 'Repeat work a set number of times, and keep running totals.', modules: [FOR] },
+        { id: 'while', needs: ['for'], title: 'while loops', why: 'Keep going until something is true, and stop early with break.', modules: [WHILE] },
+        { id: 'lists', needs: ['while'], title: 'Lists', why: 'Keep many values in order, change them and loop over them.', modules: [LIST] },
+        { id: 'dicts', needs: ['lists'], title: 'Dictionaries', why: 'Look values up by name, like prices on a menu, and count things.', modules: [DICT] },
       ],
     },
     {
       title: 'Organise your code',
       stops: [
-        { id: 'functions', title: 'Functions', why: 'Write code once and reuse it with different inputs.', modules: [FN] },
-        { id: 'errors', title: 'Handling errors', why: 'Read error messages and keep programs running when input is bad.', modules: [ERR] },
-        { id: 'files', title: 'Files', why: 'Save data so it is still there the next time your program runs.', modules: [FILE] },
-        { id: 'classes', title: 'Classes and objects', why: 'Make your own types, like a Train or a Wallet, with their own data and actions.', modules: [CLASS] },
+        { id: 'functions', needs: ['dicts'], title: 'Functions', why: 'Write code once and reuse it with different inputs.', modules: [FN] },
+        { id: 'errors', needs: ['functions'], title: 'Handling errors', why: 'Read error messages and keep programs running when input is bad.', modules: [ERR] },
+        { id: 'files', needs: ['errors'], title: 'Files', why: 'Save data so it is still there the next time your program runs.', modules: [FILE] },
+        { id: 'classes', needs: ['files'], title: 'Classes and objects', why: 'Make your own types, like a Train or a Wallet, with their own data and actions.', modules: [CLASS] },
       ],
     },
     {
@@ -48,6 +51,7 @@ export const PYTHON_FOUNDATIONS_PATH: CareerPath = {
       stops: [
         {
           id: 'project',
+          needs: ['classes'],
           title: 'Project: canteen billing app',
           why: 'A menu, an order, a discount, GST and a receipt, built in four tested steps. Finish it to earn your certificate.',
           modules: [PROJECT],

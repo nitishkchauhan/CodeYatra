@@ -17,6 +17,8 @@ import { expressRoute, NODE_LESSONS } from './node';
 import { canteenBill } from './python3';
 import { REACT_LESSONS, trainList } from './react';
 import { PROJECTS } from './projects';
+import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
+import { findPath } from './paths';
 import { C_LESSONS } from './tracks/c';
 import { CBSE_LESSONS } from './tracks/cbse';
 import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
@@ -264,6 +266,11 @@ export function getLesson(id: string): Lesson | undefined {
   if (daily) {
     const stage = STAGES.find((s) => s.id === daily[2]);
     return stage ? dailyLesson(daily[1], stage, findLesson) : undefined;
+  }
+  if (id.startsWith(CHECKPOINT_PREFIX)) {
+    const m = /^check-(.+)-(\d+)$/.exec(id);
+    const path = m ? findPath(m[1]) : undefined;
+    return path ? buildCheckpoint(path, Number(m![2])) : undefined;
   }
   if (id.startsWith(DRILL_PREFIX)) {
     const moduleId = id.slice(DRILL_PREFIX.length);
@@ -859,6 +866,14 @@ export function stageLessonStatuses(stage: Stage, completed: Record<string, unkn
     }
   }
   return statuses;
+}
+
+/** The module after this one on its track (skipping ones not written yet), or null at the end. */
+export function nextLessonAfter(lessonId: string): LessonRef | null {
+  const stage = STAGES.find((s) => s.units.some((u) => u.lessons.some((l) => l.id === lessonId)));
+  if (!stage) return null;
+  const refs = stage.units.flatMap((u) => u.lessons);
+  return refs.slice(refs.findIndex((r) => r.id === lessonId) + 1).find((r) => hasContent(r.id)) ?? null;
 }
 
 export function stageProgress(stage: Stage, completed: Record<string, unknown>) {

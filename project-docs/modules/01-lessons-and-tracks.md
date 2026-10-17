@@ -13,6 +13,11 @@ Teaches coding in short lessons. There are **16 tracks** of **10 modules** each 
 | CS core | DSA, DSA Advanced, SQL, Git |
 | Placement | Placement Prep |
 
+## Lesson v2 (Python Foundations, 17 Oct 2026, branch `content-v2`)
+Every Python Foundations module: **hook** (a real situation, the goal) → **3 short cards** (under 60 words each; some with an interactive visual) → **try it** (edit and run, nothing marked) → **common mistake** (wrong code, the real Python error, the fix) → **2 quick checks** → **coding exercise** with tests → finish screen with a **3-point recap** and a **Next lesson** button. Each module also has a **practice set**, and each roadmap section a **checkpoint**.
+Tests run every mistake's wrong code to confirm the error message is the one Python really gives, and every "try it" program to confirm it runs (`lessonV2.test.ts`).
+Step screens: `src/features/lesson/V2Steps.tsx`; visuals: `src/features/lesson/PyVisuals.tsx`.
+
 ## How a lesson works
 Every module follows **read → quick check → practice → complete**:
 1. A reading card explains one idea (sometimes with a “watch it run” demo).

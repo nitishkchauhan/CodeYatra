@@ -95,6 +95,8 @@ export default function RootLayout() {
                 <Stack.Screen name="classes" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
                 <Stack.Screen name="share-progress" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
                 <Stack.Screen name="mock/index" options={{ animation: 'slide_from_right' }} />
+                <Stack.Screen name="interview" options={{ animation: 'slide_from_right' }} />
+                <Stack.Screen name="revise" options={{ animation: 'slide_from_right' }} />
                 <Stack.Screen name="mock/[kind]" options={{ animation: 'slide_from_bottom', gestureEnabled: false }} />
               </Stack>
             </ToastProvider>

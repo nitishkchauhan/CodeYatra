@@ -1,5 +1,6 @@
 // The learner's saved state, and the pure rules that change it.
 import { addDays } from './streak';
+import type { CheckpointResult } from '@/content/checkpoints';
 import type { About } from '@/content/paths/recommend';
 
 export type LearnerLevel = 'school' | 'college' | 'curious';
@@ -8,6 +9,11 @@ export type Completion = { xp: number; accuracy: number; at: string };
 /** verifyId is set once the certificate is registered online, so anyone can verify it. */
 /** One finished mock test. `topics` maps topic → [right, asked]. */
 export type MockResult = { kind: string; score: number; total: number; seconds: number; at: string; topics: Record<string, [number, number]> };
+
+/** A checkpoint's latest attempt, plus the best score so far. */
+export type CheckpointRecord = CheckpointResult & { best: number };
+/** How the learner rated their own answer to an interview question. */
+export type InterviewRating = 'knew' | 'partly' | 'missed';
 
 export type Certificate = { stageId: string; name: string; date: string; verifyId?: string };
 
@@ -53,6 +59,12 @@ export type Progress = {
   pathId: string | null;
   /** Path stops ticked by the learner ("pathId/stopId" → day), e.g. topics they already know. */
   pathMarks: Record<string, string>;
+  /** Saved roadmap stops ("pathId/stopId" → day). */
+  bookmarks: Record<string, string>;
+  /** Section checkpoints by id ("check-<path>-<section>"). Passing one is the evidence for "mastered". */
+  checkpoints: Record<string, CheckpointRecord>;
+  /** Interview questions the learner has answered, with their own rating. */
+  interview: Record<string, { rating: InterviewRating; at: string }>;
   /** Milliseconds; the newer side wins settings when merging phone and cloud copies. */
   updatedAt: number;
 };
@@ -88,6 +100,9 @@ export const INITIAL: Progress = {
   about: null,
   pathId: null,
   pathMarks: {},
+  bookmarks: {},
+  checkpoints: {},
+  interview: {},
   updatedAt: 0,
 };
 
@@ -100,7 +115,7 @@ export function normalize(raw: Partial<Progress> | null | undefined): Progress {
 
 /** Lessons that count toward progress: daily challenges and reviews are extra practice. */
 /** Module lessons and projects; not daily challenges, mistake reviews or module practice. */
-export const countsAsLesson = (id: string) => !id.startsWith('daily-') && !id.startsWith('drill-') && id !== 'review';
+export const countsAsLesson = (id: string) => !id.startsWith('daily-') && !id.startsWith('drill-') && !id.startsWith('check-') && id !== 'review';
 
 export type LessonKind = 'lesson' | 'practice' | 'project';
 
@@ -112,7 +127,7 @@ export const accuracyFor = (mistakes: number) => Math.max(50, 100 - mistakes * 1
  * - First completion: lesson 25 XP / 10 coins, practice 15 / 5, project 60 / 30, plus 5 XP and 5 coins for no mistakes.
  * - Replaying something already finished: 5 XP and no coins, so rewards cannot be farmed.
  * - Daily challenges and mistake reviews are never replays: each one is a new set of exercises.
- * - Module practice pays once; doing the same practice set again is a replay.
+ * - Module practice and checkpoints pay once; doing the same set again is a replay.
  */
 export function lessonReward(kind: LessonKind, mistakes: number, alreadyDone: boolean): { xp: number; coins: number } {
   if (alreadyDone) return { xp: 5, coins: 0 };
@@ -124,7 +139,7 @@ export function lessonReward(kind: LessonKind, mistakes: number, alreadyDone: bo
 
 /** Whether finishing this lesson again counts as a replay. */
 export const isReplay = (p: Pick<Progress, 'completed'>, lessonId: string) =>
-  (countsAsLesson(lessonId) || lessonId.startsWith('drill-')) && !!p.completed[lessonId];
+  (countsAsLesson(lessonId) || lessonId.startsWith('drill-') || lessonId.startsWith('check-')) && !!p.completed[lessonId];
 
 const LEGACY_STAGES: Record<string, string> = { web: 'html', fullstack: 'react' };
 
@@ -175,6 +190,18 @@ export function mergeProgress(local: Progress, remote: Progress): Progress {
     mistakes: { ...remote.mistakes, ...local.mistakes },
     // Ticks from either phone are kept; un-ticking only applies on the phone where it happened.
     pathMarks: { ...remote.pathMarks, ...local.pathMarks },
+    bookmarks: { ...remote.bookmarks, ...local.bookmarks },
+    // The newer attempt wins, but the best score is kept from both phones.
+    checkpoints: Object.fromEntries(
+      [...new Set([...Object.keys(remote.checkpoints), ...Object.keys(local.checkpoints)])].map((k) => {
+        const l = local.checkpoints[k];
+        const r = remote.checkpoints[k];
+        if (!l || !r) return [k, l ?? r];
+        const latest = l.at >= r.at ? l : r;
+        return [k, { ...latest, best: Math.max(l.best, r.best) }];
+      }),
+    ),
+    interview: { ...remote.interview, ...local.interview },
     referralsCredited: Math.max(local.referralsCredited, remote.referralsCredited),
     referred: local.referred || remote.referred,
     mockResults: [...new Map([...remote.mockResults, ...local.mockResults].map((r) => [`${r.at}|${r.kind}|${r.score}|${r.seconds}`, r])).values()]

@@ -11,6 +11,9 @@ export const SECURITY: CareerPath = {
   color: '#B91C1C',
   ink: '#991B1B',
   soft: '#FDECEC',
+  level: 'Intermediate',
+  before: 'Networking and Linux basics',
+  keywords: 'cyber hacking ethical',
   sections: [
     {
       title: 'Foundations',

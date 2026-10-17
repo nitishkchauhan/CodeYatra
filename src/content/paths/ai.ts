@@ -11,6 +11,9 @@ export const AI_ENGINEER: CareerPath = {
   color: '#7C3AED',
   ink: '#6227C9',
   soft: '#F1EAFE',
+  level: 'Intermediate',
+  before: 'Python Foundations',
+  keywords: 'genai llm chatbot rag prompt machine learning',
   sections: [
     {
       title: 'Programming',

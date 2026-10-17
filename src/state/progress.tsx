@@ -5,7 +5,8 @@ import { getLesson, STAGES } from '@/content';
 import { STREAK_FREEZE, type OutfitId } from '@/content/shop';
 import { setHapticsEnabled } from '@/lib/haptics';
 import { setTelemetryEnabled } from '@/lib/telemetry';
-import { accuracyFor, applyStreakFreezes, INITIAL, isReplay, lessonReward, normalize, type Certificate, type LearnerLevel, type LessonKind, type MockResult, type Progress } from './model';
+import { accuracyFor, applyStreakFreezes, INITIAL, isReplay, lessonReward, normalize, type Certificate, type InterviewRating, type LearnerLevel, type LessonKind, type MockResult, type Progress } from './model';
+import type { CheckpointResult } from '@/content/checkpoints';
 import { dayKey, nextStreak, visibleStreak } from './streak';
 
 export type { LearnerLevel, Progress } from './model';
@@ -62,6 +63,12 @@ type ProgressApi = {
   setPath: (pathId: string | null) => void;
   /** Tick or un-tick a path stop the learner already knows. */
   togglePathMark: (pathId: string, stopId: string) => void;
+  /** Save or unsave a roadmap stop. */
+  toggleBookmark: (pathId: string, stopId: string) => void;
+  /** Store a checkpoint attempt (keeps the best score). */
+  recordCheckpoint: (id: string, result: CheckpointResult) => void;
+  /** Store the learner's own rating of an interview answer. */
+  rateInterview: (questionId: string, rating: InterviewRating) => void;
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -197,6 +204,15 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         const { [key]: had, ...rest } = s.pathMarks;
         return { ...s, pathMarks: had ? rest : { ...s.pathMarks, [key]: today } };
       }),
+    toggleBookmark: (pathId, stopId) =>
+      update((s) => {
+        const key = `${pathId}/${stopId}`;
+        const { [key]: had, ...rest } = s.bookmarks;
+        return { ...s, bookmarks: had ? rest : { ...s.bookmarks, [key]: today } };
+      }),
+    recordCheckpoint: (id, result) =>
+      update((s) => ({ ...s, checkpoints: { ...s.checkpoints, [id]: { ...result, best: Math.max(result.score, s.checkpoints[id]?.best ?? 0) } } })),
+    rateInterview: (questionId, rating) => update((s) => ({ ...s, interview: { ...s.interview, [questionId]: { rating, at: today } } })),
     recordMistake: (key) => update((s) => ({ ...s, mistakes: { ...s.mistakes, [key]: today } })),
     setLevel: (level) => update((s) => ({ ...s, level })),
     setHaptics: (on) => update((s) => ({ ...s, haptics: on })),

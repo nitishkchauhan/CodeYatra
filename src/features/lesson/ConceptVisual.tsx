@@ -6,6 +6,7 @@ import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
 import type { ConceptStep } from '@/content';
 import { colors, fonts } from '@/theme';
+import { CallFlow, ListIndex, VariableBoxes } from './PyVisuals';
 
 function Panel({ label, tint, labelColor, children, footer, footerColor }: {
   label: string;
@@ -31,6 +32,9 @@ function Panel({ label, tint, labelColor, children, footer, footerColor }: {
 }
 
 export function ConceptVisual({ kind }: { kind: NonNullable<ConceptStep['visual']> }) {
+  if (kind === 'variables') return <VariableBoxes />;
+  if (kind === 'listIndex') return <ListIndex />;
+  if (kind === 'callFlow') return <CallFlow />;
   if (kind === 'loopCompare') {
     return (
       <View style={styles.row}>

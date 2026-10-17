@@ -11,6 +11,9 @@ export const FULLSTACK: CareerPath = {
   color: '#7C3AED',
   ink: '#6227C9',
   soft: '#F1EAFE',
+  level: 'Intermediate',
+  before: 'HTML, CSS and JavaScript',
+  keywords: 'react node database web',
   sections: [
     { title: 'Before you start', stops: [webStop] },
     {

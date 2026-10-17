@@ -42,3 +42,38 @@ describe('CompleteView feedback link', () => {
     expect(screen.queryByText(/Something wrong/)).toBeNull();
   });
 });
+
+describe('CompleteView next step and checkpoint results', () => {
+  it('opens the next lesson from the finish screen', async () => {
+    const onPress = jest.fn();
+    await render(<CompleteView {...props} next={{ title: 'Numbers and maths', onPress }} />);
+    await fireEvent.press(screen.getByText('Next: Numbers and maths'));
+    expect(onPress).toHaveBeenCalled();
+  });
+
+  it('shows the score per module and links to what needs revision', async () => {
+    const onRevise = jest.fn();
+    await render(
+      <CompleteView
+        {...props}
+        assessment={{
+          score: 5,
+          total: 8,
+          pass: false,
+          passMark: 0.7,
+          rows: [
+            { label: 'Your first program', right: 2, asked: 2 },
+            { label: 'Numbers and maths', right: 0, asked: 2 },
+          ],
+          revise: [{ id: 'p-num-1', title: 'Numbers and maths' }],
+          onRevise,
+        }}
+      />,
+    );
+    expect(screen.getByText('5 / 8')).toBeTruthy();
+    expect(screen.getByText('Not yet · 70% passes')).toBeTruthy();
+    await fireEvent.press(screen.getByLabelText('Revise Numbers and maths'));
+    expect(onRevise).toHaveBeenCalledWith('p-num-1');
+    expect(screen.getByText('Retake the checkpoint')).toBeTruthy();
+  });
+});

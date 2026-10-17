@@ -11,6 +11,9 @@ export const SDE: CareerPath = {
   color: '#2563EB',
   ink: '#1D4FD8',
   soft: '#E8EFFD',
+  level: 'Intermediate',
+  before: 'Nothing: start with Python here',
+  keywords: 'placements dsa interview coding round campus job',
   sections: [
     {
       title: 'Pick one language',

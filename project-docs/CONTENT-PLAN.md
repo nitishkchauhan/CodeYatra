@@ -1,6 +1,6 @@
 # Content plan: fewer subjects, done properly
 
-**Status:** 📋 proposal, 15 Oct 2026. Waiting for the owner’s decisions (end of this page).
+**Status:** ✅ decisions 1–3 approved on 17 Oct 2026; phases A and B built on branch `content-v2` (not merged). Decision 4 (simulated AI replies) still open.
 
 ## 1. The problem (audit, 15 Oct 2026)
 | | Today |

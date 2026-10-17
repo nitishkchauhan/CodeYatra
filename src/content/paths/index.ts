@@ -83,6 +83,19 @@ export function pathSummary(path: CareerPath, completed: Done, marks: Done) {
   };
 }
 
+export type PathFilter = 'all' | 'Beginner' | 'Intermediate' | 'started';
+
+/** Paths matching a search (title, tagline, job, keywords, stop titles) and a filter. */
+export function findPaths(paths: CareerPath[], query: string, filter: PathFilter, completed: Done, marks: Done): CareerPath[] {
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+  return paths.filter((p) => {
+    if (filter === 'started' && pathSummary(p, completed, marks).done === 0) return false;
+    if ((filter === 'Beginner' || filter === 'Intermediate') && p.level !== filter) return false;
+    const text = [p.title, p.tagline, p.job, p.keywords ?? '', ...p.sections.flatMap((s) => s.stops.map((x) => x.title))].join(' ').toLowerCase();
+    return words.every((w) => text.includes(w));
+  });
+}
+
 /** The first lesson to open for a stop: the first unfinished module, else the first module. */
 export function nextModule(stop: PathStop, completed: Done): string | null {
   const mods = stop.modules ?? [];

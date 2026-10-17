@@ -15,7 +15,7 @@ const LABEL: Record<CodeLang, string> = {
 };
 
 /** A reading card. `code` is one sample in `lang`. */
-export function read(o: { kicker: string; title: string; body: string; lang?: CodeLang; code?: string[]; tip?: string }): ConceptStep {
+export function read(o: { kicker: string; title: string; body: string; lang?: CodeLang; code?: string[]; tip?: string; visual?: ConceptStep['visual'] }): ConceptStep {
   return {
     type: 'concept',
     kicker: o.kicker,
@@ -23,6 +23,7 @@ export function read(o: { kicker: string; title: string; body: string; lang?: Co
     body: o.body,
     code: o.code && o.lang ? [{ lang: o.lang, label: LABEL[o.lang], lines: o.code }] : undefined,
     tip: o.tip,
+    visual: o.visual,
   };
 }
 

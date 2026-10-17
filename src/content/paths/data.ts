@@ -13,6 +13,9 @@ export const DATA_ANALYST: CareerPath = {
   color: '#D97706',
   ink: '#975008',
   soft: '#FDF0DC',
+  level: 'Beginner',
+  before: 'Nothing (Excel helps)',
+  keywords: 'sql excel pandas charts dashboard analytics',
   sections: [
     {
       title: 'Foundations',
@@ -103,6 +106,9 @@ export const DATA_SCIENTIST: CareerPath = {
   color: '#DB2777',
   ink: '#B01C5F',
   soft: '#FCE7F3',
+  level: 'Intermediate',
+  before: 'Python and SQL',
+  keywords: 'machine learning statistics models',
   sections: [
     {
       title: 'Python',

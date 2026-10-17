@@ -11,6 +11,9 @@ export const CBSE_PATH: CareerPath = {
   color: '#0F766E',
   ink: '#0E6B63',
   soft: '#DDF5F2',
+  level: 'Beginner',
+  before: 'Nothing',
+  keywords: 'class 11 12 board exam school python sql',
   sections: [
     {
       title: 'Class 11',

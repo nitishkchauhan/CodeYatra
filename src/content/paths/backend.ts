@@ -11,6 +11,9 @@ export const BACKEND: CareerPath = {
   color: '#3C873A',
   ink: '#2D6A2C',
   soft: '#E8F4E7',
+  level: 'Intermediate',
+  before: 'One programming language',
+  keywords: 'server api node database',
   sections: [
     { title: 'Before you start', stops: [webStop, logicStop] },
     {

@@ -10,6 +10,9 @@ export const FRONTEND: CareerPath = {
   color: '#E34F26',
   ink: '#B03A16',
   soft: '#FDEDE7',
+  level: 'Beginner',
+  before: 'Nothing',
+  keywords: 'html css javascript react website web developer',
   sections: [
     {
       title: 'Before you start',

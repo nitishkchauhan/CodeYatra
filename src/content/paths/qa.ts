@@ -11,6 +11,9 @@ export const QA: CareerPath = {
   color: '#A16207',
   ink: '#854D0E',
   soft: '#FEF6D8',
+  level: 'Beginner',
+  before: 'Nothing',
+  keywords: 'testing automation selenium',
   sections: [
     {
       title: 'Programming',

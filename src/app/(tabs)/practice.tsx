@@ -11,9 +11,28 @@ import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
 import { findStage, hasContent } from '@/content';
+import { INTERVIEW } from '@/content/interview';
+import { quoteOfDay } from '@/content/quotes';
+import { revisionModules } from '@/content/revision';
 import { useT } from '@/i18n';
 import { useProgress } from '@/state/progress';
 import { card, colors } from '@/theme';
+
+function Tile({ icon, title, note, onPress }: { icon: 'reset' | 'brain'; title: string; note: string; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${title}: ${note}`}
+      onPress={onPress}
+      style={({ pressed }) => [card, styles.tile, { transform: [{ scale: pressed ? 0.98 : 1 }] }]}>
+      <Icon name={icon} size={24} color={colors.primary} />
+      <T variant="label">{title}</T>
+      <T variant="caption" numberOfLines={2}>
+        {note}
+      </T>
+    </Pressable>
+  );
+}
 
 const DIFFICULTY = {
   Easy: { bg: colors.successSoft, ink: '#166534' },
@@ -24,7 +43,7 @@ const DIFFICULTY = {
 export default function PracticeScreen() {
   const t = useT();
   const toast = useToast();
-  const { state } = useProgress();
+  const { state, today } = useProgress();
   const [stageId, setStageId] = useState(state.stageId);
   const stage = findStage(stageId);
 
@@ -79,6 +98,41 @@ export default function PracticeScreen() {
             <Icon name="chevronRight" size={20} color={colors.saffronInk} />
           </Pressable>
         </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(70).duration(320)} style={{ flexDirection: 'row', gap: 10 }}>
+          <Tile
+            icon="reset"
+            title="Revise"
+            note={(() => {
+              const n = revisionModules(state.mistakes, state.checkpoints).length;
+              return n ? `${n} ${n === 1 ? 'module needs' : 'modules need'} revision` : 'Recall and review';
+            })()}
+            onPress={() => router.push('/revise')}
+          />
+          <Tile icon="brain" title="Interview prep" note={`${INTERVIEW.length} questions with answers`} onPress={() => router.push('/interview')} />
+        </Animated.View>
+
+        {(() => {
+          const q = quoteOfDay(today);
+          return (
+            <View style={styles.quote} accessible accessibilityLabel={`${q.text} ${q.by}${q.source ? `, ${q.source}` : ''}`}>
+              <T variant="bodySm" color={colors.ink} style={{ fontStyle: 'italic' }}>
+                “{q.text}”
+              </T>
+              <T variant="caption">
+                {q.by}
+                {q.source ? ` · ${q.source}` : ''}
+              </T>
+              {q.action ? (
+                <Pressable accessibilityRole="button" onPress={() => router.push(q.action!.to)} hitSlop={6}>
+                  <T variant="labelSm" color={colors.primary}>
+                    {q.action.label} →
+                  </T>
+                </Pressable>
+              ) : null}
+            </View>
+          );
+        })()}
 
         <Animated.View entering={FadeInDown.delay(80).duration(320)}>
           <ProjectCards />
@@ -177,6 +231,8 @@ export default function PracticeScreen() {
 }
 
 const styles = StyleSheet.create({
+  tile: { flex: 1, padding: 14, gap: 6, borderRadius: 18, minHeight: 112 },
+  quote: { borderLeftWidth: 3, borderLeftColor: colors.saffron, paddingLeft: 12, paddingVertical: 4, gap: 4 },
   mock: { borderRadius: 20, backgroundColor: colors.saffronSoft, borderWidth: 1, borderColor: '#FFD9A3', padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   mockIcon: { width: 48, height: 48, borderRadius: 14, backgroundColor: colors.saffron, alignItems: 'center', justifyContent: 'center' },
   playground: {

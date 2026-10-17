@@ -2,6 +2,21 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 17 Oct 2026 (branch `content-v2`, not merged yet)
+- **Content plan phases A and B** (owner approved the 5 paths + CBSE, hiding the rest, and starting with A + B):
+  - **Lesson v2** format: a hook (a real situation and what you'll be able to do), three short cards, **try it** (edit and run code, nothing marked), **common mistake** (the wrong code, the real error, then the fix), two quick checks, a coding exercise, and a 3-point recap on the finish screen.
+  - **Python Foundations rewritten:** 12 modules (first program, numbers, text, decisions, for, while, lists, dictionaries, functions, errors, files, classes) plus a 4-step **canteen billing project**, each module with a 4–5 question practice set. Old "Comprehensions" and "Problem solving" lessons are now bonus practice. Finished modules stay finished.
+  - **Paused, not deleted:** C, Java, Node.js, Next.js, Git and DSA Advanced tracks, and 7 career paths (Backend, Full-Stack, Data Scientist, Android, DevOps, Security, QA). The Paths tab shows Python Foundations, Data Analyst, AI Engineer, Frontend, Placements and CBSE.
+- **Interactive roadmap:** stops know what they build on and what they open up; states done / in progress / ready / later / needs revision (from real wrong answers or a failed checkpoint); search that highlights stops; saved (bookmarked) stops; jump to my stop; "What to do next" with a plain reason for each suggestion. The stop sheet lists prerequisites, what it unlocks, each lesson (tap to open) and its practice set.
+- **Section checkpoints:** a scored test at the end of each roadmap section, built from the modules' practice questions. Only first-time answers count; 70% passes and marks the section **mastered** (separate from just finishing lessons). The result shows each module's score and links to the weak ones. Pays practice XP once.
+- **Next lesson** button on the finish screen.
+- **Interview practice** (`/interview`): 26 questions (Python, DSA, SQL, OOP, Web) with model answers, reasoning, checked code and follow-ups; reveal, then rate yourself; optional 2-minute thinking timer; weak topics and lessons to revise.
+- **Revise** (`/revise`): modules that need revision (with the reason), the mistakes review, saved stops, interview answers to revisit and quick-recall flip cards for finished modules.
+- **Python visuals:** step-through variable boxes, a tap-the-index list, and a function call you follow line by line.
+- **Paths tab:** search, Beginner / Intermediate / Started filters, level and "before you start" on every card.
+- Practice tab: Revise and Interview tiles and a daily line (sourced quotes or labelled CodeYatra tips only).
+- 927 tests, all passing. `supabase/track-lessons.sql` regenerated: run it in Supabase when this ships.
+
 ## 17 Oct 2026
 - **New Play Store screenshots** (8, 1080 × 1920) in the light cy design: Home, journey, roadmap, career paths, Yatri cheering, Python output quiz, learning plan, certificate. `scripts/frame-screenshots.py` now uses a light lavender background with navy and indigo Lexend headings.
 - Home header: the daily goal chip shows only the ring (numbers are in its tap message), so the learner's name fits on 360 px phones. Comes in the next build.
