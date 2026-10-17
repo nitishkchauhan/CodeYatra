@@ -1,0 +1,2 @@
+# Shell scripts run inside WSL Ubuntu, so they must keep Linux line endings.
+*.sh text eol=lf

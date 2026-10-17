@@ -2,6 +2,9 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 17 Oct 2026
+- EAS free Android builds used up for October; set up **local builds in WSL** (`scripts/wsl/`). Test APK v1.3.0 with the final logo and footprint UI built locally.
+
 ## 16 Oct 2026
 - **Footprints across the app:** the journey trail is saffron footprints (faint ahead); after a lesson, Yatri walks to the next module, leaving footprints one by one. Lesson progress at the top is footprints too.
 - **Tidier Home:** daily goal is a ring in the header; path, Made for you, daily challenge and review are one swipeable **Today** row; **Your journey** shows on the first screen.
