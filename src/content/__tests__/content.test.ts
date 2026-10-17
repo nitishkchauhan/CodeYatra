@@ -37,10 +37,10 @@ describe('lesson content', () => {
 });
 
 describe('stages', () => {
-  it('has a track per language, each with 10 playable modules', () => {
+  it('has a track per language, each with at least 10 playable modules', () => {
     expect(STAGES.map((s) => s.id)).toEqual(['foundations', 'cbse', 'html', 'css', 'js', 'python', 'c', 'java', 'react', 'node', 'next', 'dsa', 'dsa2', 'sql', 'git', 'placement']);
     for (const stage of STAGES) {
-      expect(stage.units.length).toBe(10);
+      expect(stage.units.length).toBeGreaterThanOrEqual(10);
       for (const u of stage.units) for (const l of u.lessons) expect(hasContent(l.id)).toBe(true);
       for (const p of stage.practice) expect(hasContent(p.id)).toBe(true);
     }
@@ -48,7 +48,8 @@ describe('stages', () => {
 
   it('teaches before it tests: every module opens with reading', () => {
     for (const stage of STAGES.slice(1)) {
-      for (const u of stage.units) expect(getLesson(u.lessons[0].id)?.steps[0].type).toBe('concept');
+      // Lesson v2 modules open with a hook (a real situation) instead of a reading card.
+      for (const u of stage.units) expect(['concept', 'hook']).toContain(getLesson(u.lessons[0].id)?.steps[0].type);
     }
   });
 

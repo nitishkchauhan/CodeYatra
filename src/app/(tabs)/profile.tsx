@@ -10,7 +10,7 @@ import { Glyph, Icon } from '@/components/ui/Icon';
 import { Bar } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { findStage, stageProgress, STAGES } from '@/content';
+import { findStage, isPaused, stageProgress, STAGES } from '@/content';
 import { findPath } from '@/content/paths';
 import { minutesForGoal } from '@/content/paths/recommend';
 import { INTEREST, WHY } from '@/content/plan';
@@ -46,6 +46,8 @@ const SHORTCUTS: { label: string; sub: string; href: Href; icon: string; tint: s
 export default function ProfileScreen() {
   const toast = useToast();
   const { state, streak, today, setHaptics, setTelemetry, setReminder, setStage, reset } = useProgress();
+  // Paused tracks only show if the learner has started them or earned their certificate.
+  const shown = STAGES.filter((s) => !isPaused(s.id) || state.certificates[s.id] || stageProgress(s, state.completed).done > 0);
   const account = useAccount();
   const stage = findStage(state.stageId);
   const lessonsDone = Object.keys(state.completed).filter(countsAsLesson).length;
@@ -218,7 +220,7 @@ export default function ProfileScreen() {
             Certificates
           </T>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -16 }} contentContainerStyle={{ paddingHorizontal: 16, gap: 10 }}>
-            {STAGES.map((s) => {
+            {shown.map((s) => {
               const earned = !!state.certificates[s.id];
               return (
                 <Pressable
@@ -242,7 +244,7 @@ export default function ProfileScreen() {
 
         <Animated.View entering={FadeInDown.delay(220).duration(320)} style={[card, { padding: 14, gap: 12 }]}>
           <T variant="label">Languages</T>
-          {STAGES.map((s) => {
+          {shown.map((s) => {
             const { pct, done, total } = stageProgress(s, state.completed);
             return (
               <Pressable

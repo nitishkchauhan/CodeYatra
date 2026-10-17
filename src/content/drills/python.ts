@@ -5,26 +5,8 @@ import type { Step } from '../types';
 const K = 'PRACTICE · PYTHON';
 
 export const PYTHON_DRILLS: Record<string, Step[]> = {
-  // Variables and f-strings
+  // 1 · Your first program
   'p-var-1': [
-    predict({
-      kicker: K,
-      title: 'What does this print?',
-      lang: 'python',
-      lines: ['seats = 72', 'booked = 65', 'print(f"{seats - booked} seats left")'],
-      answer: '7 seats left',
-      explain: 'Inside an f-string, the part in { } is worked out first: 72 - 65 is 7.',
-    }),
-    bug({
-      kicker: K,
-      title: 'Find the bug',
-      instructions: 'This should print "Ticket for Asha". Tap the line with the mistake.',
-      lang: 'python',
-      lines: ['name = "Asha"', 'print("Ticket for {name}")'],
-      bug: 1,
-      fix: 'print(f"Ticket for {name}")',
-      explain: 'Without the f before the quotes, Python prints {name} as plain text.',
-    }),
     predict({
       kicker: K,
       title: 'Values change',
@@ -32,6 +14,24 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
       lines: ['score = 10', 'score = score + 5', 'score = score * 2', 'print(score)'],
       answer: '30',
       explain: 'Each line uses the latest value: 10, then 15, then 30.',
+    }),
+    predict({
+      kicker: K,
+      title: 'Copy, then change',
+      lang: 'python',
+      lines: ['a = 5', 'b = a', 'a = 10', 'print(a, b)'],
+      answer: '10 5',
+      explain: 'b = a copies the value 5 into b. Changing a afterwards doesn’t change b.',
+    }),
+    bug({
+      kicker: K,
+      title: 'Find the bug',
+      instructions: 'This should print 480. Tap the line with the mistake.',
+      lang: 'python',
+      lines: ['price = 12', 'cups = 40', 'print(Price * cups)'],
+      bug: 2,
+      fix: 'print(price * cups)',
+      explain: 'Python names are case-sensitive: Price and price are two different names, and only price exists.',
     }),
     quiz({
       prompt: 'Which name is NOT allowed for a Python variable?',
@@ -42,8 +42,61 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
   ],
 
-  // String methods
+  // 2 · Numbers and maths
+  'p-num-1': [
+    predict({
+      kicker: K,
+      title: 'Order of operations',
+      lang: 'python',
+      lines: ['print(20 - 4 * 3)'],
+      answer: '8',
+      explain: 'Multiply first: 4 * 3 is 12, then 20 - 12 is 8.',
+    }),
+    predict({
+      kicker: K,
+      title: 'Two kinds of division',
+      lang: 'python',
+      lines: ['print(7 / 2, 7 // 2)'],
+      answer: '3.5 3',
+      explain: '/ gives the exact answer as a float. // drops everything after the decimal point.',
+    }),
+    quiz({
+      prompt: 'Which condition is True only when n is even?',
+      options: ['n % 2 == 0', 'n / 2 == 0', 'n // 2 == 1', 'n % 2 == 1'],
+      right: 'Right. Even numbers leave no remainder when divided by 2.',
+      wrong: '% gives the remainder. Even numbers have remainder 0 when divided by 2.',
+      mono: true,
+    }),
+    bug({
+      kicker: K,
+      title: 'Find the bug',
+      instructions: 'This should print 300. Tap the line with the mistake.',
+      lang: 'python',
+      lines: ['total = "250"', 'tip = 50', 'print(total + tip)'],
+      bug: 0,
+      fix: 'total = 250',
+      explain: '"250" in quotes is text, and text can’t be added to a number. Remove the quotes to make it a number.',
+    }),
+    predict({
+      kicker: K,
+      title: 'Powers',
+      lang: 'python',
+      lines: ['print(2 ** 5)'],
+      answer: '32',
+      explain: '2 ** 5 means 2 × 2 × 2 × 2 × 2, which is 32.',
+    }),
+  ],
+
+  // 3 · Text and f-strings
   'p-str-1': [
+    predict({
+      kicker: K,
+      title: 'Maths inside an f-string',
+      lang: 'python',
+      lines: ['seats = 72', 'booked = 65', 'print(f"{seats - booked} seats left")'],
+      answer: '7 seats left',
+      explain: 'Inside an f-string, the part in { } is worked out first: 72 - 65 is 7.',
+    }),
     predict({
       kicker: K,
       title: 'Upper and lower',
@@ -54,21 +107,11 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
     predict({
       kicker: K,
-      title: 'Slicing',
+      title: 'The first three',
       lang: 'python',
       lines: ['code = "CHENNAI"', 'print(code[:3])'],
       answer: 'CHE',
       explain: '[:3] takes characters 0, 1 and 2, stopping before index 3.',
-    }),
-    bug({
-      kicker: K,
-      title: 'Find the bug',
-      instructions: 'This should print "MUMBAI". Tap the buggy line.',
-      lang: 'python',
-      lines: ['city = "mumbai"', 'city.upper()', 'print(city)'],
-      bug: 1,
-      fix: 'city = city.upper()',
-      explain: 'Strings never change in place. upper() returns a new string, so store it back in city.',
     }),
     predict({
       kicker: K,
@@ -78,9 +121,56 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
       answer: '3 bonono',
       explain: 'count finds 3 a’s; replace swaps every "a" for "o".',
     }),
+    bug({
+      kicker: K,
+      title: 'Find the bug',
+      instructions: 'This should print "ASHA". Tap the line with the mistake.',
+      lang: 'python',
+      lines: ['name = "asha"', 'print(name.Upper())'],
+      bug: 1,
+      fix: 'print(name.upper())',
+      explain: 'Method names are case-sensitive too. The method is upper(), all lowercase.',
+    }),
   ],
 
-  // Counting with range()
+  // 4 · Making decisions
+  'p-if-1': [
+    predict({
+      kicker: K,
+      title: 'Odd or even?',
+      lang: 'python',
+      lines: ['x = 7', 'if x % 2 == 0:', '    print("even")', 'else:', '    print("odd")'],
+      answer: 'odd',
+      explain: '7 % 2 is 1, not 0, so the condition is False and else runs.',
+    }),
+    predict({
+      kicker: K,
+      title: 'Two separate ifs',
+      lang: 'python',
+      lines: ['marks = 85', 'if marks >= 40:', '    print("Pass")', 'if marks >= 75:', '    print("Distinction")'],
+      answer: 'Pass\nDistinction',
+      accept: ['Pass Distinction'],
+      explain: 'These are two separate ifs, not if and elif, so Python checks both and both are True.',
+    }),
+    order({
+      kicker: K,
+      title: 'Senior ticket',
+      instructions: 'Arrange the lines so the program prints "Senior".',
+      lang: 'python',
+      lines: ['age = 70', 'if age < 18:', '    print("Child")', 'elif age >= 60:', '    print("Senior")', 'else:', '    print("Adult")'],
+      output: ['Senior'],
+      explain: 'if comes first, then elif, then else. 70 is not under 18, but it is 60 or more.',
+    }),
+    quiz({
+      prompt: 'What is 5 > 3 and 2 > 4?',
+      options: ['False', 'True', '5', 'An error'],
+      right: 'Right. and needs both sides True, and 2 > 4 is False.',
+      wrong: '5 > 3 is True but 2 > 4 is False. With and, one False makes the whole thing False.',
+      mono: true,
+    }),
+  ],
+
+  // 5 · for and range()
   'p-loop-1': [
     predict({
       kicker: K,
@@ -120,7 +210,52 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
   ],
 
-  // Loops with lists
+  // 6 · while loops
+  'p-while-1': [
+    predict({
+      kicker: K,
+      title: 'Count down by 3',
+      lang: 'python',
+      lines: ['n = 10', 'while n > 0:', '    n -= 3', 'print(n)'],
+      answer: '-2',
+      explain: 'n goes 10, 7, 4, 1, -2. Only at -2 is n > 0 False, so the loop stops there.',
+    }),
+    predict({
+      kicker: K,
+      title: 'while True with break',
+      lang: 'python',
+      lines: ['count = 0', 'while True:', '    count += 1', '    if count == 4:', '        break', 'print(count)'],
+      answer: '4',
+      explain: 'while True would run forever, but break leaves the loop as soon as count reaches 4.',
+    }),
+    order({
+      kicker: K,
+      title: 'Countdown',
+      instructions: 'Arrange the lines to count down from 3, then print "Lift off!".',
+      lang: 'python',
+      lines: ['n = 3', 'while n > 0:', '    print(n)', '    n -= 1', 'print("Lift off!")'],
+      output: ['3', '2', '1', 'Lift off!'],
+      explain: 'Print n, then make it smaller, inside the loop. Lift off comes after the loop, not indented.',
+    }),
+    bug({
+      kicker: K,
+      title: 'Find the bug',
+      instructions: 'This should stop once saved reaches 100, but it never ends. Tap the buggy line.',
+      lang: 'python',
+      lines: ['saved = 0', 'while saved < 100:', '    saved + 25', 'print(saved)'],
+      bug: 2,
+      fix: '    saved += 25',
+      explain: 'saved + 25 works out a value but never stores it, so saved stays 0 and the loop never ends.',
+    }),
+    quiz({
+      prompt: 'When is a while loop a better fit than a for loop?',
+      options: ['When you don’t know how many rounds you need', 'When going through every item in a list', 'When counting from 1 to 10', 'Never: for can always be used'],
+      right: 'Right. while keeps going until a condition changes, however many rounds that takes.',
+      wrong: 'for is best when you know what to go through. while is for “keep going until …”.',
+    }),
+  ],
+
+  // 7 · Lists
   'p-loop-2': [
     predict({
       kicker: K,
@@ -158,7 +293,7 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
   ],
 
-  // List comprehensions
+  // Bonus lesson · List comprehensions
   'p-comp-1': [
     predict({
       kicker: K,
@@ -197,7 +332,7 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
   ],
 
-  // def and return
+  // 9 · Functions
   'p-fn-1': [
     predict({
       kicker: K,
@@ -237,7 +372,7 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
   ],
 
-  // Dictionaries
+  // 8 · Dictionaries
   'p-dict-1': [
     predict({
       kicker: K,
@@ -276,7 +411,44 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
   ],
 
-  // Classes and objects
+  // 11 · Files
+  'p-file-1': [
+    quiz({
+      prompt: 'What does mode "w" do to a file that already exists?',
+      options: ['Wipes it and starts empty', 'Adds to the end of it', 'Only reads it', 'Raises an error'],
+      right: 'Right. "w" always starts the file fresh. Use "a" to keep what is there.',
+      wrong: '"w" is write: it empties the file first. "a" adds to the end instead.',
+    }),
+    predict({
+      kicker: K,
+      title: 'Write, then add',
+      lang: 'python',
+      lines: ['with open("a.txt", "w") as f:', '    f.write("Hi")', 'with open("a.txt", "a") as f:', '    f.write(" there")', 'with open("a.txt") as f:', '    print(f.read())'],
+      answer: 'Hi there',
+      explain: '"w" writes Hi, then "a" adds " there" to the end, so the file holds Hi there.',
+    }),
+    order({
+      kicker: K,
+      title: 'Save a note',
+      instructions: 'Arrange the lines to save a note to a file and then print it.',
+      lang: 'python',
+      lines: ['with open("note.txt", "w") as f:', '    f.write("Exam on Monday")', 'with open("note.txt") as f:', '    print(f.read())'],
+      output: ['Exam on Monday'],
+      explain: 'Write the file first, then open it again to read. Each with block needs its own indented line.',
+    }),
+    bug({
+      kicker: K,
+      title: 'Find the bug',
+      instructions: 'This should print both milk and bread, but only bread is left. Tap the buggy line.',
+      lang: 'python',
+      lines: ['with open("list.txt", "w") as f:', '    f.write("milk\\n")', 'with open("list.txt", "w") as f:', '    f.write("bread\\n")', 'with open("list.txt") as f:', '    print(f.read())'],
+      bug: 2,
+      fix: 'with open("list.txt", "a") as f:',
+      explain: 'Opening with "w" a second time wiped out milk. Use "a" to add to the file.',
+    }),
+  ],
+
+  // 12 · Classes and objects
   'p-class-1': [
     predict({
       kicker: K,
@@ -341,7 +513,7 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
   ],
 
-  // Handling errors
+  // 10 · Handling errors
   'p-err-1': [
     predict({
       kicker: K,
@@ -381,7 +553,7 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     }),
   ],
 
-  // Break a problem down
+  // Bonus lesson · Break a problem down
   'p-ps-1': [
     order({
       kicker: K,

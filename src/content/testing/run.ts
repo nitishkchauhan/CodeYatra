@@ -1,8 +1,8 @@
 // Test-only helpers that really run lesson code, so every answer we teach is verified.
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 
 import { sqlProgram } from '../sqlFixture';
 
@@ -31,14 +31,26 @@ export function runJs(code: string): string[] {
   return out;
 }
 
+// Each run gets its own folder (lessons write files) and UTF-8 output (lessons print ₹).
+const PY_ENV = { ...process.env, PYTHONIOENCODING: 'utf-8' };
+
 export function runPy(code: string): string[] {
   const file = join(tmp(), 'main.py');
   writeFileSync(file, code);
   try {
-    return lines(execFileSync(python!, [file], { encoding: 'utf8' }));
+    return lines(execFileSync(python!, [file], { encoding: 'utf8', cwd: dirname(file), env: PY_ENV }));
   } catch (e) {
     return lines(String((e as { stdout?: string }).stdout ?? ''));
   }
+}
+
+/** Runs Python and keeps everything: stdout lines, the last stderr line (the error) and the exit code. */
+export function runPyFull(code: string): { output: string[]; error: string; code: number | null } {
+  const file = join(tmp(), 'main.py');
+  writeFileSync(file, code);
+  const r = spawnSync(python!, [file], { encoding: 'utf8', cwd: dirname(file), env: PY_ENV, timeout: 10000 });
+  const err = lines(r.stderr ?? '').filter(Boolean);
+  return { output: lines(r.stdout ?? '').filter((l, i, a) => l || i < a.length - 1), error: err.at(-1) ?? '', code: r.status };
 }
 
 export function runC(code: string): string[] {

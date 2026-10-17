@@ -1,22 +1,5 @@
 import type { EditorStep, Lesson } from './types';
 
-export const totalFare: EditorStep = {
-  type: 'editor',
-  kicker: 'PRACTICE · PYTHON',
-  title: 'Add up the tickets',
-  instructions: 'total(prices) gets a list of ticket prices. Return their sum using a loop (no sum() allowed in real life exams!).',
-  lang: 'python',
-  file: 'tickets.py',
-  starter: 'def total(prices):\n    result = 0\n    # loop over prices and add each one\n    return result\n',
-  tests: [
-    { call: 'total([120, 80, 45])', expect: '245' },
-    { call: 'total([])', expect: '0' },
-    { call: 'total([999])', expect: '999' },
-  ],
-  hint: 'for p in prices:\n    result += p',
-  solution: 'def total(prices):\n    result = 0\n    for p in prices:\n        result += p\n    return result\n',
-};
-
 export const isEven: EditorStep = {
   type: 'editor',
   kicker: 'PRACTICE · PYTHON',
@@ -71,69 +54,8 @@ export const cheapestTrain: EditorStep = {
     'def cheapest(trains):\n    best = None\n    for name, price in trains:\n        if best is None or price < best[1]:\n            best = (name, price)\n    return best[0] if best else None\n',
 };
 
+/** Bonus lesson, kept as Python practice after the Lesson v2 rewrite. */
 export const PYTHON_MORE: Lesson[] = [
-  {
-    id: 'p-loop-2',
-    title: 'Loops with lists',
-    kind: 'lesson',
-    minutes: 7,
-    skill: 'python',
-    learned: ['A list holds many values in order', 'for item in list visits each one', 'Build a total step by step'],
-    steps: [
-      {
-        type: 'concept',
-        kicker: 'CONCEPT · LISTS',
-        title: 'Lists keep many values together',
-        body: 'A list is written with square brackets. A for loop can walk through it, giving you one item at a time.',
-        code: [
-          { lang: 'python', label: 'Python', lines: ['cities = ["Delhi", "Jaipur", "Pune"]', 'for city in cities:', '    print(city)'] },
-          { lang: 'javascript', label: 'JavaScript', lines: ['const cities = ["Delhi", "Jaipur", "Pune"];', 'for (const city of cities) {', '  console.log(city);', '}'] },
-        ],
-        demo: { values: ['Delhi', 'Jaipur', 'Pune'], line: 2, caption: (v, r) => `Round ${r} of 3 · city is "${v}"`, done: 'Printed every city, in order' },
-        tip: 'Lists start counting at 0: cities[0] is "Delhi".',
-      },
-      {
-        type: 'quiz',
-        prompt: 'What is cities[1]?',
-        code: { lang: 'python', label: 'Python', lines: ['cities = ["Delhi", "Jaipur", "Pune"]'] },
-        options: ['"Jaipur"', '"Delhi"', '"Pune"', 'Error'],
-        mono: true,
-        answer: 0,
-        right: 'Index 0 is Delhi, so index 1 is Jaipur.',
-        wrong: 'Python counts from 0. [0] is Delhi and [1] is Jaipur.',
-      },
-      totalFare,
-    ],
-  },
-  {
-    id: 'p-fn-1',
-    title: 'def and return',
-    kind: 'lesson',
-    minutes: 7,
-    skill: 'python',
-    learned: ['Parameters are a function’s inputs', 'return sends a result back', '% gives the remainder'],
-    steps: [
-      {
-        type: 'concept',
-        kicker: 'CONCEPT · FUNCTIONS',
-        title: 'Functions take inputs and return answers',
-        body: 'Parameters go in the brackets. return hands a value back to whoever called the function, so you can store it or use it again.',
-        code: [{ lang: 'python', label: 'Python', lines: ['def square(n):', '    return n * n', '', 'area = square(5)', 'print(area)  # 25'] }],
-        tip: 'print shows a value. return gives it back so other code can use it.',
-      },
-      {
-        type: 'quiz',
-        prompt: 'What does add(2, 3) * 2 equal?',
-        code: { lang: 'python', label: 'Python', lines: ['def add(a, b):', '    return a + b'] },
-        options: ['10', '7', '5', '232'],
-        mono: true,
-        answer: 0,
-        right: 'add(2, 3) returns 5, and 5 × 2 = 10.',
-        wrong: 'The function runs first: add(2, 3) is 5. Then 5 × 2 = 10.',
-      },
-      isEven,
-    ],
-  },
   {
     id: 'p-ps-1',
     title: 'Break a problem down',

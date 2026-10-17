@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TrackBadge } from './TrackBadge';
 import { T } from './ui/Text';
-import { SECTIONS, STAGES, stageProgress } from '@/content';
+import { SECTIONS, stageProgress, visibleStages } from '@/content';
 import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
 import { colors } from '@/theme';
@@ -34,7 +34,7 @@ export function StageSheet({ visible, onClose }: { visible: boolean; onClose: ()
               <T variant="kicker" color={colors.ink3} style={{ marginTop: 6, paddingHorizontal: 2 }}>
                 {section.toUpperCase()}
               </T>
-              {STAGES.filter((s) => s.section === section).map((stage) => {
+              {visibleStages([state.stageId]).filter((s) => s.section === section).map((stage) => {
                 const on = stage.id === state.stageId;
                 const { pct } = stageProgress(stage, state.completed);
                 const tag = pct > 0 ? `${pct}%` : stage.id === recommendedStageId ? 'For you' : 'Start';

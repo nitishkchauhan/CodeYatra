@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { TrackBadge } from './TrackBadge';
 import { Icon } from './ui/Icon';
 import { T } from './ui/Text';
-import { STAGES, stageProgress } from '@/content';
+import { stageProgress, visibleStages } from '@/content';
 import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
 import { colors, glass as g } from '@/theme';
@@ -24,8 +24,9 @@ export function TrackRail({
   first?: string[];
 }) {
   const { state } = useProgress();
-  const rank = (id: string) => (first.includes(id) ? first.indexOf(id) : first.length + STAGES.findIndex((s) => s.id === id));
-  const ordered = [...STAGES].sort((a, b) => rank(a.id) - rank(b.id));
+  const stages = visibleStages([value]);
+  const rank = (id: string) => (first.includes(id) ? first.indexOf(id) : first.length + stages.findIndex((s) => s.id === id));
+  const ordered = [...stages].sort((a, b) => rank(a.id) - rank(b.id));
   return (
     <ScrollView
       horizontal

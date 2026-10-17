@@ -162,7 +162,51 @@ export type WebStep = {
   hint: string;
 };
 
-export type Step = ConceptStep | QuizStep | PuzzleStep | CodeStep | EditorStep | OrderStep | BugStep | PredictStep | TapStep | WebStep;
+/** Lesson v2: opens a module with a real situation and what the learner will be able to do. */
+export type HookStep = {
+  type: 'hook';
+  kicker: string;
+  title: string;
+  /** Two or three sentences: an everyday Indian situation the module solves. */
+  story: string;
+  /** "By the end you can …" */
+  goal: string;
+  /** Optional preview of the code they'll be able to write. */
+  code?: CodeSample;
+};
+
+/** Lesson v2: edit and run code freely. Nothing is checked, so it never counts as a mistake. */
+export type TryStep = {
+  type: 'try';
+  kicker: string;
+  title: string;
+  instructions: string;
+  lang: 'python' | 'javascript';
+  file: string;
+  starter: string;
+  /** Small changes to try, e.g. "Change 72 to 100". */
+  ideas: string[];
+};
+
+/** Lesson v2: Yatri shows a mistake beginners really make, the error it gives, and the fix. */
+export type MistakeStep = {
+  type: 'mistake';
+  kicker: string;
+  title: string;
+  lang: CodeLang;
+  wrong: string[];
+  /** What Python (or the browser) says, shown like real console output. */
+  error: string;
+  /** The wrong code never finishes (an endless loop), so tests don't run it. */
+  hang?: boolean;
+  right: string[];
+  explain: string;
+};
+
+/** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
+export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake'] as const;
+
+export type Step = ConceptStep | HookStep | TryStep | MistakeStep | QuizStep | PuzzleStep | CodeStep | EditorStep | OrderStep | BugStep | PredictStep | TapStep | WebStep;
 
 export type SkillKey = 'sequencing' | 'loops' | 'web' | 'python' | 'react' | 'html' | 'css' | 'js' | 'node' | 'next' | 'c' | 'java' | 'dsa' | 'sql' | 'git' | 'placement';
 

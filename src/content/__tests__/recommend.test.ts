@@ -27,6 +27,8 @@ describe('path recommendation', () => {
   it('always suggests a real path and a real starting track', () => {
     for (const a of every) {
       const id = recommendPathId(a);
+      // Only paths learners can see, never a paused one.
+      expect(PATHS.map((p) => p.id)).toContain(id);
       expect(findPath(id)).toBeDefined();
       expect(STAGES.some((s) => s.id === startingStage(id, a.who))).toBe(true);
     }
@@ -34,7 +36,7 @@ describe('path recommendation', () => {
 
   it('follows the learner’s interest', () => {
     expect(recommendPathId({ who: 'college', why: 'job', interest: 'web' })).toBe('frontend');
-    expect(recommendPathId({ who: 'college', why: 'build', interest: 'mobile' })).toBe('android');
+    expect(recommendPathId({ who: 'college', why: 'build', interest: 'mobile' })).toBe('frontend');
     expect(recommendPathId({ who: 'working', why: 'switch', interest: 'data' })).toBe('data-analyst');
     expect(recommendPathId({ who: 'college', why: 'fun', interest: 'ai' })).toBe('ai');
     expect(recommendPathId({ who: 'other', why: 'build', interest: 'automation' })).toBe('python');
@@ -43,14 +45,15 @@ describe('path recommendation', () => {
   it('sends Class 11–12 exam students to CBSE, and unsure job-seekers to placements', () => {
     expect(recommendPathId({ who: 'senior', why: 'exams', interest: 'web' })).toBe('cbse');
     expect(recommendPathId({ who: 'college', why: 'job', interest: 'unsure' })).toBe('sde');
-    expect(recommendPathId({ who: 'working', why: 'switch', interest: 'web' })).toBe('fullstack');
+    expect(recommendPathId({ who: 'working', why: 'switch', interest: 'web' })).toBe('frontend');
+    expect(recommendPathId({ who: 'working', why: 'switch', interest: 'unsure' })).toBe('data-analyst');
   });
 
   it('starts younger students with logic puzzles and others at the path’s first lesson', () => {
     expect(startingStage('frontend', 'school')).toBe('foundations');
     expect(startingStage('frontend', 'college')).toBe('html');
     expect(startingStage('cbse', 'senior')).toBe('cbse');
-    expect(startingStage('sde', 'college')).toBe('c');
+    expect(startingStage('sde', 'college')).toBe('python');
   });
 
   it('maps answers to a level, a daily goal and a reason', () => {

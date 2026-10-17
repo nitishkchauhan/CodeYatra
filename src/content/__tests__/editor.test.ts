@@ -36,7 +36,8 @@ function runPy(code: string): string[] {
   const file = join(dir, 'main.py');
   writeFileSync(file, code);
   try {
-    return execFileSync(python!, [file], { encoding: 'utf8' }).trimEnd().split(/\r?\n/);
+    // Its own folder, because some lessons write files; UTF-8, because some print ₹.
+    return execFileSync(python!, [file], { encoding: 'utf8', cwd: dir, env: { ...process.env, PYTHONIOENCODING: 'utf-8' } }).trimEnd().split(/\r?\n/);
   } catch (e) {
     return String((e as { stdout?: string }).stdout ?? '').trimEnd().split(/\r?\n/);
   }

@@ -4,7 +4,7 @@ import { apiHandler, FULLSTACK_MORE } from './fullstack2';
 import { cheapestTrain, countVowels, PYTHON_MORE } from './python2';
 import { countSeats, styleButton, WEB_MORE } from './web2';
 import { FULLSTACK_LESSONS, trainCardProps } from './fullstack';
-import { PYTHON_LESSONS, trainFare } from './python';
+import { trainFare } from './python';
 import { dailyLesson, reviewLesson } from './daily';
 import { drillBase, drillLesson, DRILL_PREFIX } from './drills';
 import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
@@ -14,7 +14,7 @@ import { HTML_LESSONS, searchForm } from './html';
 import { cheapTickets, JS_LESSONS } from './js';
 import { NEXT_LESSONS, dynamicRoute, routeHandler } from './next';
 import { expressRoute, NODE_LESSONS } from './node';
-import { canteenBill, PYTHON_EXTRA } from './python3';
+import { canteenBill } from './python3';
 import { REACT_LESSONS, trainList } from './react';
 import { PROJECTS } from './projects';
 import { C_LESSONS } from './tracks/c';
@@ -28,6 +28,7 @@ import { JAVA_LESSONS } from './tracks/java';
 import { JS_MORE } from './tracks/jsMore';
 import { LOGIC_MORE } from './tracks/logicMore';
 import { PLACEMENT_LESSONS } from './tracks/placement';
+import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS } from './tracks/sql';
 import { NEXT_MORE, NODE_MORE, REACT_MORE } from './tracks/stackMore';
@@ -220,14 +221,14 @@ const ALL: Lesson[] = [
   ...FOUNDATIONS_MORE,
   ...WEB_LESSONS,
   ...WEB_MORE,
-  ...PYTHON_LESSONS,
+  ...PYTHON_FOUNDATIONS,
+  PYTHON_PROJECT,
   ...PYTHON_MORE,
   ...FULLSTACK_LESSONS,
   ...FULLSTACK_MORE,
   ...HTML_LESSONS,
   ...CSS_LESSONS,
   ...JS_LESSONS,
-  ...PYTHON_EXTRA,
   ...REACT_LESSONS,
   ...NODE_LESSONS,
   ...NEXT_LESSONS,
@@ -286,7 +287,7 @@ const unit = (id: string, title: string, lesson: LessonRef): Unit => ({
   lessons: [lesson],
 });
 
-/** Language tracks, grouped into sections. Each track has ten modules of reading plus practice. */
+/** Language tracks, grouped into sections. Each track has ten or more modules plus practice. */
 export const STAGES: Stage[] = [
   {
     id: 'foundations',
@@ -455,26 +456,29 @@ export const STAGES: Stage[] = [
     badge: 'Py',
     badgeBg: '#3776AB',
     badgeInk: '#FFD43B',
-    name: 'Python',
+    name: 'Python Foundations',
     short: 'Python',
-    sub: 'Basics to problem solving',
+    sub: 'Your first program to classes, plus a project',
     audience: 'Class 11+ · College',
-    blurb: 'Type real Python and pass tests, from variables to classes.',
+    blurb: '12 modules and a project: write and run real Python, from print() to classes.',
     color: '#1D4ED8',
     soft: '#E7EFFE',
     accent: '#93C5FD',
     icon: 'M4 17l6-5-6-5 M12 19h8',
     units: [
-      unit('p-u0', 'Variables', ref('p-var-1', 'Variables and f-strings', 'Read + code editor · 5 min')),
-      unit('p-u6', 'Strings', ref('p-str-1', 'String methods', 'Read + code editor · 6 min')),
-      unit('p-u1', 'Loops', ref('p-loop-1', 'Counting with range()', 'Read + practice · 6 min')),
-      unit('p-u2', 'Lists', ref('p-loop-2', 'Loops with lists', 'Read + code editor · 7 min')),
-      unit('p-u7', 'Comprehensions', ref('p-comp-1', 'List comprehensions', 'Read + code editor · 6 min')),
-      unit('p-u3', 'Functions', ref('p-fn-1', 'def and return', 'Read + code editor · 7 min')),
-      unit('p-u4', 'Dictionaries', ref('p-dict-1', 'Dictionaries', 'Read + code editor · 7 min')),
-      unit('p-u8', 'Classes', ref('p-class-1', 'Classes and objects', 'Read + code editor · 8 min')),
-      unit('p-u9', 'Errors', ref('p-err-1', 'Handling errors', 'Read + practice · 6 min')),
-      unit('p-u5', 'Problem solving', ref('p-ps-1', 'Break a problem down', 'Read + code editor · 8 min')),
+      unit('p-u0', 'First program', ref('p-var-1', 'Your first program', 'Lesson + code editor · 6 min')),
+      unit('p-u11', 'Numbers', ref('p-num-1', 'Numbers and maths', 'Lesson + code editor · 6 min')),
+      unit('p-u6', 'Strings', ref('p-str-1', 'Text and f-strings', 'Lesson + code editor · 7 min')),
+      unit('p-u12', 'Decisions', ref('p-if-1', 'Making decisions', 'Lesson + code editor · 7 min')),
+      unit('p-u1', 'for loops', ref('p-loop-1', 'Repeat with for and range()', 'Lesson + code editor · 7 min')),
+      unit('p-u13', 'while loops', ref('p-while-1', 'while loops', 'Lesson + code editor · 7 min')),
+      unit('p-u2', 'Lists', ref('p-loop-2', 'Lists', 'Lesson + code editor · 7 min')),
+      unit('p-u4', 'Dictionaries', ref('p-dict-1', 'Dictionaries', 'Lesson + code editor · 7 min')),
+      unit('p-u3', 'Functions', ref('p-fn-1', 'Functions', 'Lesson + code editor · 7 min')),
+      unit('p-u9', 'Errors', ref('p-err-1', 'Handling errors', 'Lesson + code editor · 7 min')),
+      unit('p-u14', 'Files', ref('p-file-1', 'Files', 'Lesson + code editor · 7 min')),
+      unit('p-u8', 'Classes', ref('p-class-1', 'Classes and objects', 'Lesson + code editor · 8 min')),
+      unit('p-u15', 'Project', ref('p-project', 'Project: canteen billing app', 'Project · 4 tested steps · 15 min')),
     ],
     practice: [
       { id: 'x-times', title: 'Print the 5 times table', kind: 'Python', difficulty: 'Easy', xp: 15 },
@@ -482,6 +486,8 @@ export const STAGES: Stage[] = [
       { id: 'x-fare', title: 'Train fare calculator', kind: 'Python', difficulty: 'Medium', xp: 15 },
       { id: 'x-vowels', title: 'Count the vowels', kind: 'Code editor', difficulty: 'Medium', xp: 15 },
       { id: 'x-route', title: 'Find the cheapest train', kind: 'Code editor', difficulty: 'Hard', xp: 15 },
+      { id: 'p-comp-1', title: 'List comprehensions', kind: 'Bonus lesson', difficulty: 'Medium', xp: 15 },
+      { id: 'p-ps-1', title: 'Break a problem down', kind: 'Bonus lesson', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -803,6 +809,16 @@ export const STAGES: Stage[] = [
     ],
   },
 ];
+
+/**
+ * Tracks paused until they are rewritten to the Lesson v2 standard (see project-docs/CONTENT-PLAN.md).
+ * They are hidden from pickers, not deleted: lessons, progress and certificates in them are kept.
+ */
+export const PAUSED_STAGES: readonly string[] = ['c', 'java', 'node', 'next', 'git', 'dsa2'];
+export const isPaused = (id: string) => PAUSED_STAGES.includes(id);
+
+/** Tracks to list: every active track, plus any paused ones named in `keep` (e.g. the track the learner is in). */
+export const visibleStages = (keep: (string | null | undefined)[] = []) => STAGES.filter((s) => !isPaused(s.id) || keep.includes(s.id));
 
 export const SECTIONS = ['Start here', 'School', 'Web basics', 'Programming', 'Full-stack', 'CS core', 'Placement'] as const;
 

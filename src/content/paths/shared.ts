@@ -11,7 +11,10 @@ export const HINDI_CHANNELS = [
   video('Apna College', 'https://www.youtube.com/@ApnaCollegeOfficial', 'Hindi'),
 ];
 
-export const PYTHON_BASICS = ['p-var-1', 'p-str-1', 'p-loop-1', 'p-loop-2', 'p-fn-1', 'p-dict-1'];
+/** Python Foundations: 12 modules, then the project. */
+export const PYTHON_FOUNDATIONS = ['p-var-1', 'p-num-1', 'p-str-1', 'p-if-1', 'p-loop-1', 'p-while-1', 'p-loop-2', 'p-dict-1', 'p-fn-1', 'p-err-1', 'p-file-1', 'p-class-1', 'p-project'];
+export const PYTHON_BASICS = PYTHON_FOUNDATIONS.slice(0, 9);
+export const PYTHON_MORE = PYTHON_FOUNDATIONS.slice(9);
 export const SQL_BASICS = ['sql-select', 'sql-where', 'sql-order', 'sql-agg', 'sql-group'];
 export const SQL_MORE = ['sql-join', 'sql-sub', 'sql-change', 'sql-design', 'sql-patterns'];
 export const GIT = ['git-why', 'git-init', 'git-commit', 'git-history', 'git-branch', 'git-merge', 'git-remote', 'git-pr', 'git-ignore', 'git-undo'];

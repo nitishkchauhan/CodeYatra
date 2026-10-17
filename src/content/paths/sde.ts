@@ -1,4 +1,4 @@
-import { docs, practice, SQL_BASICS, video } from './shared';
+import { docs, practice, PYTHON_FOUNDATIONS, SQL_BASICS, video } from './shared';
 import type { CareerPath } from './types';
 
 export const SDE: CareerPath = {
@@ -16,6 +16,13 @@ export const SDE: CareerPath = {
       title: 'Pick one language',
       stops: [
         {
+          id: 'lang-python',
+          title: 'Python',
+          why: 'The shortest code for DSA rounds; great if you want to move fast.',
+          modules: PYTHON_FOUNDATIONS,
+          choice: 'Language',
+        },
+        {
           id: 'lang-c',
           title: 'C',
           why: 'Classic for written tests and output questions; teaches how memory really works.',
@@ -27,13 +34,6 @@ export const SDE: CareerPath = {
           title: 'Java',
           why: 'The most common interview language in Indian service and product companies.',
           modules: ['jv-hello', 'jv-vars', 'jv-if', 'jv-loops', 'jv-methods', 'jv-arrays', 'jv-strings', 'jv-classes', 'jv-oop', 'jv-collections'],
-          choice: 'Language',
-        },
-        {
-          id: 'lang-python',
-          title: 'Python',
-          why: 'The shortest code for DSA rounds; great if you want to move fast.',
-          modules: ['p-var-1', 'p-str-1', 'p-loop-1', 'p-loop-2', 'p-comp-1', 'p-fn-1', 'p-dict-1', 'p-class-1', 'p-err-1', 'p-ps-1'],
           choice: 'Language',
         },
       ],

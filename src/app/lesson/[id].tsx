@@ -16,6 +16,7 @@ import { PuzzleStep } from '@/features/lesson/PuzzleStep';
 import { QuizStep } from '@/features/lesson/QuizStep';
 import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/features/lesson/PracticeSteps';
 import { LessonTopBar } from '@/features/lesson/Shell';
+import { HookStep, MistakeStep, TryStep } from '@/features/lesson/V2Steps';
 import { WebBuildStep } from '@/features/lesson/WebBuildStep';
 import { track } from '@/lib/telemetry';
 import { useConfirmLeave } from '@/lib/useConfirmLeave';
@@ -115,6 +116,9 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
       <Animated.View key={index} entering={FadeIn.duration(220)} style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           {step.type === 'concept' && <ConceptStep step={step} onDone={next} />}
+          {step.type === 'hook' && <HookStep step={step} onDone={next} />}
+          {step.type === 'try' && <TryStep step={step} onDone={next} />}
+          {step.type === 'mistake' && <MistakeStep step={step} onDone={next} />}
           {step.type === 'quiz' && <QuizStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'puzzle' && <PuzzleStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'code' && <CodeStep step={step} onDone={next} onMistake={onMistake} />}

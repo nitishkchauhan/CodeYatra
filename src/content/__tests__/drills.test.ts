@@ -3,7 +3,10 @@ import { describe, expect, it } from '@jest/globals';
 import { allLessons, drillId, getLesson, hasDrill, STAGES } from '..';
 import { isReplay, lessonReward } from '@/state/model';
 
-const pythonModules = STAGES.find((s) => s.id === 'python')!.units.flatMap((u) => u.lessons.map((l) => l.id));
+// The final project is built step by step, so it has no separate practice set.
+const pythonModules = STAGES.find((s) => s.id === 'python')!
+  .units.flatMap((u) => u.lessons.map((l) => l.id))
+  .filter((id) => getLesson(id)?.kind !== 'project');
 
 describe('module practice', () => {
   it('every Python module has at least 4 new exercises', () => {

@@ -11,7 +11,7 @@ import { Icon } from '@/components/ui/Icon';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { STAGES } from '@/content';
+import { visibleStages } from '@/content';
 import { deleteAvatarFile, pickAvatar, type PhotoSource } from '@/lib/avatar';
 import { haptic } from '@/lib/haptics';
 import { hasBlockedWords } from '@/lib/moderation';
@@ -176,7 +176,7 @@ export default function EditProfileScreen() {
           <Animated.View entering={FadeInDown.delay(160).duration(300)} style={{ gap: 8 }}>
             <T variant="label">Main language</T>
             <View style={styles.grid}>
-              {STAGES.map((s) => {
+              {visibleStages([state.stageId]).map((s) => {
                 const on = state.stageId === s.id;
                 return (
                   <Pressable

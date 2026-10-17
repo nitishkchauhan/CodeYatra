@@ -1,6 +1,6 @@
 // Turns the onboarding answers into a suggested career path, starting track and daily goal.
 import { STAGES } from '..';
-import { findPath } from '.';
+import { findPath, PATHS } from '.';
 
 export type Who = 'school' | 'senior' | 'college' | 'working' | 'other';
 export type Why = 'job' | 'exams' | 'build' | 'switch' | 'fun';
@@ -15,7 +15,8 @@ export const goalForMinutes = (m: Minutes) => m * 2;
 
 const BY_INTEREST: Record<Exclude<Interest, 'unsure'>, string> = {
   web: 'frontend',
-  mobile: 'android',
+  // Android is paused for now; React (in Web Developer) is the way into apps too.
+  mobile: 'frontend',
   data: 'data-analyst',
   ai: 'ai',
   automation: 'python',
@@ -25,7 +26,7 @@ const WHEN_UNSURE: Record<Why, string> = {
   job: 'sde',
   exams: 'python',
   build: 'frontend',
-  switch: 'fullstack',
+  switch: 'data-analyst',
   fun: 'python',
 };
 
@@ -33,8 +34,6 @@ export function recommendPathId({ who, why, interest }: About): string {
   // Class 11–12 students preparing for board exams follow the CBSE syllabus.
   if (why === 'exams' && who === 'senior') return 'cbse';
   if (interest === 'unsure') return WHEN_UNSURE[why];
-  // Career switchers who like the web usually want to build whole apps.
-  if (interest === 'web' && why === 'switch') return 'fullstack';
   return BY_INTEREST[interest];
 }
 
@@ -136,7 +135,7 @@ export function suggestionFor(about: About | null, pathId: string | null): Sugge
             body: 'Every step to your new job, with what you already know ticked off.',
             cta: 'Open my path',
           }
-        : { id: 'path', kicker: 'FOR YOUR CAREER SWITCH', title: 'Pick a job to aim for', body: 'Thirteen career paths with every step laid out.', cta: 'See paths' };
+        : { id: 'path', kicker: 'FOR YOUR CAREER SWITCH', title: 'Pick a job to aim for', body: `${PATHS.length} career paths with every step laid out.`, cta: 'See paths' };
     case 'fun':
       return {
         id: 'playground',

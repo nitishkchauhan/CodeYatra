@@ -1,4 +1,4 @@
-import { course, docs, gitStop, PYTHON_BASICS, video } from './shared';
+import { course, docs, gitStop, PYTHON_BASICS, PYTHON_MORE, video } from './shared';
 import type { CareerPath } from './types';
 
 export const AI_ENGINEER: CareerPath = {
@@ -18,9 +18,9 @@ export const AI_ENGINEER: CareerPath = {
         { id: 'python', title: 'Python basics', why: 'Most AI tools and libraries are used from Python.', modules: PYTHON_BASICS },
         {
           id: 'python-more',
-          title: 'Classes, errors and problem solving',
-          why: 'Write code that handles messy model output without crashing.',
-          modules: ['p-class-1', 'p-err-1', 'p-ps-1'],
+          title: 'Errors, files, classes and a project',
+          why: 'Write code that handles messy model output without crashing, and finish a real program.',
+          modules: PYTHON_MORE,
         },
         {
           id: 'apis',

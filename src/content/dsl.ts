@@ -1,6 +1,6 @@
 // Small builders that keep lesson files short and readable.
 // Each returns a plain step object; content tests check every one of them.
-import type { BugStep, CodeLang, ConceptStep, Lesson, OrderStep, PredictStep, QuizStep, SkillKey, Step, TapStep } from './types';
+import type { BugStep, CodeLang, ConceptStep, HookStep, Lesson, MistakeStep, OrderStep, PredictStep, QuizStep, SkillKey, Step, TapStep, TryStep } from './types';
 
 const LABEL: Record<CodeLang, string> = {
   python: 'Python',
@@ -40,6 +40,20 @@ export function quiz(o: { prompt: string; options: [string, ...string[]]; right:
   };
 }
 
+/** Lesson v2 opener: a real situation, what you'll be able to do, and an optional code preview. */
+export function hook(o: { kicker: string; title: string; story: string; goal: string; lang?: CodeLang; code?: string[] }): HookStep {
+  return {
+    type: 'hook',
+    kicker: o.kicker,
+    title: o.title,
+    story: o.story,
+    goal: o.goal,
+    code: o.code && o.lang ? { lang: o.lang, label: LABEL[o.lang], lines: o.code } : undefined,
+  };
+}
+
+export const tryIt = (o: Omit<TryStep, 'type'>): TryStep => ({ type: 'try', ...o });
+export const mistake = (o: Omit<MistakeStep, 'type'>): MistakeStep => ({ type: 'mistake', ...o });
 export const order = (o: Omit<OrderStep, 'type'>): OrderStep => ({ type: 'order', ...o });
 export const bug = (o: Omit<BugStep, 'type'>): BugStep => ({ type: 'bug', ...o });
 export const predict = (o: Omit<PredictStep, 'type'>): PredictStep => ({ type: 'predict', ...o });

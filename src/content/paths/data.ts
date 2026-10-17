@@ -1,4 +1,4 @@
-import { course, docs, gitStop, PYTHON_BASICS, practice, SQL_BASICS, SQL_MORE, video } from './shared';
+import { course, docs, gitStop, PYTHON_BASICS, PYTHON_FOUNDATIONS, PYTHON_MORE, practice, SQL_BASICS, SQL_MORE, video } from './shared';
 import type { CareerPath } from './types';
 
 const KHAN_STATS = course('Statistics and probability (Khan Academy)', 'https://www.khanacademy.org/math/statistics-probability', 'Free');
@@ -36,7 +36,7 @@ export const DATA_ANALYST: CareerPath = {
     {
       title: 'Python for data',
       stops: [
-        { id: 'python', title: 'Python basics', why: 'Enough Python to clean and reshape data that’s too big for Excel.', modules: PYTHON_BASICS },
+        { id: 'python', title: 'Python Foundations', why: 'Enough Python to clean and reshape data that’s too big for Excel.', modules: PYTHON_FOUNDATIONS },
         {
           id: 'pandas',
           title: 'pandas',
@@ -110,9 +110,9 @@ export const DATA_SCIENTIST: CareerPath = {
         { id: 'python', title: 'Python basics', why: 'The language of almost all data science work.', modules: PYTHON_BASICS },
         {
           id: 'python-more',
-          title: 'Comprehensions, classes and errors',
+          title: 'Errors, files and classes',
           why: 'Write cleaner data code and read other people’s libraries.',
-          modules: ['p-comp-1', 'p-class-1', 'p-err-1', 'p-ps-1'],
+          modules: PYTHON_MORE,
         },
       ],
     },

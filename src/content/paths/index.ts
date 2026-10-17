@@ -8,7 +8,7 @@ import { DATA_ANALYST, DATA_SCIENTIST } from './data';
 import { DEVOPS } from './devops';
 import { FRONTEND } from './frontend';
 import { FULLSTACK } from './fullstack';
-import { PYTHON_DEV } from './python';
+import { PYTHON_FOUNDATIONS_PATH } from './python';
 import { QA } from './qa';
 import { SDE } from './sde';
 import { SECURITY } from './security';
@@ -16,10 +16,16 @@ import type { CareerPath, PathStop, StopStatus } from './types';
 
 export * from './types';
 
-/** Most-chosen first: placements and web, then data and AI, then specialist paths. */
-export const PATHS: CareerPath[] = [SDE, FRONTEND, BACKEND, FULLSTACK, PYTHON_DEV, DATA_ANALYST, DATA_SCIENTIST, AI_ENGINEER, ANDROID, DEVOPS, SECURITY, QA, CBSE_PATH];
+/**
+ * The paths learners can pick: the shared Python start, four in-demand jobs and the CBSE school path
+ * (project-docs/CONTENT-PLAN.md). Python Foundations comes first because every other path starts with it.
+ */
+export const PATHS: CareerPath[] = [PYTHON_FOUNDATIONS_PATH, DATA_ANALYST, AI_ENGINEER, FRONTEND, SDE, CBSE_PATH];
 
-export const findPath = (id: string | null | undefined) => PATHS.find((p) => p.id === id);
+/** Paused until they are rewritten to the new standard: hidden from lists, but a learner already on one keeps it. */
+export const PAUSED_PATHS: CareerPath[] = [BACKEND, FULLSTACK, DATA_SCIENTIST, ANDROID, DEVOPS, SECURITY, QA];
+
+export const findPath = (id: string | null | undefined) => [...PATHS, ...PAUSED_PATHS].find((p) => p.id === id);
 
 /** Key for a stop the learner marked done themselves. */
 export const markKey = (pathId: string, stopId: string) => `${pathId}/${stopId}`;
