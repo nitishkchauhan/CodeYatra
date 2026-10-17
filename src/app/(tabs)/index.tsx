@@ -71,16 +71,14 @@ export default function LearnScreen() {
               accessibilityRole="button"
               accessibilityLabel={`${t('dailyGoal')}: ${Math.min(todayXp, 999)} of ${goal} XP. ${goalNote}`}
               onPress={() => toast(`${t('dailyGoal')} ${Math.min(todayXp, 999)} / ${goal} XP · ${goalNote}`)}
-              style={[styles.chip, { paddingLeft: 5 }]}>
+              style={[styles.chip, { paddingHorizontal: 4 }]}>
+              {/* Just the ring, so the name still fits on 360 px phones; the numbers are in the tap message and label. */}
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Ring value={todayXp / goal} size={30} stroke={4} color={goalMet ? glass.violet : '#FF9F1C'} track={glass.track} />
                 <View style={{ position: 'absolute' }}>
                   <Glyph name={goalMet ? 'star' : 'bolt'} size={12} color={goalMet ? glass.violet : '#E07B00'} />
                 </View>
               </View>
-              <T variant="labelSm" color={glass.text}>
-                {Math.min(todayXp, 999)}/{goal}
-              </T>
             </Pressable>
             <Pressable
               accessibilityRole="button"

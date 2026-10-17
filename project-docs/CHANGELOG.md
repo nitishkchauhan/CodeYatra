@@ -3,6 +3,8 @@
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
 ## 17 Oct 2026
+- **New Play Store screenshots** (8, 1080 × 1920) in the light cy design: Home, journey, roadmap, career paths, Yatri cheering, Python output quiz, learning plan, certificate. `scripts/frame-screenshots.py` now uses a light lavender background with navy and indigo Lexend headings.
+- Home header: the daily goal chip shows only the ring (numbers are in its tap message), so the learner's name fits on 360 px phones. Comes in the next build.
 - **Build 10** (v1.3.0, Play bundle) built locally with `eas build --local`: final logo, footprint journey, tidier Home. Ready to upload to the closed test.
 - EAS free Android builds used up for October; set up **local builds in WSL** (`scripts/wsl/`). Test APK v1.3.0 with the final logo and footprint UI built locally.
 
