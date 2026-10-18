@@ -187,9 +187,12 @@ insert into public.track_lessons (stage_id, lesson_id) values
   ('placement', 'pl-prime'),
   ('placement', 'pl-second'),
   ('placement', 'pl-anagram'),
-  ('placement', 'pl-output-c'),
+  ('placement', 'pl-pattern'),
+  ('placement', 'pl-matrix'),
   ('placement', 'pl-output-py'),
+  ('placement', 'pl-output-c'),
   ('placement', 'pl-oops'),
   ('placement', 'pl-sql'),
-  ('placement', 'pl-complexity');
+  ('placement', 'pl-complexity'),
+  ('placement', 'pl-project');
 commit;

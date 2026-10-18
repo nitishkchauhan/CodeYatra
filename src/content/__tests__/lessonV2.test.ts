@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { allLessons, getLesson, STAGES, type MistakeStep, type Step, type TryStep } from '..';
-import { python, runJs, runPyFull } from '../testing/run';
+import { gcc, python, runC, runJs, runPyFull } from '../testing/run';
 import { sqlProgram } from '../sqlFixture';
 
 const steps: (readonly [string, Step])[] = allLessons().flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
@@ -37,7 +37,7 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react'])('%s follows Lesson v2', (track) => {
+describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
@@ -60,7 +60,7 @@ describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react'])('%s follows 
 describe('further reading', () => {
   const all = allLessons().flatMap((l) => (l.reading ?? []).map((r) => [l.id, r] as const));
   it.each(all)('%s: %o is https, from an official source, with a review date', (_, r) => {
-    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org)\//);
+    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org|en\.cppreference\.com)\//);
     expect(r.reviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });
@@ -89,6 +89,13 @@ describe('common mistakes', () => {
       if (/Error\b/.test(step.error)) expect(error).toBe(step.error);
       else expect(out.join('\n')).toBe(step.error);
       expect(() => runJs(step.right.join('\n'))).not.toThrow();
+      return;
+    }
+    if (step.lang === 'c') {
+      // C mistakes compile and run with gcc when it is installed: the wrong program prints the shown output.
+      if (!gcc) return;
+      expect(runC(step.wrong.join('\n')).join('\n')).toBe(step.error);
+      expect(() => runC(step.right.join('\n'))).not.toThrow();
       return;
     }
     if (step.lang !== 'python' || !python) return;

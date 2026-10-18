@@ -31,7 +31,7 @@ import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS } from './tracks/git';
 import { JAVA_LESSONS } from './tracks/java';
 import { LOGIC_MORE } from './tracks/logicMore';
-import { PLACEMENT_LESSONS } from './tracks/placement';
+import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
@@ -250,6 +250,7 @@ const ALL: Lesson[] = [
   SQL_PROJECT,
   ...GIT_LESSONS,
   ...PLACEMENT_LESSONS,
+  PLACEMENT_PROJECT,
   ...DSA2_LESSONS,
   ...CBSE_LESSONS,
   ...PRACTICE_LESSONS,
@@ -818,22 +819,25 @@ export const STAGES: Stage[] = [
     short: 'Placement',
     sub: 'Crack the coding round',
     audience: 'Final year · Job seekers',
-    blurb: 'The questions campus drives ask again and again, with real code tests.',
+    blurb: '12 modules and a mock round: the coding, output, OOP, SQL and complexity questions campus drives ask again and again, every answer tested.',
     color: '#B45309',
     soft: '#FFF4E3',
     accent: '#FDBA74',
     icon: 'M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z',
     units: [
-      unit('pl1', 'FizzBuzz', ref('pl-fizzbuzz', 'FizzBuzz', 'Coding round · 5 min')),
-      unit('pl2', 'Strings', ref('pl-reverse', 'Reverse a string', 'Coding round · 6 min')),
-      unit('pl3', 'Primes', ref('pl-prime', 'Prime check', 'Coding round · 7 min')),
-      unit('pl4', 'Arrays', ref('pl-second', 'Second largest', 'Coding round · 7 min')),
-      unit('pl5', 'Hashing', ref('pl-anagram', 'Anagrams', 'Coding round · 6 min')),
-      unit('pl6', 'C output', ref('pl-output-c', 'Output questions: C', 'Written test · 6 min')),
-      unit('pl7', 'Python output', ref('pl-output-py', 'Output questions: Python', 'Written test · 6 min')),
-      unit('pl8', 'OOP', ref('pl-oops', 'OOP interview questions', 'Interview · 5 min')),
-      unit('pl9', 'SQL', ref('pl-sql', 'SQL interview questions', 'Interview · 5 min')),
-      unit('pl10', 'Complexity', ref('pl-complexity', 'Complexity questions', 'Interview · 5 min')),
+      unit('pl1', 'Coding rounds', ref('pl-fizzbuzz', 'How a coding round works: FizzBuzz', 'Lesson + coding round · 7 min')),
+      unit('pl2', 'Strings', ref('pl-reverse', 'String questions', 'Lesson + coding round · 7 min')),
+      unit('pl3', 'Numbers', ref('pl-prime', 'Number questions: primes, GCD and digits', 'Lesson + coding round · 8 min')),
+      unit('pl4', 'Arrays', ref('pl-second', 'Array questions', 'Lesson + coding round · 8 min')),
+      unit('pl5', 'Hashing', ref('pl-anagram', 'Hashing questions: counting with dicts', 'Lesson + coding round · 8 min')),
+      unit('pl11', 'Patterns', ref('pl-pattern', 'Pattern printing', 'Lesson + coding round · 7 min')),
+      unit('pl12', 'Matrices', ref('pl-matrix', 'Matrix questions', 'Lesson + coding round · 8 min')),
+      unit('pl7', 'Python output', ref('pl-output-py', 'Output questions: Python', 'Lesson + written test · 8 min')),
+      unit('pl6', 'C output', ref('pl-output-c', 'Output questions: C', 'Lesson + written test · 8 min')),
+      unit('pl8', 'OOP', ref('pl-oops', 'OOP interview questions', 'Lesson + interview · 8 min')),
+      unit('pl9', 'SQL', ref('pl-sql', 'SQL interview questions', 'Lesson + interview · 8 min')),
+      unit('pl10', 'Complexity', ref('pl-complexity', 'Complexity questions', 'Lesson + interview · 8 min')),
+      unit('pl13', 'Mock round', ref('pl-project', 'Project: a mock placement round', 'Project · 3 questions · 30 min')),
     ],
     practice: [
       { id: 'x-pl-output', title: 'Output round', kind: 'Predict the output', difficulty: 'Hard', xp: 15 },
