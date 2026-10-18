@@ -41,7 +41,7 @@ export type ConceptStep = {
   title: string;
   body: string;
   /** An interactive diagram shown with the card. The Python ones step through code. */
-  visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps' | 'variables' | 'listIndex' | 'callFlow' | 'routeTree' | 'serverClient' | 'requestFlow';
+  visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps' | 'variables' | 'listIndex' | 'callFlow' | 'routeTree' | 'serverClient' | 'requestFlow' | 'sqlOrder' | 'joinMatch';
   code?: CodeSample[];
   /** "Watch it run": highlights a line once per round and shows the loop variable. */
   demo?: {
@@ -182,7 +182,8 @@ export type TryStep = {
   kicker: string;
   title: string;
   instructions: string;
-  lang: 'python' | 'javascript';
+  /** SQL runs against the sample railway database, like SQL exercises. */
+  lang: 'python' | 'javascript' | 'sql';
   file: string;
   starter: string;
   /** Small changes to try, e.g. "Change 72 to 100". */

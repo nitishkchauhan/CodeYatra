@@ -2,6 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 
 import { allLessons, getLesson, STAGES, type MistakeStep, type Step, type TryStep } from '..';
 import { python, runJs, runPyFull } from '../testing/run';
+import { sqlProgram } from '../sqlFixture';
 
 const steps: (readonly [string, Step])[] = allLessons().flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
 const mistakes = steps.filter((r): r is readonly [string, MistakeStep] => r[1].type === 'mistake');
@@ -36,8 +37,8 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe('Next.js 16 follows Lesson v2', () => {
-  const next = trackModules('next');
+describe.each(['next', 'sql'])('%s follows Lesson v2', (track) => {
+  const next = trackModules(track);
   it('has 12 modules and a final project', () => {
     expect(next.filter((l) => l.kind === 'lesson')).toHaveLength(12);
     expect(next.at(-1)!.kind).toBe('project');
@@ -58,7 +59,7 @@ describe('Next.js 16 follows Lesson v2', () => {
 describe('further reading', () => {
   const all = allLessons().flatMap((l) => (l.reading ?? []).map((r) => [l.id, r] as const));
   it.each(all)('%s: %o is https, from an official source, with a review date', (_, r) => {
-    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org)\//);
+    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org)\//);
     expect(r.reviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });
@@ -66,6 +67,15 @@ describe('further reading', () => {
 describe('common mistakes', () => {
   it.each(mistakes)('%s: the wrong code really fails that way and the fix runs', (_, step) => {
     expect(step.wrong.join('\n')).not.toBe(step.right.join('\n'));
+    if (step.lang === 'sql' && python) {
+      // SQL mistakes run against the sample database; the shown error is SQLite's own message.
+      const wrongRun = runPyFull(sqlProgram(step.wrong.join('\n')));
+      if (wrongRun.error) expect(wrongRun.error).toContain(step.error);
+      // A query that returns nothing is shown as "(no rows)".
+      else expect(wrongRun.output.join('\n') || '(no rows)').toBe(step.error);
+      expect(runPyFull(sqlProgram(step.right.join('\n'))).error).toBe('');
+      return;
+    }
     if (step.lang !== 'python' || !python) return;
     if (!step.hang) {
       const wrong = runPyFull(step.wrong.join('\n'));
@@ -85,6 +95,12 @@ describe('try it', () => {
     if (step.lang === 'javascript') {
       const out = runJs(step.starter);
       expect(out.length).toBeGreaterThan(0);
+      return;
+    }
+    if (step.lang === 'sql' && python) {
+      const r = runPyFull(sqlProgram(step.starter));
+      expect(r.error).toBe('');
+      expect(r.output.length).toBeGreaterThan(0);
       return;
     }
     if (step.lang !== 'python' || !python) return;

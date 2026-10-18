@@ -32,7 +32,7 @@ import { LOGIC_MORE } from './tracks/logicMore';
 import { PLACEMENT_LESSONS } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
-import { SQL_LESSONS } from './tracks/sql';
+import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
 import { NODE_MORE, REACT_MORE } from './tracks/stackMore';
 import { NEXT_FOUNDATIONS, NEXT_PROJECT } from './tracks/nextFoundations';
 
@@ -247,6 +247,7 @@ const ALL: Lesson[] = [
   ...JAVA_LESSONS,
   ...DSA_LESSONS,
   ...SQL_LESSONS,
+  SQL_PROJECT,
   ...GIT_LESSONS,
   ...PLACEMENT_LESSONS,
   ...DSA2_LESSONS,
@@ -734,24 +735,27 @@ export const STAGES: Stage[] = [
     badgeInk: '#FFFFFF',
     name: 'SQL & Databases',
     short: 'SQL',
-    sub: 'Ask questions of data',
-    audience: 'Class 11+ · College',
-    blurb: 'Run real queries on a railway database: filter, sort, group and join.',
+    sub: 'From SELECT to window functions',
+    audience: 'Class 11+ · College · Data Analyst',
+    blurb: '12 modules and a project, all run on a real railway database: filter, group, join, CTEs, window functions, transactions and design.',
     color: '#0369A1',
     soft: '#E0F2FE',
     accent: '#7DD3FC',
     icon: 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6 M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
     units: [
-      unit('sq1', 'SELECT', ref('sql-select', 'Tables and SELECT', 'Read + run a query · 6 min')),
-      unit('sq2', 'WHERE', ref('sql-where', 'Filtering with WHERE', 'Read + run a query · 6 min')),
-      unit('sq3', 'Sorting', ref('sql-order', 'ORDER BY and LIMIT', 'Read + run a query · 6 min')),
-      unit('sq4', 'Aggregates', ref('sql-agg', 'COUNT, SUM and AVG', 'Read + run a query · 6 min')),
-      unit('sq5', 'Grouping', ref('sql-group', 'GROUP BY', 'Read + run a query · 7 min')),
-      unit('sq6', 'Joins', ref('sql-join', 'JOIN', 'Read + run a query · 8 min')),
-      unit('sq7', 'Patterns', ref('sql-patterns', 'LIKE, IN and BETWEEN', 'Read + run a query · 6 min')),
-      unit('sq8', 'Changing data', ref('sql-change', 'INSERT, UPDATE and DELETE', 'Read + find the bug · 6 min')),
-      unit('sq9', 'Design', ref('sql-design', 'Keys and table design', 'Read + order lines · 6 min')),
-      unit('sq10', 'Subqueries', ref('sql-sub', 'Subqueries', 'Read + run a query · 8 min')),
+      unit('sq1', 'SELECT', ref('sql-select', 'Databases, tables and SELECT', 'Lesson + run queries · 8 min')),
+      unit('sq2', 'WHERE', ref('sql-where', 'Filtering with WHERE', 'Lesson + run queries · 8 min')),
+      unit('sq7', 'Patterns and NULL', ref('sql-patterns', 'LIKE, IN, BETWEEN and NULL', 'Lesson + run queries · 8 min')),
+      unit('sq3', 'Sorting', ref('sql-order', 'Sorting: ORDER BY, LIMIT and DISTINCT', 'Lesson + run queries · 8 min')),
+      unit('sq4', 'Aggregates', ref('sql-agg', 'Counting and totals: aggregates', 'Lesson + run queries · 8 min')),
+      unit('sq5', 'Grouping', ref('sql-group', 'GROUP BY and HAVING', 'Lesson + run queries · 8 min')),
+      unit('sq6', 'Joins', ref('sql-join', 'JOIN: combine tables', 'Lesson + run queries · 8 min')),
+      unit('sq11', 'LEFT JOIN', ref('sql-left', 'LEFT JOIN: find what’s missing', 'Lesson + run queries · 8 min')),
+      unit('sq10', 'Subqueries and CTEs', ref('sql-sub', 'Subqueries and CTEs', 'Lesson + run queries · 9 min')),
+      unit('sq12', 'Window functions', ref('sql-window', 'Window functions: ranks and running totals', 'Lesson + run queries · 9 min')),
+      unit('sq8', 'Changing data', ref('sql-change', 'Changing data safely', 'Lesson + run queries · 8 min')),
+      unit('sq9', 'Design', ref('sql-design', 'Keys, constraints and indexes', 'Lesson + run queries · 8 min')),
+      unit('sq13', 'Project', ref('sql-project', 'Project: railway sales report', 'Project · 4 tested queries · 20 min')),
     ],
     practice: [
       { id: 'x-sql-drill', title: 'Query results drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },

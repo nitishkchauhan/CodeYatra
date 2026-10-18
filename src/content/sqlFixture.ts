@@ -17,6 +17,13 @@ INSERT INTO bookings VALUES
   (3, 12951, 'Kabir', 3),
   (4, 12627, 'Meera', 1),
   (5, 22436, 'Asha', 2);
+CREATE TABLE passengers (name TEXT PRIMARY KEY, age INTEGER, city TEXT, phone TEXT);
+INSERT INTO passengers VALUES
+  ('Asha', 15, 'Pune', '90000 00001'),
+  ('Ravi', 34, 'Delhi', NULL),
+  ('Kabir', 22, 'Mumbai', '90000 00003'),
+  ('Meera', 61, 'Bengaluru', NULL),
+  ('Zoya', 19, NULL, '90000 00005');
 `;
 
 /** The tables as learners see them in lessons. */
@@ -31,16 +38,58 @@ export const SQL_TABLES = [
   '11013  | Coimbatore Express | Mumbai    | Coimbatore | 850  | 60',
 ];
 
+export const PASSENGER_TABLE = [
+  'passengers',
+  'name  | age | city      | phone',
+  'Asha  | 15  | Pune      | 90000 00001',
+  'Ravi  | 34  | Delhi     | NULL',
+  'Kabir | 22  | Mumbai    | 90000 00003',
+  'Meera | 61  | Bengaluru | NULL',
+  'Zoya  | 19  | NULL      | 90000 00005',
+];
+
+export const BOOKING_TABLE = [
+  'bookings',
+  'id | train_id | passenger | seats',
+  '1  | 12951    | Asha      | 2',
+  '2  | 22436    | Ravi      | 1',
+  '3  | 12951    | Kabir     | 3',
+  '4  | 12627    | Meera     | 1',
+  '5  | 22436    | Asha      | 2',
+];
+
+/** Splits SQL into statements on semicolons outside quotes. */
+export function splitStatements(sql: string): string[] {
+  const out: string[] = [];
+  let cur = '';
+  let quote = false;
+  for (const ch of sql) {
+    if (ch === "'") quote = !quote;
+    if (ch === ';' && !quote) {
+      if (cur.trim()) out.push(cur.trim());
+      cur = '';
+    } else cur += ch;
+  }
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+}
+
 /**
  * A Python program that loads the sample data, runs the learner's SQL and prints
- * each row as "a | b | c". sqlite3 ships with Pyodide, so this runs in the app.
+ * each row of the last statement as "a | b | c". Earlier statements (INSERT, UPDATE,
+ * BEGIN …) run first, in order. sqlite3 ships with Pyodide, so this runs in the app.
+ * NULL prints as NULL, the way SQL tools show it.
  */
 export function sqlProgram(query: string): string {
+  const parts = splitStatements(query);
+  const last = parts.pop() ?? '';
   return `import sqlite3
-__cy_db = sqlite3.connect(":memory:")
+__cy_db = sqlite3.connect(":memory:", isolation_level=None)
 __cy_db.executescript(${JSON.stringify(SQL_SETUP)})
-__cy_cur = __cy_db.execute(${JSON.stringify(query.trim().replace(/;\s*$/, ''))})
+for __cy_sql in ${JSON.stringify(parts)}:
+    __cy_db.execute(__cy_sql)
+__cy_cur = __cy_db.execute(${JSON.stringify(last)})
 for __cy_row in __cy_cur.fetchall():
-    print(" | ".join(str(__cy_v) for __cy_v in __cy_row))
+    print(" | ".join("NULL" if __cy_v is None else str(__cy_v) for __cy_v in __cy_row))
 `;
 }

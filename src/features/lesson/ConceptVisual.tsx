@@ -8,6 +8,7 @@ import type { ConceptStep } from '@/content';
 import { colors, fonts } from '@/theme';
 import { RequestFlow, RouteTree, ServerClient } from './NextVisuals';
 import { CallFlow, ListIndex, VariableBoxes } from './PyVisuals';
+import { JoinMatch, SqlOrder } from './SqlVisuals';
 
 function Panel({ label, tint, labelColor, children, footer, footerColor }: {
   label: string;
@@ -39,6 +40,8 @@ export function ConceptVisual({ kind }: { kind: NonNullable<ConceptStep['visual'
   if (kind === 'routeTree') return <RouteTree />;
   if (kind === 'serverClient') return <ServerClient />;
   if (kind === 'requestFlow') return <RequestFlow />;
+  if (kind === 'sqlOrder') return <SqlOrder />;
+  if (kind === 'joinMatch') return <JoinMatch />;
   if (kind === 'loopCompare') {
     return (
       <View style={styles.row}>

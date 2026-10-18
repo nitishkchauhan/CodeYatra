@@ -16,6 +16,7 @@ import type { CodeLang, HookStep as Hook, MistakeStep as Mistake, TryStep as Try
 import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { useCodeRunner } from '@/lib/runner';
+import { buildProgram, runtimeOf } from '@/lib/runner/harness';
 import { colors } from '@/theme';
 
 function CodeCard({ label, lines, lang, tone }: { label: string; lines: string[]; lang: CodeLang; tone?: 'right' | 'wrong' }) {
@@ -83,14 +84,14 @@ export function TryStep({ step, onDone }: { step: Try; onDone: () => void }) {
   const run = useCodeRunner();
   const [code, setCode] = useState(step.starter);
   const [busy, setBusy] = useState(false);
-  const [firstPython, setFirstPython] = useState(step.lang === 'python');
+  const [firstPython, setFirstPython] = useState(step.lang !== 'javascript');
   const [out, setOut] = useState<{ output: string[]; error?: string } | null>(null);
   const [runs, setRuns] = useState(0);
 
   const runCode = async () => {
     haptic.tap();
     setBusy(true);
-    const r = await run(step.lang, code);
+    const r = await run(runtimeOf(step.lang), buildProgram(step.lang, code, []));
     setBusy(false);
     setFirstPython(false);
     setOut({ output: r.output, error: r.ok ? undefined : r.error });
