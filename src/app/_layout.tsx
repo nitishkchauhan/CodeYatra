@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
@@ -65,6 +66,8 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      {/* Smooth keyboard handling on Android's edge-to-edge screens (the code editors need it). */}
+      <KeyboardProvider>
       <ProgressProvider>
         <Ready fontsReady={loaded || !!error}>
           <AccountProvider>
@@ -104,6 +107,7 @@ export default function RootLayout() {
           </AccountProvider>
         </Ready>
       </ProgressProvider>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   );
 }

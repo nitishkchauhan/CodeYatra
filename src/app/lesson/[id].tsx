@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import { View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -149,6 +150,8 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
   }
 
   return (
+    // The step shrinks with the keyboard, so the code stays scrollable and Run stays above the keyboard.
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.bg }}>
       <LessonTopBar steps={lesson.steps.length} index={index} xp={reward.xp} onClose={() => router.back()} />
       <Animated.View key={index} entering={FadeIn.duration(220)} style={{ flex: 1 }}>
@@ -169,5 +172,6 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
         </View>
       </Animated.View>
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }

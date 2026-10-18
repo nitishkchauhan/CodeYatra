@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useCallback, useDeferredValue, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { CodeEditor } from '@/components/CodeEditor';
@@ -122,6 +123,7 @@ export default function Playground() {
   };
 
   return (
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <View style={styles.top}>
         <Pressable accessibilityRole="button" accessibilityLabel="Back" onPress={() => router.back()} hitSlop={6} style={styles.back}>
@@ -195,6 +197,7 @@ export default function Playground() {
         </View>
       ) : null}
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
