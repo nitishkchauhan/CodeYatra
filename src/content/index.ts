@@ -23,7 +23,8 @@ import { C_LESSONS } from './tracks/c';
 import { CBSE_LESSONS } from './tracks/cbse';
 import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
 import { CSS_MORE } from './tracks/cssMore';
-import { balanced, binarySearch, DSA_LESSONS, firstRepeat } from './tracks/dsa';
+import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
+import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS } from './tracks/git';
 import { HTML_MORE } from './tracks/htmlMore';
 import { JAVA_LESSONS } from './tracks/java';
@@ -246,6 +247,7 @@ const ALL: Lesson[] = [
   ...C_LESSONS,
   ...JAVA_LESSONS,
   ...DSA_LESSONS,
+  DSA_PROJECT,
   ...SQL_LESSONS,
   SQL_PROJECT,
   ...GIT_LESSONS,
@@ -672,22 +674,26 @@ export const STAGES: Stage[] = [
     short: 'DSA',
     sub: 'Think in algorithms',
     audience: 'B.Tech · BCA · Placements',
-    blurb: 'Big-O, searching, sorting, stacks, queues, hashing and recursion, in Python.',
+    blurb: '13 modules and a mock coding round in Python: Big-O, arrays, searching, sorting, hashing, two pointers, sliding window, prefix sums, stacks, queues, linked lists and recursion.',
     color: '#6D28D9',
     soft: '#F1EBFE',
     accent: '#C4B5FD',
     icon: 'M12 4v4 M6 12h12 M6 12v4 M18 12v4 M12 8v4',
     units: [
-      unit('dsa1', 'Big-O', ref('dsa-bigo', 'Big-O: how code scales', 'Read + predict · 6 min')),
-      unit('dsa2', 'Linear search', ref('dsa-linear', 'Linear search', 'Read + code editor · 6 min')),
-      unit('dsa3', 'Binary search', ref('dsa-binary', 'Binary search', 'Read + code editor · 8 min')),
-      unit('dsa4', 'Sorting', ref('dsa-sort', 'Sorting', 'Read + find the bug · 7 min')),
-      unit('dsa5', 'Stacks', ref('dsa-stack', 'Stacks', 'Read + code editor · 8 min')),
-      unit('dsa6', 'Queues', ref('dsa-queue', 'Queues', 'Read + predict · 6 min')),
-      unit('dsa7', 'Hashing', ref('dsa-hash', 'Hashing with sets and dicts', 'Read + code editor · 7 min')),
-      unit('dsa8', 'Two pointers', ref('dsa-pointers', 'Two pointers', 'Read + code editor · 7 min')),
-      unit('dsa9', 'Recursion', ref('dsa-recursion', 'Recursion', 'Read + find the bug · 7 min')),
-      unit('dsa10', 'Linked lists', ref('dsa-linked', 'Linked lists', 'Read + predict · 7 min')),
+      unit('dsa1', 'Big-O', ref('dsa-bigo', 'Big-O: how code scales', 'Lesson + code editor · 9 min')),
+      unit('dsa11', 'Arrays and strings', ref('dsa-arrays', 'Arrays and strings', 'Lesson + code editor · 9 min')),
+      unit('dsa2', 'Linear search', ref('dsa-linear', 'Linear search', 'Lesson + code editor · 8 min')),
+      unit('dsa3', 'Binary search', ref('dsa-binary', 'Binary search', 'Lesson + code editor · 9 min')),
+      unit('dsa4', 'Sorting', ref('dsa-sort', 'Sorting', 'Lesson + code editor · 9 min')),
+      unit('dsa7', 'Hashing', ref('dsa-hash', 'Hashing with sets and dicts', 'Lesson + code editor · 9 min')),
+      unit('dsa8', 'Two pointers', ref('dsa-pointers', 'Two pointers', 'Lesson + code editor · 9 min')),
+      unit('dsa12', 'Sliding window', ref('dsa-window', 'Sliding window', 'Lesson + code editor · 9 min')),
+      unit('dsa13', 'Prefix sums', ref('dsa-prefix', 'Prefix sums', 'Lesson + code editor · 8 min')),
+      unit('dsa5', 'Stacks', ref('dsa-stack', 'Stacks', 'Lesson + code editor · 9 min')),
+      unit('dsa6', 'Queues', ref('dsa-queue', 'Queues', 'Lesson + code editor · 9 min')),
+      unit('dsa10', 'Linked lists', ref('dsa-linked', 'Linked lists', 'Lesson + code editor · 10 min')),
+      unit('dsa9', 'Recursion', ref('dsa-recursion', 'Recursion', 'Lesson + code editor · 9 min')),
+      unit('dsa14', 'Project', ref('dsa-project', 'Project: a mock coding round', 'Project · 3 problems · 25 min')),
     ],
     practice: [
       { id: 'x-dsa-binary', title: 'Binary search', kind: 'Code editor', difficulty: 'Medium', xp: 15 },

@@ -55,7 +55,7 @@ export const dsaBasicsStop: PathStop = {
   id: 'dsa-basics',
   title: 'DSA for interviews',
   why: 'Big-O, searching, sorting and hashing: the coding round in almost every Indian company’s hiring process.',
-  modules: ['dsa-bigo', 'dsa-linear', 'dsa-binary', 'dsa-sort', 'dsa-hash'],
+  modules: ['dsa-bigo', 'dsa-arrays', 'dsa-binary', 'dsa-sort', 'dsa-hash', 'dsa-pointers', 'dsa-window'],
 };
 
 export const interviewStop = (why: string): PathStop => ({

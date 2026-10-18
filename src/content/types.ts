@@ -41,7 +41,7 @@ export type ConceptStep = {
   title: string;
   body: string;
   /** An interactive diagram shown with the card. The Python ones step through code. */
-  visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps' | 'variables' | 'listIndex' | 'callFlow' | 'routeTree' | 'serverClient' | 'requestFlow' | 'sqlOrder' | 'joinMatch';
+  visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps' | 'variables' | 'listIndex' | 'callFlow' | 'routeTree' | 'serverClient' | 'requestFlow' | 'sqlOrder' | 'joinMatch' | 'bigO' | 'binarySearch' | 'bubbleSort' | 'stackQueue' | 'linkedList' | 'slidingWindow';
   code?: CodeSample[];
   /** "Watch it run": highlights a line once per round and shows the loop variable. */
   demo?: {

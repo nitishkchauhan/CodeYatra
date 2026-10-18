@@ -9,6 +9,7 @@ import { colors, fonts } from '@/theme';
 import { RequestFlow, RouteTree, ServerClient } from './NextVisuals';
 import { CallFlow, ListIndex, VariableBoxes } from './PyVisuals';
 import { JoinMatch, SqlOrder } from './SqlVisuals';
+import { BigO, BinarySearchSteps, BubbleSortSteps, LinkedListVis, SlidingWindowSteps, StackQueue } from './DsaVisuals';
 
 function Panel({ label, tint, labelColor, children, footer, footerColor }: {
   label: string;
@@ -42,6 +43,12 @@ export function ConceptVisual({ kind }: { kind: NonNullable<ConceptStep['visual'
   if (kind === 'requestFlow') return <RequestFlow />;
   if (kind === 'sqlOrder') return <SqlOrder />;
   if (kind === 'joinMatch') return <JoinMatch />;
+  if (kind === 'bigO') return <BigO />;
+  if (kind === 'binarySearch') return <BinarySearchSteps />;
+  if (kind === 'bubbleSort') return <BubbleSortSteps />;
+  if (kind === 'stackQueue') return <StackQueue />;
+  if (kind === 'linkedList') return <LinkedListVis />;
+  if (kind === 'slidingWindow') return <SlidingWindowSteps />;
   if (kind === 'loopCompare') {
     return (
       <View style={styles.row}>
