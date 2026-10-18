@@ -37,7 +37,7 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse'])('%s follows Lesson v2', (track) => {
+describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
@@ -50,7 +50,8 @@ describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 
     expect(types).toContain('try');
     expect(types).toContain('mistake');
     // A coding exercise last: in the code editor, or the live web page builder for DOM work.
-    expect(['editor', 'web']).toContain(types.at(-1));
+    // Logic & Blocks' first modules end with a Yatri block puzzle instead.
+    expect(track === 'foundations' ? ['editor', 'puzzle'] : ['editor', 'web']).toContain(types.at(-1));
     expect(lesson.learned).toHaveLength(3);
     for (const s of lesson.steps) if (s.type === 'concept') expect(s.body.split(/\s+/).length).toBeLessThanOrEqual(60);
     expect(lesson.reading?.length).toBeGreaterThan(0);

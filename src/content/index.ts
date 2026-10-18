@@ -1,5 +1,5 @@
-import { FOUNDATIONS_LESSONS, timesTable } from './foundations';
-import { FOUNDATIONS_MORE } from './foundations2';
+import { timesTable } from './foundations';
+import { LOGIC_FOUNDATIONS, LOGIC_PROJECT } from './tracks/logicFoundations';
 import { apiHandler, FULLSTACK_MORE } from './fullstack2';
 import { cheapestTrain, countVowels, PYTHON_MORE } from './python2';
 import { countSeats, styleButton } from './web2';
@@ -30,7 +30,6 @@ import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
 import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS } from './tracks/git';
 import { JAVA_LESSONS } from './tracks/java';
-import { LOGIC_MORE } from './tracks/logicMore';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
@@ -222,8 +221,8 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
 ];
 
 const ALL: Lesson[] = [
-  ...FOUNDATIONS_LESSONS,
-  ...FOUNDATIONS_MORE,
+  ...LOGIC_FOUNDATIONS,
+  LOGIC_PROJECT,
   ...PYTHON_FOUNDATIONS,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
@@ -239,7 +238,6 @@ const ALL: Lesson[] = [
   ...NODE_LESSONS,
   ...NEXT_FOUNDATIONS,
   NEXT_PROJECT,
-  ...LOGIC_MORE,
   ...PYTHON_MORE_2,
   ...NODE_MORE,
   ...C_LESSONS,
@@ -310,22 +308,23 @@ export const STAGES: Stage[] = [
     short: 'Logic',
     sub: 'Think like a programmer',
     audience: 'Class 8+',
-    blurb: 'Puzzles that build programmer thinking before any syntax.',
+    blurb: '10 modules and a project: algorithms, loops and patterns with Yatri’s block puzzles, then variables, conditions, functions and debugging in real Python.',
     color: '#4B3FD8',
     soft: '#EEECFD',
     accent: '#A9A2F0',
     icon: 'M4 5h10v4H4z M8 12h10v4H8z M4 19h7',
     units: [
-      unit('f-u1', 'Sequences', ref('f-seq-1', 'First steps', 'Puzzle · 4 min')),
-      unit('f-u2', 'Turns', ref('f-seq-2', 'Turn the corner', 'Puzzle · 5 min')),
-      unit('f-u7', 'Variables', ref('f-var-1', 'Variables are labelled boxes', 'Read + predict · 5 min')),
-      unit('f-u3', 'Loops', ref('f-loop-1', 'Repeat with loops', 'Read + puzzle · 6 min')),
-      unit('f-u8', 'While loops', ref('f-while-1', 'Repeat until done', 'Read + order lines · 6 min')),
-      unit('f-u4', 'Patterns', ref('f-loop-2', 'Spot the pattern', 'Read + puzzle · 6 min')),
-      unit('f-u9', 'Nested loops', ref('f-nest-1', 'Loops inside loops', 'Read + predict · 6 min')),
-      unit('f-u5', 'Functions', ref('f-fn-1', 'Make your own block', 'Read + code · 7 min')),
-      unit('f-u6', 'Conditions', ref('f-if-1', 'If there is a gem…', 'Read + code · 7 min')),
-      unit('f-u10', 'Debugging', ref('f-debug-1', 'Debug like a pro', 'Read + find the bug · 6 min')),
+      unit('f-u1', 'Algorithms', ref('f-seq-1', 'Algorithms: step-by-step instructions', 'Lesson + puzzle · 5 min')),
+      unit('f-u2', 'Turns', ref('f-seq-2', 'Turns, direction and order', 'Lesson + puzzle · 5 min')),
+      unit('f-u3', 'Loops', ref('f-loop-1', 'Loops: repeat without rewriting', 'Lesson + puzzle · 6 min')),
+      unit('f-u4', 'Patterns', ref('f-loop-2', 'Patterns and decomposition', 'Lesson + puzzle · 6 min')),
+      unit('f-u7', 'Variables', ref('f-var-1', 'Variables: labelled boxes', 'Lesson + Python · 6 min')),
+      unit('f-u6', 'Conditions', ref('f-if-1', 'Conditions: making decisions', 'Lesson + Python · 7 min')),
+      unit('f-u8', 'While loops', ref('f-while-1', 'While loops: repeat until done', 'Lesson + Python · 6 min')),
+      unit('f-u9', 'Nested loops', ref('f-nest-1', 'Loops inside loops', 'Lesson + Python · 7 min')),
+      unit('f-u5', 'Functions', ref('f-fn-1', 'Functions: make your own block', 'Lesson + Python · 7 min')),
+      unit('f-u10', 'Debugging', ref('f-debug-1', 'Debugging like a pro', 'Lesson + Python · 6 min')),
+      unit('f-u11', 'Project', ref('f-project', 'Project: Yatri’s Gem Bazaar', 'Project · puzzle + Python · 15 min')),
     ],
     practice: [
       { id: 'x-corner', title: 'Corner run', kind: 'Blocks puzzle', difficulty: 'Easy', xp: 15 },

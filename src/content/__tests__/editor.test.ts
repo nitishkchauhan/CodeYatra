@@ -37,7 +37,8 @@ function runPy(code: string): string[] {
   writeFileSync(file, code);
   try {
     // Its own folder, because some lessons write files; UTF-8, because some print ₹.
-    return execFileSync(python!, [file], { encoding: 'utf8', cwd: dir, env: { ...process.env, PYTHONIOENCODING: 'utf-8' } }).trimEnd().split(/\r?\n/);
+    // A time limit, so a starter that loops forever fails instead of hanging the suite.
+    return execFileSync(python!, [file], { encoding: 'utf8', cwd: dir, env: { ...process.env, PYTHONIOENCODING: 'utf-8' }, timeout: 15000 }).trimEnd().split(/\r?\n/);
   } catch (e) {
     return String((e as { stdout?: string }).stdout ?? '').trimEnd().split(/\r?\n/);
   }

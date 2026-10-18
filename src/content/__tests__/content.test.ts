@@ -83,7 +83,7 @@ describe('stages', () => {
   });
 
   it('finds lessons by id', () => {
-    expect(getLesson('f-loop-1')?.steps.map((s) => s.type)).toEqual(['concept', 'quiz', 'puzzle', 'code']);
+    expect(getLesson('f-loop-1')?.steps.map((s) => s.type)).toEqual(['hook', 'concept', 'concept', 'concept', 'try', 'mistake', 'predict', 'quiz', 'puzzle']);
     expect(getLesson('missing')).toBeUndefined();
   });
 });

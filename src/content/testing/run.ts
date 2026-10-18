@@ -38,7 +38,7 @@ export function runPy(code: string): string[] {
   const file = join(tmp(), 'main.py');
   writeFileSync(file, code);
   try {
-    return lines(execFileSync(python!, [file], { encoding: 'utf8', cwd: dirname(file), env: PY_ENV }));
+    return lines(execFileSync(python!, [file], { encoding: 'utf8', cwd: dirname(file), env: PY_ENV, timeout: 15000 }));
   } catch (e) {
     return lines(String((e as { stdout?: string }).stdout ?? ''));
   }
