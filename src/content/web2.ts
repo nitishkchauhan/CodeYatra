@@ -1,4 +1,4 @@
-import type { CodeStep, EditorStep, Lesson } from './types';
+import type { CodeStep, EditorStep } from './types';
 
 export const linkAndImage: CodeStep = {
   type: 'code',
@@ -78,34 +78,3 @@ export const countSeats: EditorStep = {
   hint: 'for (const c of coaches) { if (c > 0) total += c; }',
   solution: 'function freeSeats(coaches) {\n  let total = 0;\n  for (const c of coaches) {\n    if (c > 0) total += c;\n  }\n  return total;\n}\n',
 };
-
-export const WEB_MORE: Lesson[] = [
-  {
-    id: 'w-css-1',
-    title: 'Colours and spacing',
-    kind: 'lesson',
-    minutes: 7,
-    skill: 'web',
-    learned: ['CSS styles HTML by selector', 'Colours can be hex codes', 'Good contrast keeps text readable'],
-    steps: [
-      {
-        type: 'concept',
-        kicker: 'CONCEPT · CSS',
-        title: 'CSS makes pages look good',
-        body: 'A CSS rule picks elements with a selector, like .btn, then sets properties such as background, color and border-radius.',
-        code: [{ lang: 'css', label: 'CSS', lines: ['.btn {', '  background: #4B3FD8;', '  color: white;', '  border-radius: 12px;', '}'] }],
-        tip: 'Pick text colours that stand out from the background. Dark on saffron, white on indigo.',
-      },
-      {
-        type: 'quiz',
-        prompt: 'Which property changes the text colour?',
-        options: ['color', 'background', 'font', 'text'],
-        mono: true,
-        answer: 0,
-        right: 'color sets the text colour. background sets what is behind it.',
-        wrong: 'In CSS, text colour is simply color.',
-      },
-      styleButton,
-    ],
-  },
-];

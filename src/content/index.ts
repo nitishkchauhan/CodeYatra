@@ -2,14 +2,15 @@ import { FOUNDATIONS_LESSONS, timesTable } from './foundations';
 import { FOUNDATIONS_MORE } from './foundations2';
 import { apiHandler, FULLSTACK_MORE } from './fullstack2';
 import { cheapestTrain, countVowels, PYTHON_MORE } from './python2';
-import { countSeats, styleButton, WEB_MORE } from './web2';
+import { countSeats, styleButton } from './web2';
 import { FULLSTACK_LESSONS, trainCardProps } from './fullstack';
 import { trainFare } from './python';
 import { dailyLesson, reviewLesson } from './daily';
 import { drillBase, drillLesson, DRILL_PREFIX } from './drills';
 import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
 import { ticketHtml } from './web';
-import { CSS_LESSONS, flexRow } from './styling';
+import { flexRow } from './styling';
+import { CSS_FOUNDATIONS, CSS_PROJECT } from './tracks/cssFoundations';
 import { searchForm } from './html';
 import { HTML_FOUNDATIONS, HTML_PROJECT } from './tracks/htmlFoundations';
 import { cheapTickets } from './js';
@@ -24,7 +25,6 @@ import { findPath } from './paths';
 import { C_LESSONS } from './tracks/c';
 import { CBSE_LESSONS } from './tracks/cbse';
 import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
-import { CSS_MORE } from './tracks/cssMore';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
 import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS } from './tracks/git';
@@ -223,7 +223,6 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
 const ALL: Lesson[] = [
   ...FOUNDATIONS_LESSONS,
   ...FOUNDATIONS_MORE,
-  ...WEB_MORE,
   ...PYTHON_FOUNDATIONS,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
@@ -231,7 +230,8 @@ const ALL: Lesson[] = [
   ...FULLSTACK_MORE,
   ...HTML_FOUNDATIONS,
   HTML_PROJECT,
-  ...CSS_LESSONS,
+  ...CSS_FOUNDATIONS,
+  CSS_PROJECT,
   ...JS_FOUNDATIONS,
   JS_PROJECT,
   ...REACT_LESSONS,
@@ -239,7 +239,6 @@ const ALL: Lesson[] = [
   ...NEXT_FOUNDATIONS,
   NEXT_PROJECT,
   ...LOGIC_MORE,
-  ...CSS_MORE,
   ...PYTHON_MORE_2,
   ...REACT_MORE,
   ...NODE_MORE,
@@ -409,22 +408,25 @@ export const STAGES: Stage[] = [
     short: 'CSS',
     sub: 'Colours, spacing and layout',
     audience: 'Class 9+',
-    blurb: 'Make pages beautiful and responsive, watching every change live.',
+    blurb: '12 modules and a project with a live preview: selectors, units, type, box model, flexbox, grid, positioning, states, responsive design, motion and variables.',
     color: '#1572B6',
     soft: '#E3EFF9',
     accent: '#93C5FD',
     icon: 'M4 4h16l-1.5 15L12 21l-6.5-2z M8 8h8l-.5 6-3.5 1-3.5-1',
     units: [
-      unit('c-u1', 'Colours', ref('w-css-1', 'Colours and spacing', 'Read + live preview · 7 min')),
-      unit('c-u2', 'Selectors', ref('c-sel-1', 'Selectors', 'Read + practice · 5 min')),
-      unit('c-u6', 'Typography', ref('c-text-1', 'Typography', 'Read + build · 6 min')),
-      unit('c-u3', 'Box model', ref('c-box-1', 'The box model', 'Read + live preview · 6 min')),
-      unit('c-u4', 'Flexbox', ref('c-flex-1', 'Flexbox layout', 'Read + live preview · 7 min')),
-      unit('c-u7', 'Grid', ref('c-grid-1', 'CSS Grid', 'Read + build · 7 min')),
-      unit('c-u8', 'Positioning', ref('c-pos-1', 'Positioning', 'Read + build · 7 min')),
-      unit('c-u5', 'Responsive', ref('c-resp-1', 'Responsive design', 'Read + live preview · 6 min')),
-      unit('c-u9', 'Motion', ref('c-motion-1', 'Hover and transitions', 'Read + build · 6 min')),
-      unit('c-u10', 'Variables', ref('c-vars-1', 'CSS variables', 'Read + build · 6 min')),
+      unit('c-u1', 'First styles', ref('w-css-1', 'What CSS is and how it works', 'Lesson + live page · 7 min')),
+      unit('c-u2', 'Selectors', ref('c-sel-1', 'Selectors and specificity', 'Lesson + live page · 7 min')),
+      unit('c-u11', 'Units', ref('c-units', 'Colours, units and sizes', 'Lesson + live page · 7 min')),
+      unit('c-u6', 'Typography', ref('c-text-1', 'Typography', 'Lesson + live page · 7 min')),
+      unit('c-u3', 'Box model', ref('c-box-1', 'The box model', 'Lesson + live page · 7 min')),
+      unit('c-u4', 'Flexbox', ref('c-flex-1', 'Flexbox', 'Lesson + live page · 7 min')),
+      unit('c-u7', 'Grid', ref('c-grid-1', 'CSS Grid', 'Lesson + live page · 7 min')),
+      unit('c-u8', 'Positioning', ref('c-pos-1', 'Positioning and stacking', 'Lesson + live page · 7 min')),
+      unit('c-u12', 'States', ref('c-pseudo', 'Pseudo-classes and pseudo-elements', 'Lesson + live page · 7 min')),
+      unit('c-u5', 'Responsive', ref('c-resp-1', 'Responsive design', 'Lesson + live page · 7 min')),
+      unit('c-u9', 'Motion', ref('c-motion-1', 'Transitions and animations', 'Lesson + live page · 7 min')),
+      unit('c-u10', 'Variables', ref('c-vars-1', 'CSS variables and maintainable CSS', 'Lesson + live page · 7 min')),
+      unit('c-u13', 'Project', ref('c-project', 'Project: style the landing page', 'Project · 3 steps · 25 min')),
     ],
     practice: [
       { id: 'x-style', title: 'Style the ticket', kind: 'CSS', difficulty: 'Easy', xp: 15 },
