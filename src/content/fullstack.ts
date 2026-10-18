@@ -1,4 +1,4 @@
-import type { CodeStep, Lesson } from './types';
+import type { CodeStep } from './types';
 
 export const trainCardProps: CodeStep = {
   type: 'code',
@@ -32,40 +32,3 @@ export const trainCardProps: CodeStep = {
     return { pass: checks.every((c) => c.ok), checks, preview: { kind: 'react', from, to, seats } };
   },
 };
-
-export const FULLSTACK_LESSONS: Lesson[] = [
-  {
-    id: 'r-comp-1',
-    title: 'Components and props',
-    kind: 'lesson',
-    minutes: 7,
-    skill: 'react',
-    learned: ['A component is a function that returns UI', 'Props are a component’s inputs', 'One component, many cards'],
-    steps: [
-      {
-        type: 'concept',
-        kicker: 'CONCEPT · REACT',
-        title: 'Components are reusable pieces of UI',
-        body: 'A React component is a function that returns UI. Props are the inputs you pass in, so one component can show different data.',
-        visual: 'componentProps',
-        code: [
-          {
-            lang: 'jsx',
-            label: 'React',
-            lines: ['function TrainCard({ from, to }) {', '  return <h3>{from} → {to}</h3>;', '}', '', '<TrainCard from="Delhi" to="Agra" />'],
-          },
-        ],
-        tip: 'Same component, different props, different cards. Like one ticket design printed for many trips.',
-      },
-      {
-        type: 'quiz',
-        prompt: 'In <TrainCard from="Pune" />, what is from?',
-        options: ['A prop', 'A component', 'A CSS class', 'A file name'],
-        answer: 0,
-        right: 'from is a prop: an input passed into the TrainCard component.',
-        wrong: 'TrainCard is the component; from="Pune" passes a prop into it.',
-      },
-      trainCardProps,
-    ],
-  },
-];

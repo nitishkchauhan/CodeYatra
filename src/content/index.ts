@@ -3,7 +3,7 @@ import { FOUNDATIONS_MORE } from './foundations2';
 import { apiHandler, FULLSTACK_MORE } from './fullstack2';
 import { cheapestTrain, countVowels, PYTHON_MORE } from './python2';
 import { countSeats, styleButton } from './web2';
-import { FULLSTACK_LESSONS, trainCardProps } from './fullstack';
+import { trainCardProps } from './fullstack';
 import { trainFare } from './python';
 import { dailyLesson, reviewLesson } from './daily';
 import { drillBase, drillLesson, DRILL_PREFIX } from './drills';
@@ -18,7 +18,8 @@ import { JS_FOUNDATIONS, JS_PROJECT } from './tracks/jsFoundations';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute, NODE_LESSONS } from './node';
 import { canteenBill } from './python3';
-import { REACT_LESSONS, trainList } from './react';
+import { trainList } from './react';
+import { REACT_FOUNDATIONS, REACT_PROJECT } from './tracks/reactFoundations';
 import { PROJECTS } from './projects';
 import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
 import { findPath } from './paths';
@@ -34,7 +35,7 @@ import { PLACEMENT_LESSONS } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
-import { NODE_MORE, REACT_MORE } from './tracks/stackMore';
+import { NODE_MORE } from './tracks/stackMore';
 import { NEXT_FOUNDATIONS, NEXT_PROJECT } from './tracks/nextFoundations';
 
 export * from './types';
@@ -226,7 +227,6 @@ const ALL: Lesson[] = [
   ...PYTHON_FOUNDATIONS,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
-  ...FULLSTACK_LESSONS,
   ...FULLSTACK_MORE,
   ...HTML_FOUNDATIONS,
   HTML_PROJECT,
@@ -234,13 +234,13 @@ const ALL: Lesson[] = [
   CSS_PROJECT,
   ...JS_FOUNDATIONS,
   JS_PROJECT,
-  ...REACT_LESSONS,
+  ...REACT_FOUNDATIONS,
+  REACT_PROJECT,
   ...NODE_LESSONS,
   ...NEXT_FOUNDATIONS,
   NEXT_PROJECT,
   ...LOGIC_MORE,
   ...PYTHON_MORE_2,
-  ...REACT_MORE,
   ...NODE_MORE,
   ...C_LESSONS,
   ...JAVA_LESSONS,
@@ -582,22 +582,26 @@ export const STAGES: Stage[] = [
     short: 'React',
     sub: 'Components, state and effects',
     audience: 'B.Tech · BCA',
-    blurb: 'Build interactive UIs the way modern apps do.',
+    blurb: '13 modules and a project for React 19: components, props, state, events, lists, forms, immutable updates, composition, shared state, effects, custom hooks, context and reducers.',
     color: '#0E7490',
     soft: '#DDF4F9',
     accent: '#67E8F9',
     icon: 'M3 12c0-2 4-4 9-4s9 2 9 4-4 4-9 4-9-2-9-4z M12 11v2',
     units: [
-      unit('r-u1', 'Components', ref('r-comp-1', 'Components and props', 'Read + live preview · 7 min')),
-      unit('r-u2', 'State', ref('r-state-1', 'State with useState', 'Read + practice · 8 min')),
-      unit('r-u6', 'Conditional UI', ref('r-cond-1', 'Conditional rendering', 'Read + practice · 6 min')),
-      unit('r-u3', 'Lists', ref('r-list-1', 'Lists and keys', 'Read + practice · 6 min')),
-      unit('r-u4', 'Events', ref('r-event-1', 'Events and forms', 'Read + practice · 7 min')),
-      unit('r-u7', 'Composition', ref('r-children-1', 'Composition with children', 'Read + order lines · 6 min')),
-      unit('r-u8', 'Shared state', ref('r-lift-1', 'Lifting state up', 'Read + find the bug · 7 min')),
-      unit('r-u5', 'Effects', ref('r-effect-1', 'Fetching data with useEffect', 'Read + practice · 8 min')),
-      unit('r-u9', 'Custom hooks', ref('r-hooks-1', 'Custom hooks', 'Read + find the bug · 7 min')),
-      unit('r-u10', 'Context', ref('r-context-1', 'Context', 'Read + practice · 7 min')),
+      unit('r-u1', 'Components', ref('r-comp-1', 'Components and JSX', 'Lesson + code · 8 min')),
+      unit('r-u11', 'Props', ref('r-props', 'Props', 'Lesson + code · 8 min')),
+      unit('r-u2', 'State', ref('r-state-1', 'State with useState', 'Lesson + code · 8 min')),
+      unit('r-u4', 'Events', ref('r-event-1', 'Events', 'Lesson + code · 8 min')),
+      unit('r-u6', 'Conditional UI', ref('r-cond-1', 'Conditional rendering', 'Lesson + code · 8 min')),
+      unit('r-u3', 'Lists', ref('r-list-1', 'Lists and keys', 'Lesson + code · 8 min')),
+      unit('r-u12', 'Forms', ref('r-form', 'Forms and controlled inputs', 'Lesson + code · 8 min')),
+      unit('r-u13', 'Updating state', ref('r-immut', 'Updating objects and arrays in state', 'Lesson + code · 8 min')),
+      unit('r-u7', 'Composition', ref('r-children-1', 'Composition with children', 'Lesson + code · 8 min')),
+      unit('r-u8', 'Shared state', ref('r-lift-1', 'Sharing state between components', 'Lesson + code · 8 min')),
+      unit('r-u5', 'Effects', ref('r-effect-1', 'Effects', 'Lesson + code · 8 min')),
+      unit('r-u9', 'Custom hooks', ref('r-hooks-1', 'Custom hooks and the rules of hooks', 'Lesson + code · 8 min')),
+      unit('r-u10', 'Context', ref('r-context-1', 'Context and reducers', 'Lesson + code · 8 min')),
+      unit('r-u14', 'Project', ref('r-project', 'Project: a course enquiry app', 'Project · 3 steps · 25 min')),
     ],
     practice: [
       { id: 'x-props', title: 'TrainCard props', kind: 'React', difficulty: 'Easy', xp: 15 },

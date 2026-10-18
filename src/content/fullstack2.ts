@@ -46,35 +46,6 @@ export const apiHandler: EditorStep = {
 
 export const FULLSTACK_MORE: Lesson[] = [
   {
-    id: 'r-state-1',
-    title: 'State with useState',
-    kind: 'lesson',
-    minutes: 8,
-    skill: 'react',
-    learned: ['State is data that can change', 'useState returns the value and a setter', 'Calling the setter re-renders the UI'],
-    steps: [
-      {
-        type: 'concept',
-        kicker: 'CONCEPT · REACT STATE',
-        title: 'State remembers things for your UI',
-        body: 'useState gives you a value and a function to change it. When you call the function, React redraws the component with the new value.',
-        visual: 'componentProps',
-        code: [{ lang: 'jsx', label: 'React', lines: ['const [count, setCount] = useState(0);', '', '<button onClick={() => setCount(count + 1)}>', '  Tapped {count} times', '</button>'] }],
-        tip: 'Never change state directly (count = 5). Always use the setter.',
-      },
-      {
-        type: 'quiz',
-        prompt: 'In const [seats, setSeats] = useState(4), what is seats at first?',
-        options: ['4', '0', 'undefined', 'A function'],
-        mono: true,
-        answer: 0,
-        right: 'The value you pass to useState is the starting state: 4.',
-        wrong: 'useState(4) starts seats at 4. setSeats is the function.',
-      },
-      counterState,
-    ],
-  },
-  {
     id: 'n-api-1',
     title: 'Your first API route',
     kind: 'lesson',
