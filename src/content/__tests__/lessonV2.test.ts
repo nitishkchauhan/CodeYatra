@@ -37,7 +37,7 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe.each(['next', 'sql', 'dsa'])('%s follows Lesson v2', (track) => {
+describe.each(['next', 'sql', 'dsa', 'js'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
@@ -49,7 +49,8 @@ describe.each(['next', 'sql', 'dsa'])('%s follows Lesson v2', (track) => {
     expect(types.filter((t) => t === 'concept')).toHaveLength(3);
     expect(types).toContain('try');
     expect(types).toContain('mistake');
-    expect(types.at(-1)).toBe('editor');
+    // A coding exercise last: in the code editor, or the live web page builder for DOM work.
+    expect(['editor', 'web']).toContain(types.at(-1));
     expect(lesson.learned).toHaveLength(3);
     for (const s of lesson.steps) if (s.type === 'concept') expect(s.body.split(/\s+/).length).toBeLessThanOrEqual(60);
     expect(lesson.reading?.length).toBeGreaterThan(0);
@@ -74,6 +75,20 @@ describe('common mistakes', () => {
       // A query that returns nothing is shown as "(no rows)".
       else expect(wrongRun.output.join('\n') || '(no rows)').toBe(step.error);
       expect(runPyFull(sqlProgram(step.right.join('\n'))).error).toBe('');
+      return;
+    }
+    if (step.lang === 'javascript') {
+      // JavaScript mistakes run too: either the exact error the engine throws, or what it wrongly prints.
+      let error = '';
+      let out: string[] = [];
+      try {
+        out = runJs(step.wrong.join('\n'));
+      } catch (e) {
+        error = `${(e as Error).name}: ${(e as Error).message}`;
+      }
+      if (/Error\b/.test(step.error)) expect(error).toBe(step.error);
+      else expect(out.join('\n')).toBe(step.error);
+      expect(() => runJs(step.right.join('\n'))).not.toThrow();
       return;
     }
     if (step.lang !== 'python' || !python) return;

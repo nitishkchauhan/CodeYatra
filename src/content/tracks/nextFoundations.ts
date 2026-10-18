@@ -639,7 +639,7 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
     mistake({
       kicker: OOPS,
       title: 'Always answering 200',
-      lang: 'javascript',
+      lang: 'jsx',
       note: 'What the app sees:',
       wrong: ['export async function POST(request) {', '  const body = await request.json();', '  if (!body.name) return Response.json({ error: "name is required" });', '  // …save…', '}'],
       error: 'Status 200 OK for a failed request. The teacher’s app thinks the student was saved.',

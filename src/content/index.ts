@@ -11,7 +11,8 @@ import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
 import { ticketHtml, WEB_LESSONS } from './web';
 import { CSS_LESSONS, flexRow } from './styling';
 import { HTML_LESSONS, searchForm } from './html';
-import { cheapTickets, JS_LESSONS } from './js';
+import { cheapTickets } from './js';
+import { JS_FOUNDATIONS, JS_PROJECT } from './tracks/jsFoundations';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute, NODE_LESSONS } from './node';
 import { canteenBill } from './python3';
@@ -28,7 +29,6 @@ import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS } from './tracks/git';
 import { HTML_MORE } from './tracks/htmlMore';
 import { JAVA_LESSONS } from './tracks/java';
-import { JS_MORE } from './tracks/jsMore';
 import { LOGIC_MORE } from './tracks/logicMore';
 import { PLACEMENT_LESSONS } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
@@ -232,7 +232,8 @@ const ALL: Lesson[] = [
   ...FULLSTACK_MORE,
   ...HTML_LESSONS,
   ...CSS_LESSONS,
-  ...JS_LESSONS,
+  ...JS_FOUNDATIONS,
+  JS_PROJECT,
   ...REACT_LESSONS,
   ...NODE_LESSONS,
   ...NEXT_FOUNDATIONS,
@@ -240,7 +241,6 @@ const ALL: Lesson[] = [
   ...LOGIC_MORE,
   ...HTML_MORE,
   ...CSS_MORE,
-  ...JS_MORE,
   ...PYTHON_MORE_2,
   ...REACT_MORE,
   ...NODE_MORE,
@@ -439,22 +439,25 @@ export const STAGES: Stage[] = [
     short: 'JavaScript',
     sub: 'The language of the web',
     audience: 'Class 10+',
-    blurb: 'Type real JavaScript in a code editor and pass automatic tests.',
+    blurb: '12 modules and a project: values, operators, functions and closures, array methods, objects, classes, errors, the DOM and async, all run and tested on your phone.',
     color: '#A16207',
     soft: '#FEF7D6',
     accent: '#FDE047',
     icon: 'M4 4h16v16H4z M10 9v6.5a1.5 1.5 0 01-3 0 M17 10a2 2 0 00-3.5 0c0 2.5 3.5 1.5 3.5 4a2 2 0 01-3.5 0',
     units: [
-      unit('j-u1', 'Variables', ref('j-var-1', 'Variables and strings', 'Read + code editor · 6 min')),
-      unit('j-u6', 'Decisions', ref('j-cond-1', 'Decisions', 'Read + code editor · 6 min')),
-      unit('j-u2', 'Loops', ref('w-js-1', 'Make the page think', 'Read + code editor · 8 min')),
-      unit('j-u3', 'Arrays', ref('j-arr-1', 'Arrays and filter', 'Read + code editor · 7 min')),
-      unit('j-u7', 'Arrow functions', ref('j-arrow-1', 'Arrow functions and callbacks', 'Read + code editor · 7 min')),
-      unit('j-u4', 'Objects', ref('j-obj-1', 'Objects', 'Read + code editor · 7 min')),
-      unit('j-u8', 'Classes', ref('j-class-1', 'Classes', 'Read + predict · 7 min')),
-      unit('j-u9', 'Errors', ref('j-error-1', 'Handling errors', 'Read + code editor · 7 min')),
-      unit('j-u5', 'The DOM', ref('j-dom-1', 'Events and the DOM', 'Read + practice · 6 min')),
-      unit('j-u10', 'Async', ref('j-async-1', 'Promises and async', 'Read + find the bug · 7 min')),
+      unit('j-u1', 'Variables', ref('j-var-1', 'Variables, values and console.log', 'Lesson + code editor · 8 min')),
+      unit('j-u11', 'Operators', ref('j-ops-1', 'Operators and comparisons', 'Lesson + code editor · 8 min')),
+      unit('j-u6', 'Decisions', ref('j-cond-1', 'Decisions: if, else and switch', 'Lesson + code editor · 8 min')),
+      unit('j-u2', 'Loops', ref('w-js-1', 'Loops: for, while and for…of', 'Lesson + code editor · 8 min')),
+      unit('j-u12', 'Functions', ref('j-fn-1', 'Functions, scope and closures', 'Lesson + code editor · 9 min')),
+      unit('j-u3', 'Arrays', ref('j-arr-1', 'Arrays and array methods', 'Lesson + code editor · 9 min')),
+      unit('j-u7', 'Callbacks', ref('j-arrow-1', 'Arrow functions, callbacks and modules', 'Lesson + code editor · 8 min')),
+      unit('j-u4', 'Objects', ref('j-obj-1', 'Objects, destructuring and spread', 'Lesson + code editor · 9 min')),
+      unit('j-u8', 'Classes', ref('j-class-1', 'Classes', 'Lesson + code editor · 8 min')),
+      unit('j-u9', 'Errors', ref('j-error-1', 'Handling errors', 'Lesson + code editor · 8 min')),
+      unit('j-u5', 'The DOM', ref('j-dom-1', 'The DOM, events and storage', 'Lesson + live page · 10 min')),
+      unit('j-u10', 'Async', ref('j-async-1', 'Promises, async/await and fetch', 'Lesson + code editor · 10 min')),
+      unit('j-u13', 'Project', ref('j-project', 'Project: expense tracker', 'Project · 4 steps · 25 min')),
     ],
     practice: [
       { id: 'x-seats', title: 'Count the seats', kind: 'Code editor', difficulty: 'Easy', xp: 15 },

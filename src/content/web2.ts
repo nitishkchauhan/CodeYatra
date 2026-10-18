@@ -136,33 +136,4 @@ export const WEB_MORE: Lesson[] = [
       styleButton,
     ],
   },
-  {
-    id: 'w-js-1',
-    title: 'Make the page think',
-    kind: 'lesson',
-    minutes: 8,
-    skill: 'web',
-    learned: ['JavaScript adds logic to pages', 'Loop over an array with for…of', 'Return a result from a function'],
-    steps: [
-      {
-        type: 'concept',
-        kicker: 'CONCEPT · JAVASCRIPT',
-        title: 'JavaScript brings pages to life',
-        body: 'HTML is the structure and CSS is the look. JavaScript is the brain: it can count, decide and react when someone taps a button.',
-        code: [{ lang: 'javascript', label: 'JavaScript', lines: ['const seats = [12, 0, 7];', 'let total = 0;', 'for (const s of seats) {', '  total += s;', '}', 'console.log(total); // 19'] }],
-        tip: 'Use const for values that never change and let for ones that do.',
-      },
-      {
-        type: 'quiz',
-        prompt: 'What does this print?',
-        code: { lang: 'javascript', label: 'JavaScript', lines: ['let total = 0;', 'for (const n of [2, 3, 4]) {', '  total += n;', '}', 'console.log(total);'] },
-        options: ['9', '234', '4', '0'],
-        mono: true,
-        answer: 0,
-        right: '2 + 3 + 4 = 9. += adds each number to total.',
-        wrong: 'total starts at 0 and each loop adds n: 2 + 3 + 4 = 9.',
-      },
-      countSeats,
-    ],
-  },
 ];
