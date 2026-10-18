@@ -1,6 +1,6 @@
 import { timesTable } from './foundations';
 import { LOGIC_FOUNDATIONS, LOGIC_PROJECT } from './tracks/logicFoundations';
-import { apiHandler, FULLSTACK_MORE } from './fullstack2';
+import { apiHandler } from './fullstack2';
 import { cheapestTrain, countVowels, PYTHON_MORE } from './python2';
 import { countSeats, styleButton } from './web2';
 import { trainCardProps } from './fullstack';
@@ -16,7 +16,8 @@ import { HTML_FOUNDATIONS, HTML_PROJECT } from './tracks/htmlFoundations';
 import { cheapTickets } from './js';
 import { JS_FOUNDATIONS, JS_PROJECT } from './tracks/jsFoundations';
 import { dynamicRoute, routeHandler } from './next';
-import { expressRoute, NODE_LESSONS } from './node';
+import { expressRoute } from './node';
+import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
 import { canteenBill } from './python3';
 import { trainList } from './react';
 import { REACT_FOUNDATIONS, REACT_PROJECT } from './tracks/reactFoundations';
@@ -34,7 +35,6 @@ import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
-import { NODE_MORE } from './tracks/stackMore';
 import { NEXT_FOUNDATIONS, NEXT_PROJECT } from './tracks/nextFoundations';
 
 export * from './types';
@@ -226,7 +226,6 @@ const ALL: Lesson[] = [
   ...PYTHON_FOUNDATIONS,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
-  ...FULLSTACK_MORE,
   ...HTML_FOUNDATIONS,
   HTML_PROJECT,
   ...CSS_FOUNDATIONS,
@@ -236,10 +235,10 @@ const ALL: Lesson[] = [
   ...REACT_FOUNDATIONS,
   REACT_PROJECT,
   ...NODE_LESSONS,
+  NODE_PROJECT,
   ...NEXT_FOUNDATIONS,
   NEXT_PROJECT,
   ...PYTHON_MORE_2,
-  ...NODE_MORE,
   ...C_LESSONS,
   ...JAVA_LESSONS,
   ...DSA_LESSONS,
@@ -629,16 +628,20 @@ export const STAGES: Stage[] = [
     accent: '#86EFAC',
     icon: 'M12 2l9 5v10l-9 5-9-5V7z',
     units: [
-      unit('n-u1', 'Modules', ref('n-intro-1', 'Node.js and modules', 'Read + practice · 6 min')),
-      unit('n-u6', 'npm', ref('n-npm-1', 'npm and packages', 'Read + order lines · 5 min')),
-      unit('n-u2', 'Async', ref('n-async-1', 'async and await', 'Read + practice · 7 min')),
-      unit('n-u7', 'Files', ref('n-fs-1', 'Reading and writing files', 'Read + predict · 6 min')),
-      unit('n-u3', 'Express', ref('n-express-1', 'Servers with Express', 'Read + practice · 8 min')),
-      unit('n-u8', 'Middleware', ref('n-middleware-1', 'Express middleware', 'Read + code editor · 7 min')),
-      unit('n-u4', 'JSON', ref('n-json-1', 'Working with JSON', 'Read + code editor · 7 min')),
-      unit('n-u5', 'API routes', ref('n-api-1', 'Your first API route', 'Read + code editor · 8 min')),
-      unit('n-u9', 'REST design', ref('n-rest-1', 'REST API design', 'Read + code editor · 7 min')),
-      unit('n-u10', 'Config', ref('n-env-1', 'Config and secrets', 'Read + predict · 5 min')),
+      unit('n-u1', 'Node.js', ref('n-intro-1', 'What Node.js is', 'Lesson + code · 7 min')),
+      unit('n-u11', 'Modules', ref('n-modules', 'Modules: import and export', 'Lesson + code · 8 min')),
+      unit('n-u6', 'npm', ref('n-npm-1', 'npm and packages', 'Lesson + code · 8 min')),
+      unit('n-u2', 'Async', ref('n-async-1', 'Asynchronous code and the event loop', 'Lesson + code · 9 min')),
+      unit('n-u7', 'Files', ref('n-fs-1', 'Files and paths', 'Lesson + code · 8 min')),
+      unit('n-u12', 'HTTP', ref('n-http', 'HTTP and a server with no packages', 'Lesson + code · 8 min')),
+      unit('n-u3', 'Express', ref('n-express-1', 'Express: routes', 'Lesson + code · 8 min')),
+      unit('n-u8', 'Middleware', ref('n-middleware-1', 'Express middleware and errors', 'Lesson + code · 8 min')),
+      unit('n-u4', 'JSON', ref('n-json-1', 'JSON and validating input', 'Lesson + code · 8 min')),
+      unit('n-u9', 'REST design', ref('n-rest-1', 'REST API design', 'Lesson + code · 8 min')),
+      unit('n-u5', 'CRUD API', ref('n-api-1', 'Build a CRUD API', 'Lesson + code · 10 min')),
+      unit('n-u10', 'Config', ref('n-env-1', 'Configuration and secrets', 'Lesson + code · 7 min')),
+      unit('n-u13', 'Testing', ref('n-test', 'Testing with node:test', 'Lesson + code · 8 min')),
+      unit('n-u14', 'Project', ref('n-project', 'Project: a train booking API', 'Project · 3 parts · 30 min')),
     ],
     practice: [
       { id: 'x-express', title: 'A real web server', kind: 'Express', difficulty: 'Medium', xp: 15 },
@@ -856,7 +859,7 @@ export const STAGES: Stage[] = [
  * Tracks paused until they are rewritten to the Lesson v2 standard (see project-docs/CONTENT-PLAN.md).
  * They are hidden from pickers, not deleted: lessons, progress and certificates in them are kept.
  */
-export const PAUSED_STAGES: readonly string[] = ['c', 'java', 'node', 'dsa2'];
+export const PAUSED_STAGES: readonly string[] = ['c', 'java', 'dsa2'];
 export const isPaused = (id: string) => PAUSED_STAGES.includes(id);
 
 /** Tracks to list: every active track, plus any paused ones named in `keep` (e.g. the track the learner is in). */

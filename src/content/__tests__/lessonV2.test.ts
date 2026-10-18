@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { allLessons, getLesson, STAGES, type MistakeStep, type OrderStep, type Step, type TryStep } from '..';
-import { gcc, git, python, runC, runGit, runJs, runPyFull } from '../testing/run';
+import { gcc, git, python, runC, runGit, runJs, runNode, runPyFull } from '../testing/run';
 import { sqlProgram } from '../sqlFixture';
 
 const steps: (readonly [string, Step])[] = allLessons().flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
@@ -37,7 +37,7 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations', 'git'])('%s follows Lesson v2', (track) => {
+describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations', 'git', 'node'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
@@ -61,7 +61,7 @@ describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 
 describe('further reading', () => {
   const all = allLessons().flatMap((l) => (l.reading ?? []).map((r) => [l.id, r] as const));
   it.each(all)('%s: %o is https, from an official source, with a review date', (_, r) => {
-    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org|en\.cppreference\.com|git-scm\.com|docs\.github\.com)\//);
+    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org|en\.cppreference\.com|git-scm\.com|docs\.github\.com|nodejs\.org|expressjs\.com|docs\.npmjs\.com)\//);
     expect(r.reviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });
@@ -76,6 +76,21 @@ describe('common mistakes', () => {
       // A query that returns nothing is shown as "(no rows)".
       else expect(wrongRun.output.join('\n') || '(no rows)').toBe(step.error);
       expect(runPyFull(sqlProgram(step.right.join('\n'))).error).toBe('');
+      return;
+    }
+    if (step.lang === 'javascript' && id.startsWith('n-')) {
+      // Node.js mistakes run with real Node. Express and server code are skipped: they need a package or keep running.
+      if (/from "express"|require\("express"\)|\.listen\(/.test(step.wrong.join('\n') + step.right.join('\n'))) return;
+      const wrong = runNode(step.wrong.join('\n'));
+      const seen = `${wrong.output}\n${wrong.error}`;
+      // "…" in the shown error stands for a machine-specific part, such as a full file path.
+      let at = 0;
+      for (const piece of step.error.split('…')) {
+        const found = seen.indexOf(piece, at);
+        expect(found).toBeGreaterThanOrEqual(0);
+        at = found + piece.length;
+      }
+      expect(runNode(step.right.join('\n')).code).toBe(0);
       return;
     }
     if (step.lang === 'javascript') {
@@ -147,7 +162,7 @@ describe('try it', () => {
 });
 
 describe('git command orders', () => {
-  const orders = steps.filter((r): r is readonly [string, OrderStep] => r[1].type === 'order' && r[1].lang === 'bash' && /^(git init|mkdir|git clone)/.test(r[1].lines[0]));
+  const orders = steps.filter((r): r is readonly [string, OrderStep] => r[1].type === 'order' && r[1].lang === 'bash' && /^(drill-)?git-/.test(r[0]) && /^(git init|mkdir|git clone)/.test(r[1].lines[0]));
   it.each(orders.length ? orders : [['(none)', null] as unknown as readonly [string, OrderStep]])('%s: the commands in the right order run without an error', (_, step) => {
     if (!step || !git) return;
     expect(runGit(step.lines.join('\n')).ok).toBe(true);

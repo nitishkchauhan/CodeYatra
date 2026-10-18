@@ -64,6 +64,20 @@ export function runC(code: string): string[] {
 
 export const runSql = (query: string) => runPy(sqlProgram(query));
 
+const APP_CONSOLE = 'console.log = (...a) => process.stdout.write(a.map((v) => (typeof v === "string" ? v : JSON.stringify(v))).join(" ") + "\\n");';
+
+/**
+ * Runs a snippet with real Node.js in its own folder (so it can read and write files, and require finds no packages).
+ * Code with import/export runs as an ES module (.mjs), anything else as CommonJS (.cjs).
+ */
+export function runNode(code: string, env: Record<string, string> = {}): { output: string; error: string; code: number | null } {
+  const dir = tmp();
+  const file = join(dir, /^\s*(import|export)\s/m.test(code) ? 'main.mjs' : 'main.cjs');
+  writeFileSync(file, code);
+  const r = spawnSync(process.execPath, [file], { cwd: dir, encoding: 'utf8', timeout: 15000, env: { ...process.env, ...env, NODE_NO_WARNINGS: '1' } });
+  return { output: (r.stdout ?? '').replace(/\r/g, '').trimEnd(), error: (r.stderr ?? '').replace(/\r/g, ''), code: r.status };
+}
+
 export const git = find(['git'], ['--version']);
 
 // Git runs with no user or system config, a fixed identity and main as the first branch,
@@ -136,7 +150,9 @@ export function runGit(script: string): { output: string; ok: boolean; lastOk: b
 
 /** Output of a snippet in a language we can run here, or null if we can't run it. */
 export function outputOf(lang: string, code: string): string[] | null {
-  if (lang === 'javascript') return runJs(code);
+  // Timers and promises need a real event loop, so that code runs in Node; the rest runs in-process.
+  // The shim prints like the app's runner (JSON for non-strings), so answers read the same in both.
+  if (lang === 'javascript') return /setTimeout|setInterval|Promise|await /.test(code) ? lines(runNode(`${APP_CONSOLE}\n${code}`).output) : runJs(code);
   if (lang === 'python') return python ? runPy(code) : null;
   if (lang === 'c') return gcc ? runC(code) : null;
   if (lang === 'sql') return python ? runSql(code) : null;
