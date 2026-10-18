@@ -6,6 +6,8 @@
 set -euo pipefail
 export JAVA_HOME="$HOME/tools/jdk17"
 export ANDROID_HOME="$HOME/tools/android-sdk"
+# WSL sometimes has broken IPv6; prefer IPv4 so npm downloads do not time out.
+export NODE_OPTIONS="--dns-result-order=ipv4first"
 export PATH="$JAVA_HOME/bin:$HOME/tools/node/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
 SRC="/mnt/c/Users/Lenovo/Desktop/CodeY/codeyatra-app"
 APP="$HOME/build/codeyatra-app"
@@ -23,7 +25,7 @@ rsync_like
 
 cd "$APP"
 echo "== Install packages"
-npm ci --no-audit --no-fund --loglevel=error
+npm ci --prefer-offline --no-audit --no-fund --loglevel=error
 
 echo "== Generate the Android project"
 CI=1 npx expo prebuild --platform android --clean --no-install
