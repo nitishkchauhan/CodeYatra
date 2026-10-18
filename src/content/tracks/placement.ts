@@ -92,7 +92,7 @@ export const PLACEMENT_LESSONS: Lesson[] = [
       hint: 'Check n % 15 == 0 first, and return str(n) at the end.',
       solution: 'def fizzbuzz(n):\n    if n % 15 == 0:\n        return "FizzBuzz"\n    if n % 3 == 0:\n        return "Fizz"\n    if n % 5 == 0:\n        return "Buzz"\n    return str(n)\n',
     }),
-  ], [pydoc('input()', 'library/functions.html#input'), pydoc('More control flow tools', 'tutorial/controlflow.html')], 7),
+  ], [pydoc('input()', 'builtins/functions.html#input'), pydoc('More control flow tools', 'tutorial/controlflow.html')], 7),
 
   // 2 ─────────────────────────────────────────────
   v2('pl-reverse', 'String questions', ['s[::-1] reverses; know the two-pointer loop too', 'Strings are immutable: build a new one, or a list then join', 'split() and " ".join() handle words'], [
@@ -162,7 +162,7 @@ export const PLACEMENT_LESSONS: Lesson[] = [
       hint: 'return " ".join(s.split()[::-1])',
       solution: 'def reverse_words(s):\n    return " ".join(s.split()[::-1])\n',
     }),
-  ], [pydoc('String methods', 'library/stdtypes.html#string-methods')], 7),
+  ], [pydoc('String methods', 'builtins/stdtypes.html#string-methods')], 7),
 
   // 3 ─────────────────────────────────────────────
   v2('pl-prime', 'Number questions: primes, GCD and digits', ['Primes: handle n < 2, then test divisors up to √n', 'GCD with Euclid: gcd(a, b) = gcd(b, a % b)', 'Digits: n % 10 gives the last digit, n // 10 drops it'], [
@@ -448,7 +448,7 @@ export const PLACEMENT_LESSONS: Lesson[] = [
       hint: 'Row i: " " * (n - i) + "*" * (2 * i - 1), for i from 1 to n.',
       solution: 'def pyramid(n):\n    return [" " * (n - i) + "*" * (2 * i - 1) for i in range(1, n + 1)]\n',
     }),
-  ], [pydoc('range()', 'library/stdtypes.html#ranges'), pydoc('Common sequence operations', 'library/stdtypes.html#common-sequence-operations')], 7),
+  ], [pydoc('range()', 'builtins/stdtypes.html#ranges'), pydoc('Common sequence operations', 'builtins/stdtypes.html#common-sequence-operations')], 7),
 
   // 7 ─────────────────────────────────────────────
   v2('pl-matrix', 'Matrix questions', ['A matrix is a list of rows: m[row][col]', 'Build grids with a comprehension, not [[0] * n] * n', 'Rotate 90° clockwise: reverse the rows, then transpose'], [
@@ -518,7 +518,7 @@ export const PLACEMENT_LESSONS: Lesson[] = [
       hint: 'Reverse the rows with m[::-1], then transpose with zip(*…).',
       solution: 'def rotate(m):\n    return [list(c) for c in zip(*m[::-1])]\n',
     }),
-  ], [pydoc('Nested list comprehensions', 'tutorial/datastructures.html#nested-list-comprehensions'), pydoc('zip()', 'library/functions.html#zip')]),
+  ], [pydoc('Nested list comprehensions', 'tutorial/datastructures.html#nested-list-comprehensions'), pydoc('zip()', 'builtins/functions.html#zip')]),
 
   // 8 ─────────────────────────────────────────────
   v2('pl-output-py', 'Output questions: Python', ['b = a shares a list; a[:] or list(a) copies it', 'Default arguments are created once: use None', '// floors and % follows the divisor’s sign, even for negatives'], [
@@ -885,7 +885,7 @@ export const PLACEMENT_LESSONS: Lesson[] = [
       hint: 'Keep seen = set(); for each x, check target - x in seen before adding x.',
       solution: 'def has_pair(nums, target):\n    seen = set()\n    for x in nums:\n        if target - x in seen:\n            return True\n        seen.add(x)\n    return False\n',
     }),
-  ], [pydoc('functools.lru_cache', 'library/functools.html#functools.lru_cache'), pydoc('Set types', 'library/stdtypes.html#set-types-set-frozenset')]),
+  ], [pydoc('functools.lru_cache', 'library/functools.html#functools.lru_cache'), pydoc('Set types', 'builtins/stdtypes.html#set-types-set-frozenset')]),
 ];
 
 /** The project: a timed mock round with one string, one array and one SQL question. */

@@ -175,7 +175,7 @@ export const DSA_LESSONS: Lesson[] = [
       hint: 'Use k % len(nums) (if the list isn’t empty), then nums[-k:] + nums[:-k].',
       solution: 'def rotate(nums, k):\n    if not nums:\n        return []\n    k %= len(nums)\n    return nums[-k:] + nums[:-k] if k else nums[:]\n',
     }),
-  ], [pydoc('More on lists', 'tutorial/datastructures.html#more-on-lists'), pydoc('Text sequence type (str)', 'library/stdtypes.html#text-sequence-type-str')]),
+  ], [pydoc('More on lists', 'tutorial/datastructures.html#more-on-lists'), pydoc('Text sequence type (str)', 'builtins/stdtypes.html#text-sequence-type-str')]),
 
   // 3 ─────────────────────────────────────────────
   v2('dsa-linear', 'Linear search', ['Check items one by one until you find it', 'Return as soon as you find it; give up only at the end', 'Worst case O(n), but it works on any list'], [
@@ -243,7 +243,7 @@ export const DSA_LESSONS: Lesson[] = [
       mono: true,
     }),
     linearSearch,
-  ], [pydoc('Common sequence operations (in, index)', 'library/stdtypes.html#common-sequence-operations')]),
+  ], [pydoc('Common sequence operations (in, index)', 'builtins/stdtypes.html#common-sequence-operations')]),
 
   // 4 ─────────────────────────────────────────────
   v2('dsa-binary', 'Binary search', ['Binary search needs a sorted list', 'Compare with the middle and throw away half', 'O(log n): about 20 steps for a million items'], [
@@ -536,7 +536,7 @@ export const DSA_LESSONS: Lesson[] = [
       wrong: 'The rule “too small → move left up” only works if numbers grow from left to right.',
     }),
     palindrome,
-  ], [pydoc('Sequence types (list, slicing)', 'library/stdtypes.html#sequence-types-list-tuple-range')]),
+  ], [pydoc('Sequence types (list, slicing)', 'builtins/stdtypes.html#sequence-types-list-tuple-range')]),
 
   // 8 ─────────────────────────────────────────────
   v2('dsa-window', 'Sliding window', ['A window is a run of k items next to each other', 'Slide it: add the new item, remove the old one', 'O(n) instead of re-adding every window'], [
@@ -617,7 +617,7 @@ export const DSA_LESSONS: Lesson[] = [
       solution:
         'def max_window(nums, k):\n    if k <= 0 or k > len(nums):\n        return None\n    total = sum(nums[:k])\n    best = total\n    for i in range(k, len(nums)):\n        total += nums[i] - nums[i - k]\n        best = max(best, total)\n    return best\n',
     }),
-  ], [pydoc('Built-in functions (sum, max, enumerate)', 'library/functions.html')]),
+  ], [pydoc('Built-in functions (sum, max, enumerate)', 'builtins/functions.html')]),
 
   // 9 ─────────────────────────────────────────────
   v2('dsa-prefix', 'Prefix sums', ['prefix[i] is the total of the first i items', 'Any range total is prefix[r + 1] − prefix[l]', 'Build once in O(n), answer each question in O(1)'], [

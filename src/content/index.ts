@@ -24,7 +24,7 @@ import { PROJECTS } from './projects';
 import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
 import { findPath } from './paths';
 import { C_LESSONS } from './tracks/c';
-import { CBSE_LESSONS } from './tracks/cbse';
+import { CBSE_LESSONS, CBSE_PROJECT } from './tracks/cbse';
 import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
 import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
@@ -253,6 +253,7 @@ const ALL: Lesson[] = [
   PLACEMENT_PROJECT,
   ...DSA2_LESSONS,
   ...CBSE_LESSONS,
+  CBSE_PROJECT,
   ...PRACTICE_LESSONS,
   ...TRACK_PRACTICE,
   ...NEW_TRACK_PRACTICE,
@@ -342,22 +343,25 @@ export const STAGES: Stage[] = [
     short: 'CBSE CS',
     sub: 'Class 11–12 Python syllabus',
     audience: 'Class 11 · Class 12',
-    blurb: 'Board-style Python: strings, lists, functions, files, stacks and SQL, with find-the-output practice.',
+    blurb: '12 modules and a practical project for Computer Science (083): Python, modules, exceptions, text, binary and CSV files, stacks and SQL, with board-style find-the-output practice.',
     color: '#0F766E',
     soft: '#DDF5F2',
     accent: '#5EEAD4',
     icon: 'M4 6l8-3 8 3-8 3z M8 8v5c2.5 2 5.5 2 8 0V8',
     units: [
-      unit('cb1', 'Data types', ref('cbse-types', 'Data types and operators', 'Read + find the output · 6 min')),
-      unit('cb2', 'Flow of control', ref('cbse-flow', 'Flow of control', 'Read + code editor · 7 min')),
-      unit('cb3', 'Strings', ref('cbse-strings', 'Strings', 'Read + code editor · 7 min')),
-      unit('cb4', 'Lists', ref('cbse-lists', 'Lists', 'Read + code editor · 7 min')),
-      unit('cb5', 'Tuples and dictionaries', ref('cbse-dict', 'Tuples and dictionaries', 'Read + code editor · 7 min')),
-      unit('cb6', 'Functions', ref('cbse-functions', 'Functions and scope', 'Read + find the error · 7 min')),
-      unit('cb7', 'Exceptions', ref('cbse-exceptions', 'Exception handling', 'Read + code editor · 7 min')),
-      unit('cb8', 'File handling', ref('cbse-files', 'Text file handling', 'Read + code editor · 7 min')),
-      unit('cb9', 'Stack', ref('cbse-stack', 'Stack using a list', 'Read + code editor · 7 min')),
-      unit('cb10', 'SQL', ref('cbse-sql', 'SQL for board exams', 'Read + run a query · 8 min')),
+      unit('cb1', 'Data types', ref('cbse-types', 'Data types and operators', 'Lesson + board questions · 7 min')),
+      unit('cb2', 'Flow of control', ref('cbse-flow', 'Flow of control', 'Lesson + board questions · 7 min')),
+      unit('cb3', 'Strings', ref('cbse-strings', 'Strings', 'Lesson + board questions · 8 min')),
+      unit('cb4', 'Lists', ref('cbse-lists', 'Lists', 'Lesson + board questions · 8 min')),
+      unit('cb5', 'Tuples and dictionaries', ref('cbse-dict', 'Tuples and dictionaries', 'Lesson + board questions · 8 min')),
+      unit('cb6', 'Functions', ref('cbse-functions', 'Functions and scope', 'Lesson + board questions · 8 min')),
+      unit('cb11', 'Modules', ref('cbse-modules', 'Modules: math, random and statistics', 'Lesson + board questions · 7 min')),
+      unit('cb7', 'Exceptions', ref('cbse-exceptions', 'Exception handling', 'Lesson + board questions · 7 min')),
+      unit('cb8', 'Text files', ref('cbse-files', 'Text files', 'Lesson + board questions · 8 min')),
+      unit('cb12', 'Binary and CSV', ref('cbse-binary', 'Binary and CSV files', 'Lesson + board questions · 8 min')),
+      unit('cb9', 'Stack', ref('cbse-stack', 'Stack using a list', 'Lesson + board questions · 7 min')),
+      unit('cb10', 'SQL', ref('cbse-sql', 'SQL for board exams', 'Lesson + run a query · 8 min')),
+      unit('cb13', 'Project', ref('cbse-project', 'Project: a board practical record program', 'Project · 3 parts · 25 min')),
     ],
     practice: [
       { id: 'x-cbse-output', title: 'Find the output', kind: 'Board-style', difficulty: 'Medium', xp: 15 },
