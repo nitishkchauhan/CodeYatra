@@ -1,3 +1,4 @@
+import * as WebBrowser from 'expo-web-browser';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
+import type { Reading } from '@/content';
 import { useT } from '@/i18n';
 import { sendFeedback, SUPPORT_EMAIL } from '@/lib/feedback';
 import { colors } from '@/theme';
@@ -35,6 +37,7 @@ export function CompleteView({
   onReplay,
   assessment,
   next,
+  reading,
 }: {
   title: string;
   subtitle: string;
@@ -55,6 +58,8 @@ export function CompleteView({
   assessment?: { score: number; total: number; pass: boolean; passMark: number; rows: { label: string; right: number; asked: number }[]; revise: { id: string; title: string }[]; onRevise: (id: string) => void };
   /** The next lesson on the track, opened straight from here. */
   next?: { title: string; onPress: () => void };
+  /** Official docs to go deeper, with the day they were last checked. */
+  reading?: Reading[];
 }) {
   const t = useT();
   const insets = useSafeAreaInsets();
@@ -180,6 +185,32 @@ export function CompleteView({
           ))}
         </Animated.View>
 
+        {reading?.length ? (
+          <Animated.View entering={FadeInDown.delay(400)} style={[styles.learned, { gap: 6 }]}>
+            <T variant="label" style={{ fontSize: 13 }}>
+              Go deeper (official docs)
+            </T>
+            {reading.map((r) => (
+              <Pressable
+                key={r.url}
+                accessibilityRole="link"
+                accessibilityLabel={`${r.title}${r.version ? `, ${r.version}` : ''}. Opens in your browser`}
+                onPress={() => WebBrowser.openBrowserAsync(r.url)}
+                style={styles.read}>
+                <View style={{ flex: 1 }}>
+                  <T variant="labelSm" color={colors.primary}>
+                    {r.title}
+                  </T>
+                  <T variant="caption" style={{ fontSize: 11 }}>
+                    {r.version ? `${r.version} · ` : ''}checked {r.reviewed}
+                  </T>
+                </View>
+                <Icon name="external" size={16} color={colors.ink3} />
+              </Pressable>
+            ))}
+          </Animated.View>
+        ) : null}
+
         <Animated.View entering={FadeInDown.delay(450)} style={styles.streak}>
           <Animated.View entering={ZoomIn.delay(700).springify()}>
             <Glyph name="flame" size={30} color={colors.saffron} />
@@ -228,6 +259,7 @@ const styles = StyleSheet.create({
   halo: { position: 'absolute', width: 170, height: 170, borderRadius: 85, backgroundColor: '#F1EFFE' },
   stat: { flex: 1, borderRadius: 16, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 4, alignItems: 'center', gap: 2 },
   learned: { borderRadius: 18, borderWidth: 1, borderColor: colors.line, padding: 14, gap: 9 },
+  read: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8 },
   revise: { minHeight: 36, flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 12, borderRadius: 18, backgroundColor: colors.primarySoft },
   streak: { borderRadius: 18, backgroundColor: colors.ink, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 12 },
 });

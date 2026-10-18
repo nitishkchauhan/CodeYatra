@@ -1,6 +1,7 @@
 // The roadmap as a graph: which stops come before which, what state each node is in,
 // search, and plain-rule recommendations for what to do next. Pure functions, so they are tested.
-import { getLesson } from '..';
+import { drillId, getLesson, hasDrill } from '..';
+import { checkpointId, hasCheckpoint } from '../checkpoints';
 import { stopStatus, type CareerPath, type PathStop } from '.';
 
 type Done = Record<string, unknown>;
@@ -81,6 +82,37 @@ export function needsRevision(stop: PathStop, ev: Evidence): string[] {
   const weak = Object.values(ev.checkpoints ?? {}).flatMap((c) => (c.pass ? [] : c.weak));
   return mods.filter((m) => missed.includes(m) || weak.includes(m));
 }
+
+export type StopLevel = 'not-started' | 'in-progress' | 'completed' | 'assessed' | 'mastered';
+
+/** Practice accuracy needed for a lesson's practice set to count as passed (at most 2 mistakes). */
+export const PRACTICE_PASS = 75;
+
+/**
+ * How far the learner has got with a stop, from evidence only (opening a stop never changes it):
+ * - completed: every lesson finished (or ticked "I already know this");
+ * - assessed: completed, and every lesson's practice set passed with PRACTICE_PASS% or more;
+ * - mastered: completed, the section's checkpoint passed on the latest attempt, and nothing needs revision.
+ */
+export function stopLevel(path: CareerPath, stop: PathStop, ev: Evidence & { completed: Record<string, { accuracy?: number } | unknown> }): StopLevel {
+  const status = stopStatus(path.id, stop, ev.completed, ev.marks);
+  if (status === 'todo') return 'not-started';
+  if (status === 'progress') return 'in-progress';
+  const si = path.sections.findIndex((x) => x.stops.includes(stop));
+  const check = si >= 0 && hasCheckpoint(path, si) ? ev.checkpoints?.[checkpointId(path.id, si)] : undefined;
+  if (check?.pass && !stop.optional && needsRevision(stop, ev).length === 0) return 'mastered';
+  const mods = (stop.modules ?? []).filter((m) => hasDrill(m));
+  const practised = mods.length > 0 && mods.length === (stop.modules ?? []).length && mods.every((m) => ((ev.completed[drillId(m)] as { accuracy?: number } | undefined)?.accuracy ?? 0) >= PRACTICE_PASS);
+  return practised ? 'assessed' : 'completed';
+}
+
+export const LEVEL_LABEL: Record<StopLevel, string> = {
+  'not-started': 'Not started',
+  'in-progress': 'In progress',
+  completed: 'Completed',
+  assessed: 'Practice passed',
+  mastered: 'Mastered',
+};
 
 /** Stops whose title, reason or lesson titles contain every word of the query. */
 export function searchStops(path: CareerPath, query: string): PathStop[] {

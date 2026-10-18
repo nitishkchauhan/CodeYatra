@@ -5,8 +5,9 @@ import { getLesson, STAGES } from '@/content';
 import { STREAK_FREEZE, type OutfitId } from '@/content/shop';
 import { setHapticsEnabled } from '@/lib/haptics';
 import { setTelemetryEnabled } from '@/lib/telemetry';
-import { accuracyFor, applyStreakFreezes, INITIAL, isReplay, lessonReward, normalize, type Certificate, type InterviewRating, type LearnerLevel, type LessonKind, type MockResult, type Progress } from './model';
+import { accuracyFor, applyStreakFreezes, countsAsLesson, INITIAL, isReplay, lessonReward, normalize, type Certificate, type InterviewRating, type LearnerLevel, type LessonKind, type MockResult, type Progress } from './model';
 import type { CheckpointResult } from '@/content/checkpoints';
+import { firstReview, rateCard } from '@/content/review';
 import { dayKey, nextStreak, visibleStreak } from './streak';
 
 export type { LearnerLevel, Progress } from './model';
@@ -69,6 +70,8 @@ type ProgressApi = {
   recordCheckpoint: (id: string, result: CheckpointResult) => void;
   /** Store the learner's own rating of an interview answer. */
   rateInterview: (questionId: string, rating: InterviewRating) => void;
+  /** Record a spaced-review answer for a finished module. */
+  rateReview: (lessonId: string, remembered: boolean) => void;
   setLevel: (level: LearnerLevel) => void;
   setHaptics: (on: boolean) => void;
   setStage: (stageId: string) => void;
@@ -169,6 +172,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         completed: lessonId === 'review' ? s.completed : { ...s.completed, [lessonId]: completed[lessonId] },
         mistakes: reviewed.length ? Object.fromEntries(Object.entries(s.mistakes).filter(([k]) => !reviewed.includes(k))) : s.mistakes,
         certificates: certificate ? { ...s.certificates, [certificate.stageId]: certificate } : s.certificates,
+        // A module finished for the first time joins the review schedule (due tomorrow).
+        reviews: kind === 'lesson' && !prev && countsAsLesson(lessonId) && !s.reviews[lessonId] ? { ...s.reviews, [lessonId]: firstReview(today) } : s.reviews,
       }));
       const result = { ...streakResult, xp, coins, certificate };
       claims.current.set(claimId, result);
@@ -212,6 +217,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       }),
     recordCheckpoint: (id, result) =>
       update((s) => ({ ...s, checkpoints: { ...s.checkpoints, [id]: { ...result, best: Math.max(result.score, s.checkpoints[id]?.best ?? 0) } } })),
+    rateReview: (lessonId, remembered) => update((s) => ({ ...s, reviews: { ...s.reviews, [lessonId]: rateCard(s.reviews[lessonId], remembered, today) } })),
     rateInterview: (questionId, rating) => update((s) => ({ ...s, interview: { ...s.interview, [questionId]: { rating, at: today } } })),
     recordMistake: (key) => update((s) => ({ ...s, mistakes: { ...s.mistakes, [key]: today } })),
     setLevel: (level) => update((s) => ({ ...s, level })),

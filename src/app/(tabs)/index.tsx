@@ -8,6 +8,7 @@ import { DailyCards } from '@/components/DailyCards';
 import { ForYouCard } from '@/components/ForYouCard';
 import { ModulePath } from '@/components/ModulePath';
 import { MyPathCard } from '@/components/MyPathCard';
+import { ReviewCard, useRevisionCount } from '@/components/ReviewCard';
 import { StageSheet } from '@/components/StageSheet';
 import { TrackBadge } from '@/components/TrackBadge';
 import { TrackRail } from '@/components/TrackRail';
@@ -33,6 +34,7 @@ export default function LearnScreen() {
   const toast = useToast();
   const { state, todayXp, streak, setStage } = useProgress();
   const [sheet, setSheet] = useState(false);
+  const revision = useRevisionCount();
 
   const stage = findStage(state.stageId);
   const statuses = stageLessonStatuses(stage, state.completed);
@@ -181,6 +183,11 @@ export default function LearnScreen() {
               <View style={{ width: TODAY_W }}>
                 <MyPathCard style={{ flex: 1 }} />
               </View>
+              {revision.due || revision.weak ? (
+                <View style={{ width: TODAY_W }}>
+                  <ReviewCard style={{ flex: 1 }} />
+                </View>
+              ) : null}
               {suggestionFor(state.about, state.pathId) ? (
                 <View style={{ width: TODAY_W }}>
                   <ForYouCard style={{ flex: 1 }} />

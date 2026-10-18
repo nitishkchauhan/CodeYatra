@@ -181,7 +181,7 @@ export const FRONTEND: CareerPath = {
           id: 'nextjs',
           title: 'Next.js',
           why: 'The most popular React framework: routing, layouts and server rendering for fast, searchable sites.',
-          modules: ['nx-1', 'nx-link-1', 'nx-layout-1', 'nx-dyn-1', 'nx-meta-1', 'nx-data-1', 'nx-loading-1', 'nx-api-1', 'nx-actions-1', 'nx-deploy-1'],
+          modules: ['nx-1', 'nx-layout-1', 'nx-link-1', 'nx-dyn-1', 'nx-loading-1', 'nx-data-1', 'nx-render-1', 'nx-api-1', 'nx-actions-1', 'nx-meta-1', 'nx-auth-1', 'nx-deploy-1'],
           links: [{ label: 'Learn Next.js', url: 'https://nextjs.org/learn', kind: 'course' }],
         },
         {

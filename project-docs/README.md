@@ -14,7 +14,7 @@ Start here, then open whichever file you need.
 | **Latest store build** | Build 10 (v1.3.0, versionCode 10), built 17 Oct 2026 on this PC: `C:\Users\Lenovo\Desktop\CodeY\builds\CodeYatra-1.3.0.aab`. Upload it to the closed test. Testers have build 5 (v1.2.0). |
 | **Branch** | `paths-feature` merged into `main` on 15 Oct 2026 (career paths, onboarding v2, new logo, Light Glass design, learning plan, Yatri in lessons). |
 | **Backend** | Supabase schema v1.5 (`supabase/schema.sql`). |
-| **Tests** | 927 automated tests, all passing (branch `content-v2`). |
+| **Tests** | 1060 automated tests, all passing (branch `content-v2`). |
 
 ## Read in this order
 
@@ -43,6 +43,8 @@ Start here, then open whichever file you need.
 5. **[PLAN.md](PLAN.md)**: what is next, phase by phase, with status.
    - **[CONTENT-PLAN.md](CONTENT-PLAN.md)**: proposal to focus on 5 in-demand paths with complete lessons (needs owner decisions).
 6. **[DECISIONS.md](DECISIONS.md)**: the important choices and the reasons for them.
+7. **[AUDIT-2026-10-18.md](AUDIT-2026-10-18.md)**: evidence-based audit and priorities.
+8. **[CONTENT-REVIEW.md](CONTENT-REVIEW.md)**: the lesson template and the checklist every new module must pass.
 
 ## Other useful files in the project
 

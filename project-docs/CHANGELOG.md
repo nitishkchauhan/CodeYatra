@@ -2,6 +2,16 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 18 Oct 2026 (branch `content-v2`, not merged yet)
+- **Audit** written: `project-docs/AUDIT-2026-10-18.md` (what works, verified defects, gaps, risks, priorities).
+- **Next.js 16 track rewritten** to Lesson v2 and un-paused: 12 modules (routing, layouts, navigation, dynamic routes, loading/error/not-found, Server and Client Components, rendering and caching, Route Handlers, Server Actions, styling/images/metadata, secrets/auth/proxy, testing and deploying) plus a **student management API project**. Checked against the Next.js 16.4 docs; fixes the old lessons' `reset()` (now `retry()`), unawaited `params`, and a Server Action with no auth check. 48 practice questions, section checkpoints, three interactive visuals (file tree → URL, server vs browser components, request flow). Every JavaScript answer runs in tests; every docs link was opened.
+- **Five stop levels** on roadmaps: not started, in progress, completed, practice passed (each lesson's practice set with at most 2 mistakes), mastered (section checkpoint passed, nothing to revise). Shown on the map and as a level bar in the stop sheet.
+- **Spaced review:** finished modules come back for recall after 1, 3, 7, 14 and 30 days (remembered moves up, forgotten starts again). Saved and synced; the Revise screen has a "Due for review" deck, and Home shows a Revise card when something is due.
+- **Official reading** with review dates on the finish screen of Next.js lessons.
+- **Keyboard fix** for the black area in code editors (`react-native-keyboard-controller`); waiting for confirmation on a phone.
+- `project-docs/CONTENT-REVIEW.md`: the lesson template and review checklist for future content.
+- 1060 tests, all passing. `supabase/track-lessons.sql` regenerated again (Next.js modules).
+
 ## 17 Oct 2026 (branch `content-v2`, not merged yet)
 - **Content plan phases A and B** (owner approved the 5 paths + CBSE, hiding the rest, and starting with A + B):
   - **Lesson v2** format: a hook (a real situation and what you'll be able to do), three short cards, **try it** (edit and run code, nothing marked), **common mistake** (the wrong code, the real error, then the fix), two quick checks, a coding exercise, and a 3-point recap on the finish screen.

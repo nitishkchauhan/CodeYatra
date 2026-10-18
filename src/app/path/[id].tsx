@@ -264,7 +264,7 @@ function Journey({ path }: { path: CareerPath }) {
         <View style={[card, styles.end]}>
           <Icon name="flag" size={22} color={path.color} />
           <T variant="bodySm" color={colors.inkBody} style={{ flex: 1 }}>
-            Finishing lessons completes a stop. Passing a section’s checkpoint shows you have mastered it. Optional stops make you stand out.
+            Each stop has five levels: not started, in progress, completed (lessons done), practice passed, and mastered (section checkpoint passed). Only your answers move a stop up.
           </T>
         </View>
       </ScrollView>

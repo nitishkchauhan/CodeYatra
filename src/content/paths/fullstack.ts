@@ -71,7 +71,7 @@ export const FULLSTACK: CareerPath = {
           id: 'nextjs',
           title: 'Next.js',
           why: 'Frontend and backend in one React framework, with routing, server actions and API routes.',
-          modules: ['nx-1', 'nx-link-1', 'nx-layout-1', 'nx-dyn-1', 'nx-meta-1', 'nx-data-1', 'nx-loading-1', 'nx-api-1', 'nx-actions-1', 'nx-deploy-1'],
+          modules: ['nx-1', 'nx-layout-1', 'nx-link-1', 'nx-dyn-1', 'nx-loading-1', 'nx-data-1', 'nx-render-1', 'nx-api-1', 'nx-actions-1', 'nx-meta-1', 'nx-auth-1', 'nx-deploy-1'],
         },
         gitStop,
         {

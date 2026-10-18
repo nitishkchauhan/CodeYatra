@@ -3,7 +3,7 @@ import { describe, expect, it } from '@jest/globals';
 import { getLesson } from '..';
 import { buildCheckpoint, checkpointId, hasCheckpoint, PASS_MARK, scoreCheckpoint } from '../checkpoints';
 import { findPath, findPaths, PATHS, type CareerPath } from '../paths';
-import { edges, findStop, needsRevision, nodeState, prerequisites, searchStops, suggestions, unlocks, type Evidence } from '../paths/graph';
+import { edges, findStop, needsRevision, nodeState, prerequisites, searchStops, stopLevel, suggestions, unlocks, type Evidence } from '../paths/graph';
 import { INITIAL, isReplay, mergeProgress } from '@/state/model';
 
 const at = '2026-10-17';
@@ -134,5 +134,43 @@ describe('finding paths', () => {
     expect(findPaths(PATHS, '', 'started', {}, {})).toEqual([]);
     expect(findPaths(PATHS, '', 'started', done('p-var-1'), {}).map((p) => p.id)).toContain('python');
     expect(findPaths(PATHS, 'zzzz', 'all', {}, {})).toEqual([]);
+  });
+});
+
+describe('stop levels', () => {
+  const py = findPath('python')!;
+  const first = findStop(py, 'first')!; // Your first program (p-var-1), section 0
+  const drill = (accuracy: number) => ({ 'drill-p-var-1': { xp: 15, accuracy, at } });
+
+  it('move up only with evidence', () => {
+    expect(stopLevel(py, first, ev())).toBe('not-started');
+    expect(stopLevel(py, first, ev({ completed: done('p-var-1') }))).toBe('completed');
+    expect(stopLevel(py, first, ev({ completed: { ...done('p-var-1'), ...drill(64) } }))).toBe('completed'); // 3 mistakes: not passed
+    expect(stopLevel(py, first, ev({ completed: { ...done('p-var-1'), ...drill(76) } }))).toBe('assessed');
+    const passed = { [checkpointId('python', 0)]: { pass: true, weak: [] } };
+    expect(stopLevel(py, first, ev({ completed: done('p-var-1'), checkpoints: passed }))).toBe('mastered');
+    // A new wrong answer takes mastery away until it is revised.
+    expect(stopLevel(py, first, ev({ completed: done('p-var-1'), checkpoints: passed, mistakes: { 'drill-p-var-1#1': at } }))).toBe('completed');
+  });
+
+  it('ticking "I already know this" completes a stop but proves nothing more', () => {
+    expect(stopLevel(py, first, ev({ marks: { 'python/first': at } }))).toBe('completed');
+  });
+});
+
+describe('no circular prerequisites', () => {
+  it.each(PATHS.map((p) => [p.id, p] as const))('%s: following prerequisites never loops back', (_, path) => {
+    const pre = prerequisites(path);
+    const seen = new Set<string>();
+    const visiting = new Set<string>();
+    const visit = (id: string) => {
+      if (visiting.has(id)) throw new Error(`cycle at ${id}`);
+      if (seen.has(id)) return;
+      visiting.add(id);
+      for (const g of pre.get(id) ?? []) for (const x of g) visit(x);
+      visiting.delete(id);
+      seen.add(id);
+    };
+    for (const id of pre.keys()) expect(() => visit(id)).not.toThrow();
   });
 });

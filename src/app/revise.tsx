@@ -12,6 +12,7 @@ import { drillId, getLesson, hasDrill, STAGES } from '@/content';
 import { INTERVIEW } from '@/content/interview';
 import { findPath } from '@/content/paths';
 import { findStop } from '@/content/paths/graph';
+import { dueToday, nextDue } from '@/content/review';
 import { revisionModules } from '@/content/revision';
 import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
@@ -19,7 +20,7 @@ import { card, colors } from '@/theme';
 
 /** Everything to revise in one place, from real evidence: wrong answers, failed checkpoints, saved stops. */
 export default function ReviseScreen() {
-  const { state } = useProgress();
+  const { state, today } = useProgress();
   const weak = revisionModules(state.mistakes, state.checkpoints);
   const mistakes = Object.keys(state.mistakes).length;
   const saved = Object.keys(state.bookmarks)
@@ -31,10 +32,12 @@ export default function ReviseScreen() {
     })
     .filter((x): x is NonNullable<typeof x> => !!x);
   const shaky = INTERVIEW.filter((q) => state.interview[q.id] && state.interview[q.id].rating !== 'knew');
-  // Quick recall: finished modules, newest first.
+  // Spaced review: finished modules whose review is due today (or never scheduled yet).
   const finished = STAGES.flatMap((s) => s.units.flatMap((u) => u.lessons))
     .filter((r) => state.completed[r.id] && getLesson(r.id)?.kind === 'lesson')
-    .sort((a, b) => (state.completed[a.id].at < state.completed[b.id].at ? 1 : -1));
+    .map((r) => r.id);
+  const due = dueToday(finished, state.reviews, today);
+  const upcoming = nextDue(state.reviews, today);
   const open = (id: string) => router.push({ pathname: '/lesson/[id]', params: { id } });
 
   return (
@@ -95,60 +98,85 @@ export default function ReviseScreen() {
           </Animated.View>
         ) : null}
 
-        {finished.length ? <Recall ids={finished.map((r) => r.id)} /> : null}
+        {finished.length ? <Recall due={due} upcoming={upcoming} /> : null}
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-/** Flip cards: try to recall a module's three key ideas, then check. Nothing is scored. */
-function Recall({ ids }: { ids: string[] }) {
+/**
+ * Spaced review: recall a module's three key ideas, flip to check, then say honestly whether you
+ * remembered. Remembered modules come back after longer gaps (1, 3, 7, 14, 30 days); forgotten ones tomorrow.
+ */
+function Recall({ due, upcoming }: { due: string[]; upcoming: string | null }) {
+  const { rateReview } = useProgress();
+  // The deck is fixed when the screen opens, so rating a card doesn't reshuffle it.
+  const [deck] = useState(due);
   const [i, setI] = useState(0);
   const [flipped, setFlipped] = useState(false);
-  const lesson = getLesson(ids[i % ids.length])!;
+  const id = deck[i];
+  const lesson = id ? getLesson(id) : undefined;
+
+  const rate = (remembered: boolean) => {
+    haptic.tap();
+    rateReview(id, remembered);
+    setFlipped(false);
+    setI(i + 1);
+  };
+
   return (
     <View style={{ gap: 8 }}>
-      <T variant="heading">Quick recall</T>
-      <T variant="caption">Say the three key ideas of the module, then flip to check. Just for you: nothing is scored.</T>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={flipped ? `Key ideas of ${lesson.title}: ${lesson.learned.join('. ')}` : `${lesson.title}. Tap to show the key ideas`}
-        onPress={() => {
-          haptic.tap();
-          setFlipped(!flipped);
-        }}
-        style={[card, styles.flash, flipped && { backgroundColor: colors.primarySoft }]}>
-        {flipped ? (
-          <Animated.View key="back" entering={FadeIn.duration(200)} style={{ gap: 8, alignSelf: 'stretch' }}>
-            {lesson.learned.map((l) => (
-              <View key={l} style={{ flexDirection: 'row', gap: 8 }}>
-                <Icon name="check" size={18} color={colors.success} strokeWidth={2.6} />
-                <T variant="bodySm" color={colors.ink} style={{ flex: 1 }}>
-                  {l}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <T variant="heading">Due for review</T>
+        <T variant="labelSm" color={colors.ink2}>
+          {lesson ? `${i + 1} of ${deck.length}` : `${deck.length} done`}
+        </T>
+      </View>
+      {lesson ? (
+        <>
+          <T variant="caption">Say the three key ideas out loud, flip to check, then answer honestly.</T>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={flipped ? `Key ideas of ${lesson.title}: ${lesson.learned.join('. ')}` : `${lesson.title}. Tap to show the key ideas`}
+            onPress={() => {
+              haptic.tap();
+              setFlipped(!flipped);
+            }}
+            style={[card, styles.flash, flipped && { backgroundColor: colors.primarySoft }]}>
+            {flipped ? (
+              <Animated.View key="back" entering={FadeIn.duration(200)} style={{ gap: 8, alignSelf: 'stretch' }}>
+                {lesson.learned.map((l) => (
+                  <View key={l} style={{ flexDirection: 'row', gap: 8 }}>
+                    <Icon name="check" size={18} color={colors.success} strokeWidth={2.6} />
+                    <T variant="bodySm" color={colors.ink} style={{ flex: 1 }}>
+                      {l}
+                    </T>
+                  </View>
+                ))}
+              </Animated.View>
+            ) : (
+              <Animated.View key="front" entering={FadeIn.duration(200)} style={{ alignItems: 'center', gap: 6 }}>
+                <T variant="title" style={{ textAlign: 'center' }}>
+                  {lesson.title}
                 </T>
-              </View>
-            ))}
-          </Animated.View>
-        ) : (
-          <Animated.View key="front" entering={FadeIn.duration(200)} style={{ alignItems: 'center', gap: 6 }}>
-            <T variant="title" style={{ textAlign: 'center' }}>
-              {lesson.title}
-            </T>
-            <T variant="caption">Tap to flip</T>
-          </Animated.View>
-        )}
-      </Pressable>
-      {ids.length > 1 ? (
-        <Button
-          variant="outline"
-          height={46}
-          label={`Next card (${(i % ids.length) + 1} of ${ids.length})`}
-          onPress={() => {
-            setFlipped(false);
-            setI(i + 1);
-          }}
-        />
-      ) : null}
+                <T variant="caption">Tap to flip</T>
+              </Animated.View>
+            )}
+          </Pressable>
+          {flipped ? (
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <Button variant="outline" height={48} label="I forgot" onPress={() => rate(false)} style={{ flex: 1 }} />
+              <Button variant="success" height={48} label="I remembered" onPress={() => rate(true)} style={{ flex: 1 }} />
+            </View>
+          ) : null}
+          <Small label="Open the lesson instead" onPress={() => router.push({ pathname: '/lesson/[id]', params: { id } })} />
+        </>
+      ) : (
+        <View style={[card, { padding: 14, gap: 4 }]}>
+          <T variant="label">All caught up</T>
+          <T variant="caption">{upcoming ? `Your next review is on ${upcoming}.` : 'Finish a module and it will come back here for review.'} Gaps grow each time you remember: 1, 3, 7, 14, then 30 days.</T>
+        </View>
+      )}
     </View>
   );
 }

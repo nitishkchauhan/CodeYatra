@@ -30,6 +30,7 @@ Stops not taught in the app link to **free** outside material (official docs, fr
 - **Search** highlights matching stops and lists them as chips; **My stop** scrolls to the next stop; **saved stops** (bookmark in the stop sheet) show under the search box and on the Revise screen.
 - **What to do next:** up to three suggestions from fixed rules, each with its reason: revise weak stops, finish a started stop, take a section checkpoint, start the first ready stop. No AI involved.
 - **Checkpoints:** each section whose lessons have practice sets ends with a scored checkpoint (`src/content/checkpoints.ts`). Passing (70% right first time) marks the section mastered with a star. Completion (lessons done) and mastery (checkpoint passed) are shown separately.
+- **Five levels per stop:** not started, in progress, completed, practice passed, mastered (`stopLevel` in `graph.ts`). Opening a stop never changes its level; ticking "I already know this" only reaches completed.
 - Pan and zoom are not used: the map is a vertical scroll, which works one-handed on 360 dp phones; search and My stop do the navigating.
 - Logic and tests: `src/content/paths/graph.ts`, `src/content/__tests__/graph.test.ts`.
 

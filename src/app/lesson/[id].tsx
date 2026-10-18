@@ -109,6 +109,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
         accuracy={checkpoint ? Math.round((checkpoint.score / checkpoint.total) * 100) : accuracy}
         seconds={Math.max(1, Math.round((finishedAt - startedAt) / 1000))}
         learned={lesson.learned}
+        reading={lesson.reading}
         streak={predicted.streak}
         streakNote={predicted.extended ? (state.streak > 0 ? `Up from ${state.streak} · see you tomorrow` : 'Your streak starts today') : 'Already counted for today'}
         onContinue={() => {

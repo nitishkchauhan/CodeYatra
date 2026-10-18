@@ -16,7 +16,9 @@ Teaches coding in short lessons. There are **16 tracks** of **10 modules** each 
 ## Lesson v2 (Python Foundations, 17 Oct 2026, branch `content-v2`)
 Every Python Foundations module: **hook** (a real situation, the goal) → **3 short cards** (under 60 words each; some with an interactive visual) → **try it** (edit and run, nothing marked) → **common mistake** (wrong code, the real Python error, the fix) → **2 quick checks** → **coding exercise** with tests → finish screen with a **3-point recap** and a **Next lesson** button. Each module also has a **practice set**, and each roadmap section a **checkpoint**.
 Tests run every mistake's wrong code to confirm the error message is the one Python really gives, and every "try it" program to confirm it runs (`lessonV2.test.ts`).
-Step screens: `src/features/lesson/V2Steps.tsx`; visuals: `src/features/lesson/PyVisuals.tsx`.
+Step screens: `src/features/lesson/V2Steps.tsx`; visuals: `src/features/lesson/PyVisuals.tsx`, `NextVisuals.tsx`.
+
+**Next.js 16** (18 Oct 2026) follows the same template: 12 modules and a project in `src/content/tracks/nextFoundations.ts`, practice in `src/content/drills/next.ts`. Next.js can't run on the phone, so components are read, tapped, ordered and debugged, while the logic behind each feature (routing, params, caching rules, API handlers, validation, permissions) is real JavaScript the learner writes and runs. Each lesson lists official reading with a review date. See `project-docs/CONTENT-REVIEW.md`.
 
 ## How a lesson works
 Every module follows **read → quick check → practice → complete**:

@@ -9,7 +9,7 @@ import { Icon } from './ui/Icon';
 import { T } from './ui/Text';
 import { drillId, getLesson, hasDrill } from '@/content';
 import { nextModule, stopStatus, type CareerPath, type PathLink, type PathStop } from '@/content/paths';
-import { findStop, needsRevision, nodeState, prerequisites, unlocks } from '@/content/paths/graph';
+import { findStop, LEVEL_LABEL, needsRevision, nodeState, prerequisites, stopLevel, unlocks, type StopLevel } from '@/content/paths/graph';
 import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
 import { colors } from '@/theme';
@@ -29,6 +29,7 @@ export function PathStopSheet({ path, stop, onClose, onGo }: { path: CareerPath;
   const revise = needsRevision(stop, ev);
   const saved = !!state.bookmarks[`${path.id}/${stop.id}`];
   const early = nodeState(path, stop, ev) === 'early';
+  const level = stopLevel(path, stop, ev);
   const openLesson = (id: string) => {
     haptic.tap();
     onClose();
@@ -94,6 +95,8 @@ export function PathStopSheet({ path, stop, onClose, onGo }: { path: CareerPath;
               {stop.why}
             </T>
           </View>
+
+          <LevelSteps level={level} />
 
           {revise.length ? (
             <View style={styles.revise}>
@@ -228,6 +231,32 @@ export function PathStopSheet({ path, stop, onClose, onGo }: { path: CareerPath;
   );
 }
 
+const LEVELS: StopLevel[] = ['not-started', 'in-progress', 'completed', 'assessed', 'mastered'];
+const LEVEL_HOW: Record<StopLevel, string> = {
+  'not-started': 'Start a lesson to begin.',
+  'in-progress': 'Finish every lesson to complete it.',
+  completed: 'Pass each lesson’s practice set (2 mistakes at most) next.',
+  assessed: 'Pass the section checkpoint to show mastery.',
+  mastered: 'Checkpoint passed. Revise when it comes up.',
+};
+
+/** Where the learner is on the five levels, and what moves them up. Only evidence moves it. */
+function LevelSteps({ level }: { level: StopLevel }) {
+  const at = LEVELS.indexOf(level);
+  return (
+    <View style={{ gap: 6 }} accessible accessibilityLabel={`Your level: ${LEVEL_LABEL[level]}. ${LEVEL_HOW[level]}`}>
+      <View style={{ flexDirection: 'row', gap: 4 }}>
+        {LEVELS.map((l, i) => (
+          <View key={l} style={[styles.levelBar, i <= at && { backgroundColor: i === 4 ? colors.saffron : colors.primary }]} />
+        ))}
+      </View>
+      <T variant="labelSm" color={colors.ink}>
+        {LEVEL_LABEL[level]} · <T variant="caption">{LEVEL_HOW[level]}</T>
+      </T>
+    </View>
+  );
+}
+
 function StopChip({ text, done, onPress }: { text: string; done: boolean; onPress: () => void }) {
   return (
     <Pressable
@@ -269,6 +298,7 @@ const styles = StyleSheet.create({
   save: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.line, alignItems: 'center', justifyContent: 'center' },
   revise: { flexDirection: 'row', gap: 10, alignItems: 'flex-start', borderRadius: 14, backgroundColor: colors.warnSoft, borderWidth: 1, borderColor: colors.warnLine, padding: 12 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  levelBar: { flex: 1, height: 6, borderRadius: 3, backgroundColor: colors.lineSoft },
   stopChip: { maxWidth: '100%', minHeight: 36, flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 12, borderRadius: 18, borderWidth: 1, borderColor: colors.line },
   dot: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: colors.line, alignItems: 'center', justifyContent: 'center' },
   link: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14, borderRadius: 14, borderWidth: 1, borderColor: colors.line },

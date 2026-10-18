@@ -5,7 +5,7 @@ import { Icon } from './ui/Icon';
 import { T } from './ui/Text';
 import { checkpointId, hasCheckpoint } from '@/content/checkpoints';
 import { type CareerPath, type PathStop } from '@/content/paths';
-import { needsRevision, nodeState, type Evidence, type NodeState } from '@/content/paths/graph';
+import { LEVEL_LABEL, needsRevision, nodeState, stopLevel, type Evidence, type NodeState, type StopLevel } from '@/content/paths/graph';
 import { useProgress } from '@/state/progress';
 import { colors } from '@/theme';
 
@@ -73,6 +73,7 @@ export function RoadmapMap({ path, nextId, onOpen, onCheckpoint, highlight, onPl
                         path={path}
                         stop={row[col]}
                         state={states[section.stops.indexOf(row[col])]}
+                        level={stopLevel(path, row[col], ev)}
                         revise={needsRevision(row[col], ev).length > 0}
                         saved={!!state.bookmarks[`${path.id}/${row[col].id}`]}
                         isNext={nextId === row[col].id}
@@ -124,6 +125,7 @@ function Cell({
   path,
   stop,
   state,
+  level,
   revise,
   saved,
   isNext,
@@ -136,6 +138,7 @@ function Cell({
   path: CareerPath;
   stop: PathStop;
   state: NodeState;
+  level: StopLevel;
   revise: boolean;
   saved: boolean;
   isNext: boolean;
@@ -147,7 +150,19 @@ function Cell({
 }) {
   const done = state === 'done';
   const lessons = stop.modules?.length ?? 0;
-  const note = revise ? 'Needs revision' : isNext ? 'Next stop' : state === 'early' ? 'Later' : stop.optional ? 'Optional' : lessons ? `${lessons} ${lessons === 1 ? 'lesson' : 'lessons'}` : 'Free links';
+  const note = revise
+    ? 'Needs revision'
+    : done
+      ? LEVEL_LABEL[level]
+      : isNext
+        ? 'Next stop'
+        : state === 'early'
+          ? 'Later'
+          : stop.optional
+            ? 'Optional'
+            : lessons
+              ? `${lessons} ${lessons === 1 ? 'lesson' : 'lessons'}`
+              : 'Free links';
   return (
     <View style={[styles.cell, dim && { opacity: 0.35 }]}>
       {/* Connector from the node to the central line. */}
@@ -160,12 +175,13 @@ function Cell({
       />
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`${stop.title}, ${STATE_LABEL[state]}${revise ? ', needs revision' : ''}${isNext ? ', next stop' : ''}${stop.optional ? ', optional' : ''}${stop.choice ? `, pick one: ${stop.choice}` : ''}${stop.project ? ', project' : ''}${saved ? ', saved' : ''}`}
+        accessibilityLabel={`${stop.title}, ${done ? LEVEL_LABEL[level] : STATE_LABEL[state]}${revise ? ', needs revision' : ''}${isNext ? ', next stop' : ''}${stop.optional ? ', optional' : ''}${stop.choice ? `, pick one: ${stop.choice}` : ''}${stop.project ? ', project' : ''}${saved ? ', saved' : ''}`}
         onPress={() => onOpen(stop)}
         style={({ pressed }) => [
           styles.node,
           state === 'early' && { backgroundColor: '#F7F6FB' },
           done && { backgroundColor: colors.successSoft, borderColor: colors.success },
+          level === 'mastered' && { borderColor: colors.saffron, borderWidth: 2 },
           state === 'progress' && !isNext && { borderColor: path.color },
           isNext && { backgroundColor: path.soft, borderColor: path.color, borderWidth: 2 },
           revise && { borderColor: colors.saffron, borderWidth: 2 },
@@ -189,6 +205,8 @@ function Cell({
         <View style={styles.nodeMeta}>
           {revise ? (
             <Icon name="reset" size={12} color={colors.saffronInk} />
+          ) : level === 'mastered' ? (
+            <Icon name="star" size={12} color={colors.saffronInk} />
           ) : done ? (
             <Icon name="check" size={13} color={colors.success} strokeWidth={3} />
           ) : state === 'early' ? (
@@ -214,6 +232,7 @@ function Legend({ path }: { path: CareerPath }) {
       accessible
       accessibilityLabel="Legend: green done, highlighted next stop, orange needs revision, grey comes later, dashed optional. Every box can be opened.">
       <Key box={{ borderColor: colors.success, backgroundColor: colors.successSoft }} text="Done" />
+      <Key box={{ borderColor: colors.saffron, backgroundColor: colors.successSoft, borderWidth: 2 }} text="Mastered" />
       <Key box={{ borderColor: path.color, borderWidth: 2, backgroundColor: path.soft }} text="Next" />
       <Key box={{ borderColor: colors.saffron, borderWidth: 2 }} text="Revise" />
       <Key box={{ borderColor: colors.line, backgroundColor: '#F7F6FB' }} text="Later" />

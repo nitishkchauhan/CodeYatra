@@ -1,12 +1,13 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { allLessons, getLesson, STAGES, type MistakeStep, type Step, type TryStep } from '..';
-import { python, runPyFull } from '../testing/run';
+import { python, runJs, runPyFull } from '../testing/run';
 
 const steps: (readonly [string, Step])[] = allLessons().flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
 const mistakes = steps.filter((r): r is readonly [string, MistakeStep] => r[1].type === 'mistake');
 const tries = steps.filter((r): r is readonly [string, TryStep] => r[1].type === 'try');
-const pythonModules = STAGES.find((s) => s.id === 'python')!.units.flatMap((u) => u.lessons.map((l) => getLesson(l.id)!));
+const trackModules = (id: string) => STAGES.find((s) => s.id === id)!.units.flatMap((u) => u.lessons.map((l) => getLesson(l.id)!));
+const pythonModules = trackModules('python');
 
 describe('Python Foundations follows Lesson v2', () => {
   it('has 12 modules and a final project', () => {
@@ -35,6 +36,33 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
+describe('Next.js 16 follows Lesson v2', () => {
+  const next = trackModules('next');
+  it('has 12 modules and a final project', () => {
+    expect(next.filter((l) => l.kind === 'lesson')).toHaveLength(12);
+    expect(next.at(-1)!.kind).toBe('project');
+  });
+  it.each(next.filter((l) => l.kind === 'lesson').map((l) => [l.id, l] as const))('%s: hook, 3 cards, try it, a mistake, checks, a coding exercise, official reading', (_, lesson) => {
+    const types = lesson.steps.map((s) => s.type);
+    expect(types[0]).toBe('hook');
+    expect(types.filter((t) => t === 'concept')).toHaveLength(3);
+    expect(types).toContain('try');
+    expect(types).toContain('mistake');
+    expect(types.at(-1)).toBe('editor');
+    expect(lesson.learned).toHaveLength(3);
+    for (const s of lesson.steps) if (s.type === 'concept') expect(s.body.split(/\s+/).length).toBeLessThanOrEqual(60);
+    expect(lesson.reading?.length).toBeGreaterThan(0);
+  });
+});
+
+describe('further reading', () => {
+  const all = allLessons().flatMap((l) => (l.reading ?? []).map((r) => [l.id, r] as const));
+  it.each(all)('%s: %o is https, from an official source, with a review date', (_, r) => {
+    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org)\//);
+    expect(r.reviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+});
+
 describe('common mistakes', () => {
   it.each(mistakes)('%s: the wrong code really fails that way and the fix runs', (_, step) => {
     expect(step.wrong.join('\n')).not.toBe(step.right.join('\n'));
@@ -54,6 +82,11 @@ describe('common mistakes', () => {
 describe('try it', () => {
   it.each(tries)('%s: the starter code runs cleanly', (_, step) => {
     expect(step.ideas.length).toBeGreaterThanOrEqual(2);
+    if (step.lang === 'javascript') {
+      const out = runJs(step.starter);
+      expect(out.length).toBeGreaterThan(0);
+      return;
+    }
     if (step.lang !== 'python' || !python) return;
     const r = runPyFull(step.starter);
     expect(r.error).toBe('');

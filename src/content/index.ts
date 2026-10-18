@@ -12,7 +12,7 @@ import { ticketHtml, WEB_LESSONS } from './web';
 import { CSS_LESSONS, flexRow } from './styling';
 import { HTML_LESSONS, searchForm } from './html';
 import { cheapTickets, JS_LESSONS } from './js';
-import { NEXT_LESSONS, dynamicRoute, routeHandler } from './next';
+import { dynamicRoute, routeHandler } from './next';
 import { expressRoute, NODE_LESSONS } from './node';
 import { canteenBill } from './python3';
 import { REACT_LESSONS, trainList } from './react';
@@ -33,7 +33,8 @@ import { PLACEMENT_LESSONS } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS } from './tracks/sql';
-import { NEXT_MORE, NODE_MORE, REACT_MORE } from './tracks/stackMore';
+import { NODE_MORE, REACT_MORE } from './tracks/stackMore';
+import { NEXT_FOUNDATIONS, NEXT_PROJECT } from './tracks/nextFoundations';
 
 export * from './types';
 export { PROJECTS } from './projects';
@@ -233,7 +234,8 @@ const ALL: Lesson[] = [
   ...JS_LESSONS,
   ...REACT_LESSONS,
   ...NODE_LESSONS,
-  ...NEXT_LESSONS,
+  ...NEXT_FOUNDATIONS,
+  NEXT_PROJECT,
   ...LOGIC_MORE,
   ...HTML_MORE,
   ...CSS_MORE,
@@ -241,7 +243,6 @@ const ALL: Lesson[] = [
   ...PYTHON_MORE_2,
   ...REACT_MORE,
   ...NODE_MORE,
-  ...NEXT_MORE,
   ...C_LESSONS,
   ...JAVA_LESSONS,
   ...DSA_LESSONS,
@@ -633,24 +634,27 @@ export const STAGES: Stage[] = [
     badgeInk: '#FFFFFF',
     name: 'Next.js',
     short: 'Next.js',
-    sub: 'Full-stack React framework',
-    audience: 'B.Tech · BCA',
-    blurb: 'Routing, layouts, server components, actions and deployment.',
+    sub: 'Next.js 16 · App Router',
+    audience: 'B.Tech · BCA · after React',
+    blurb: '12 modules and a project: routing, Server Components, caching, APIs, Server Actions, security and deployment, checked against the Next.js 16 docs.',
     color: '#16142B',
     soft: '#ECEBF3',
     accent: '#A3A1B8',
     icon: 'M12 3l10 18H2z',
     units: [
-      unit('nx-u1', 'Pages', ref('nx-1', 'Pages and routing', 'Read + practice · 6 min')),
-      unit('nx-u6', 'Links', ref('nx-link-1', 'Links and navigation', 'Read + practice · 5 min')),
-      unit('nx-u2', 'Layouts', ref('nx-layout-1', 'Layouts', 'Read + practice · 6 min')),
-      unit('nx-u3', 'Dynamic routes', ref('nx-dyn-1', 'Dynamic routes', 'Read + practice · 6 min')),
-      unit('nx-u7', 'Metadata', ref('nx-meta-1', 'Metadata and SEO', 'Read + practice · 5 min')),
-      unit('nx-u4', 'Server data', ref('nx-data-1', 'Server components', 'Read + practice · 7 min')),
-      unit('nx-u8', 'Loading and errors', ref('nx-loading-1', 'Loading and error states', 'Read + order lines · 6 min')),
-      unit('nx-u5', 'APIs', ref('nx-api-1', 'Route handlers', 'Read + practice · 6 min')),
-      unit('nx-u9', 'Server actions', ref('nx-actions-1', 'Server actions', 'Read + practice · 7 min')),
-      unit('nx-u10', 'Deploy', ref('nx-deploy-1', 'Deploying', 'Read + order lines · 5 min')),
+      unit('nx-u1', 'Routing', ref('nx-1', 'What Next.js is, and file-based routing', 'Lesson + code editor · 8 min')),
+      unit('nx-u2', 'Layouts', ref('nx-layout-1', 'Layouts and nested layouts', 'Lesson + code editor · 8 min')),
+      unit('nx-u6', 'Navigation', ref('nx-link-1', 'Linking and navigating', 'Lesson + code editor · 8 min')),
+      unit('nx-u3', 'Dynamic routes', ref('nx-dyn-1', 'Dynamic routes and params', 'Lesson + code editor · 8 min')),
+      unit('nx-u8', 'Loading and errors', ref('nx-loading-1', 'Loading, error and not-found pages', 'Lesson + code editor · 8 min')),
+      unit('nx-u4', 'Server and client', ref('nx-data-1', 'Server and Client Components', 'Lesson + code editor · 8 min')),
+      unit('nx-u11', 'Rendering', ref('nx-render-1', 'Rendering, streaming and caching', 'Lesson + code editor · 8 min')),
+      unit('nx-u5', 'APIs', ref('nx-api-1', 'Route Handlers: build a REST API', 'Lesson + code editor · 9 min')),
+      unit('nx-u9', 'Forms', ref('nx-actions-1', 'Server Actions and forms', 'Lesson + code editor · 9 min')),
+      unit('nx-u7', 'Styling and SEO', ref('nx-meta-1', 'Styling, images, fonts and metadata', 'Lesson + code editor · 8 min')),
+      unit('nx-u12', 'Security', ref('nx-auth-1', 'Secrets, auth and proxy', 'Lesson + code editor · 9 min')),
+      unit('nx-u10', 'Ship it', ref('nx-deploy-1', 'Testing and deploying', 'Lesson + code editor · 8 min')),
+      unit('nx-u13', 'Project', ref('nx-project', 'Project: student management API', 'Project · 3 tested steps · 20 min')),
     ],
     practice: [
       { id: 'x-dynamic', title: 'One page per train', kind: 'Next.js', difficulty: 'Medium', xp: 15 },
@@ -821,7 +825,7 @@ export const STAGES: Stage[] = [
  * Tracks paused until they are rewritten to the Lesson v2 standard (see project-docs/CONTENT-PLAN.md).
  * They are hidden from pickers, not deleted: lessons, progress and certificates in them are kept.
  */
-export const PAUSED_STAGES: readonly string[] = ['c', 'java', 'node', 'next', 'git', 'dsa2'];
+export const PAUSED_STAGES: readonly string[] = ['c', 'java', 'node', 'git', 'dsa2'];
 export const isPaused = (id: string) => PAUSED_STAGES.includes(id);
 
 /** Tracks to list: every active track, plus any paused ones named in `keep` (e.g. the track the learner is in). */

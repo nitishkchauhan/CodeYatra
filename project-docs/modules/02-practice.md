@@ -12,6 +12,7 @@ Extra practice outside the main lessons, mostly on the **Practice** tab.
 | **Practice sets** | 36 extra practice lessons across tracks | ✅ |
 | **Section checkpoints** | Scored test per roadmap section from its modules' practice questions; 70% first-time right = mastered; per-module results | 🧪 `content-v2` |
 | **Interview practice** | 26 questions with model answers, reasoning, follow-ups; reveal and self-rate; optional timer; weak topics | 🧪 `content-v2` |
+| **Spaced review** | Finished modules return after 1, 3, 7, 14, 30 days; remembered moves up, forgotten restarts; Home card when due | 🧪 `content-v2` (`src/content/review.ts`) |
 | **Revise** | Modules needing revision (from wrong answers and failed checkpoints), mistakes review, saved stops, quick-recall cards | 🧪 `content-v2` |
 | **Module practice** | A **Practice** button on finished modules: 4 new exercises plus 1 review exercise from an earlier module | 🧪 Python only (40 exercises), on `paths-feature`/`main` code but not yet in a store build |
 

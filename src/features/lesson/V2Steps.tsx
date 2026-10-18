@@ -183,6 +183,11 @@ export function MistakeStep({ step, onDone }: { step: Mistake; onDone: () => voi
         </Animated.View>
         <Animated.View entering={FadeInDown.delay(80).duration(320)} style={{ gap: 8 }}>
           <CodeCard label="A common mistake" lines={step.wrong} lang={step.lang} tone="wrong" />
+          {step.note ? (
+            <T variant="caption" color={colors.ink2}>
+              {step.note}
+            </T>
+          ) : null}
           {/* Some mistakes don't crash, they just print the wrong thing. */}
           {/Error|too long/.test(step.error) ? <ConsoleView output={[]} error={step.error} /> : <ConsoleView output={[step.error]} />}
         </Animated.View>

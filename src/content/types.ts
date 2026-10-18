@@ -41,7 +41,7 @@ export type ConceptStep = {
   title: string;
   body: string;
   /** An interactive diagram shown with the card. The Python ones step through code. */
-  visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps' | 'variables' | 'listIndex' | 'callFlow';
+  visual?: 'sequence' | 'loopCompare' | 'htmlAnatomy' | 'componentProps' | 'variables' | 'listIndex' | 'callFlow' | 'routeTree' | 'serverClient' | 'requestFlow';
   code?: CodeSample[];
   /** "Watch it run": highlights a line once per round and shows the loop variable. */
   demo?: {
@@ -200,6 +200,8 @@ export type MistakeStep = {
   error: string;
   /** The wrong code never finishes (an endless loop), so tests don't run it. */
   hang?: boolean;
+  /** Shown above the error when it is a summary of what a tool prints (e.g. a Next.js build error), not exact output. */
+  note?: string;
   right: string[];
   explain: string;
 };
@@ -219,9 +221,14 @@ export type Lesson = {
   skill: SkillKey;
   steps: Step[];
   learned: string[];
+  /** Official reading for going deeper, with the day someone last checked it is still right. */
+  reading?: Reading[];
   /** For built lessons (daily challenge, review): where each step came from, as "lessonId#stepIndex". */
   sources?: string[];
 };
+
+/** A trusted outside resource. `reviewed` is YYYY-MM-DD; `version` names what it applies to, e.g. "Next.js 16". */
+export type Reading = { title: string; url: string; kind: 'docs' | 'guide' | 'video'; reviewed: string; version?: string };
 
 export type LessonRef = { id: string; title: string; meta: string };
 export type Unit = { id: string; title: string; lessons: LessonRef[] };

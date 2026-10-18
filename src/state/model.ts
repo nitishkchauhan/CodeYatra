@@ -1,6 +1,7 @@
 // The learner's saved state, and the pure rules that change it.
 import { addDays } from './streak';
 import type { CheckpointResult } from '@/content/checkpoints';
+import { mergeReviews, type ReviewCard } from '@/content/review';
 import type { About } from '@/content/paths/recommend';
 
 export type LearnerLevel = 'school' | 'college' | 'curious';
@@ -65,6 +66,8 @@ export type Progress = {
   checkpoints: Record<string, CheckpointRecord>;
   /** Interview questions the learner has answered, with their own rating. */
   interview: Record<string, { rating: InterviewRating; at: string }>;
+  /** Spaced review schedule for finished modules (lesson id → box and next due day). */
+  reviews: Record<string, ReviewCard>;
   /** Milliseconds; the newer side wins settings when merging phone and cloud copies. */
   updatedAt: number;
 };
@@ -103,6 +106,7 @@ export const INITIAL: Progress = {
   bookmarks: {},
   checkpoints: {},
   interview: {},
+  reviews: {},
   updatedAt: 0,
 };
 
@@ -202,6 +206,7 @@ export function mergeProgress(local: Progress, remote: Progress): Progress {
       }),
     ),
     interview: { ...remote.interview, ...local.interview },
+    reviews: mergeReviews(local.reviews, remote.reviews),
     referralsCredited: Math.max(local.referralsCredited, remote.referralsCredited),
     referred: local.referred || remote.referred,
     mockResults: [...new Map([...remote.mockResults, ...local.mockResults].map((r) => [`${r.at}|${r.kind}|${r.score}|${r.seconds}`, r])).values()]
