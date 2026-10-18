@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { allLessons, getLesson, STAGES, type MistakeStep, type Step, type TryStep } from '..';
-import { gcc, python, runC, runJs, runPyFull } from '../testing/run';
+import { allLessons, getLesson, STAGES, type MistakeStep, type OrderStep, type Step, type TryStep } from '..';
+import { gcc, git, python, runC, runGit, runJs, runPyFull } from '../testing/run';
 import { sqlProgram } from '../sqlFixture';
 
 const steps: (readonly [string, Step])[] = allLessons().flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
@@ -37,7 +37,7 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations'])('%s follows Lesson v2', (track) => {
+describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations', 'git'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
@@ -61,13 +61,13 @@ describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 
 describe('further reading', () => {
   const all = allLessons().flatMap((l) => (l.reading ?? []).map((r) => [l.id, r] as const));
   it.each(all)('%s: %o is https, from an official source, with a review date', (_, r) => {
-    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org|en\.cppreference\.com)\//);
+    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org|en\.cppreference\.com|git-scm\.com|docs\.github\.com)\//);
     expect(r.reviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });
 
 describe('common mistakes', () => {
-  it.each(mistakes)('%s: the wrong code really fails that way and the fix runs', (_, step) => {
+  it.each(mistakes)('%s: the wrong code really fails that way and the fix runs', (id, step) => {
     expect(step.wrong.join('\n')).not.toBe(step.right.join('\n'));
     if (step.lang === 'sql' && python) {
       // SQL mistakes run against the sample database; the shown error is SQLite's own message.
@@ -90,6 +90,15 @@ describe('common mistakes', () => {
       if (/Error\b/.test(step.error)) expect(error).toBe(step.error);
       else expect(out.join('\n')).toBe(step.error);
       expect(() => runJs(step.right.join('\n'))).not.toThrow();
+      return;
+    }
+    if (step.lang === 'bash') {
+      // Only the Git track's shell lines are git commands; other bash mistakes (npm, next build) are summaries.
+      if (!id.startsWith('git-')) return;
+      // Git mistakes run with real git in a fresh folder: the wrong commands print the shown message, and the fix succeeds.
+      if (!git) return;
+      expect(runGit(step.wrong.join('\n')).output).toContain(step.error);
+      expect(runGit(step.right.join('\n')).lastOk).toBe(true);
       return;
     }
     if (step.lang === 'c') {
@@ -134,5 +143,13 @@ describe('try it', () => {
     const r = runPyFull(step.starter);
     expect(r.error).toBe('');
     expect(r.output.length).toBeGreaterThan(0);
+  });
+});
+
+describe('git command orders', () => {
+  const orders = steps.filter((r): r is readonly [string, OrderStep] => r[1].type === 'order' && r[1].lang === 'bash' && /^(git init|mkdir|git clone)/.test(r[1].lines[0]));
+  it.each(orders.length ? orders : [['(none)', null] as unknown as readonly [string, OrderStep]])('%s: the commands in the right order run without an error', (_, step) => {
+    if (!step || !git) return;
+    expect(runGit(step.lines.join('\n')).ok).toBe(true);
   });
 });

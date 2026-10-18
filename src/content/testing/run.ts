@@ -1,6 +1,6 @@
 // Test-only helpers that really run lesson code, so every answer we teach is verified.
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { appendFileSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 
@@ -63,6 +63,76 @@ export function runC(code: string): string[] {
 }
 
 export const runSql = (query: string) => runPy(sqlProgram(query));
+
+export const git = find(['git'], ['--version']);
+
+// Git runs with no user or system config, a fixed identity and main as the first branch,
+// so lessons see the same messages on every machine.
+const GIT_ENV = {
+  ...process.env,
+  GIT_CONFIG_NOSYSTEM: '1',
+  GIT_CONFIG_GLOBAL: process.platform === 'win32' ? 'NUL' : '/dev/null',
+  GIT_AUTHOR_NAME: 'Asha',
+  GIT_AUTHOR_EMAIL: 'asha@example.com',
+  GIT_COMMITTER_NAME: 'Asha',
+  GIT_COMMITTER_EMAIL: 'asha@example.com',
+  GIT_CONFIG_COUNT: '3',
+  GIT_CONFIG_KEY_0: 'init.defaultBranch',
+  GIT_CONFIG_VALUE_0: 'main',
+  GIT_CONFIG_KEY_1: 'core.autocrlf',
+  GIT_CONFIG_VALUE_1: 'false',
+  GIT_CONFIG_KEY_2: 'advice.defaultBranchName',
+  GIT_CONFIG_VALUE_2: 'false',
+  LANG: 'C',
+  LC_ALL: 'C',
+};
+
+/** Splits a command line on spaces, keeping "quoted text" together. */
+function words(line: string): string[] {
+  return [...line.matchAll(/"([^"]*)"|'([^']*)'|(\S+)/g)].map((m) => m[1] ?? m[2] ?? m[3]);
+}
+
+/**
+ * Runs a lesson's shell lines in a fresh folder, beside an empty bare repository at ../origin.git.
+ * `lastOk` says whether the final git command succeeded (a fix may follow a merge that stopped on a conflict).
+ * Supports git, echo "text" > file (or >>), mkdir and cd. Returns everything printed and whether every command succeeded.
+ */
+export function runGit(script: string): { output: string; ok: boolean; lastOk: boolean } {
+  const root = tmp();
+  execFileSync(git!, ['init', '-q', '--bare', 'origin.git'], { cwd: root, env: GIT_ENV });
+  let cwd = join(root, 'work');
+  mkdirSync(cwd);
+  const out: string[] = [];
+  let ok = true;
+  let lastOk = true;
+  for (const raw of script.split('\n')) {
+    const line = raw.replace(/\s+#.*$/, '').trim();
+    if (!line || line.startsWith('#')) continue;
+    const echo = line.match(/^echo\s+(?:"([^"]*)"|'([^']*)'|(\S+))\s*(>>?)\s*(\S+)$/);
+    if (echo) {
+      const text = `${echo[1] ?? echo[2] ?? echo[3]}\n`;
+      const file = join(cwd, echo[5]);
+      if (echo[4] === '>>') appendFileSync(file, text);
+      else writeFileSync(file, text);
+      continue;
+    }
+    const [cmd, ...args] = words(line);
+    if (cmd === 'mkdir') {
+      mkdirSync(join(cwd, args[0]), { recursive: true });
+      continue;
+    }
+    if (cmd === 'cd') {
+      cwd = join(cwd, args[0]);
+      continue;
+    }
+    if (cmd !== 'git') throw new Error(`runGit can't run: ${line}`);
+    const r = spawnSync(git!, args, { cwd, env: GIT_ENV, encoding: 'utf8', timeout: 15000 });
+    out.push(`${r.stdout ?? ''}${r.stderr ?? ''}`.trimEnd());
+    lastOk = r.status === 0;
+    if (!lastOk) ok = false;
+  }
+  return { output: out.filter(Boolean).join('\n'), ok, lastOk };
+}
 
 /** Output of a snippet in a language we can run here, or null if we can't run it. */
 export function outputOf(lang: string, code: string): string[] | null {

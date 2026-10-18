@@ -28,7 +28,7 @@ import { CBSE_LESSONS, CBSE_PROJECT } from './tracks/cbse';
 import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
 import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
-import { GIT_LESSONS } from './tracks/git';
+import { GIT_LESSONS, GIT_PROJECT } from './tracks/git';
 import { JAVA_LESSONS } from './tracks/java';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
@@ -211,7 +211,7 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
   practice('x-dsa-hash', 'First repeated booking', 'dsa', 4, ['Use a set for O(1) lookups'], firstRepeat),
   drill('x-sql-drill', 'Query results drill', 'sql', SQL_LESSONS, ['predict'], ['Read queries like the database does']),
   practice('x-sql-join', "Asha's trains", 'sql', 5, ['Join two tables on a key'], sqlJoin),
-  drill('x-git-drill', 'Command drill', 'git', GIT_LESSONS, ['order', 'tap'], ['Remembered everyday Git commands']),
+  drill('x-git-drill', 'Command drill', 'git', GIT_LESSONS, ['order', 'quiz'], ['Remembered everyday Git commands']),
   drill('x-pl-output', 'Output round', 'placement', PLACEMENT_LESSONS, ['predict'], ['Handled tricky output questions']),
   drill('x-pl-code', 'Coding round', 'placement', PLACEMENT_LESSONS, ['editor'], ['Solved classic coding questions'], 4),
   practice('x-dsa2-graph', 'Count the islands', 'dsa', 9, ['DFS marks a whole connected part'], islands),
@@ -247,6 +247,7 @@ const ALL: Lesson[] = [
   ...SQL_LESSONS,
   SQL_PROJECT,
   ...GIT_LESSONS,
+  GIT_PROJECT,
   ...PLACEMENT_LESSONS,
   PLACEMENT_PROJECT,
   ...DSA2_LESSONS,
@@ -799,18 +800,20 @@ export const STAGES: Stage[] = [
     accent: '#FDBA8C',
     icon: 'M6 3v12 M6 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M18 9a9 9 0 0 1-9 9',
     units: [
-      unit('g1', 'Why Git', ref('git-why', 'Why Git?', 'Read + quiz · 4 min')),
-      unit('g2', 'Repositories', ref('git-init', 'Start a repository', 'Read + order lines · 5 min')),
-      unit('g3', 'Commits', ref('git-commit', 'add and commit', 'Read + order lines · 5 min')),
-      unit('g4', 'History', ref('git-history', 'log and diff', 'Read + practice · 5 min')),
-      unit('g5', 'Branches', ref('git-branch', 'Branches', 'Read + order lines · 5 min')),
-      unit('g6', 'Merging', ref('git-merge', 'Merging and conflicts', 'Read + find the bug · 6 min')),
-      unit('g7', 'Remotes', ref('git-remote', 'push and pull', 'Read + order lines · 5 min')),
-      unit('g8', 'Pull requests', ref('git-pr', 'Pull requests', 'Read + order lines · 5 min')),
-      unit('g9', '.gitignore', ref('git-ignore', '.gitignore', 'Read + quiz · 4 min')),
-      unit('g10', 'Undo', ref('git-undo', 'Undo safely', 'Read + practice · 5 min')),
+      unit('g1', 'Why Git', ref('git-why', 'Why Git?', 'Lesson + Python · 6 min')),
+      unit('g2', 'Setting up', ref('git-init', 'Setting up and starting a repository', 'Lesson + Python · 6 min')),
+      unit('g3', 'Commits', ref('git-commit', 'Staging and committing', 'Lesson + Python · 7 min')),
+      unit('g4', 'History', ref('git-history', 'Looking at history: log, diff and show', 'Lesson + Python · 7 min')),
+      unit('g5', 'Branches', ref('git-branch', 'Branches', 'Lesson + Python · 7 min')),
+      unit('g6', 'Merging', ref('git-merge', 'Merging and conflicts', 'Lesson + Python · 8 min')),
+      unit('g7', 'Remotes', ref('git-remote', 'Remotes: clone, push and pull', 'Lesson + Python · 7 min')),
+      unit('g8', 'Pull requests', ref('git-pr', 'Pull requests and teamwork', 'Lesson + Python · 7 min')),
+      unit('g9', '.gitignore', ref('git-ignore', '.gitignore and secrets', 'Lesson + Python · 7 min')),
+      unit('g10', 'Undo', ref('git-undo', 'Undoing things safely', 'Lesson + Python · 7 min')),
+      unit('g11', 'Stash', ref('git-stash', 'Stash: set work aside', 'Lesson + Python · 6 min')),
+      unit('g12', 'Project', ref('git-project', 'Project: a clean-history checker', 'Project · 3 parts · 20 min')),
     ],
-    practice: [{ id: 'x-git-drill', title: 'Command drill', kind: 'Order + tap', difficulty: 'Easy', xp: 15 }],
+    practice: [{ id: 'x-git-drill', title: 'Command drill', kind: 'Order + quiz', difficulty: 'Easy', xp: 15 }],
   },
   {
     id: 'placement',
@@ -853,7 +856,7 @@ export const STAGES: Stage[] = [
  * Tracks paused until they are rewritten to the Lesson v2 standard (see project-docs/CONTENT-PLAN.md).
  * They are hidden from pickers, not deleted: lessons, progress and certificates in them are kept.
  */
-export const PAUSED_STAGES: readonly string[] = ['c', 'java', 'node', 'git', 'dsa2'];
+export const PAUSED_STAGES: readonly string[] = ['c', 'java', 'node', 'dsa2'];
 export const isPaused = (id: string) => PAUSED_STAGES.includes(id);
 
 /** Tracks to list: every active track, plus any paused ones named in `keep` (e.g. the track the learner is in). */

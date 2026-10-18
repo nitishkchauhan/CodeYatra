@@ -186,6 +186,8 @@ insert into public.track_lessons (stage_id, lesson_id) values
   ('git', 'git-pr'),
   ('git', 'git-ignore'),
   ('git', 'git-undo'),
+  ('git', 'git-stash'),
+  ('git', 'git-project'),
   ('placement', 'pl-fizzbuzz'),
   ('placement', 'pl-reverse'),
   ('placement', 'pl-prime'),
