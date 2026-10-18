@@ -81,34 +81,6 @@ export const countSeats: EditorStep = {
 
 export const WEB_MORE: Lesson[] = [
   {
-    id: 'w-html-2',
-    title: 'Links and images',
-    kind: 'lesson',
-    minutes: 6,
-    skill: 'web',
-    learned: ['<a href> links pages together', '<img src> shows pictures', 'alt text describes images for everyone'],
-    steps: [
-      {
-        type: 'concept',
-        kicker: 'CONCEPT · HTML',
-        title: 'Links connect the web',
-        body: 'An <a> tag with href takes you to another page. An <img> tag with src shows a picture. Always add alt text so screen readers can describe it.',
-        code: [{ lang: 'html', label: 'HTML', lines: ['<a href="timetable.html">See timetable</a>', '<img src="train.png" alt="Rajdhani Express">'] }],
-        tip: '<img> has no closing tag: everything it needs is in its attributes.',
-      },
-      {
-        type: 'quiz',
-        prompt: 'Which attribute tells a link where to go?',
-        options: ['href', 'src', 'alt', 'link'],
-        mono: true,
-        answer: 0,
-        right: 'href stands for “hypertext reference”: the address of the page.',
-        wrong: 'src is for images, alt is the description. Links use href.',
-      },
-      linkAndImage,
-    ],
-  },
-  {
     id: 'w-css-1',
     title: 'Colours and spacing',
     kind: 'lesson',

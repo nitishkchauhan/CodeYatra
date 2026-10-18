@@ -1,4 +1,4 @@
-import type { CodeStep, Lesson } from './types';
+import type { CodeStep } from './types';
 
 const KNOWN_TAGS = ['h1', 'p', 'button', 'div'];
 
@@ -39,41 +39,3 @@ export const ticketHtml: CodeStep = {
     };
   },
 };
-
-export const WEB_LESSONS: Lesson[] = [
-  {
-    id: 'w-html-1',
-    title: 'Your first web page',
-    kind: 'lesson',
-    minutes: 6,
-    skill: 'web',
-    learned: ['Tags open and close an element', '<h1> is the main heading', 'A <button> is something you can click'],
-    steps: [
-      {
-        type: 'concept',
-        kicker: 'CONCEPT · HTML',
-        title: 'HTML gives a page its structure',
-        body: 'Every web page is built from elements. A tag like <h1> opens an element and </h1> closes it. The browser shows whatever is between them.',
-        visual: 'htmlAnatomy',
-        code: [
-          {
-            lang: 'html',
-            label: 'HTML',
-            lines: ['<h1>Delhi → Jaipur</h1>', '<p>Seat 42 · 7 Oct</p>', '<button>Book</button>'],
-          },
-        ],
-        tip: '<h1> is the main heading. Use one per page, like the headline of a newspaper.',
-      },
-      {
-        type: 'quiz',
-        prompt: 'Which tag makes the biggest, most important heading?',
-        options: ['<h1>', '<h6>', '<p>', '<head>'],
-        mono: true,
-        answer: 0,
-        right: 'Headings go from <h1> (most important) down to <h6> (least).',
-        wrong: '<h1> is the top-level heading. <head> is a different thing: page settings that are not shown.',
-      },
-      ticketHtml,
-    ],
-  },
-];

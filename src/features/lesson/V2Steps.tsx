@@ -1,6 +1,6 @@
 // Lesson v2 teaching steps: the opening hook, "try it" (run code freely) and "common mistake".
 // None of them are checked, so they never count as mistakes.
-import { useState } from 'react';
+import { useDeferredValue, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
@@ -8,6 +8,7 @@ import { ConsoleView } from './EditorStep';
 import { ActionBar } from './Shell';
 import { CodeBlock, LANG_COLOR } from '@/components/Code';
 import { CodeEditor } from '@/components/CodeEditor';
+import { WebPreview } from '@/components/WebPreview';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
@@ -16,6 +17,7 @@ import type { CodeLang, HookStep as Hook, MistakeStep as Mistake, TryStep as Try
 import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { useCodeRunner } from '@/lib/runner';
+import { buildPage } from '@/lib/web/page';
 import { buildProgram, runtimeOf } from '@/lib/runner/harness';
 import { colors } from '@/theme';
 
@@ -80,6 +82,76 @@ export function HookStep({ step, onDone }: { step: Hook; onDone: () => void }) {
 
 /** Change the code and run it. Continue is always allowed: this is for playing, not testing. */
 export function TryStep({ step, onDone }: { step: Try; onDone: () => void }) {
+  if (step.lang === 'web') return <WebTry step={step} onDone={onDone} />;
+  return <CodeTry step={step} onDone={onDone} />;
+}
+
+const WEB_FILE = { html: 'index.html', css: 'style.css', js: 'app.js' } as const;
+const WEB_LANG = { html: 'html', css: 'css', js: 'javascript' } as const;
+
+/** Edit a page and watch the preview update as you type. Nothing is checked. */
+function WebTry({ step, onDone }: { step: Try; onDone: () => void }) {
+  const t = useT();
+  const start = step.files ?? { html: step.starter };
+  const kinds = (['html', 'css', 'js'] as const).filter((k) => start[k] !== undefined);
+  const [files, setFiles] = useState(start);
+  const [tab, setTab] = useState<(typeof kinds)[number]>(kinds[0]);
+  const doc = useDeferredValue(buildPage(files));
+  return (
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+        <Animated.View entering={FadeInDown.duration(320)} style={{ gap: 6 }}>
+          <T variant="kicker" color={colors.primary}>
+            {step.kicker}
+          </T>
+          <T variant="title" accessibilityRole="header">
+            {step.title}
+          </T>
+          <T variant="bodySm" style={{ fontSize: 14, lineHeight: 21 }}>
+            {step.instructions}
+          </T>
+        </Animated.View>
+        <WebPreview key={doc} doc={doc} height={200} />
+        {kinds.length > 1 ? (
+          <View style={{ flexDirection: 'row', gap: 6 }} accessibilityRole="tablist">
+            {kinds.map((k) => (
+              <Pressable key={k} accessibilityRole="tab" accessibilityState={{ selected: tab === k }} onPress={() => setTab(k)} style={[styles.chip, tab === k && { borderColor: colors.primary, backgroundColor: colors.primarySoft }]}>
+                <T variant="labelSm" color={tab === k ? colors.primary : colors.ink2}>
+                  {WEB_FILE[k]}
+                </T>
+              </Pressable>
+            ))}
+          </View>
+        ) : null}
+        <CodeEditor key={tab} value={files[tab] ?? ''} onChange={(v) => setFiles({ ...files, [tab]: v })} lang={WEB_LANG[tab]} file={WEB_FILE[tab]} minLines={4} />
+        <View style={{ gap: 6 }}>
+          <T variant="labelSm" color={colors.ink2}>
+            TRY THESE CHANGES
+          </T>
+          {step.ideas.map((idea) => (
+            <View key={idea} style={styles.idea}>
+              <Icon name="bulb" size={16} color={colors.saffronShadow} />
+              <T variant="bodySm" color={colors.ink} style={{ flex: 1 }}>
+                {idea}
+              </T>
+            </View>
+          ))}
+          <Pressable accessibilityRole="button" onPress={() => setFiles(start)} style={styles.chip}>
+            <Icon name="reset" size={16} color={colors.ink2} />
+            <T variant="labelSm" color={colors.ink2}>
+              Reset code
+            </T>
+          </Pressable>
+        </View>
+      </ScrollView>
+      <ActionBar>
+        <Button label={t('continue')} onPress={onDone} />
+      </ActionBar>
+    </View>
+  );
+}
+
+function CodeTry({ step, onDone }: { step: Try; onDone: () => void }) {
   const t = useT();
   const run = useCodeRunner();
   const [code, setCode] = useState(step.starter);
@@ -91,7 +163,8 @@ export function TryStep({ step, onDone }: { step: Try; onDone: () => void }) {
   const runCode = async () => {
     haptic.tap();
     setBusy(true);
-    const r = await run(runtimeOf(step.lang), buildProgram(step.lang, code, []));
+    const lang = step.lang === 'web' ? 'javascript' : step.lang;
+    const r = await run(runtimeOf(lang), buildProgram(lang, code, []));
     setBusy(false);
     setFirstPython(false);
     setOut({ output: r.output, error: r.ok ? undefined : r.error });
@@ -102,7 +175,7 @@ export function TryStep({ step, onDone }: { step: Try; onDone: () => void }) {
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <Animated.View entering={FadeInDown.duration(320)} style={{ gap: 6 }}>
-          <T variant="kicker" color={LANG_COLOR[step.lang]}>
+          <T variant="kicker" color={step.lang === 'web' ? colors.primary : LANG_COLOR[step.lang]}>
             {step.kicker}
           </T>
           <T variant="title" accessibilityRole="header">
@@ -113,7 +186,7 @@ export function TryStep({ step, onDone }: { step: Try; onDone: () => void }) {
           </T>
         </Animated.View>
 
-        <CodeEditor value={code} onChange={setCode} lang={step.lang} file={step.file} minLines={4} />
+        <CodeEditor value={code} onChange={setCode} lang={step.lang === 'web' ? 'html' : step.lang} file={step.file} minLines={4} />
 
         <View style={{ gap: 6 }}>
           <T variant="labelSm" color={colors.ink2}>

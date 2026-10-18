@@ -37,7 +37,7 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe.each(['next', 'sql', 'dsa', 'js'])('%s follows Lesson v2', (track) => {
+describe.each(['next', 'sql', 'dsa', 'js', 'html'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
@@ -110,6 +110,10 @@ describe('try it', () => {
     if (step.lang === 'javascript') {
       const out = runJs(step.starter);
       expect(out.length).toBeGreaterThan(0);
+      return;
+    }
+    if (step.lang === 'web') {
+      expect((step.files?.html ?? step.starter).trim().length).toBeGreaterThan(0);
       return;
     }
     if (step.lang === 'sql' && python) {

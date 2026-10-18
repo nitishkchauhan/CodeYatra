@@ -182,10 +182,12 @@ export type TryStep = {
   kicker: string;
   title: string;
   instructions: string;
-  /** SQL runs against the sample railway database, like SQL exercises. */
-  lang: 'python' | 'javascript' | 'sql';
+  /** SQL runs against the sample railway database. 'web' edits a page with a live preview (use `files`). */
+  lang: 'python' | 'javascript' | 'sql' | 'web';
   file: string;
   starter: string;
+  /** For lang 'web': the page's starting files. */
+  files?: { html: string; css?: string; js?: string };
   /** Small changes to try, e.g. "Change 72 to 100". */
   ideas: string[];
 };
