@@ -28,6 +28,8 @@ Every module follows **read → quick check → practice → complete**:
 
 **Exercise types:** quiz, fill the gap, **build it** (tap pieces into the gaps of a real program, then its tests run), order the lines, find the bug, predict the output (pick from choices), tap the token, live web page builder (tap pieces into the page), try it (tap a value to change it and run), block puzzle with Yatri.
 
+**Lesson v3 (Python first, 24 Oct 2026).** Modules have a level (Basic, Intermediate, Advanced). A v3 module goes: hook → three cards, each with an animation (`src/features/lesson/Anim.tsx`) → try it → watch it run (`trace` step, `src/content/trace.ts`) → common mistake → match or sort → a quick check → a work scenario → the task from that scenario. Python Basic is the Foundations modules upgraded in `src/content/tracks/pythonV3.ts`; Intermediate and Advanced are in `pythonIntermediate.ts` and `pythonAdvanced.ts`. `src/content/__tests__/lessonV3.test.ts` checks traces, matches, groups and scenarios.
+
 **No keyboard in lessons (since 24 Oct 2026).** Typing on a phone was slow and, on some Android phones, left a keyboard-sized blank area. `src/content/build.ts` turns each tested solution into gaps plus a bank of pieces (the right ones and likely mix-ups), finds values a learner can tap to change in try-its and the playground, and builds the choices for predict-the-output. It is deterministic, and `src/content/__tests__/build.test.ts` checks every generated exercise: the answers give back the tested solution, every tap-to-change option still runs, and predict choices have exactly one right answer. The Playground has Tinker (tap values) and Build (fill the gaps) modes.
 
 ## Yatri in lessons

@@ -2,6 +2,20 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 24 Oct 2026 (branch `lesson-v3`, not merged yet)
+- **Lesson v3 framework**, built once for every track:
+  - **Watch it run** (`trace` step): runs a Python program under `sys.settrace` in the app’s Python and steps through it line by line, showing the line, the variables (changed ones highlighted), the function being called and the output. An optional question at the end is checked; tests run every trace with real Python and check the right option against the real final value.
+  - **Match the pairs**, **sort into groups**, and **work scenarios** (a message from a teammate with a log, ticket, diff or data, then the task it sets).
+  - **25 concept animations** (variables, print, types, loops, lists, dicts, functions, errors, files, classes, modules, JSON, APIs, tests, comprehensions, sets, tuples, scope, recursion, generators, decorators…), built from shared pieces in the app’s colours; they hold still with reduce motion.
+  - **Levels** on lessons (Basic, Intermediate, Advanced), shown on the learning map.
+  - Editor tests can now expect an exact error (`raises`).
+- **Python pilot, all three levels:**
+  - **Basic:** the 12 Foundations modules upgraded with an animation per card, watch-it-run after try-it and a match or sort after the common mistake.
+  - **Intermediate (new):** comprehensions, tuples and sets, modules and the standard library, JSON, functions in depth, classes in depth, and a **train booking report** project.
+  - **Advanced / industry (new):** testing, debugging and logging, APIs and HTTP, generators for big data, decorators and caching, clean code and code review, and a **tested booking service** project. Every module ends with a real work task (a red CI build, a production traceback, an API ticket, a 2 GB log, a review comment).
+  - 48 new practice questions; Python docs reading on every module; 3948 tests passing.
+- Note: the Python certificate now needs all three levels. `supabase/track-lessons.sql` is regenerated and must be run again when this ships.
+
 ## 24 Oct 2026 (tap-to-build, merged into main after owner testing)
 - **Coding without a keyboard (Phase 1).** The keyboard caused a blank area on some Android phones, and typing code on a phone is slow, so lessons no longer open it:
   - **Code exercises** (about 230) became **Build it**: the tested solution with up to 6 pieces missing and a bank of pieces to tap in, including likely mix-ups (`<` and `<=`, `=` and `==`, the starter's wrong value). The real tests still run on the result; wrong pieces turn red after a failed run, and "Show the answer" appears after two tries.

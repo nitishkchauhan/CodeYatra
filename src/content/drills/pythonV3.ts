@@ -41,4 +41,40 @@ export const PYTHON_V3_DRILLS: Record<string, Step[]> = {
     quiz({ prompt: 'What does super().fare() do inside ACTicket.fare()?', options: ['Calls the parent class’s fare()', 'Calls ACTicket.fare() again', 'Makes a new Ticket', 'Deletes the parent method'], right: 'Right.', wrong: 'super() reaches the parent’s version so you can build on it.' }),
     group({ kicker: K, title: 'Inherit or hold?', instructions: 'Is it “is a” or “has a”?', groups: ['Inherit', 'Hold'], items: [{ text: 'A Dog and an Animal', group: 0 }, { text: 'A Library and its Books', group: 1 }, { text: 'A Manager and an Employee', group: 0 }, { text: 'A Phone and its Battery', group: 1 }], explain: 'Inherit only for “is a”.' }),
   ],
+  'py-testing': [
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['checks = [2 + 2 == 4, "a" * 2 == "aa", 10 // 3 == 3.33]', 'print(checks.count(True), "of", len(checks), "pass")'], answer: '2 of 3 pass', explain: '10 // 3 is 3, not 3.33, so one check fails.' }),
+    quiz({ prompt: 'Which is the best name for a test?', options: ['test_student_gets_25_percent_off', 'test1', 'check', 'test_it_works'], right: 'Right: it says what behaviour is checked.', wrong: 'Name a test after the behaviour, so a failure explains itself.', mono: true }),
+    quiz({ prompt: 'fare(-5) should be rejected. What should its test check?', options: ['That it raises ValueError', 'That it returns 0', 'That it prints a message', 'Nothing: negatives never happen'], right: 'Right. Wrong inputs need tests too.', wrong: 'Test that bad input is rejected with a clear error.' }),
+    group({ kicker: K, title: 'Normal, edge or wrong input?', instructions: 'Sort each fare(km) test case.', groups: ['Normal', 'Edge', 'Wrong input'], items: [{ text: 'fare(10)', group: 0 }, { text: 'fare(0)', group: 1 }, { text: 'fare(-5)', group: 2 }, { text: 'fare(25)', group: 0 }, { text: 'fare(1000), the longest route', group: 1 }, { text: 'fare("ten")', group: 2 }], mono: true, explain: 'Good test sets cover all three kinds.' }),
+  ],
+  'py-debugging': [
+    quiz({ prompt: 'In a traceback, which line do you read first?', options: ['The last line: the error and its message', 'The first line', 'The middle', 'Only the file name'], right: 'Right. Then work upwards.', wrong: 'The last line names the problem; the lines above show where.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['items = ["a", "b", "c"]', 'for i in range(len(items) - 1):', '    print(items[i], end=" ")', 'print()'], answer: 'a b', explain: 'range(2) is 0 and 1, so "c" is skipped: an off-by-one bug.' }),
+    quiz({ prompt: 'Which logging level fits “only 2 seats left”?', options: ['WARNING', 'DEBUG', 'ERROR', 'CRITICAL'], right: 'Right: worth noticing, but nothing broke.', wrong: 'WARNING is for something unusual that didn’t fail.', mono: true }),
+    quiz({ prompt: 'You fixed a bug. What should you add before closing the ticket?', options: ['A test that would have caught it', 'A comment saying “fixed”', 'More print statements', 'Nothing'], right: 'Right. Then it can never come back unnoticed.', wrong: 'A regression test proves the fix and guards it.' }),
+  ],
+  'py-apis': [
+    group({ kicker: K, title: 'Retry or not?', instructions: 'Is it worth trying the request again?', groups: ['Retry later', 'Fix the request'], items: [{ text: '503 Service Unavailable', group: 0 }, { text: '400 Bad Request', group: 1 }, { text: 'A timeout', group: 0 }, { text: '404 Not Found', group: 1 }], explain: 'Server trouble may pass; a wrong request will fail every time.' }),
+    quiz({ prompt: 'Which method adds a new booking on a server?', options: ['POST', 'GET', 'HEAD', 'OPTIONS'], right: 'Right.', wrong: 'GET reads; POST sends new data.', mono: true }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def ok(status):', '    return 200 <= status < 300', '', 'print(ok(201), ok(404), ok(500))'], answer: 'True False False', explain: 'Only 2xx codes count as success.' }),
+    quiz({ prompt: 'Where should an API key go?', options: ['In an environment variable or secrets store, never in the code', 'In the code, at the top', 'In the app’s screen text', 'In a public GitHub file'], right: 'Right. Keys in code get leaked.', wrong: 'Keep secrets out of code and out of Git.' }),
+  ],
+  'py-generators': [
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def squares(n):', '    for i in range(n):', '        yield i * i', '', 'print(sum(squares(4)))'], answer: '14', explain: '0 + 1 + 4 + 9 = 14, made one value at a time.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['g = (c.upper() for c in "abc")', 'print(next(g), next(g))'], answer: 'A B', explain: 'Each next() takes one value from the generator.' }),
+    quiz({ prompt: 'Why process a 2 GB file with a generator?', options: ['Only one line is in memory at a time', 'It makes the file smaller', 'Lists can’t hold strings', 'It sorts the file'], right: 'Right.', wrong: 'A generator never builds the whole list, so memory stays small.' }),
+    quiz({ prompt: 'What happens when you call next() on a finished generator?', options: ['It raises StopIteration', 'It starts again', 'It returns 0', 'It returns None forever'], right: 'Right. for loops stop on it for you.', wrong: 'A finished generator raises StopIteration.', mono: true }),
+  ],
+  'py-decorators': [
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def twice(func):', '    def wrapper(x):', '        return func(func(x))', '    return wrapper', '', '@twice', 'def add3(x):', '    return x + 3', '', 'print(add3(1))'], answer: '7', explain: 'The wrapper calls add3 twice: 1 + 3 + 3.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['names = ["Zoya", "Asha", "Kabir"]', 'print(sorted(names, key=len))'], answer: "['Zoya', 'Asha', 'Kabir']", explain: 'key=len sorts by length; equal lengths keep their order.' }),
+    quiz({ prompt: 'When is @cache a bad idea?', options: ['When the answer changes over time, like the current seat count', 'When the function is slow', 'When the inputs repeat', 'Never'], right: 'Right. A cache would show stale data.', wrong: 'Only cache functions that always give the same answer for the same input.' }),
+    quiz({ prompt: '@logged above def pay(…) is the same as…', options: ['pay = logged(pay)', 'logged = pay(logged)', 'pay(logged)', 'logged.pay()'], right: 'Right.', wrong: 'The decorator receives the function and its result replaces it.', mono: true }),
+  ],
+  'py-clean-code': [
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['from dataclasses import dataclass', '', '@dataclass', 'class Seat:', '    coach: str', '    number: int', '', 'print(Seat("B2", 14) == Seat("B2", 14))'], answer: 'True', explain: 'Dataclasses compare their fields.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def total(seats: int, fare: int) -> int:', '    return seats * fare', '', 'print(total("2", 3))'], answer: '222', explain: 'Type hints are not checked while running: "2" * 3 repeats the text. Tools like mypy would flag it.' }),
+    quiz({ prompt: 'A reviewer asks you to split a 120-line function. Why?', options: ['Small functions are easier to name, test and change', 'Python can’t run long functions', 'It runs faster', 'It saves memory'], right: 'Right.', wrong: 'One job per function makes code easier to understand and test.' }),
+    quiz({ prompt: 'Which comment is most useful in a code review?', options: ['“This fails for 0 seats; can we add a test?”', '“Bad code”', '“I would do it differently”', '“LGTM” without reading'], right: 'Right: specific, kind and actionable.', wrong: 'Good review comments point at a specific problem and suggest a fix.' }),
+  ],
 };

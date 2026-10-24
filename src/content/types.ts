@@ -120,7 +120,8 @@ export type EditorStep = {
   lang: 'python' | 'javascript' | 'sql';
   file: string;
   starter: string;
-  tests: ({ call: string; expect: string } | { stdout: string; unordered?: boolean })[];
+  /** `raises`: the call must fail with exactly this error, e.g. "ValueError: name is required". */
+  tests: ({ call: string; expect: string } | { call: string; raises: string } | { stdout: string; unordered?: boolean })[];
   hint: string;
   /** A correct answer, verified by tests. */
   solution: string;

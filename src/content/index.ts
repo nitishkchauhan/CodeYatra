@@ -36,6 +36,7 @@ import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_BASIC } from './tracks/pythonV3';
 import { PYTHON_INTERMEDIATE, PYTHON_INTERMEDIATE_PROJECT } from './tracks/pythonIntermediate';
+import { PYTHON_ADVANCED, PYTHON_ADVANCED_PROJECT } from './tracks/pythonAdvanced';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
 import { NEXT_FOUNDATIONS, NEXT_PROJECT } from './tracks/nextFoundations';
@@ -229,6 +230,8 @@ const ALL: Lesson[] = [
   ...PYTHON_BASIC,
   ...PYTHON_INTERMEDIATE,
   PYTHON_INTERMEDIATE_PROJECT,
+  ...PYTHON_ADVANCED,
+  PYTHON_ADVANCED_PROJECT,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
   ...HTML_FOUNDATIONS,
@@ -516,6 +519,13 @@ export const STAGES: Stage[] = [
       unit('p-i5', 'Functions in depth', ref('py-functions-2', 'Functions in depth', 'Lesson + build · 12 min')),
       unit('p-i6', 'Classes in depth', ref('py-oop-2', 'Classes in depth', 'Lesson + build · 12 min')),
       unit('p-i7', 'Project', ref('py-i-project', 'Project: a train booking report', 'Project · 3 tested steps · 20 min')),
+      unit('p-a1', 'Testing', ref('py-testing', 'Testing your code', 'Lesson + build · 14 min')),
+      unit('p-a2', 'Debugging', ref('py-debugging', 'Debugging and logging', 'Lesson + build · 14 min')),
+      unit('p-a3', 'APIs', ref('py-apis', 'APIs and HTTP', 'Lesson + build · 14 min')),
+      unit('p-a4', 'Generators', ref('py-generators', 'Generators and big data', 'Lesson + build · 14 min')),
+      unit('p-a5', 'Decorators', ref('py-decorators', 'Decorators and caching', 'Lesson + build · 14 min')),
+      unit('p-a6', 'Clean code', ref('py-clean-code', 'Clean code and code review', 'Lesson + build · 14 min')),
+      unit('p-a7', 'Project', ref('py-a-project', 'Project: a tested booking service', 'Project · 3 tested steps · 25 min')),
     ],
     practice: [
       { id: 'x-times', title: 'Print the 5 times table', kind: 'Python', difficulty: 'Easy', xp: 15 },
