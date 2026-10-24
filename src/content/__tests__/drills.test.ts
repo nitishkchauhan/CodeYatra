@@ -45,7 +45,7 @@ describe('module practice', () => {
   });
 
   it('modules without practice yet have no Practice button', () => {
-    expect(hasDrill('jv-hello')).toBe(false);
-    expect(getLesson(drillId('jv-hello'))).toBeUndefined();
+    expect(hasDrill('jv-project')).toBe(false);
+    expect(getLesson(drillId('jv-project'))).toBeUndefined();
   });
 });

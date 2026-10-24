@@ -1,6 +1,7 @@
 // Test-only helpers that really run lesson code, so every answer we teach is verified.
 import { execFileSync, spawnSync } from 'node:child_process';
-import { appendFileSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 
@@ -149,6 +150,52 @@ export function runGit(script: string): { output: string; ok: boolean; lastOk: b
   return { output: out.filter(Boolean).join('\n'), ok, lastOk };
 }
 
+// Java: a JDK 17+ on the PATH, or on Windows the JDK 17 that scripts/wsl/setup-android.sh installs in WSL's Ubuntu.
+// Java 8 has no --version flag, so it is skipped: running a source file directly needs Java 11 or newer.
+const WSL_JAVA = '$HOME/tools/jdk17/bin/java';
+function hasWslJava(): boolean {
+  if (process.platform !== 'win32') return false;
+  try {
+    execFileSync('wsl.exe', ['-d', 'Ubuntu', '-e', 'sh', '-c', `test -x ${WSL_JAVA}`], { stdio: 'ignore', timeout: 60000 });
+    return true;
+  } catch {
+    return false;
+  }
+}
+export const java: string | null = find(['java'], ['--version']) ?? (hasWslJava() ? 'wsl' : null);
+
+/** A lesson's Java as a complete program: code without a Main class is wrapped in one, with its imports on top. */
+export function javaProgram(code: string): string {
+  if (/\bclass\s+Main\b/.test(code)) return code;
+  const all = code.split('\n');
+  const imports = all.filter((l) => /^import\s/.test(l));
+  const body = all.filter((l) => !/^import\s/.test(l));
+  return [...imports, 'public class Main {', '    public static void main(String[] args) {', ...body.map((l) => `        ${l}`), '    }', '}'].join('\n');
+}
+
+// Each run starts a JVM (through WSL on Windows), so results are cached by the program's text.
+const JAVA_CACHE = join(tmpdir(), 'cy-java-cache');
+
+/** Compiles and runs a Java program from its source file (java Main.java). Compile errors come back in `error`. */
+export function runJava(code: string): { output: string; error: string; code: number | null } {
+  const src = javaProgram(code);
+  const hit = join(JAVA_CACHE, `${createHash('sha1').update(src).digest('hex')}.json`);
+  if (existsSync(hit)) return JSON.parse(readFileSync(hit, 'utf8'));
+  const dir = tmp();
+  writeFileSync(join(dir, 'Main.java'), src);
+  const flags = '-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8';
+  const r =
+    java === 'wsl'
+      ? spawnSync('wsl.exe', ['-d', 'Ubuntu', '--cd', dir, '-e', 'sh', '-c', `${WSL_JAVA} ${flags} Main.java`], { encoding: 'utf8', timeout: 60000 })
+      : spawnSync(java!, [...flags.split(' '), 'Main.java'], { cwd: dir, encoding: 'utf8', timeout: 30000 });
+  const result = { output: (r.stdout ?? '').replace(/\r/g, '').trimEnd(), error: (r.stderr ?? '').replace(/\r/g, ''), code: r.status };
+  if (r.status !== null) {
+    mkdirSync(JAVA_CACHE, { recursive: true });
+    writeFileSync(hit, JSON.stringify(result));
+  }
+  return result;
+}
+
 /** Output of a snippet in a language we can run here, or null if we can't run it. */
 export function outputOf(lang: string, code: string): string[] | null {
   // Timers and promises need a real event loop, so that code runs in Node; the rest runs in-process.
@@ -157,5 +204,11 @@ export function outputOf(lang: string, code: string): string[] | null {
   if (lang === 'python') return python ? runPy(code) : null;
   if (lang === 'c') return gcc ? runC(code) : null;
   if (lang === 'sql') return python ? runSql(code) : null;
+  if (lang === 'java') {
+    if (!java) return null;
+    const r = runJava(code);
+    if (r.code !== 0) throw new Error(r.error);
+    return lines(r.output);
+  }
   return null;
 }

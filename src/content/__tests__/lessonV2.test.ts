@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { allLessons, getLesson, STAGES, type MistakeStep, type OrderStep, type Step, type TryStep } from '..';
-import { gcc, git, python, runC, runGit, runJs, runNode, runPyFull } from '../testing/run';
+import { gcc, git, java, python, runC, runGit, runJava, runJs, runNode, runPyFull } from '../testing/run';
 import { sqlProgram } from '../sqlFixture';
 
 const steps: (readonly [string, Step])[] = allLessons().flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
@@ -37,7 +37,7 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations', 'git', 'node', 'c'])('%s follows Lesson v2', (track) => {
+describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations', 'git', 'node', 'c', 'java'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
@@ -61,7 +61,7 @@ describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 
 describe('further reading', () => {
   const all = allLessons().flatMap((l) => (l.reading ?? []).map((r) => [l.id, r] as const));
   it.each(all)('%s: %o is https, from an official source, with a review date', (_, r) => {
-    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org|en\.cppreference\.com|git-scm\.com|docs\.github\.com|nodejs\.org|expressjs\.com|docs\.npmjs\.com)\//);
+    expect(r.url).toMatch(/^https:\/\/(nextjs\.org|react\.dev|developer\.mozilla\.org|docs\.python\.org|www\.sqlite\.org|www\.postgresql\.org|en\.cppreference\.com|git-scm\.com|docs\.github\.com|nodejs\.org|expressjs\.com|docs\.npmjs\.com|dev\.java|docs\.oracle\.com)\//);
     expect(r.reviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });
@@ -105,6 +105,23 @@ describe('common mistakes', () => {
       if (/Error\b/.test(step.error)) expect(error).toBe(step.error);
       else expect(out.join('\n')).toBe(step.error);
       expect(() => runJs(step.right.join('\n'))).not.toThrow();
+      return;
+    }
+    if (step.lang === 'java') {
+      // Java mistakes compile and run with a real JDK: compile errors and exceptions must appear as shown
+      // ("…" stands for a machine-specific part); a mistake that doesn't crash must print exactly what is shown.
+      if (!java) return;
+      const wrong = runJava(step.wrong.join('\n'));
+      if (/error|Exception/.test(step.error)) {
+        const seen = `${wrong.output}\n${wrong.error}`;
+        let at = 0;
+        for (const piece of step.error.split('…')) {
+          const found = seen.indexOf(piece, at);
+          expect(found).toBeGreaterThanOrEqual(0);
+          at = found + piece.length;
+        }
+      } else expect(wrong.output).toBe(step.error);
+      expect(runJava(step.right.join('\n')).code).toBe(0);
       return;
     }
     if (step.lang === 'bash') {

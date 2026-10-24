@@ -30,7 +30,7 @@ import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
 import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS, GIT_PROJECT } from './tracks/git';
-import { JAVA_LESSONS } from './tracks/java';
+import { JAVA_LESSONS, JAVA_PROJECT } from './tracks/java';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
@@ -205,7 +205,7 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
   drill('x-c-output', 'Output drill', 'c', C_LESSONS, ['predict'], ['Traced C programs line by line']),
   drill('x-c-bugs', 'Bug hunt', 'c', C_LESSONS, ['bug', 'quiz'], ['Spotted classic C bugs']),
   drill('x-java-output', 'Output drill', 'java', JAVA_LESSONS, ['predict'], ['Traced Java programs line by line']),
-  drill('x-java-fix', 'Fix the code', 'java', JAVA_LESSONS, ['bug', 'tap'], ['Spotted Java mistakes']),
+  drill('x-java-fix', 'Fix the code', 'java', JAVA_LESSONS, ['bug', 'quiz'], ['Spotted Java mistakes']),
   practice('x-dsa-binary', 'Binary search', 'dsa', 6, ['Halve the range each step'], binarySearch),
   practice('x-dsa-stack', 'Balanced brackets', 'dsa', 6, ['Use a stack to match pairs'], balanced),
   practice('x-dsa-hash', 'First repeated booking', 'dsa', 4, ['Use a set for O(1) lookups'], firstRepeat),
@@ -242,6 +242,7 @@ const ALL: Lesson[] = [
   ...C_LESSONS,
   C_PROJECT,
   ...JAVA_LESSONS,
+  JAVA_PROJECT,
   ...DSA_LESSONS,
   DSA_PROJECT,
   ...SQL_LESSONS,
@@ -558,26 +559,29 @@ export const STAGES: Stage[] = [
     short: 'Java',
     sub: 'Object-oriented programming',
     audience: 'B.Tech · BCA',
-    blurb: 'Classes, objects and collections: the language of placements and Android.',
+    blurb: 'Types, loops, methods, strings, classes, inheritance, collections and exceptions: the language of placements.',
     color: '#B45309',
     soft: '#FDF0E1',
     accent: '#FDBA74',
     icon: 'M7 17c3 1.5 7 1.5 10 0 M8 14c2.5 1 5.5 1 8 0 M12 3c-2 3 2 4 0 7',
     units: [
-      unit('jv1', 'Hello, Java', ref('jv-hello', 'Hello, Java', 'Read + order lines · 5 min')),
-      unit('jv2', 'Variables', ref('jv-vars', 'Variables and types', 'Read + predict · 6 min')),
-      unit('jv3', 'Conditions', ref('jv-if', 'Conditions', 'Read + find the bug · 6 min')),
-      unit('jv4', 'Loops', ref('jv-loops', 'Loops', 'Read + order lines · 6 min')),
-      unit('jv5', 'Methods', ref('jv-methods', 'Methods', 'Read + predict · 6 min')),
-      unit('jv6', 'Arrays', ref('jv-arrays', 'Arrays', 'Read + find the bug · 6 min')),
-      unit('jv7', 'Strings', ref('jv-strings', 'Strings', 'Read + predict · 6 min')),
-      unit('jv8', 'Classes', ref('jv-classes', 'Classes and objects', 'Read + predict · 7 min')),
-      unit('jv9', 'Inheritance', ref('jv-oop', 'Inheritance', 'Read + predict · 7 min')),
-      unit('jv10', 'Collections', ref('jv-collections', 'ArrayList and HashMap', 'Read + predict · 7 min')),
+      unit('jv1', 'Hello, Java', ref('jv-hello', 'Hello, Java', 'Lesson + code · 7 min')),
+      unit('jv2', 'Variables', ref('jv-vars', 'Variables and types', 'Lesson + code · 8 min')),
+      unit('jv11', 'Operators', ref('jv-ops', 'Operators and input', 'Lesson + code · 8 min')),
+      unit('jv3', 'Decisions', ref('jv-if', 'Decisions: if and switch', 'Lesson + code · 7 min')),
+      unit('jv4', 'Loops', ref('jv-loops', 'Loops', 'Lesson + code · 8 min')),
+      unit('jv5', 'Methods', ref('jv-methods', 'Methods', 'Lesson + code · 8 min')),
+      unit('jv6', 'Arrays', ref('jv-arrays', 'Arrays', 'Lesson + code · 8 min')),
+      unit('jv7', 'Strings', ref('jv-strings', 'Strings', 'Lesson + code · 8 min')),
+      unit('jv8', 'Classes', ref('jv-classes', 'Classes and objects', 'Lesson + code · 9 min')),
+      unit('jv9', 'Inheritance', ref('jv-oop', 'Inheritance and interfaces', 'Lesson + code · 9 min')),
+      unit('jv10', 'Collections', ref('jv-collections', 'ArrayList and HashMap', 'Lesson + code · 9 min')),
+      unit('jv12', 'Exceptions', ref('jv-exceptions', 'Exceptions', 'Lesson + code · 8 min')),
+      unit('jv13', 'Project', ref('jv-project', 'Project: a train reservation system', 'Project · 3 parts · 30 min')),
     ],
     practice: [
       { id: 'x-java-output', title: 'Output drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },
-      { id: 'x-java-fix', title: 'Fix the code', kind: 'Find the bug', difficulty: 'Medium', xp: 15 },
+      { id: 'x-java-fix', title: 'Fix the code', kind: 'Bug + quiz', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -863,7 +867,7 @@ export const STAGES: Stage[] = [
  * Tracks paused until they are rewritten to the Lesson v2 standard (see project-docs/CONTENT-PLAN.md).
  * They are hidden from pickers, not deleted: lessons, progress and certificates in them are kept.
  */
-export const PAUSED_STAGES: readonly string[] = ['java', 'dsa2'];
+export const PAUSED_STAGES: readonly string[] = ['dsa2'];
 export const isPaused = (id: string) => PAUSED_STAGES.includes(id);
 
 /** Tracks to list: every active track, plus any paused ones named in `keep` (e.g. the track the learner is in). */
