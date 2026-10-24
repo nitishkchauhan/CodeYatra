@@ -26,7 +26,8 @@ import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
 import { findPath } from './paths';
 import { C_LESSONS, C_PROJECT } from './tracks/c';
 import { CBSE_LESSONS, CBSE_PROJECT } from './tracks/cbse';
-import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
+import { islands, minCoins } from './tracks/dsa2';
+import { DSA_ADVANCED, DSA_ADVANCED_PROJECT } from './tracks/dsaAdvanced';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
 import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS, GIT_PROJECT } from './tracks/git';
@@ -251,7 +252,8 @@ const ALL: Lesson[] = [
   GIT_PROJECT,
   ...PLACEMENT_LESSONS,
   PLACEMENT_PROJECT,
-  ...DSA2_LESSONS,
+  ...DSA_ADVANCED,
+  DSA_ADVANCED_PROJECT,
   ...CBSE_LESSONS,
   CBSE_PROJECT,
   ...PRACTICE_LESSONS,
@@ -738,22 +740,26 @@ export const STAGES: Stage[] = [
     short: 'DSA+',
     sub: 'Trees, graphs and DP',
     audience: 'B.Tech · BCA · Placements',
-    blurb: 'Trees, heaps, BFS, DFS, backtracking, dynamic programming and greedy: the coding-round core.',
+    blurb: 'Trees, heaps, BFS, DFS, topological sort, Dijkstra, backtracking, dynamic programming and greedy: the coding-round core.',
     color: '#5B21B6',
     soft: '#EDE5FD',
     accent: '#C4B5FD',
     icon: 'M12 4v4 M12 8l-5 5 M12 8l5 5 M7 13v4 M17 13v4',
     units: [
-      unit('da1', 'Binary trees', ref('dsa2-tree', 'Binary trees', 'Read + code editor · 8 min')),
-      unit('da2', 'BSTs', ref('dsa2-bst', 'Binary search trees', 'Read + code editor · 8 min')),
-      unit('da3', 'Heaps', ref('dsa2-heap', 'Heaps and priority queues', 'Read + code editor · 7 min')),
-      unit('da4', 'BFS', ref('dsa2-bfs', 'Graphs and BFS', 'Read + code editor · 8 min')),
-      unit('da5', 'DFS', ref('dsa2-dfs', 'DFS and connected parts', 'Read + code editor · 9 min')),
-      unit('da6', 'Backtracking', ref('dsa2-backtrack', 'Backtracking', 'Read + code editor · 9 min')),
-      unit('da7', 'DP: memoization', ref('dsa2-dp1', 'Dynamic programming: memoization', 'Read + code editor · 8 min')),
-      unit('da8', 'DP: tables', ref('dsa2-dp2', 'Dynamic programming: tables', 'Read + code editor · 9 min')),
-      unit('da9', 'Greedy', ref('dsa2-greedy', 'Greedy algorithms', 'Read + code editor · 7 min')),
-      unit('da10', 'Merge sort', ref('dsa2-merge', 'Merge sort', 'Read + order lines · 9 min')),
+      unit('da1', 'Binary trees', ref('dsa2-tree', 'Binary trees', 'Lesson + code editor · 9 min')),
+      unit('da2', 'BSTs', ref('dsa2-bst', 'Binary search trees', 'Lesson + code editor · 9 min')),
+      unit('da3', 'Heaps', ref('dsa2-heap', 'Heaps and priority queues', 'Lesson + code editor · 8 min')),
+      unit('da4', 'BFS', ref('dsa2-bfs', 'Graphs and BFS', 'Lesson + code editor · 9 min')),
+      unit('da5', 'DFS', ref('dsa2-dfs', 'DFS and connected parts', 'Lesson + code editor · 9 min')),
+      unit('da11', 'Topological sort', ref('dsa2-topo', 'Topological sort', 'Lesson + code editor · 9 min')),
+      unit('da12', 'Dijkstra', ref('dsa2-dijkstra', 'Shortest paths with weights', 'Lesson + code editor · 10 min')),
+      unit('da6', 'Backtracking', ref('dsa2-backtrack', 'Backtracking', 'Lesson + code editor · 9 min')),
+      unit('da7', 'DP: memoization', ref('dsa2-dp1', 'Dynamic programming: memoization', 'Lesson + code editor · 8 min')),
+      unit('da8', 'DP: tables', ref('dsa2-dp2', 'Dynamic programming: tables', 'Lesson + code editor · 9 min')),
+      unit('da13', 'DP: 2-D', ref('dsa2-dp3', 'Dynamic programming in two dimensions', 'Lesson + code editor · 10 min')),
+      unit('da9', 'Greedy', ref('dsa2-greedy', 'Greedy algorithms', 'Lesson + code editor · 8 min')),
+      unit('da10', 'Merge sort', ref('dsa2-merge', 'Merge sort and divide and conquer', 'Lesson + code editor · 9 min')),
+      unit('da14', 'Project', ref('dsa2-project', 'Project: a metro route planner', 'Project · 3 parts · 30 min')),
     ],
     practice: [
       { id: 'x-dsa2-graph', title: 'Count the islands', kind: 'Code editor', difficulty: 'Hard', xp: 15 },
@@ -867,7 +873,7 @@ export const STAGES: Stage[] = [
  * Tracks paused until they are rewritten to the Lesson v2 standard (see project-docs/CONTENT-PLAN.md).
  * They are hidden from pickers, not deleted: lessons, progress and certificates in them are kept.
  */
-export const PAUSED_STAGES: readonly string[] = ['dsa2'];
+export const PAUSED_STAGES: readonly string[] = [];
 export const isPaused = (id: string) => PAUSED_STAGES.includes(id);
 
 /** Tracks to list: every active track, plus any paused ones named in `keep` (e.g. the track the learner is in). */

@@ -3,6 +3,7 @@ import { optionOrder } from '../helpers';
 import type { Lesson, LessonRef, Stage, Step } from '../types';
 import { C_DRILLS } from './c';
 import { DSA_DRILLS } from './dsa';
+import { DSA2_DRILLS } from './dsa2';
 import { CSS_DRILLS } from './css';
 import { CBSE_DRILLS } from './cbse';
 import { GIT_DRILLS } from './git';
@@ -18,7 +19,7 @@ import { PYTHON_DRILLS } from './python';
 import { SQL_DRILLS } from './sql';
 
 /** Extra exercises per module, keyed by the module's lesson id. */
-export const DRILLS: Record<string, Step[]> = { ...PYTHON_DRILLS, ...NEXT_DRILLS, ...SQL_DRILLS, ...DSA_DRILLS, ...JS_DRILLS, ...HTML_DRILLS, ...CSS_DRILLS, ...REACT_DRILLS, ...PLACEMENT_DRILLS, ...CBSE_DRILLS, ...LOGIC_DRILLS, ...GIT_DRILLS, ...NODE_DRILLS, ...C_DRILLS, ...JAVA_DRILLS };
+export const DRILLS: Record<string, Step[]> = { ...PYTHON_DRILLS, ...NEXT_DRILLS, ...SQL_DRILLS, ...DSA_DRILLS, ...JS_DRILLS, ...HTML_DRILLS, ...CSS_DRILLS, ...REACT_DRILLS, ...PLACEMENT_DRILLS, ...CBSE_DRILLS, ...LOGIC_DRILLS, ...GIT_DRILLS, ...NODE_DRILLS, ...C_DRILLS, ...JAVA_DRILLS, ...DSA2_DRILLS };
 
 export const DRILL_PREFIX = 'drill-';
 export const drillId = (lessonId: string) => `${DRILL_PREFIX}${lessonId}`;
