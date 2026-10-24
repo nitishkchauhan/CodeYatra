@@ -42,7 +42,7 @@ The app is **not for children under 13** (Play target audience 13–15, 16–17,
 ### 2.1 Learning (see [modules/01](modules/01-lessons-and-tracks.md))
 | ID | Requirement | Status |
 |---|---|---|
-| FR-L1 | 16 tracks × 10 modules (160 modules) across Start here, School, Web, Programming, Full-stack, CS core and Placement | ✅ |
+| FR-L1 | 16 tracks × 10–13 modules (193 modules, plus a project per track) across Start here, School, Web, Programming, Full-stack, CS core and Placement | ✅ |
 | FR-L2 | Every module follows read → quick check → practice → complete | ✅ |
 | FR-L3 | Exercise types: reading card, quiz, fill the gap, code editor, order the lines, find the bug, predict the output, tap the token, web page builder, block puzzle | ✅ |
 | FR-L4 | Wrong answers explain why and allow a retry; the right answer is shown after 2 wrong tries | ✅ |

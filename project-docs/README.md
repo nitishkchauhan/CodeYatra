@@ -23,7 +23,7 @@ Start here, then open whichever file you need.
 
    | # | Module | What it covers |
    |---|---|---|
-   | 01 | [Lessons and tracks](modules/01-lessons-and-tracks.md) | 16 tracks, 160 modules, exercise types |
+   | 01 | [Lessons and tracks](modules/01-lessons-and-tracks.md) | 16 tracks, 193 modules + 16 projects, exercise types |
    | 02 | [Practice](modules/02-practice.md) | Daily challenge, mistakes review, module practice, mock tests, projects |
    | 03 | [Code runner](modules/03-code-runner.md) | Running Python, JavaScript, SQL and web pages on the phone |
    | 04 | [Career paths](modules/04-career-paths.md) | 13 job roadmaps and the roadmap map |

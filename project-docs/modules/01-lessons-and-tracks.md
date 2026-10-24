@@ -1,7 +1,7 @@
 # 01 · Lessons and tracks
 
 ## What it does
-Teaches coding in short lessons. There are **16 tracks** of **10 modules** each (160 modules), grouped into sections:
+Teaches coding in short lessons. There are **16 tracks** of **10 to 13 modules** each (193 modules), each ending in a project, grouped into sections:
 
 | Section | Tracks |
 |---|---|
