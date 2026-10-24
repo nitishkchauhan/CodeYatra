@@ -51,7 +51,7 @@ Stops not taught in the app link to **free** outside material (official docs, fr
 | Part | Files |
 |---|---|
 | Data model and progress rules | `src/content/paths/types.ts`, `src/content/paths/index.ts` |
-| The 13 paths | `src/content/paths/*.ts` (shared stops and link helpers in `shared.ts`) |
+| The paths (6 shown, 7 paused) | `src/content/paths/*.ts` (shared stops and link helpers in `shared.ts`) |
 | Paths tab | `src/app/(tabs)/paths.tsx` |
 | Path screen | `src/app/path/[id].tsx` |
 | Roadmap map | `src/components/RoadmapMap.tsx` |

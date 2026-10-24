@@ -18,7 +18,7 @@ SHOTS = [
     ('1-home', 'Learn to code,', 'one short lesson a day'),
     ('2-journey', 'Follow your journey,', 'one step at a time'),
     ('3-roadmap', 'See every step', 'to your dream tech job'),
-    ('4-paths', '13 career paths,', 'from Frontend to AI'),
+    ('4-paths', '6 career paths,', 'from Python basics to AI'),
     ('5-correct', 'Yatri cheers you on', 'when you get it right'),
     ('6-practice', 'Practise real Python', 'and crack output questions'),
     ('7-plan', 'A plan made for you', 'in under a minute'),

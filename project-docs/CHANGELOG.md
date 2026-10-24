@@ -2,7 +2,14 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
-## 18 Oct 2026 (branch `content-v2`, not merged yet)
+## 24 Oct 2026
+- **content-v2 merged into main** (fast-forward) and pushed. App version **1.4.0**. Every track is now Lesson v2 and none are paused.
+- Local Play bundle `builds/CodeYatra-1.4.0.aab` (versionCode 11) built in WSL (`scripts/wsl/build-aab.sh`), no EAS quota used. Run it from PowerShell: Git Bash rewrites the /mnt/c path.
+- `supabase/track-lessons.sql` run in Supabase by the owner (all 16 tracks, 209 lessons).
+- Store screenshot 4 redone: "6 career paths, from Python basics to AI", captured from the current Paths tab (`scripts/frame-screenshots.py`).
+- Owner to do: upload the .aab to the closed test and replace screenshot 4 in the Play listing.
+
+## 18 Oct 2026 (branch `content-v2`, merged 24 Oct)
 - **DSA Advanced rewritten and un-paused** (Lesson v2, Python): 13 modules (binary trees, BSTs, heaps, graphs and BFS, DFS and connected parts, topological sort, Dijkstra, backtracking, DP with memoization, DP tables, 2-D DP, greedy, merge sort) plus a **metro route planner** project (BFS with path rebuilding, then Dijkstra). Every output, error message, mistake and solution runs in tests. 52 practice questions; Python docs reading on every lesson. **No tracks are paused any more.** 2704 tests passing.
 - **Java track rewritten and un-paused** (Lesson v2, Java 17+): 12 modules (hello and running, variables and types, operators and Scanner, if and switch expressions, loops, methods and overloading, arrays, Strings and StringBuilder, classes and objects, inheritance and interfaces, ArrayList and HashMap, exceptions) plus a **train reservation system** project. Every Java output question and common mistake is compiled and run with a real JDK in tests (on Windows, the JDK 17 in WSL that the Android build uses; results are cached), so compile errors and exceptions are quoted exactly. Exercises are JavaScript models of the same logic (printf, int overflow, int division, classes, inheritance, word counts, validation). 48 practice questions; dev.java and Java SE API reading on every lesson. 2584 tests passing.
 - **C track rewritten and un-paused** (Lesson v2, C17): 12 modules (hello and compiling, variables and types, operators and input, if/switch, loops, functions, arrays, strings, pointers, structs, dynamic memory, files) plus a **marks manager** project. Every C output question and common mistake is compiled and run with gcc in tests (the wrong program prints exactly what is shown). The app can’t compile C on a phone yet, so try-its and exercises are Python models of what C does (printf placeholders, fixed-size integers, permission bits, strcmp, pointer chains, doubling capacity). 49 practice questions; cppreference reading on every lesson. 2445 tests passing.
@@ -26,7 +33,7 @@ Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/Cod
 - `project-docs/CONTENT-REVIEW.md`: the lesson template and review checklist for future content.
 - 1060 tests, all passing. `supabase/track-lessons.sql` regenerated again (Next.js modules).
 
-## 17 Oct 2026 (branch `content-v2`, not merged yet)
+## 17 Oct 2026 (branch `content-v2`, merged 24 Oct)
 - **Content plan phases A and B** (owner approved the 5 paths + CBSE, hiding the rest, and starting with A + B):
   - **Lesson v2** format: a hook (a real situation and what you'll be able to do), three short cards, **try it** (edit and run code, nothing marked), **common mistake** (the wrong code, the real error, then the fix), two quick checks, a coding exercise, and a 3-point recap on the finish screen.
   - **Python Foundations rewritten:** 12 modules (first program, numbers, text, decisions, for, while, lists, dictionaries, functions, errors, files, classes) plus a 4-step **canteen billing project**, each module with a 4–5 question practice set. Old "Comprehensions" and "Problem solving" lessons are now bonus practice. Finished modules stay finished.

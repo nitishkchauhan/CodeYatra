@@ -74,7 +74,7 @@ The app is **not for children under 13** (Play target audience 13–15, 16–17,
 ### 2.4 Career paths (see [modules/04](modules/04-career-paths.md))
 | ID | Requirement | Status |
 |---|---|---|
-| FR-R1 | 13 career paths, each made of sections and stops | 🧪 |
+| FR-R1 | 13 career paths (6 shown, 7 paused), each made of sections and stops | 🧪 |
 | FR-R2 | roadmap.sh-style map view and a list view | 🧪 |
 | FR-R3 | Each stop shows why it matters, the CodeYatra lessons that teach it, and free outside links | 🧪 |
 | FR-R4 | Progress comes from finished lessons plus stops ticked as “I already know this”; optional stops don’t count; a “pick one” choice counts once | 🧪 |
