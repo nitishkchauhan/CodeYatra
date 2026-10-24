@@ -1,7 +1,7 @@
 // Four quick exercise types that work well on a phone: order lines, find the bug,
 // predict the output, and tap a token.
-import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useMemo, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, LinearTransition } from 'react-native-reanimated';
 
 import { ActionBar, StepHeader, VerdictBar } from './Shell';
@@ -9,7 +9,8 @@ import { CodeBlock, LANG_COLOR, tokenize } from '@/components/Code';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
-import { isOrderCorrect, isPredictCorrect, scrambledOrder, type BugStep, type CodeLang, type OrderStep, type PredictStep, type TapStep } from '@/content';
+import { isOrderCorrect, scrambledOrder, type BugStep, type CodeLang, type OrderStep, type PredictStep, type TapStep } from '@/content';
+import { predictChoices } from '@/content/build';
 import { haptic } from '@/lib/haptics';
 import { colors, fonts } from '@/theme';
 
@@ -239,60 +240,75 @@ export function FindBugStep({ step, onDone, onMistake }: Props<BugStep>) {
 /* ---------- Predict the output ---------- */
 
 export function PredictOutputStep({ step, onDone, onMistake }: Props<PredictStep>) {
-  const [answer, setAnswer] = useState('');
+  // Picked from the real output and likely slips, so no keyboard is needed.
+  const choices = useMemo(() => predictChoices(step.answer, step.accept, `${step.kicker}|${step.title}`, step.lines), [step]);
+  const [pick, setPick] = useState<number | null>(null);
+  const [ruledOut, setRuledOut] = useState<number[]>([]);
   const { verdict, judge, reset } = useVerdict(onMistake);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.content}>
         <Animated.View entering={FadeInDown.duration(320)}>
           <StepHeader kicker={step.kicker} title={step.title} instructions="Run it in your head. What does it print?" color={LANG_COLOR[step.lang]} />
         </Animated.View>
         <View style={[styles.editor, { paddingVertical: 2 }]}>
           <CodeBlock lines={step.lines} lang={step.lang} />
         </View>
-        <View style={styles.console}>
-          <T variant="labelSm" color="#8E89C4" style={{ fontSize: 11 }}>
+        <View style={{ gap: 8 }} accessibilityRole="radiogroup">
+          <T variant="labelSm" color={colors.ink2}>
             YOUR PREDICTION
           </T>
-          <TextInput
-            value={answer}
-            onChangeText={(v) => {
-              setAnswer(v);
-              if (verdict === false) reset();
-            }}
-            editable={verdict !== true}
-            placeholder="Type the output…"
-            placeholderTextColor="#6F6A9E"
-            autoCapitalize="none"
-            autoCorrect={false}
-            multiline
-            accessibilityLabel="Your predicted output"
-            style={styles.predictInput}
-          />
+          {choices.options.map((option, i) => {
+            const selected = pick === i;
+            const out = ruledOut.includes(i);
+            const right = verdict === true && selected;
+            const wrong = verdict === false && selected;
+            return (
+              <Pressable
+                key={option}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: selected, disabled: out || verdict !== null }}
+                accessibilityLabel={`Output: ${option}${out ? ', ruled out' : ''}`}
+                disabled={out || verdict !== null}
+                onPress={() => {
+                  haptic.tap();
+                  setPick(i);
+                }}
+                style={[
+                  styles.outputOption,
+                  selected && { borderColor: colors.primary, borderWidth: 2 },
+                  right && { borderColor: colors.success, backgroundColor: '#0F2A1C' },
+                  wrong && { borderColor: colors.danger, backgroundColor: '#2A0F16' },
+                  out && { opacity: 0.4 },
+                ]}>
+                {option.split('\n').map((line, k) => (
+                  <T key={k} style={styles.consoleText}>
+                    {line || ' '}
+                  </T>
+                ))}
+              </Pressable>
+            );
+          })}
         </View>
-        {verdict !== null ? (
-          <Animated.View entering={FadeInDown.duration(220)} style={[styles.console, { borderWidth: 1, borderColor: verdict ? '#86EFAC' : '#FCA5A5' }]}>
-            <T variant="labelSm" color={verdict ? '#86EFAC' : '#FCA5A5'} style={{ fontSize: 11 }}>
-              {verdict ? 'ACTUAL OUTPUT · MATCHES' : 'NOT THE OUTPUT · THINK AGAIN'}
-            </T>
-            {verdict ? <T style={styles.consoleText}>{step.answer}</T> : null}
-          </Animated.View>
-        ) : null}
       </ScrollView>
       {verdict === null ? (
         <ActionBar>
-          <Button label="Check prediction" disabled={!answer.trim()} onPress={() => judge(isPredictCorrect(answer, step.answer, step.accept))} />
+          <Button label="Check prediction" disabled={pick === null} onPress={() => judge(pick === choices.answer)} />
         </ActionBar>
       ) : (
         <VerdictBar
           right={verdict}
           message={verdict ? step.explain : 'Trace it one line at a time and keep track of every variable.'}
           onContinue={onDone}
-          onRetry={reset}
+          onRetry={() => {
+            if (pick !== null) setRuledOut((r) => [...r, pick]);
+            setPick(null);
+            reset();
+          }}
         />
       )}
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -401,5 +417,5 @@ const styles = StyleSheet.create({
   pickNote: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   console: { borderRadius: 16, backgroundColor: colors.code.console, padding: 12, gap: 6 },
   consoleText: { fontFamily: fonts.mono, fontSize: 13, lineHeight: 20, color: colors.code.text },
-  predictInput: { fontFamily: fonts.mono, fontSize: 15, color: '#FFFFFF', minHeight: 44, paddingVertical: 6, textAlignVertical: 'top' },
+  outputOption: { borderRadius: 14, backgroundColor: colors.code.console, borderWidth: 1, borderColor: colors.code.line, paddingHorizontal: 14, paddingVertical: 12, gap: 2 },
 });

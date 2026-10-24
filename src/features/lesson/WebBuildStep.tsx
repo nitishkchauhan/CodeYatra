@@ -1,10 +1,10 @@
-import { useCallback, useDeferredValue, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useDeferredValue, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { ActionBar, StepHeader } from './Shell';
 import { AskYatri } from '@/components/AskYatri';
-import { CodeEditor } from '@/components/CodeEditor';
+import { BuildBoard, useBuild } from '@/components/TapToBuild';
 import { WebPreview } from '@/components/WebPreview';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -17,17 +17,25 @@ import { colors, fonts } from '@/theme';
 const FILE_NAME: Record<WebFile, string> = { html: 'index.html', css: 'style.css', js: 'app.js' };
 const EDITOR_LANG = { html: 'html', css: 'css', js: 'javascript' } as const;
 
-/** Build part of a real page: edit the files, watch the preview, then check against the brief. */
+/** Build part of a real page by tapping pieces into each file, watch the preview, then check against the brief. */
 export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDone: () => void; onMistake: () => void }) {
   const fileList = (['html', 'css', 'js'] as WebFile[]).filter((f) => step.starter[f] !== undefined);
-  const [files, setFiles] = useState(step.starter);
-  const [tab, setTab] = useState<WebFile>(fileList[0]);
+  // Each file is the tested solution with a few pieces missing (no keyboard). Up to 3 gaps per file.
+  const seed = `${step.kicker}|${step.title}`;
+  const html = useBuild(step.solution.html, 'html', `${seed}:html`, step.starter.html, 3);
+  const css = useBuild(step.solution.css ?? '', 'css', `${seed}:css`, step.starter.css ?? '', 3);
+  const js = useBuild(step.solution.js ?? '', 'javascript', `${seed}:js`, step.starter.js ?? '', 3);
+  const builds = { html, css, js };
+  const files = Object.fromEntries(fileList.map((f) => [f, builds[f].code])) as WebStep['starter'];
+  const filled = fileList.every((f) => builds[f].filled);
+  const [tab, setTab] = useState<WebFile>(fileList.find((f) => builds[f].puzzle.answers.length) ?? fileList[0]);
   const [checks, setChecks] = useState<{ label: string; ok: boolean }[] | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [logs, setLogs] = useState<PageLog[]>([]);
   const doc = useDeferredValue(buildPage(files));
   const pass = checks?.every((c) => c.ok) ?? false;
-  const onLog = useCallback((log: PageLog) => setLogs((l) => [...l.slice(-4), log]), []);
+  // The React Compiler keeps this function stable, so the preview is not reloaded on every render.
+  const onLog = (log: PageLog) => setLogs((l) => [...l.slice(-4), log]);
 
   const check = () => {
     const result = runWebChecks(files, step.checks);
@@ -36,12 +44,13 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
     else {
       haptic.error();
       onMistake();
+      fileList.forEach((f) => builds[f].markWrong());
     }
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.content}>
         <Animated.View entering={FadeInDown.duration(320)}>
           <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
         </Animated.View>
@@ -70,23 +79,15 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
           <View style={styles.tabs} accessibilityRole="tablist">
             {fileList.map((f) => (
               <Pressable key={f} accessibilityRole="tab" accessibilityState={{ selected: tab === f }} onPress={() => setTab(f)} style={[styles.tab, tab === f && styles.tabOn]}>
-                <T style={{ fontFamily: fonts.mono, fontSize: 13, color: tab === f ? colors.ink : colors.ink2 }}>{FILE_NAME[f]}</T>
+                <T style={{ fontFamily: fonts.mono, fontSize: 13, color: tab === f ? colors.ink : colors.ink2 }}>
+                  {FILE_NAME[f]}
+                  {builds[f].puzzle.answers.length && !builds[f].filled ? ' •' : ''}
+                </T>
               </Pressable>
             ))}
           </View>
         ) : null}
-        <CodeEditor
-          key={tab}
-          value={files[tab] ?? ''}
-          onChange={(v) => {
-            setFiles({ ...files, [tab]: v });
-            setChecks(null);
-            setLogs([]);
-          }}
-          lang={EDITOR_LANG[tab]}
-          file={FILE_NAME[tab]}
-          minLines={8}
-        />
+        <BuildBoard key={tab} build={builds[tab]} lang={EDITOR_LANG[tab]} file={FILE_NAME[tab]} />
 
         {checks ? (
           <Animated.View entering={FadeInDown.duration(240)} style={styles.checks} accessibilityLiveRegion="polite">
@@ -148,10 +149,10 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
             <Button variant="success" label="Continue · checklist complete" onPress={onDone} />
           </Animated.View>
         ) : (
-          <Button label={checks ? 'Check again' : 'Check my page'} onPress={check} />
+          <Button label={!filled ? 'Fill every gap first' : checks ? 'Check again' : 'Check my page'} disabled={!filled} onPress={check} />
         )}
       </ActionBar>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

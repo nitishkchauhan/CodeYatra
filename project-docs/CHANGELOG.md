@@ -2,6 +2,16 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 24 Oct 2026 (branch `tap-to-build`, not merged yet)
+- **Coding without a keyboard (Phase 1).** The keyboard caused a blank area on some Android phones, and typing code on a phone is slow, so lessons no longer open it:
+  - **Code exercises** (about 230) became **Build it**: the tested solution with up to 6 pieces missing and a bank of pieces to tap in, including likely mix-ups (`<` and `<=`, `=` and `==`, the starter's wrong value). The real tests still run on the result; wrong pieces turn red after a failed run, and "Show the answer" appears after two tries.
+  - **Predict the output** became a choice between the real output and likely slips (an off-by-one, swapped lines, True/False flipped, the other value in the code).
+  - **Try it** shows the code with values to tap and change (numbers, names, cities, true/false, colours), then Run. Only values nothing else depends on are offered, and tests run every option of every lesson.
+  - **Web page builder** fills up to 3 gaps per file with a live preview, then checks the page.
+  - **Playground**: Tinker (tap values) and Build (fill the gaps) for Python and JavaScript programs, and a web page whose values change by tapping.
+  - The keyboard fix from `fix-keyboard-gap` is included. Typing remains only for names, search and profile fields.
+  - 3635 tests passing (928 new checks of generated exercises).
+
 ## 24 Oct 2026
 - **content-v2 merged into main** (fast-forward) and pushed. App version **1.4.0**. Every track is now Lesson v2 and none are paused.
 - Local Play bundle `builds/CodeYatra-1.4.0.aab` (versionCode 11) built in WSL (`scripts/wsl/build-aab.sh`), no EAS quota used. Run it from PowerShell: Git Bash rewrites the /mnt/c path.

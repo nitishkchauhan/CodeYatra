@@ -26,7 +26,9 @@ Every module follows **read → quick check → practice → complete**:
 2. A quick quiz checks it.
 3. Practice exercises, then a completion screen with XP, coins, accuracy and streak.
 
-**Exercise types:** quiz, fill the gap, real code editor with tests, order the lines, find the bug, predict the output, tap the token, live web page builder, block puzzle with Yatri.
+**Exercise types:** quiz, fill the gap, **build it** (tap pieces into the gaps of a real program, then its tests run), order the lines, find the bug, predict the output (pick from choices), tap the token, live web page builder (tap pieces into the page), try it (tap a value to change it and run), block puzzle with Yatri.
+
+**No keyboard in lessons (since 24 Oct 2026).** Typing on a phone was slow and, on some Android phones, left a keyboard-sized blank area. `src/content/build.ts` turns each tested solution into gaps plus a bank of pieces (the right ones and likely mix-ups), finds values a learner can tap to change in try-its and the playground, and builds the choices for predict-the-output. It is deterministic, and `src/content/__tests__/build.test.ts` checks every generated exercise: the answers give back the tested solution, every tap-to-change option still runs, and predict choices have exactly one right answer. The Playground has Tinker (tap values) and Build (fill the gaps) modes.
 
 ## Yatri in lessons
 - **Progress** at the top of a lesson is a row of footprints: saffron done, indigo current, faint ahead.
@@ -46,6 +48,7 @@ Every module follows **read → quick check → practice → complete**:
 | Track list and module order | `src/content/index.ts` (`STAGES`) |
 | Lesson content | `src/content/*.ts`, `src/content/tracks/*.ts` |
 | Content helpers | `src/content/dsl.ts` (`lesson`, `quiz`, `predict`, `bug`, `order`, `tap`) |
+| Keyboard-free exercises | `src/content/build.ts`, `src/components/TapToBuild.tsx`, `src/content/playground.ts` |
 | Lesson screen | `src/app/lesson/[id].tsx` |
 | Exercise screens | `src/features/lesson/*.tsx` |
 | Home (module path) | `src/app/(tabs)/index.tsx` |

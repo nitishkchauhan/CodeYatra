@@ -102,12 +102,15 @@ export function GapCode({
   gaps,
   active,
   onGap,
+  wrong = [],
 }: {
   lines: Seg[][];
   lang: CodeLang;
   gaps: (string | null)[];
   active: number | null;
   onGap: (i: number) => void;
+  /** Gaps to mark in red, e.g. the pieces that don't match after a failed run. */
+  wrong?: number[];
 }) {
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 8 }}>
@@ -132,6 +135,7 @@ export function GapCode({
                   style={[
                     styles.gap,
                     value === null ? styles.gapEmpty : styles.gapFilled,
+                    wrong.includes(seg.gap) && value !== null && { backgroundColor: '#5B1D2B', borderColor: colors.danger },
                     isActive && { boxShadow: `0 0 0 2px ${colors.saffron}` },
                   ]}>
                   <Text style={[styles.code, { color: value === null ? C.func : '#FFFFFF' }]}>{value ?? '?'}</Text>

@@ -6,7 +6,7 @@ import { ActionBar } from './Shell';
 import { Yatri } from '@/components/Yatri';
 import { LANG_COLOR } from '@/components/Code';
 import { AskYatri } from '@/components/AskYatri';
-import { CodeEditor } from '@/components/CodeEditor';
+import { BuildBoard, useBuild } from '@/components/TapToBuild';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
@@ -48,8 +48,11 @@ export function ConsoleView({ output, error, pass }: { output: string[]; error?:
 export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: () => void; onMistake: () => void }) {
   const t = useT();
   const run = useCodeRunner();
-  const [code, setCode] = useState(step.starter);
+  // Built by tapping pieces into gaps (no keyboard); the real tests still run on the result.
+  const build = useBuild(step.solution, step.lang, `${step.kicker}|${step.title}`, step.starter);
+  const code = build.code;
   const [busy, setBusy] = useState(false);
+  const [fails, setFails] = useState(0);
   const [firstPython, setFirstPython] = useState(step.lang !== 'javascript');
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [hint, setHint] = useState(false);
@@ -68,6 +71,8 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
     else {
       haptic.error();
       onMistake();
+      build.markWrong();
+      setFails((f) => f + 1);
     }
   };
 
@@ -86,7 +91,7 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
           </T>
         </Animated.View>
 
-        <CodeEditor value={code} onChange={(v) => { setCode(v); setOutcome(null); }} lang={step.lang} file={step.file} />
+        <BuildBoard build={build} lang={step.lang} file={step.file} />
 
         <View style={{ flexDirection: 'row', gap: 8 }}>
           <Pressable accessibilityRole="button" onPress={() => setHint(!hint)} style={styles.chip}>
@@ -95,12 +100,20 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
               {hint ? 'Hide hint' : 'Hint'}
             </T>
           </Pressable>
-          <Pressable accessibilityRole="button" onPress={() => { setCode(step.starter); setOutcome(null); }} style={styles.chip}>
+          <Pressable accessibilityRole="button" onPress={() => { build.reset(); setOutcome(null); }} style={styles.chip}>
             <Icon name="reset" size={16} color={colors.ink2} />
             <T variant="labelSm" color={colors.ink2}>
-              Reset code
+              Clear
             </T>
           </Pressable>
+          {fails >= 2 && !pass ? (
+            <Pressable accessibilityRole="button" onPress={() => { build.reveal(); setOutcome(null); }} style={styles.chip}>
+              <Icon name="check" size={16} color={colors.primary} />
+              <T variant="labelSm" color={colors.primary}>
+                Show the answer
+              </T>
+            </Pressable>
+          ) : null}
         </View>
         {hint ? (
           <Animated.View entering={FadeInDown} style={styles.hint}>
@@ -174,9 +187,9 @@ export function EditorStep({ step, onDone, onMistake }: { step: Step; onDone: ()
           </Animated.View>
         ) : (
           <Button
-            label={busy ? t('running') : outcome ? t('runAgain') : 'Run tests'}
-            icon={busy ? undefined : (c) => <Glyph name="play" size={18} color={c} />}
-            disabled={busy || !code.trim()}
+            label={busy ? t('running') : !build.filled ? 'Fill every gap first' : outcome ? t('runAgain') : 'Run tests'}
+            icon={busy || !build.filled ? undefined : (c) => <Glyph name="play" size={18} color={c} />}
+            disabled={busy || !build.filled}
             onPress={runTests}
           />
         )}

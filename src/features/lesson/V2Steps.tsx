@@ -7,7 +7,7 @@ import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { ConsoleView } from './EditorStep';
 import { ActionBar } from './Shell';
 import { CodeBlock, LANG_COLOR } from '@/components/Code';
-import { CodeEditor } from '@/components/CodeEditor';
+import { TweakCode, useTweaks } from '@/components/TapToBuild';
 import { WebPreview } from '@/components/WebPreview';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
@@ -89,17 +89,22 @@ export function TryStep({ step, onDone }: { step: Try; onDone: () => void }) {
 const WEB_FILE = { html: 'index.html', css: 'style.css', js: 'app.js' } as const;
 const WEB_LANG = { html: 'html', css: 'css', js: 'javascript' } as const;
 
-/** Edit a page and watch the preview update as you type. Nothing is checked. */
+/** Change values on a page by tapping them and watch the preview follow. Nothing is checked. */
 function WebTry({ step, onDone }: { step: Try; onDone: () => void }) {
   const t = useT();
   const start = step.files ?? { html: step.starter };
+  const seed = `${step.kicker}|${step.title}`;
+  const html = useTweaks(start.html, 'html', `${seed}:html`);
+  const css = useTweaks(start.css ?? '', 'css', `${seed}:css`);
+  const js = useTweaks(start.js ?? '', 'javascript', `${seed}:js`);
   const kinds = (['html', 'css', 'js'] as const).filter((k) => start[k] !== undefined);
-  const [files, setFiles] = useState(start);
-  const [tab, setTab] = useState<(typeof kinds)[number]>(kinds[0]);
+  const [tab, setTab] = useState<(typeof kinds)[number]>(kinds.find((k) => ({ html, css, js })[k].tweaks.length) ?? kinds[0]);
+  const files = { html: html.code, ...(start.css !== undefined ? { css: css.code } : {}), ...(start.js !== undefined ? { js: js.code } : {}) };
   const doc = useDeferredValue(buildPage(files));
+  const current = { html, css, js }[tab];
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={styles.content}>
         <Animated.View entering={FadeInDown.duration(320)} style={{ gap: 6 }}>
           <T variant="kicker" color={colors.primary}>
             {step.kicker}
@@ -123,26 +128,8 @@ function WebTry({ step, onDone }: { step: Try; onDone: () => void }) {
             ))}
           </View>
         ) : null}
-        <CodeEditor key={tab} value={files[tab] ?? ''} onChange={(v) => setFiles({ ...files, [tab]: v })} lang={WEB_LANG[tab]} file={WEB_FILE[tab]} minLines={4} />
-        <View style={{ gap: 6 }}>
-          <T variant="labelSm" color={colors.ink2}>
-            TRY THESE CHANGES
-          </T>
-          {step.ideas.map((idea) => (
-            <View key={idea} style={styles.idea}>
-              <Icon name="bulb" size={16} color={colors.saffronShadow} />
-              <T variant="bodySm" color={colors.ink} style={{ flex: 1 }}>
-                {idea}
-              </T>
-            </View>
-          ))}
-          <Pressable accessibilityRole="button" onPress={() => setFiles(start)} style={styles.chip}>
-            <Icon name="reset" size={16} color={colors.ink2} />
-            <T variant="labelSm" color={colors.ink2}>
-              Reset code
-            </T>
-          </Pressable>
-        </View>
+        <TweakCode key={tab} tweak={current} source={start[tab] ?? ''} lang={WEB_LANG[tab]} file={WEB_FILE[tab]} />
+        <Ideas ideas={step.ideas} />
       </ScrollView>
       <ActionBar>
         <Button label={t('continue')} onPress={onDone} />
@@ -151,10 +138,33 @@ function WebTry({ step, onDone }: { step: Try; onDone: () => void }) {
   );
 }
 
+/** The lesson's suggestions, shown as things to notice (changes are made by tapping values, not typing). */
+function Ideas({ ideas }: { ideas: string[] }) {
+  if (!ideas.length) return null;
+  return (
+    <View style={{ gap: 6 }}>
+      <T variant="labelSm" color={colors.ink2}>
+        THINGS TO TRY OR THINK ABOUT
+      </T>
+      {ideas.map((idea) => (
+        <View key={idea} style={styles.idea}>
+          <Icon name="bulb" size={16} color={colors.saffronShadow} />
+          <T variant="bodySm" color={colors.ink} style={{ flex: 1 }}>
+            {idea}
+          </T>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 function CodeTry({ step, onDone }: { step: Try; onDone: () => void }) {
   const t = useT();
   const run = useCodeRunner();
-  const [code, setCode] = useState(step.starter);
+  const lang = step.lang === 'web' ? 'javascript' : step.lang;
+  // Values are changed by tapping them, so there is no keyboard.
+  const tweak = useTweaks(step.starter, lang, `${step.kicker}|${step.title}`);
+  const code = tweak.code;
   const [busy, setBusy] = useState(false);
   const [firstPython, setFirstPython] = useState(step.lang !== 'javascript');
   const [out, setOut] = useState<{ output: string[]; error?: string } | null>(null);
@@ -163,7 +173,6 @@ function CodeTry({ step, onDone }: { step: Try; onDone: () => void }) {
   const runCode = async () => {
     haptic.tap();
     setBusy(true);
-    const lang = step.lang === 'web' ? 'javascript' : step.lang;
     const r = await run(runtimeOf(lang), buildProgram(lang, code, []));
     setBusy(false);
     setFirstPython(false);
@@ -186,27 +195,8 @@ function CodeTry({ step, onDone }: { step: Try; onDone: () => void }) {
           </T>
         </Animated.View>
 
-        <CodeEditor value={code} onChange={setCode} lang={step.lang === 'web' ? 'html' : step.lang} file={step.file} minLines={4} />
-
-        <View style={{ gap: 6 }}>
-          <T variant="labelSm" color={colors.ink2}>
-            TRY THESE CHANGES
-          </T>
-          {step.ideas.map((idea) => (
-            <View key={idea} style={styles.idea}>
-              <Icon name="bulb" size={16} color={colors.saffronShadow} />
-              <T variant="bodySm" color={colors.ink} style={{ flex: 1 }}>
-                {idea}
-              </T>
-            </View>
-          ))}
-          <Pressable accessibilityRole="button" onPress={() => { setCode(step.starter); setOut(null); }} style={styles.chip}>
-            <Icon name="reset" size={16} color={colors.ink2} />
-            <T variant="labelSm" color={colors.ink2}>
-              Reset code
-            </T>
-          </Pressable>
-        </View>
+        <TweakCode tweak={tweak} source={step.starter} lang={lang} file={step.file} />
+        <Ideas ideas={step.ideas} />
 
         {busy ? (
           <View style={styles.loading} accessibilityLiveRegion="polite">
