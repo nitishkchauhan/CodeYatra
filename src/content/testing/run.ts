@@ -59,7 +59,8 @@ export function runC(code: string): string[] {
   const exe = join(dir, process.platform === 'win32' ? 'main.exe' : 'main');
   writeFileSync(src, code);
   execFileSync(gcc!, [src, '-o', exe, '-lm'], { stdio: 'pipe' });
-  return lines(execFileSync(exe, { encoding: 'utf8' }));
+  // Its own folder, because some lessons write files.
+  return lines(execFileSync(exe, { encoding: 'utf8', cwd: dir, timeout: 15000 }));
 }
 
 export const runSql = (query: string) => runPy(sqlProgram(query));

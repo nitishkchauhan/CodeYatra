@@ -37,7 +37,7 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations', 'git', 'node'])('%s follows Lesson v2', (track) => {
+describe.each(['next', 'sql', 'dsa', 'js', 'html', 'css', 'react', 'placement', 'cbse', 'foundations', 'git', 'node', 'c'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
@@ -119,7 +119,7 @@ describe('common mistakes', () => {
     if (step.lang === 'c') {
       // C mistakes compile and run with gcc when it is installed: the wrong program prints the shown output.
       if (!gcc) return;
-      expect(runC(step.wrong.join('\n')).join('\n')).toBe(step.error);
+      if (!step.hang) expect(runC(step.wrong.join('\n')).join('\n')).toBe(step.error);
       expect(() => runC(step.right.join('\n'))).not.toThrow();
       return;
     }

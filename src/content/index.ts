@@ -24,7 +24,7 @@ import { REACT_FOUNDATIONS, REACT_PROJECT } from './tracks/reactFoundations';
 import { PROJECTS } from './projects';
 import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
 import { findPath } from './paths';
-import { C_LESSONS } from './tracks/c';
+import { C_LESSONS, C_PROJECT } from './tracks/c';
 import { CBSE_LESSONS, CBSE_PROJECT } from './tracks/cbse';
 import { DSA2_LESSONS, islands, minCoins } from './tracks/dsa2';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
@@ -203,7 +203,7 @@ const sqlJoin = SQL_LESSONS.find((l) => l.id === 'sql-join')!.steps.find((s) => 
 
 const NEW_TRACK_PRACTICE: Lesson[] = [
   drill('x-c-output', 'Output drill', 'c', C_LESSONS, ['predict'], ['Traced C programs line by line']),
-  drill('x-c-bugs', 'Bug hunt', 'c', C_LESSONS, ['bug'], ['Spotted classic C bugs']),
+  drill('x-c-bugs', 'Bug hunt', 'c', C_LESSONS, ['bug', 'quiz'], ['Spotted classic C bugs']),
   drill('x-java-output', 'Output drill', 'java', JAVA_LESSONS, ['predict'], ['Traced Java programs line by line']),
   drill('x-java-fix', 'Fix the code', 'java', JAVA_LESSONS, ['bug', 'tap'], ['Spotted Java mistakes']),
   practice('x-dsa-binary', 'Binary search', 'dsa', 6, ['Halve the range each step'], binarySearch),
@@ -240,6 +240,7 @@ const ALL: Lesson[] = [
   NEXT_PROJECT,
   ...PYTHON_MORE_2,
   ...C_LESSONS,
+  C_PROJECT,
   ...JAVA_LESSONS,
   ...DSA_LESSONS,
   DSA_PROJECT,
@@ -522,26 +523,29 @@ export const STAGES: Stage[] = [
     short: 'C',
     sub: 'How computers really work',
     audience: 'B.Tech · BCA · Diploma',
-    blurb: 'The first-year favourite: types, loops, arrays, pointers and memory.',
+    blurb: 'The first-year favourite: types, operators, loops, arrays, strings, pointers, structs, memory and files.',
     color: '#3949AB',
     soft: '#E8EAF6',
     accent: '#9FA8DA',
     icon: 'M17 7a6 6 0 1 0 0 10',
     units: [
-      unit('c1', 'Hello, C', ref('c-hello', 'Hello, C', 'Read + order lines · 5 min')),
-      unit('c2', 'Variables', ref('c-vars', 'Variables and types', 'Read + predict · 6 min')),
-      unit('c3', 'Decisions', ref('c-if', 'Decisions with if', 'Read + find the bug · 6 min')),
-      unit('c4', 'Loops', ref('c-loops', 'Loops', 'Read + order lines · 6 min')),
-      unit('c5', 'Functions', ref('c-func', 'Functions', 'Read + predict · 6 min')),
-      unit('c6', 'Arrays', ref('c-arrays', 'Arrays', 'Read + find the bug · 7 min')),
-      unit('c7', 'Strings', ref('c-strings', 'Strings', 'Read + predict · 6 min')),
-      unit('c8', 'Pointers', ref('c-pointers', 'Pointers', 'Read + predict · 8 min')),
-      unit('c9', 'Structs', ref('c-struct', 'Structs', 'Read + predict · 7 min')),
-      unit('c10', 'Memory', ref('c-memory', 'Dynamic memory', 'Read + predict · 7 min')),
+      unit('c1', 'Hello, C', ref('c-hello', 'Hello, C', 'Lesson + code · 7 min')),
+      unit('c2', 'Variables', ref('c-vars', 'Variables and types', 'Lesson + code · 8 min')),
+      unit('c11', 'Operators', ref('c-ops', 'Operators, input and output', 'Lesson + code · 8 min')),
+      unit('c3', 'Decisions', ref('c-if', 'Decisions: if, else and switch', 'Lesson + code · 7 min')),
+      unit('c4', 'Loops', ref('c-loops', 'Loops', 'Lesson + code · 8 min')),
+      unit('c5', 'Functions', ref('c-func', 'Functions', 'Lesson + code · 8 min')),
+      unit('c6', 'Arrays', ref('c-arrays', 'Arrays', 'Lesson + code · 8 min')),
+      unit('c7', 'Strings', ref('c-strings', 'Strings', 'Lesson + code · 8 min')),
+      unit('c8', 'Pointers', ref('c-pointers', 'Pointers', 'Lesson + code · 9 min')),
+      unit('c9', 'Structs', ref('c-struct', 'Structs', 'Lesson + code · 8 min')),
+      unit('c10', 'Memory', ref('c-memory', 'Dynamic memory', 'Lesson + code · 9 min')),
+      unit('c12', 'Files', ref('c-files', 'Files', 'Lesson + code · 8 min')),
+      unit('c13', 'Project', ref('c-marks-project', 'Project: a marks manager', 'Project · 3 parts · 25 min')),
     ],
     practice: [
       { id: 'x-c-output', title: 'Output drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },
-      { id: 'x-c-bugs', title: 'Bug hunt', kind: 'Find the bug', difficulty: 'Medium', xp: 15 },
+      { id: 'x-c-bugs', title: 'Bug hunt', kind: 'Bug + quiz', difficulty: 'Medium', xp: 15 },
     ],
   },
   {
@@ -859,7 +863,7 @@ export const STAGES: Stage[] = [
  * Tracks paused until they are rewritten to the Lesson v2 standard (see project-docs/CONTENT-PLAN.md).
  * They are hidden from pickers, not deleted: lessons, progress and certificates in them are kept.
  */
-export const PAUSED_STAGES: readonly string[] = ['c', 'java', 'dsa2'];
+export const PAUSED_STAGES: readonly string[] = ['java', 'dsa2'];
 export const isPaused = (id: string) => PAUSED_STAGES.includes(id);
 
 /** Tracks to list: every active track, plus any paused ones named in `keep` (e.g. the track the learner is in). */
