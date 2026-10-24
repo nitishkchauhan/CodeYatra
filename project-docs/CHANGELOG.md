@@ -7,7 +7,7 @@ Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/Cod
 - Local Play bundle `builds/CodeYatra-1.4.0.aab` (versionCode 11) built in WSL (`scripts/wsl/build-aab.sh`), no EAS quota used. Run it from PowerShell: Git Bash rewrites the /mnt/c path.
 - `supabase/track-lessons.sql` run in Supabase by the owner (all 16 tracks, 209 lessons).
 - Store screenshot 4 redone: "6 career paths, from Python basics to AI", captured from the current Paths tab (`scripts/frame-screenshots.py`).
-- Owner uploaded build 11 (1.4.0) to the Play closed test on 24 Oct. Still to do: replace screenshot 4 in the Play listing.
+- Owner uploaded build 11 (1.4.0) to the Play closed test on 24 Oct. New screenshot 4 uploaded to the Play listing the same day.
 
 ## 18 Oct 2026 (branch `content-v2`, merged 24 Oct)
 - **DSA Advanced rewritten and un-paused** (Lesson v2, Python): 13 modules (binary trees, BSTs, heaps, graphs and BFS, DFS and connected parts, topological sort, Dijkstra, backtracking, DP with memoization, DP tables, 2-D DP, greedy, merge sort) plus a **metro route planner** project (BFS with path rebuilding, then Dijkstra). Every output, error message, mistake and solution runs in tests. 52 practice questions; Python docs reading on every lesson. **No tracks are paused any more.** 2704 tests passing.
