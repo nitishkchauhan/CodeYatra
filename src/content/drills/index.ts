@@ -16,10 +16,11 @@ import { REACT_DRILLS } from './react';
 import { JS_DRILLS } from './js';
 import { NEXT_DRILLS } from './next';
 import { PYTHON_DRILLS } from './python';
+import { PYTHON_V3_DRILLS } from './pythonV3';
 import { SQL_DRILLS } from './sql';
 
 /** Extra exercises per module, keyed by the module's lesson id. */
-export const DRILLS: Record<string, Step[]> = { ...PYTHON_DRILLS, ...NEXT_DRILLS, ...SQL_DRILLS, ...DSA_DRILLS, ...JS_DRILLS, ...HTML_DRILLS, ...CSS_DRILLS, ...REACT_DRILLS, ...PLACEMENT_DRILLS, ...CBSE_DRILLS, ...LOGIC_DRILLS, ...GIT_DRILLS, ...NODE_DRILLS, ...C_DRILLS, ...JAVA_DRILLS, ...DSA2_DRILLS };
+export const DRILLS: Record<string, Step[]> = { ...PYTHON_DRILLS, ...PYTHON_V3_DRILLS, ...NEXT_DRILLS, ...SQL_DRILLS, ...DSA_DRILLS, ...JS_DRILLS, ...HTML_DRILLS, ...CSS_DRILLS, ...REACT_DRILLS, ...PLACEMENT_DRILLS, ...CBSE_DRILLS, ...LOGIC_DRILLS, ...GIT_DRILLS, ...NODE_DRILLS, ...C_DRILLS, ...JAVA_DRILLS, ...DSA2_DRILLS };
 
 export const DRILL_PREFIX = 'drill-';
 export const drillId = (lessonId: string) => `${DRILL_PREFIX}${lessonId}`;

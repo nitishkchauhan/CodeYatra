@@ -11,8 +11,8 @@ const trackModules = (id: string) => STAGES.find((s) => s.id === id)!.units.flat
 const pythonModules = trackModules('python');
 
 describe('Python Foundations follows Lesson v2', () => {
-  it('has 12 modules and a final project', () => {
-    expect(pythonModules.filter((l) => l.kind === 'lesson')).toHaveLength(12);
+  it('has 12 Basic modules and ends with a project', () => {
+    expect(pythonModules.filter((l) => l.kind === 'lesson' && l.level === 'basic')).toHaveLength(12);
     expect(pythonModules.at(-1)!.kind).toBe('project');
   });
 
@@ -23,7 +23,7 @@ describe('Python Foundations follows Lesson v2', () => {
     expect(types).toContain('try');
     expect(types).toContain('mistake');
     // Two quick checks, then a coding exercise last.
-    expect(types.filter((t) => ['quiz', 'predict', 'bug', 'tap', 'order'].includes(t)).length).toBeGreaterThanOrEqual(2);
+    expect(types.filter((t) => ['quiz', 'predict', 'bug', 'tap', 'order', 'match', 'group'].includes(t)).length).toBeGreaterThanOrEqual(2);
     expect(types.at(-1)).toBe('editor');
     // Teaching comes before testing.
     expect(types.indexOf('try')).toBeLessThan(types.findIndex((t) => t === 'quiz' || t === 'predict' || t === 'bug'));
