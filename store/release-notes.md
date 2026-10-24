@@ -2,6 +2,18 @@
 
 Play Console limit: 500 characters.
 
+## 1.4.0
+
+<en-IN>
+• Every track rebuilt: 193 lessons in 16 tracks, each ending in a project
+• Lessons now have a real story, code you can try, a common mistake and checks
+• Roadmaps show what to do next, with checkpoints and mastery levels
+• Spaced review brings finished modules back so they stick
+• New Revise and Interview practice with model answers
+• 6 focused career paths, from Python basics to AI
+• C, Java, Node.js, Next.js, Git and DSA Advanced are back
+</en-IN>
+
 ## 1.3.0
 
 <en-IN>
