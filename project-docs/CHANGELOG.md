@@ -2,7 +2,7 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
-## 24 Oct 2026 (branch `tap-to-build`, not merged yet)
+## 24 Oct 2026 (tap-to-build, merged into main after owner testing)
 - **Coding without a keyboard (Phase 1).** The keyboard caused a blank area on some Android phones, and typing code on a phone is slow, so lessons no longer open it:
   - **Code exercises** (about 230) became **Build it**: the tested solution with up to 6 pieces missing and a bank of pieces to tap in, including likely mix-ups (`<` and `<=`, `=` and `==`, the starter's wrong value). The real tests still run on the result; wrong pieces turn red after a failed run, and "Show the answer" appears after two tries.
   - **Predict the output** became a choice between the real output and likely slips (an off-by-one, swapped lines, True/False flipped, the other value in the code).
