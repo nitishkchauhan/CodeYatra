@@ -1,7 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { KeyboardAvoidingView, KeyboardController } from 'react-native-keyboard-controller';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -62,6 +62,13 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
   const reward = lessonReward(lesson.kind, mistakes, replay);
   // Leaving after the first step loses this attempt, so ask first. Finishing is always allowed.
   const guard = useConfirmLeave(index > 0 && finishedAt === null, 'Leave this lesson?', 'Your progress in this lesson will be lost.');
+
+  // Close the keyboard before a step's text box unmounts (next step, finish or leaving). On some Android
+  // phones an input removed while focused leaves the screen squeezed, with a keyboard-sized blank area.
+  useEffect(() => {
+    KeyboardController.dismiss();
+  }, [index, finishedAt]);
+  useEffect(() => () => void KeyboardController.dismiss(), []);
 
   const sourceOf = (i: number) => lesson.sources?.[i] ?? `${lesson.id}#${i}`;
   const { recordMistake } = progress;

@@ -66,8 +66,10 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* Smooth keyboard handling on Android's edge-to-edge screens (the code editors need it). */}
-      <KeyboardProvider>
+      {/* Smooth keyboard handling on Android's edge-to-edge screens (the code editors need it).
+          The app is always edge-to-edge, so say so explicitly: if the library guesses otherwise (seen on some
+          phones below Android 15), it pads the whole app by the keyboard's height and the blank area stays. */}
+      <KeyboardProvider statusBarTranslucent navigationBarTranslucent preserveEdgeToEdge>
       <ProgressProvider>
         <Ready fontsReady={loaded || !!error}>
           <AccountProvider>
