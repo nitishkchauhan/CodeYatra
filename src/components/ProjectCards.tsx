@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { Icon } from './ui/Icon';
 import { T } from './ui/Text';
-import { PROJECTS, TEACHING_STEPS, type Lesson } from '@/content';
+import { isTeaching, PROJECTS, type Lesson } from '@/content';
 import { haptic } from '@/lib/haptics';
 import { useProgress } from '@/state/progress';
 import { colors } from '@/theme';
@@ -15,7 +15,7 @@ const LOOK: Record<string, { bg: string; ink: string; tag: string; icon: string 
   'proj-guess': { bg: '#1D4ED8', ink: '#FFFFFF', tag: 'Python', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 8v4l3 2' },
 };
 
-const buildSteps = (p: Lesson) => p.steps.filter((s) => !(TEACHING_STEPS as readonly string[]).includes(s.type)).length;
+const buildSteps = (p: Lesson) => p.steps.filter((s) => !isTeaching(s)).length;
 
 /** Horizontal list of guided projects: build something real, step by step. */
 export function ProjectCards() {

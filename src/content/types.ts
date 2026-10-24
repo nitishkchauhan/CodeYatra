@@ -51,7 +51,37 @@ export type ConceptStep = {
     done: string;
   };
   tip?: string;
+  /** Lesson v3: a small looping animation of the idea (see ANIMS in features/lesson/Anim.tsx). */
+  anim?: AnimKey;
 };
+
+/** The animations a concept card can show. Each is a short, looping, built-in scene (no image files). */
+export type AnimKey =
+  | 'variable'
+  | 'print'
+  | 'types'
+  | 'math'
+  | 'string'
+  | 'branch'
+  | 'loop'
+  | 'whileLoop'
+  | 'list'
+  | 'dict'
+  | 'function'
+  | 'error'
+  | 'file'
+  | 'classObject'
+  | 'module'
+  | 'json'
+  | 'api'
+  | 'test'
+  | 'comprehension'
+  | 'set'
+  | 'tuple'
+  | 'scope'
+  | 'recursion'
+  | 'generator'
+  | 'decorator';
 
 export type QuizStep = {
   type: 'quiz';
@@ -209,10 +239,93 @@ export type MistakeStep = {
   explain: string;
 };
 
-/** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
-export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake'] as const;
+/**
+ * Lesson v3: watch a program run one line at a time, with its variables and output.
+ * The trace is made by really running the code (tests run the same tracer). An optional question
+ * at the end makes it a checked step.
+ */
+export type TraceStep = {
+  type: 'trace';
+  kicker: string;
+  title: string;
+  instructions: string;
+  lang: 'python';
+  code: string[];
+  /** Asked after the last line has run. */
+  ask?: {
+    prompt: string;
+    options: string[];
+    answer: number;
+    explain: string;
+    /** Where the right option comes from, so tests can check it: a variable's final value, or the last line printed. */
+    check: { var: string } | { out: true };
+  };
+};
 
-export type Step = ConceptStep | HookStep | TryStep | MistakeStep | QuizStep | PuzzleStep | CodeStep | EditorStep | OrderStep | BugStep | PredictStep | TapStep | WebStep;
+/** Lesson v3: tap a left item, then the right item it belongs with. `pairs` are in the right order. */
+export type MatchStep = {
+  type: 'match';
+  kicker: string;
+  title: string;
+  instructions: string;
+  pairs: [string, string][];
+  /** Show the left side as code. */
+  mono?: boolean;
+  explain: string;
+};
+
+/** Lesson v3: sort each item into one of two or three groups, e.g. "changes in place" vs "makes a new value". */
+export type GroupStep = {
+  type: 'group';
+  kicker: string;
+  title: string;
+  instructions: string;
+  groups: string[];
+  /** Each item with the index of its group. */
+  items: { text: string; group: number }[];
+  mono?: boolean;
+  explain: string;
+};
+
+/** Lesson v3: a short work situation (a message from a teammate, maybe a log or a report) that sets up the next task. */
+export type ScenarioStep = {
+  type: 'scenario';
+  kicker: string;
+  title: string;
+  /** Who is asking, e.g. "Priya · team lead". */
+  from: string;
+  message: string;
+  artifact?: { kind: 'log' | 'report' | 'data' | 'diff' | 'ticket'; title: string; lines: string[] };
+  /** What the learner will do next, e.g. "Fix the function so the totals are right." */
+  task: string;
+};
+
+/** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
+export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario'] as const;
+/** A step that only teaches. Watching a program run is teaching too, unless it ends with a question. */
+export const isTeaching = (s: Step) => (TEACHING_STEPS as readonly string[]).includes(s.type) || (s.type === 'trace' && !s.ask);
+
+export type Step =
+  | ConceptStep
+  | HookStep
+  | TryStep
+  | MistakeStep
+  | QuizStep
+  | PuzzleStep
+  | CodeStep
+  | EditorStep
+  | OrderStep
+  | BugStep
+  | PredictStep
+  | TapStep
+  | WebStep
+  | TraceStep
+  | MatchStep
+  | GroupStep
+  | ScenarioStep;
+
+/** How far along a module is: Basic (read and explain), Intermediate (solve alone), Advanced (do real job tasks). */
+export type Level = 'basic' | 'intermediate' | 'advanced';
 
 export type SkillKey = 'sequencing' | 'loops' | 'web' | 'python' | 'react' | 'html' | 'css' | 'js' | 'node' | 'next' | 'c' | 'java' | 'dsa' | 'sql' | 'git' | 'placement';
 
@@ -220,6 +333,8 @@ export type Lesson = {
   id: string;
   title: string;
   kind: 'lesson' | 'practice' | 'project';
+  /** Lesson v3: Basic, Intermediate or Advanced. */
+  level?: Level;
   minutes: number;
   skill: SkillKey;
   steps: Step[];

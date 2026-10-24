@@ -33,7 +33,8 @@ import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS, GIT_PROJECT } from './tracks/git';
 import { JAVA_LESSONS, JAVA_PROJECT } from './tracks/java';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
-import { PYTHON_FOUNDATIONS, PYTHON_PROJECT } from './tracks/pythonFoundations';
+import { PYTHON_PROJECT } from './tracks/pythonFoundations';
+import { PYTHON_BASIC } from './tracks/pythonV3';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
 import { NEXT_FOUNDATIONS, NEXT_PROJECT } from './tracks/nextFoundations';
@@ -224,7 +225,7 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
 const ALL: Lesson[] = [
   ...LOGIC_FOUNDATIONS,
   LOGIC_PROJECT,
-  ...PYTHON_FOUNDATIONS,
+  ...PYTHON_BASIC,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
   ...HTML_FOUNDATIONS,

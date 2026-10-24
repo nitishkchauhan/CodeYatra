@@ -1,6 +1,6 @@
 // Built lessons: the daily challenge and the mistakes review reuse exercises from real lessons.
 import { optionOrder } from './helpers';
-import { TEACHING_STEPS, type Lesson, type Stage, type Step } from './types';
+import { isTeaching, type Lesson, type Stage, type Step } from './types';
 
 const PRACTICE_TYPES: Step['type'][] = ['quiz', 'code', 'order', 'bug', 'predict', 'tap'];
 export const DAILY_SIZE = 3;
@@ -44,7 +44,7 @@ export function reviewLesson(mistakes: Record<string, string>, getLesson: Lookup
     .flatMap(([key]) => {
       const [id, index] = key.split('#');
       const step: Step | undefined = getLesson(id)?.steps[Number(index)];
-      return step && !(TEACHING_STEPS as readonly string[]).includes(step.type) ? [{ key, step }] : [];
+      return step && !isTeaching(step) ? [{ key, step }] : [];
     })
     .slice(0, 10);
   if (!picks.length) return undefined;

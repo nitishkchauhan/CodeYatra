@@ -9,7 +9,7 @@ export const CHECKPOINT_PREFIX = 'check-';
 /** Share of questions to get right first time to pass. */
 export const PASS_MARK = 0.7;
 const MAX_QUESTIONS = 10;
-const CHECKED: Step['type'][] = ['quiz', 'predict', 'bug', 'order', 'tap'];
+const CHECKED: Step['type'][] = ['quiz', 'predict', 'bug', 'order', 'tap', 'match', 'group'];
 
 export const checkpointId = (pathId: string, sectionIndex: number) => `${CHECKPOINT_PREFIX}${pathId}-${sectionIndex}`;
 

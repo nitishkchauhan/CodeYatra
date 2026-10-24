@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
+import { Anim } from './Anim';
 import { ConceptVisual } from './ConceptVisual';
 import { ActionBar } from './Shell';
 import { Yatri } from '@/components/Yatri';
@@ -69,6 +70,12 @@ export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }
             {step.body}
           </T>
         </Animated.View>
+
+        {step.anim ? (
+          <Animated.View entering={FadeInDown.delay(60).duration(320)}>
+            <Anim kind={step.anim} />
+          </Animated.View>
+        ) : null}
 
         {step.visual ? (
           <Animated.View entering={FadeInDown.delay(80).duration(320)}>

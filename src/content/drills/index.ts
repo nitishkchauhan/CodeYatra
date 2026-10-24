@@ -40,7 +40,7 @@ export function drillBase(lessonId: string, title: string): Lesson | undefined {
   };
 }
 
-const REVIEW_TYPES: Step['type'][] = ['quiz', 'predict', 'bug', 'order', 'tap'];
+const REVIEW_TYPES: Step['type'][] = ['quiz', 'predict', 'bug', 'order', 'tap', 'match', 'group'];
 
 /**
  * A module's practice round: its new exercises, then one exercise from an earlier

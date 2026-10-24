@@ -9,9 +9,16 @@ import { Yatri } from './Yatri';
 import { alpha, GlassButton } from './ui/Glass';
 import { Glyph, Icon } from './ui/Icon';
 import { T } from './ui/Text';
-import { drillId, hasDrill, type LessonStatus, type Stage } from '@/content';
+import { drillId, getLesson, hasDrill, type LessonStatus, type Stage } from '@/content';
 import { haptic } from '@/lib/haptics';
 import { glass } from '@/theme';
+
+const LEVEL_LABEL = { basic: 'BASIC', intermediate: 'INTERMEDIATE', advanced: 'ADVANCED' } as const;
+/** " · BASIC" etc. for Lesson v3 modules that have a level. */
+const levelOf = (id: string) => {
+  const level = getLesson(id)?.level;
+  return level ? ` · ${LEVEL_LABEL[level]}` : '';
+};
 
 const ROW = 118;
 const NODE = 66;
@@ -209,7 +216,7 @@ export function ModulePath({
                     onPress={() => onOpen(lesson.id, status)}
                     style={styles.label}>
                     <T variant="kicker" color={muted ? glass.text3 : status === 'done' ? glass.violet : glass.saffron} numberOfLines={1} style={{ fontSize: 10 }}>
-                      {status === 'current' ? upNext.toUpperCase() : `MODULE ${i + 1}`}
+                      {status === 'current' ? upNext.toUpperCase() : `MODULE ${i + 1}${levelOf(lesson.id)}`}
                     </T>
                     <T variant="label" color={muted ? glass.text3 : glass.text} numberOfLines={2} style={{ fontSize: 13, lineHeight: 17 }}>
                       {lesson.title}
