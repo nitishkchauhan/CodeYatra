@@ -10,6 +10,7 @@ import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { T } from '@/components/ui/Text';
 import { drillId, getLesson, hasDrill, STAGES } from '@/content';
 import { INTERVIEW } from '@/content/interview';
+import { getNotes } from '@/content/notes';
 import { findPath } from '@/content/paths';
 import { findStop } from '@/content/paths/graph';
 import { dueToday, nextDue } from '@/content/review';
@@ -39,6 +40,7 @@ export default function ReviseScreen() {
   const due = dueToday(finished, state.reviews, today);
   const upcoming = nextDue(state.reviews, today);
   const open = (id: string) => router.push({ pathname: '/lesson/[id]', params: { id } });
+  const withNotes = finished.filter((id) => getNotes(id));
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: colors.bg }}>
@@ -99,6 +101,19 @@ export default function ReviseScreen() {
         ) : null}
 
         {finished.length ? <Recall due={due} upcoming={upcoming} /> : null}
+
+        <Section title="Module notes" empty="Finish a module with notes and it appears here to read again." count={withNotes.length}>
+          {withNotes.map((id) => (
+            <Pressable key={id} accessibilityRole="button" onPress={() => router.push({ pathname: '/notes/[id]', params: { id } })} style={styles.row}>
+              <Icon name="learn" size={18} color={colors.primary} />
+              <View style={{ flex: 1, gap: 2 }}>
+                <T variant="label">{getLesson(id)?.title ?? id}</T>
+                <T variant="caption">{getNotes(id)!.minutes}-minute read</T>
+              </View>
+              <Icon name="chevronRight" size={16} color={colors.ink3} />
+            </Pressable>
+          ))}
+        </Section>
       </ScrollView>
     </SafeAreaView>
   );

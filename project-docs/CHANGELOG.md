@@ -14,6 +14,8 @@ Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/Cod
   - **Intermediate (new):** comprehensions, tuples and sets, modules and the standard library, JSON, functions in depth, classes in depth, and a **train booking report** project.
   - **Advanced / industry (new):** testing, debugging and logging, APIs and HTTP, generators for big data, decorators and caching, clean code and code review, and a **tested booking service** project. Every module ends with a real work task (a red CI build, a production traceback, an API ticket, a 2 GB log, a review comment).
   - 48 new practice questions; Python docs reading on every module; 3948 tests passing.
+- **Module notes (“Read more”)**: a 5-minute in-app article per module (sections with animations, a worked example you tap through line by line, “In industry”, interview questions with tap-to-reveal answers, a cheat sheet, official docs, and Listen). Opened from the lesson finish screen and a new “Module notes” list in Revise. All 24 Python modules have notes; every worked example runs in tests and must print exactly what the notes show.
+- **Skill maps** for every track (Basic → Intermediate → Advanced, plus new Data Analysis, Aptitude and AI Basics tracks) in `project-docs/CURRICULUM.md`, for owner approval.
 - Note: the Python certificate now needs all three levels. `supabase/track-lessons.sql` is regenerated and must be run again when this ships.
 
 ## 24 Oct 2026 (tap-to-build, merged into main after owner testing)

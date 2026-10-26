@@ -10,6 +10,7 @@ import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
 import { buildReview, getLesson, nextLessonAfter, type Lesson } from '@/content';
 import { CHECKPOINT_PREFIX, PASS_MARK, scoreCheckpoint } from '@/content/checkpoints';
+import { getNotes } from '@/content/notes';
 import { CodeStep } from '@/features/lesson/CodeStep';
 import { CompleteView } from '@/features/lesson/CompleteView';
 import { ConceptStep } from '@/features/lesson/ConceptStep';
@@ -71,6 +72,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
   }, [index, finishedAt]);
   useEffect(() => () => void KeyboardController.dismiss(), []);
 
+  const notesFor = getNotes(lesson.id);
   const sourceOf = (i: number) => lesson.sources?.[i] ?? `${lesson.id}#${i}`;
   const { recordMistake } = progress;
   const stepKey = sourceOf(index);
@@ -118,6 +120,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
         seconds={Math.max(1, Math.round((finishedAt - startedAt) / 1000))}
         learned={lesson.learned}
         reading={lesson.reading}
+        notes={notesFor ? { minutes: notesFor.minutes, onPress: () => router.push({ pathname: '/notes/[id]', params: { id: lesson.id } }) } : undefined}
         streak={predicted.streak}
         streakNote={predicted.extended ? (state.streak > 0 ? `Up from ${state.streak} · see you tomorrow` : 'Your streak starts today') : 'Already counted for today'}
         onContinue={() => {

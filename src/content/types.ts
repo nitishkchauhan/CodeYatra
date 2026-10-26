@@ -325,6 +325,30 @@ export type Step =
   | GroupStep
   | ScenarioStep;
 
+/**
+ * "Read more": a module's notes, a short article read after (or instead of) the lesson.
+ * Plain sections, one worked example walked through line by line, how the idea is used at work,
+ * interview questions, a cheat sheet, and the lesson's official reading. Worked examples run in tests.
+ */
+export type ModuleNotes = {
+  /** About how long it takes to read. */
+  minutes: number;
+  /** Three or four sections, each one idea explained fully (up to about 120 words). */
+  sections: { heading: string; body: string; code?: string[]; anim?: AnimKey }[];
+  example: {
+    title: string;
+    code: string[];
+    /** Line-by-line explanation; `line` is 1-based. */
+    walk: { line: number; text: string }[];
+    /** What it prints; tests run the code and compare. */
+    output: string[];
+  };
+  /** How working developers use this. */
+  industry: string;
+  interview: { q: string; a: string }[];
+  cheat: { code: string; meaning: string }[];
+};
+
 /** How far along a module is: Basic (read and explain), Intermediate (solve alone), Advanced (do real job tasks). */
 export type Level = 'basic' | 'intermediate' | 'advanced';
 

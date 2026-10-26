@@ -38,6 +38,7 @@ export function CompleteView({
   assessment,
   next,
   reading,
+  notes,
 }: {
   title: string;
   subtitle: string;
@@ -60,6 +61,8 @@ export function CompleteView({
   next?: { title: string; onPress: () => void };
   /** Official docs to go deeper, with the day they were last checked. */
   reading?: Reading[];
+  /** "Read more": the module's notes, when it has them. */
+  notes?: { minutes: number; onPress: () => void };
 }) {
   const t = useT();
   const insets = useSafeAreaInsets();
@@ -185,6 +188,19 @@ export function CompleteView({
           ))}
         </Animated.View>
 
+        {notes ? (
+          <Animated.View entering={FadeInDown.delay(380)}>
+            <Pressable accessibilityRole="button" accessibilityLabel={`Read the module notes, ${notes.minutes} minutes`} onPress={notes.onPress} style={styles.notes}>
+              <Icon name="learn" size={22} color={colors.primary} />
+              <View style={{ flex: 1, gap: 2 }}>
+                <T variant="label">Read the notes</T>
+                <T variant="caption">A {notes.minutes}-minute read: worked example, interview questions and a cheat sheet</T>
+              </View>
+              <Icon name="chevronRight" size={16} color={colors.ink3} />
+            </Pressable>
+          </Animated.View>
+        ) : null}
+
         {reading?.length ? (
           <Animated.View entering={FadeInDown.delay(400)} style={[styles.learned, { gap: 6 }]}>
             <T variant="label" style={{ fontSize: 13 }}>
@@ -255,6 +271,7 @@ export function CompleteView({
 }
 
 const styles = StyleSheet.create({
+  notes: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, borderRadius: 16, backgroundColor: colors.primarySoft },
   hero: { height: 180, alignItems: 'center', justifyContent: 'center' },
   halo: { position: 'absolute', width: 170, height: 170, borderRadius: 85, backgroundColor: '#F1EFFE' },
   stat: { flex: 1, borderRadius: 16, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 4, alignItems: 'center', gap: 2 },
