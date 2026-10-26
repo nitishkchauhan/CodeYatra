@@ -5,6 +5,7 @@
 import { group, hook, lesson, match, mistake, pageBuild, quiz, read, tryIt } from '../dsl';
 import type { Lesson, Reading, WebStep } from '../types';
 import { HTML_FOUNDATIONS } from './htmlFoundations';
+import { HTML_BASIC_MORE } from './htmlV3More';
 
 const LEARN = (n: number) => `LEARN · ${n} OF 3`;
 const CHECK = 'QUICK CHECK';
@@ -302,7 +303,7 @@ const M3 = mod('w-html-2', 'Links and images', ['<a href="…"> makes a link; re
   }),
 ], [mdn('Creating links', 'Learn_web_development/Core/Structuring_content/Creating_links'), mdn('HTML images', 'Learn_web_development/Core/Structuring_content/HTML_images')], 9);
 
-const REWRITTEN: Record<string, Lesson> = { 'w-html-1': M1, 'h-text': M2, 'w-html-2': M3 };
+const REWRITTEN: Record<string, Lesson> = { 'w-html-1': M1, 'h-text': M2, 'w-html-2': M3, ...HTML_BASIC_MORE };
 
-/** The HTML Basic level: modules 1–3 rewritten for v3, the rest kept as they are and marked Basic. */
+/** The HTML Basic level: all 12 modules rewritten for v3 from the owner-approved drafts. */
 export const HTML_BASIC: Lesson[] = HTML_FOUNDATIONS.map((l) => REWRITTEN[l.id] ?? { ...l, level: 'basic' });

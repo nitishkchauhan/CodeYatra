@@ -29,7 +29,7 @@ hook (a real situation) → three cards, each with an animation → try it (tap 
 ## Web basics (free funnel)
 
 ### HTML · Class 9+ · runs in the app (live preview)
-- **Basic** (⭐📝 3 + ✅ 9; draft for all 12 in `content-drafts/`): how the web works, text, links and images, attributes, lists, tables, forms, choices and validation, semantic layout, media and SVG, accessibility, head and SEO. Project: coaching centre landing page.
+- **Basic** (⭐📝 12 + project; drafts in `content-drafts/`): how the web works, text, links and images, attributes, lists, tables, forms, choices and validation, semantic layout, media and SVG, accessibility, head and SEO. Project: coaching centre landing page.
 - **Intermediate** 🆕: accessible forms in depth (labels, errors, autocomplete), responsive images (`srcset`, `<picture>`), SEO and structured data, page speed basics, embedding maps and video. Project: a multi-page school or shop site.
 - **Advanced** 🆕: an accessibility audit (WCAG checks), Lighthouse and Core Web Vitals, publishing (GitHub Pages, custom domain), a progressive web app basics overview. Project: audit and fix a real-looking site, then publish it.
 
