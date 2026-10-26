@@ -491,6 +491,94 @@ function Decorator() {
   );
 }
 
+// ── Web pages ────────────────────────────────────────────────────────────
+function HtmlTags() {
+  const b = useBeat(4);
+  return (
+    <>
+      <View style={[styles.page, { alignSelf: 'center', minWidth: 240, gap: 6 }]}>
+        <Row gap={4}>
+          {b >= 1 ? <Chip tone="soft" k="h1o">{'<h1>'}</Chip> : null}
+          <T style={[styles.pageLine, b >= 3 && { fontFamily: fonts.monoMedium, fontSize: 16 }]}>Riya’s Tiffins</T>
+          {b >= 1 ? <Chip tone="soft" k="h1c">{'</h1>'}</Chip> : null}
+        </Row>
+        <Row gap={4}>
+          {b >= 2 ? <Chip tone="warm" k="po">{'<p>'}</Chip> : null}
+          <T style={styles.pageLine}>Dal rice ₹80</T>
+          {b >= 2 ? <Chip tone="warm" k="pc">{'</p>'}</Chip> : null}
+        </Row>
+      </View>
+      <Caption>{b < 3 ? 'Tags label each part: this is a heading, this is a paragraph.' : 'The browser shows the content, styled by what each tag means.'}</Caption>
+    </>
+  );
+}
+function WebRequest() {
+  const b = useBeat(4);
+  return (
+    <>
+      <Row>
+        <Chip tone="soft">phone</Chip>
+        <Chip k={b} tone={b === 3 ? 'ok' : 'code'}>
+          {b === 0 ? 'GET riyastiffins.in →' : b === 1 ? '… server looks for the page' : b === 2 ? '← 200 OK, index.html' : '✓ page drawn'}
+        </Chip>
+        <Chip tone="warm">server</Chip>
+      </Row>
+      <Caption>Your browser asks a server for the page, gets HTML back, and draws it.</Caption>
+    </>
+  );
+}
+function Outline() {
+  const b = useBeat(4);
+  const rows: [string, string, number][] = [['h1', 'Annual Day 2026', 0], ['h2', 'Timings', 1], ['h2', 'Dress code', 1], ['h3', 'Juniors', 2]];
+  return (
+    <>
+      <View style={{ gap: 4, alignSelf: 'center' }}>
+        {rows.slice(0, b + 1).map(([tag, text, depth]) => (
+          <Animated.View key={text} entering={FadeInLeft.duration(220)} style={[styles.row, { justifyContent: 'flex-start', marginLeft: depth * 16 }]}>
+            <Chip tone={depth === 0 ? 'warm' : 'soft'}>{tag}</Chip>
+            <T style={[styles.pageLine, { marginLeft: 6 }]}>{text}</T>
+          </Animated.View>
+        ))}
+      </View>
+      <Caption>Headings make an outline, like chapters in a book.</Caption>
+    </>
+  );
+}
+function LinkJump() {
+  const b = useBeat(3);
+  return (
+    <>
+      <Row>
+        <View style={styles.page}>
+          <T style={styles.pageTitle}>index.html</T>
+          <T style={[styles.pageLine, { color: colors.primary, textDecorationLine: 'underline' }]}>See today’s menu</T>
+        </View>
+        <Arrow />
+        <View style={[styles.page, b >= 1 && { borderColor: colors.saffron, backgroundColor: colors.saffronSoft }]}>
+          <T style={styles.pageTitle}>menu.html</T>
+          {b >= 2 ? (
+            <Animated.View entering={FadeIn}>
+              <T style={styles.pageLine}>Poha ₹30</T>
+            </Animated.View>
+          ) : null}
+        </View>
+      </Row>
+      <Caption>A link’s href says where to go. Tap it, and the browser opens that page.</Caption>
+    </>
+  );
+}
+function ImageLoad() {
+  const b = useBeat(3);
+  return (
+    <>
+      <View style={[styles.page, { alignSelf: 'center', width: 220, height: 90, alignItems: 'center', justifyContent: 'center' }, b === 1 && { backgroundColor: colors.saffronSoft }]}>
+        {b === 0 ? <T style={styles.pageTitle}>loading thali.jpg…</T> : b === 1 ? <T style={[styles.pageLine, { fontSize: 22 }]}>🍛</T> : <T style={[styles.pageLine, { textAlign: 'center' }]}>“A thali with dal, rice, roti and sabzi”</T>}
+      </View>
+      <Caption>{b < 2 ? 'src is the picture file the browser downloads.' : 'If it can’t load, or the reader can’t see, the alt text says what it shows.'}</Caption>
+    </>
+  );
+}
+
 const SCENES: Record<AnimKey, () => ReactNode> = {
   variable: Variable,
   print: Print,
@@ -517,6 +605,11 @@ const SCENES: Record<AnimKey, () => ReactNode> = {
   recursion: Recursion,
   generator: Generator,
   decorator: Decorator,
+  htmlTags: HtmlTags,
+  webRequest: WebRequest,
+  outline: Outline,
+  linkJump: LinkJump,
+  imageLoad: ImageLoad,
 };
 export const ANIM_KEYS = Object.keys(SCENES) as AnimKey[];
 

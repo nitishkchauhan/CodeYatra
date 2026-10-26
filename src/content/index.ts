@@ -12,7 +12,8 @@ import { ticketHtml } from './web';
 import { flexRow } from './styling';
 import { CSS_FOUNDATIONS, CSS_PROJECT } from './tracks/cssFoundations';
 import { searchForm } from './html';
-import { HTML_FOUNDATIONS, HTML_PROJECT } from './tracks/htmlFoundations';
+import { HTML_PROJECT } from './tracks/htmlFoundations';
+import { HTML_BASIC } from './tracks/htmlV3';
 import { cheapTickets } from './js';
 import { JS_FOUNDATIONS, JS_PROJECT } from './tracks/jsFoundations';
 import { dynamicRoute, routeHandler } from './next';
@@ -234,7 +235,7 @@ const ALL: Lesson[] = [
   PYTHON_ADVANCED_PROJECT,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
-  ...HTML_FOUNDATIONS,
+  ...HTML_BASIC,
   HTML_PROJECT,
   ...CSS_FOUNDATIONS,
   CSS_PROJECT,

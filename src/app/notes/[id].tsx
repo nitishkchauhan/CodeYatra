@@ -80,7 +80,7 @@ export default function NotesScreen() {
             {s.anim ? <Anim kind={s.anim} /> : null}
             {s.code ? (
               <View style={styles.code}>
-                <CodeBlock lines={s.code} lang="python" />
+                <CodeBlock lines={s.code} lang={notes.lang ?? 'python'} />
               </View>
             ) : null}
           </Animated.View>
@@ -92,7 +92,7 @@ export default function NotesScreen() {
           </T>
           <T variant="title">{notes.example.title}</T>
           <View style={styles.code}>
-            <CodeBlock lines={notes.example.code} lang="python" highlight={highlight} />
+            <CodeBlock lines={notes.example.code} lang={notes.lang ?? 'python'} highlight={highlight} />
           </View>
           <T variant="caption">Tap a step to see its line.</T>
           {notes.example.walk.map((w, i) => (

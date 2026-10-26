@@ -6,15 +6,17 @@ import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { ConsoleView } from './EditorStep';
 import { ActionBar, StepHeader, VerdictBar } from './Shell';
 import { CodeBlock } from '@/components/Code';
+import { WebPreview } from '@/components/WebPreview';
 import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Glyph, Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
-import { optionOrder, type GroupStep as Group, type MatchStep as Match, type ScenarioStep as Scenario, type TraceStep as Trace } from '@/content';
+import { optionOrder, type GroupStep as Group, type MatchStep as Match, type PageBuildStep as PageBuild, type ScenarioStep as Scenario, type TraceStep as Trace } from '@/content';
 import { changedVars, parseTrace, traceProgram, type Trace as TraceData } from '@/content/trace';
 import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { useCodeRunner } from '@/lib/runner';
+import { buildPage } from '@/lib/web/page';
 import { colors, fonts } from '@/theme';
 
 type Props<S> = { step: S; onDone: () => void; onMistake: () => void };
@@ -440,6 +442,58 @@ export function ScenarioStep({ step, onDone }: { step: Scenario; onDone: () => v
   );
 }
 
+/* ---------- See it build (web pages) ---------- */
+
+export function PageBuildStep({ step, onDone }: { step: PageBuild; onDone: () => void }) {
+  const t = useT();
+  const [at, setAt] = useState(0);
+  const cur = step.steps[at];
+  const last = at === step.steps.length - 1;
+  const doc = buildPage({ html: step.html.slice(0, cur.line).join('\n') });
+  return (
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Animated.View entering={FadeInDown.duration(320)}>
+          <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
+        </Animated.View>
+        <View style={styles.codeCard}>
+          <View style={styles.codeHead}>
+            <T variant="labelSm" color="#B9B5D9">
+              Step {at + 1} of {step.steps.length} · line {cur.line}
+            </T>
+          </View>
+          <CodeBlock lines={step.html} lang="html" highlight={cur.line - 1} />
+        </View>
+        <Animated.View key={at} entering={FadeIn.duration(200)} style={styles.note} accessibilityLiveRegion="polite">
+          <Icon name="bulb" size={18} color={colors.saffronShadow} />
+          <T variant="bodySm" color={colors.ink} style={{ flex: 1 }}>
+            {cur.note}
+          </T>
+        </Animated.View>
+        <View style={{ gap: 6 }}>
+          <T variant="labelSm" color={colors.ink2}>
+            THE PAGE SO FAR
+          </T>
+          <WebPreview key={doc} doc={doc} height={190} />
+        </View>
+        <View style={styles.controls}>
+          <Pressable accessibilityRole="button" accessibilityLabel="Back one step" disabled={at === 0} onPress={() => { haptic.tap(); setAt(at - 1); }} style={[styles.ctrl, at === 0 && { opacity: 0.4 }]}>
+            <Icon name="back" size={18} color={colors.ink} />
+          </Pressable>
+          <Pressable accessibilityRole="button" accessibilityLabel="Next step" disabled={last} onPress={() => { haptic.tap(); setAt(at + 1); }} style={[styles.ctrl, styles.ctrlMain, last && { opacity: 0.4 }]}>
+            <T variant="labelSm" color="#FFFFFF">
+              Next line
+            </T>
+          </Pressable>
+        </View>
+      </ScrollView>
+      <ActionBar>
+        <Button label={last ? t('continue') : 'Step to the end to continue'} disabled={!last} onPress={onDone} />
+      </ActionBar>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   content: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 24, gap: 14 },
   codeCard: { borderRadius: 16, backgroundColor: colors.code.bg, overflow: 'hidden' },
@@ -471,5 +525,6 @@ const styles = StyleSheet.create({
   bubble: { borderRadius: 16, borderTopLeftRadius: 4, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.line, padding: 12 },
   artifact: { borderRadius: 14, padding: 12, gap: 3 },
   artLine: { fontFamily: fonts.mono, fontSize: 12.5, lineHeight: 19 },
+  note: { flexDirection: 'row', gap: 10, alignItems: 'flex-start', borderRadius: 14, backgroundColor: colors.warnSoft, borderWidth: 1, borderColor: colors.warnLine, padding: 12 },
   task: { flexDirection: 'row', gap: 10, alignItems: 'flex-start', borderRadius: 16, backgroundColor: colors.primarySoft, padding: 14 },
 });

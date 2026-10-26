@@ -81,7 +81,12 @@ export type AnimKey =
   | 'scope'
   | 'recursion'
   | 'generator'
-  | 'decorator';
+  | 'decorator'
+  | 'htmlTags'
+  | 'webRequest'
+  | 'outline'
+  | 'linkJump'
+  | 'imageLoad';
 
 export type QuizStep = {
   type: 'quiz';
@@ -263,6 +268,20 @@ export type TraceStep = {
   };
 };
 
+/**
+ * Lesson v3 for web pages: "See it build". Each step shows the page built up to a line, with that line
+ * highlighted and a note on what the browser did. It only teaches, so it is never marked.
+ */
+export type PageBuildStep = {
+  type: 'pagebuild';
+  kicker: string;
+  title: string;
+  instructions: string;
+  html: string[];
+  /** In order; `line` is 1-based and the preview shows the page up to and including it. */
+  steps: { line: number; note: string }[];
+};
+
 /** Lesson v3: tap a left item, then the right item it belongs with. `pairs` are in the right order. */
 export type MatchStep = {
   type: 'match';
@@ -302,7 +321,7 @@ export type ScenarioStep = {
 };
 
 /** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
-export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario'] as const;
+export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild'] as const;
 /** A step that only teaches. Watching a program run is teaching too, unless it ends with a question. */
 export const isTeaching = (s: Step) => (TEACHING_STEPS as readonly string[]).includes(s.type) || (s.type === 'trace' && !s.ask);
 
@@ -321,6 +340,7 @@ export type Step =
   | TapStep
   | WebStep
   | TraceStep
+  | PageBuildStep
   | MatchStep
   | GroupStep
   | ScenarioStep;
@@ -333,6 +353,8 @@ export type Step =
 export type ModuleNotes = {
   /** About how long it takes to read. */
   minutes: number;
+  /** The language of the code in these notes (Python if not given). */
+  lang?: CodeLang;
   /** Three or four sections, each one idea explained fully (up to about 120 words). */
   sections: { heading: string; body: string; code?: string[]; anim?: AnimKey }[];
   example: {
@@ -340,7 +362,7 @@ export type ModuleNotes = {
     code: string[];
     /** Line-by-line explanation; `line` is 1-based. */
     walk: { line: number; text: string }[];
-    /** What it prints; tests run the code and compare. */
+    /** What it prints (or, for a web page, the text it shows); tests run or render it and compare. */
     output: string[];
   };
   /** How working developers use this. */

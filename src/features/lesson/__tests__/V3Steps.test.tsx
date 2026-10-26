@@ -6,6 +6,8 @@ import { optionOrder } from '@/content';
 import { group, match, scenario, trace } from '@/content/dsl';
 
 jest.mock('@/lib/supabase', () => ({ supabase: null }));
+// The live page preview is a native WebView; these tests don't need it.
+jest.mock('@/components/WebPreview', () => ({ WebPreview: () => null }));
 // The app runs Python in a WebView; here the same program runs with real Python.
 jest.mock('@/lib/runner', () => {
   // jest.mock factories can't use imports from the file, so this one is required inline.

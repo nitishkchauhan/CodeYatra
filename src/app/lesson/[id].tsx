@@ -20,7 +20,7 @@ import { QuizStep } from '@/features/lesson/QuizStep';
 import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/features/lesson/PracticeSteps';
 import { LessonTopBar } from '@/features/lesson/Shell';
 import { HookStep, MistakeStep, TryStep } from '@/features/lesson/V2Steps';
-import { GroupStep, MatchStep, ScenarioStep, TraceStep } from '@/features/lesson/V3Steps';
+import { GroupStep, MatchStep, PageBuildStep, ScenarioStep, TraceStep } from '@/features/lesson/V3Steps';
 import { WebBuildStep } from '@/features/lesson/WebBuildStep';
 import { track } from '@/lib/telemetry';
 import { useConfirmLeave } from '@/lib/useConfirmLeave';
@@ -185,6 +185,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
           {step.type === 'match' && <MatchStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'group' && <GroupStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'scenario' && <ScenarioStep step={step} onDone={next} />}
+          {step.type === 'pagebuild' && <PageBuildStep step={step} onDone={next} />}
         </View>
       </Animated.View>
     </SafeAreaView>
