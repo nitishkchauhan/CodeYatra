@@ -14,7 +14,7 @@ export type TraceFrame = {
 };
 export type Trace = { frames: TraceFrame[]; error?: string; cut?: boolean };
 
-const MARK = '\u0001CYTRACE';
+export const MARK = '\u0001CYTRACE';
 /** No lesson needs more; an endless loop stops here instead of hanging. */
 const MAX_STEPS = 400;
 

@@ -13,6 +13,7 @@ import { Glyph, Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
 import { optionOrder, type GroupStep as Group, type MatchStep as Match, type PageBuildStep as PageBuild, type ScenarioStep as Scenario, type TraceStep as Trace } from '@/content';
 import { changedVars, parseTrace, traceProgram, type Trace as TraceData } from '@/content/trace';
+import { traceProgramJs } from '@/content/traceJs';
 import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { useCodeRunner } from '@/lib/runner';
@@ -37,7 +38,8 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
 
   useEffect(() => {
     let live = true;
-    run('python', traceProgram(step.code)).then((r) => {
+    const program = step.lang === 'javascript' ? traceProgramJs(step.code) : traceProgram(step.code);
+    run(step.lang, program).then((r) => {
       if (!live) return;
       const parsed = parseTrace(r.output);
       if (parsed) setTrace(parsed);
@@ -46,7 +48,7 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
     return () => {
       live = false;
     };
-  }, [run, step.code]);
+  }, [run, step.code, step.lang]);
 
   const frames = trace?.frames ?? [];
   const last = frames.length - 1;
@@ -84,14 +86,14 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
               </T>
             ) : null}
           </View>
-          <CodeBlock lines={step.code} lang="python" highlight={frame && frame.line ? frame.line - 1 : null} />
+          <CodeBlock lines={step.code} lang={step.lang} highlight={frame && frame.line ? frame.line - 1 : null} />
         </View>
 
         {!trace && !failed ? (
           <View style={styles.loading}>
             <ActivityIndicator color={colors.primary} />
             <T variant="bodySm" color={colors.ink2} style={{ flex: 1 }}>
-              Running the program (the first time Python starts, it downloads about 10 MB once).
+              {step.lang === 'python' ? 'Running the program (the first time Python starts, it downloads about 10 MB once).' : 'Running the program…'}
             </T>
           </View>
         ) : null}
@@ -449,8 +451,12 @@ export function PageBuildStep({ step, onDone }: { step: PageBuild; onDone: () =>
   const [at, setAt] = useState(0);
   const cur = step.steps[at];
   const last = at === step.steps.length - 1;
-  const code = step.css ?? step.html;
-  const doc = step.css ? buildPage({ html: step.html.join('\n'), css: step.css.slice(0, cur.line).join('\n') }) : buildPage({ html: step.html.slice(0, cur.line).join('\n') });
+  const code = step.js ?? step.css ?? step.html;
+  const doc = step.js
+    ? buildPage({ html: step.html.join('\n'), css: step.css?.join('\n'), js: step.js.slice(0, cur.line).join('\n') })
+    : step.css
+      ? buildPage({ html: step.html.join('\n'), css: step.css.slice(0, cur.line).join('\n') })
+      : buildPage({ html: step.html.slice(0, cur.line).join('\n') });
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -463,7 +469,7 @@ export function PageBuildStep({ step, onDone }: { step: PageBuild; onDone: () =>
               Step {at + 1} of {step.steps.length} · line {cur.line}
             </T>
           </View>
-          <CodeBlock lines={code} lang={step.css ? 'css' : 'html'} highlight={cur.line - 1} />
+          <CodeBlock lines={code} lang={step.js ? 'javascript' : step.css ? 'css' : 'html'} highlight={cur.line - 1} />
         </View>
         <Animated.View key={at} entering={FadeIn.duration(200)} style={styles.note} accessibilityLiveRegion="polite">
           <Icon name="bulb" size={18} color={colors.saffronShadow} />

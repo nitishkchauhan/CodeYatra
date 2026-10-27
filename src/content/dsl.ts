@@ -62,6 +62,7 @@ export const predict = (o: Omit<PredictStep, 'type'>): PredictStep => ({ type: '
 export const tap = (o: Omit<TapStep, 'type'>): TapStep => ({ type: 'tap', ...o });
 // Lesson v3
 export const trace = (o: Omit<TraceStep, 'type' | 'lang'>): TraceStep => ({ type: 'trace', lang: 'python', ...o });
+export const traceJs = (o: Omit<TraceStep, 'type' | 'lang'>): TraceStep => ({ type: 'trace', lang: 'javascript', ...o });
 export const match = (o: Omit<MatchStep, 'type'>): MatchStep => ({ type: 'match', ...o });
 export const group = (o: Omit<GroupStep, 'type'>): GroupStep => ({ type: 'group', ...o });
 export const scenario = (o: Omit<ScenarioStep, 'type'>): ScenarioStep => ({ type: 'scenario', ...o });

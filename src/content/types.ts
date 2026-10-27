@@ -57,6 +57,10 @@ export type ConceptStep = {
 
 /** The animations a concept card can show. Each is a short, looping, built-in scene (no image files). */
 export type AnimKey =
+  | 'strictEqual'
+  | 'callback'
+  | 'domTree'
+  | 'eventLoop'
   | 'cascade'
   | 'specificity'
   | 'boxModel'
@@ -244,6 +248,8 @@ export type MistakeStep = {
   error: string;
   /** The wrong code never finishes (an endless loop), so tests don't run it. */
   hang?: boolean;
+  /** For JavaScript that works on a page: the HTML it runs against (tests run it in a browser-like DOM). */
+  page?: string;
   /** Shown above the error when it is a summary of what a tool prints (e.g. a Next.js build error), not exact output. */
   note?: string;
   right: string[];
@@ -260,7 +266,7 @@ export type TraceStep = {
   kicker: string;
   title: string;
   instructions: string;
-  lang: 'python';
+  lang: 'python' | 'javascript';
   code: string[];
   /** Asked after the last line has run. */
   ask?: {
@@ -285,6 +291,8 @@ export type PageBuildStep = {
   html: string[];
   /** For CSS lessons: the page (`html`) stays whole and the steps walk through these style lines instead. */
   css?: string[];
+  /** For JavaScript lessons: the page (and `css`, all of it) stays whole and the steps walk through these script lines. */
+  js?: string[];
   /** In order; `line` is 1-based and the preview shows the page (or its styles) up to and including it. */
   steps: { line: number; note: string }[];
 };

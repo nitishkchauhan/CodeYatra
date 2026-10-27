@@ -2,7 +2,8 @@ import { describe, expect, it } from '@jest/globals';
 
 import { getLesson, STAGES } from '..';
 import { NOTES } from '../notes';
-import { python, runPyFull } from '../testing/run';
+import { runPage } from '../testing/page';
+import { python, runJs, runPyFull } from '../testing/run';
 
 const words = (s: string) => s.split(/\s+/).filter(Boolean).length;
 
@@ -34,7 +35,7 @@ describe('module notes', () => {
     }
   });
 
-  it.each(Object.entries(NOTES))('%s: the worked example prints (or shows) exactly what the notes say', (_, n) => {
+  it.each(Object.entries(NOTES))('%s: the worked example prints (or shows) exactly what the notes say', async (_, n) => {
     if (n.lang === 'css') {
       // The styles are well formed (every brace closed, every declaration ended) and the page shows the listed text.
       const css = n.example.code.join('\n');
@@ -45,6 +46,17 @@ describe('module notes', () => {
     }
     if (n.lang === 'html') {
       expect(pageText(n.example.code.join('\n'))).toEqual(n.example.output);
+      return;
+    }
+    if (n.lang === 'javascript') {
+      // JavaScript examples run as they are; one with a page runs on it, and the page then shows `output`.
+      if (n.example.page !== undefined) {
+        const page = await runPage({ html: n.example.page, js: n.example.code.join('\n') }, 700);
+        expect(page.logs.filter((l) => l.level === 'error')).toEqual([]);
+        expect(page.lines).toEqual(n.example.output);
+        return;
+      }
+      expect(runJs(n.example.code.join('\n'))).toEqual(n.example.output);
       return;
     }
     if (!python) return;
@@ -68,6 +80,6 @@ describe('see it build (web pages)', () => {
     const lines = s.steps.map((x) => x.line);
     expect(lines).toEqual([...lines].sort((a, b) => a - b));
     expect(lines[0]).toBeGreaterThanOrEqual(1);
-    expect(lines.at(-1)).toBe((s.css ?? s.html).length);
+    expect(lines.at(-1)).toBe((s.js ?? s.css ?? s.html).length);
   });
 });

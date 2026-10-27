@@ -3,6 +3,7 @@ import { describe, expect, it } from '@jest/globals';
 import { allLessons, getLesson, STAGES, type MistakeStep, type OrderStep, type Step, type TryStep } from '..';
 import { gcc, git, java, python, runC, runGit, runJava, runJs, runNode, runPyFull } from '../testing/run';
 import { sqlProgram } from '../sqlFixture';
+import { runPage } from '../testing/page';
 
 const steps: (readonly [string, Step])[] = allLessons().flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
 const mistakes = steps.filter((r): r is readonly [string, MistakeStep] => r[1].type === 'mistake');
@@ -67,7 +68,7 @@ describe('further reading', () => {
 });
 
 describe('common mistakes', () => {
-  it.each(mistakes)('%s: the wrong code really fails that way and the fix runs', (id, step) => {
+  it.each(mistakes)('%s: the wrong code really fails that way and the fix runs', async (id, step) => {
     expect(step.wrong.join('\n')).not.toBe(step.right.join('\n'));
     if (step.lang === 'sql' && python) {
       // SQL mistakes run against the sample database; the shown error is SQLite's own message.
@@ -91,6 +92,14 @@ describe('common mistakes', () => {
         at = found + piece.length;
       }
       expect(runNode(step.right.join('\n')).code).toBe(0);
+      return;
+    }
+    if (step.lang === 'javascript' && step.page !== undefined) {
+      // Page mistakes run on their page in a browser-like DOM: the wrong code reports the shown error, the fix none.
+      const wrong = await runPage({ html: step.page, js: step.wrong.join('\n') });
+      expect(wrong.logs.map((l) => l.text).join('\n')).toContain(step.error.replace(/^\w*Error: /, ''));
+      const right = await runPage({ html: step.page, js: step.right.join('\n') });
+      expect(right.logs.filter((l) => l.level === 'error')).toEqual([]);
       return;
     }
     if (step.lang === 'javascript') {

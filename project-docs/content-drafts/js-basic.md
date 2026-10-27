@@ -1,6 +1,6 @@
 # JavaScript · Basic level · content draft (modules 1–12 and the project)
 
-**Status:** draft for owner review, 27 Oct 2026. Nothing here is in the app yet. Once approved, each module is built as a Lesson v3 lesson with tests and module notes. Module ids stay the same, so learners keep their progress.
+**Status:** approved by the owner on 27 Oct 2026 (with the three recommendations below) and built on branch `lesson-v3`. Once approved, each module is built as a Lesson v3 lesson with tests and module notes. Module ids stay the same, so learners keep their progress.
 
 **Same order as HTML and CSS (approved format):** Hook → What is it? → Where it’s used → How it works → Try it (tap values, live result) → See it run → Common mistake → Sort or match → Quick check → Build it (tap pieces into gaps, live checks) → Recap → Read more (notes).
 

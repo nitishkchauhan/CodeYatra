@@ -119,7 +119,7 @@ export default function NotesScreen() {
             </Pressable>
           ))}
           {notes.example.page ? (
-            <WebPreview doc={buildPage({ html: notes.example.page, css: notes.example.code.join('\n') })} height={200} />
+            <WebPreview doc={buildPage(notes.lang === 'javascript' ? { html: notes.example.page, js: notes.example.code.join('\n') } : { html: notes.example.page, css: notes.example.code.join('\n') })} height={200} />
           ) : (
             <ConsoleView output={notes.example.output} />
           )}

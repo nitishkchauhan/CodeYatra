@@ -15,7 +15,7 @@ import { searchForm } from './html';
 import { HTML_BASIC } from './tracks/htmlV3';
 import { HTML_PROJECT_V3 as HTML_PROJECT } from './tracks/htmlV3More';
 import { cheapTickets } from './js';
-import { JS_FOUNDATIONS, JS_PROJECT } from './tracks/jsFoundations';
+import { JS_BASIC, JS_PROJECT_V3 as JS_PROJECT } from './tracks/jsV3';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
@@ -239,7 +239,7 @@ const ALL: Lesson[] = [
   HTML_PROJECT,
   ...CSS_BASIC,
   CSS_PROJECT,
-  ...JS_FOUNDATIONS,
+  ...JS_BASIC,
   JS_PROJECT,
   ...REACT_FOUNDATIONS,
   REACT_PROJECT,

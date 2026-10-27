@@ -2,7 +2,9 @@ import { describe, expect, it } from '@jest/globals';
 
 import { allLessons, isTeaching, STAGES, getLesson, type GroupStep, type MatchStep, type Step, type TraceStep } from '..';
 import { parseTrace, traceProgram } from '../trace';
-import { python, runPyFull } from '../testing/run';
+import { declaredNames, traceProgramJs } from '../traceJs';
+import { runPage } from '../testing/page';
+import { python, runJs, runPyFull } from '../testing/run';
 
 const all = allLessons().flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s, l.id, i] as const));
 const of = <T extends Step['type']>(type: T) => all.filter(([, s]) => s.type === type).map(([k, s]) => [k, s] as const) as unknown as [string, Extract<Step, { type: T }>][];
@@ -10,7 +12,27 @@ const rows = <R,>(r: R[]): R[] => (r.length ? r : ([['(none)', null]] as unknown
 
 describe('watch it run', () => {
   it.each(rows(of('trace')))('%s: the real run gives the trace, and the question’s answer matches it', (_, step: TraceStep | null) => {
-    if (!step || !python) return;
+    if (!step) return;
+    if (step.lang === 'javascript') {
+      // Names that browsers already define would show the browser's value where the lesson has none.
+      expect(declaredNames(step.code).filter((n) => ['name', 'status', 'length', 'self', 'top', 'parent', 'origin', 'event', 'close', 'open', 'print', 'location', 'history', 'screen', 'frames'].includes(n))).toEqual([]);
+      const t = parseTrace(runJs(traceProgramJs(step.code)))!;
+      expect(t).not.toBeNull();
+      expect(t.error).toBeUndefined();
+      expect(t.cut).toBeUndefined();
+      expect(t.frames.length).toBeGreaterThan(2);
+      // Every line that runs is shown, and the trace prints exactly what the program prints when run normally.
+      expect(t.frames.at(-1)!.out.replace(/\n$/, '')).toBe(runJs(step.code.join('\n')).join('\n'));
+      if (step.ask) {
+        const a = step.ask;
+        expect(new Set(a.options).size).toBe(a.options.length);
+        const final = t.frames.at(-1)!;
+        const truth = 'var' in a.check ? final.vars[a.check.var] : final.out.replace(/\n$/, '').split('\n').at(-1);
+        expect(a.options[a.answer]).toBe(truth);
+      }
+      return;
+    }
+    if (!python) return;
     const r = runPyFull(traceProgram(step.code));
     expect(r.error).toBe('');
     const t = parseTrace(r.output)!;
@@ -73,5 +95,36 @@ describe('Python, Lesson v3', () => {
     for (const s of l.steps) if (s.type === 'concept') expect(!!(s.anim || s.visual || s.demo)).toBe(true);
     expect(l.steps.some((s) => s.type === 'trace')).toBe(true);
     expect(l.steps.some((s) => s.type === 'match' || s.type === 'group')).toBe(true);
+  });
+});
+
+describe('JavaScript, Lesson v3', () => {
+  const js = STAGES.find((s) => s.id === 'js')!.units.flatMap((u) => u.lessons.map((r) => getLesson(r.id)!));
+  const modules = js.filter((l) => l.kind === 'lesson');
+  it('has 12 Basic modules and the project', () => {
+    expect(modules.filter((l) => l.level === 'basic')).toHaveLength(12);
+    expect(js.at(-1)!.id).toBe('j-project');
+  });
+  it.each(modules.map((l) => [l.id, l] as const))('%s: a moving card for every idea, see it run (or build), and a match or sort', (_, l) => {
+    for (const s of l.steps) if (s.type === 'concept') expect(s.anim).toBeDefined();
+    expect(l.steps.some((s) => (s.type === 'trace' && s.lang === 'javascript') || (s.type === 'pagebuild' && !!s.js))).toBe(true);
+    expect(l.steps.some((s) => s.type === 'match' || s.type === 'group')).toBe(true);
+  });
+});
+
+describe('JavaScript pages', () => {
+  const pageBuilds = all.filter(([, s]) => s.type === 'pagebuild' && !!s.js).map(([k, s]) => [k, s] as const);
+  it.each(pageBuilds)('%s: the script up to every step runs on the page without an error', async (_, s) => {
+    if (s.type !== 'pagebuild' || !s.js) return;
+    for (const { line } of s.steps) {
+      const page = await runPage({ html: s.html.join('\n'), css: s.css?.join('\n'), js: s.js.slice(0, line).join('\n') }, 700);
+      expect(page.logs.filter((l) => l.level === 'error')).toEqual([]);
+    }
+  });
+  const webs = all.filter(([, s]) => s.type === 'web' && !!s.solution.js).map(([k, s]) => [k, s] as const);
+  it.each(webs)('%s: the solution page runs without an error', async (_, s) => {
+    if (s.type !== 'web') return;
+    const page = await runPage(s.solution, 700);
+    expect(page.logs.filter((l) => l.level === 'error')).toEqual([]);
   });
 });

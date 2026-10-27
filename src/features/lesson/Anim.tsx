@@ -670,6 +670,100 @@ function GridTracks() {
   );
 }
 
+function StrictEqual() {
+  const b = useBeat(3);
+  return (
+    <>
+      <Row>
+        <Chip>2</Chip>
+        <Chip tone="warm">{'"2"'}</Chip>
+      </Row>
+      {b >= 1 ? (
+        <Row>
+          <Chip k="loose" tone="soft">{'2 == "2"'}</Chip>
+          <Arrow />
+          <Chip k="loose-r" tone="bad">true (converted first)</Chip>
+        </Row>
+      ) : null}
+      {b >= 2 ? (
+        <Row>
+          <Chip k="strict" tone="soft">{'2 === "2"'}</Chip>
+          <Arrow />
+          <Chip k="strict-r" tone="ok">false (number ≠ text)</Chip>
+        </Row>
+      ) : null}
+      <Caption>{b < 2 ? 'A number and some text that look the same…' : '=== checks the type too, so it never quietly converts.'}</Caption>
+    </>
+  );
+}
+function Callback() {
+  const b = useBeat(4);
+  const calls = ['byPrice(Poha, Dal rice)', 'byPrice(Thali, Poha)', 'byPrice(Thali, Dal rice)'];
+  return (
+    <>
+      <Row>
+        <Chip tone={b >= 1 ? 'soft' : 'warm'}>byPrice</Chip>
+        <Arrow />
+        <View style={styles.machine}>
+          <T style={[styles.chipText, { color: '#FFFFFF' }]}>{b >= 1 ? 'menu.sort(byPrice)' : 'menu.sort( … )'}</T>
+        </View>
+      </Row>
+      <View style={{ gap: 4, alignItems: 'center' }}>
+        {calls.slice(0, Math.max(0, b - 1)).map((c) => (
+          <Animated.View key={c} entering={FadeInLeft.duration(220)}>
+            <Chip tone="code">{c}</Chip>
+          </Animated.View>
+        ))}
+      </View>
+      <Caption>{b < 2 ? 'You hand the function over, without calling it…' : 'sort calls it for you, again and again.'}</Caption>
+    </>
+  );
+}
+function DomTree() {
+  const b = useBeat(4);
+  const nodes: [string, number, boolean][] = [['body', 0, false], ['h1  Riya’s Tiffins', 1, false], ['p  Items: <span id="count">', 1, b >= 2], ['button#add  Add', 1, false]];
+  return (
+    <>
+      <View style={{ gap: 4, alignSelf: 'center' }}>
+        {nodes.slice(0, b >= 1 ? 4 : 1).map(([n, depth, hot]) => (
+          <Animated.View key={n} entering={FadeInDown.duration(220)} style={{ marginLeft: depth * 18 }}>
+            <Chip tone={hot ? 'warm' : 'soft'}>{n}</Chip>
+          </Animated.View>
+        ))}
+      </View>
+      {b >= 2 ? <Chip k="qs" tone="code">{'document.querySelector("#count")'}</Chip> : null}
+      <View style={[styles.page, { alignSelf: 'center', minWidth: 180 }]}>
+        <T style={styles.pageLine}>Items: {b >= 3 ? '1' : '0'}</T>
+      </View>
+      <Caption>{b < 2 ? 'The browser turns the HTML into a tree of objects: the DOM.' : 'JavaScript finds a node and changes it; the page updates.'}</Caption>
+    </>
+  );
+}
+function EventLoop() {
+  const b = useBeat(4);
+  const lane = (title: string, items: string[]) => (
+    <View style={[styles.page, { minWidth: 88, alignItems: 'center' }]}>
+      <T style={styles.pageTitle}>{title}</T>
+      {items.map((x) => (
+        <Animated.View key={x} entering={ZoomIn.duration(220)}>
+          <T style={styles.pageLine}>{x}</T>
+        </Animated.View>
+      ))}
+    </View>
+  );
+  const running = [['fetch menu'], ['tap', 'scroll'], ['tap'], ['show dishes']][b];
+  const waiting = b === 1 || b === 2 ? ['fetch'] : [];
+  return (
+    <>
+      <Row gap={6}>
+        {lane('Running', running)}
+        {lane('Waiting', waiting)}
+      </Row>
+      <Caption>{['await sends the slow work off…', '…and the page keeps running taps and scrolls.', 'The data arrives in the background…', '…then the function carries on from where it waited.'][b]}</Caption>
+    </>
+  );
+}
+
 const SCENES: Record<AnimKey, () => ReactNode> = {
   variable: Variable,
   print: Print,
@@ -706,6 +800,10 @@ const SCENES: Record<AnimKey, () => ReactNode> = {
   boxModel: BoxModel,
   flexAxis: FlexAxis,
   gridTracks: GridTracks,
+  strictEqual: StrictEqual,
+  callback: Callback,
+  domTree: DomTree,
+  eventLoop: EventLoop,
 };
 export const ANIM_KEYS = Object.keys(SCENES) as AnimKey[];
 
