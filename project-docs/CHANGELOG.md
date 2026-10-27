@@ -2,6 +2,9 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 27 Oct 2026 (drafts, branch `lesson-v3`)
+- **Intermediate drafts for HTML, CSS and JavaScript** for owner review, in `content-drafts/html-intermediate.md`, `css-intermediate.md` and `js-intermediate.md`: 6 modules each plus a project, with At work scenarios (Saathi Web Studio, Indore). Projects: the Nayi Disha School website, your own portfolio, and “Is my train on time?” on the practice server. Open decisions are listed at the end of each draft. CURRICULUM lines updated.
+
 ## 24 Oct 2026 (branch `lesson-v3`, not merged yet)
 - **Lesson v3 framework**, built once for every track:
   - **Watch it run** (`trace` step): runs a Python program under `sys.settrace` in the app’s Python and steps through it line by line, showing the line, the variables (changed ones highlighted), the function being called and the output. An optional question at the end is checked; tests run every trace with real Python and check the right option against the real final value.

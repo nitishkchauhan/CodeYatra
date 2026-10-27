@@ -30,17 +30,17 @@ hook (a real situation) → three cards, each with an animation → try it (tap 
 
 ### HTML · Class 9+ · runs in the app (live preview)
 - **Basic** (⭐📝 12 + project; drafts in `content-drafts/`): how the web works, text, links and images, attributes, lists, tables, forms, choices and validation, semantic layout, media and SVG, accessibility, head and SEO. Project: coaching centre landing page.
-- **Intermediate** 🆕: accessible forms in depth (labels, errors, autocomplete), responsive images (`srcset`, `<picture>`), SEO and structured data, page speed basics, embedding maps and video. Project: a multi-page school or shop site.
+- **Intermediate** (📝 6 + project; draft in `content-drafts/html-intermediate.md`): forms everyone can fill, responsive images, multi-page sites, structured data, page speed, built-in interactive elements. Project: the Nayi Disha School website.
 - **Advanced** 🆕: an accessibility audit (WCAG checks), Lighthouse and Core Web Vitals, publishing (GitHub Pages, custom domain), a progressive web app basics overview. Project: audit and fix a real-looking site, then publish it.
 
 ### CSS · Class 9+ · runs in the app (live preview)
 - **Basic** (⭐📝 12 + project; draft in `content-drafts/`): how CSS works, selectors and specificity, colours and units, typography, box model, Flexbox, Grid, positioning, pseudo-classes, responsive design, transitions, custom properties. Project: style Sharma Classes.
-- **Intermediate** 🆕: layout patterns (cards, sidebars, holy grail), animation and keyframes, design tokens and themes, forms that look good, responsive navigation. Project: a responsive portfolio.
+- **Intermediate** (📝 6 + project; draft in `content-drafts/css-intermediate.md`): layout patterns, container queries and fluid sizes, motion with a purpose, design tokens and themes, forms that look good, responsive navigation. Project: your own portfolio site.
 - **Advanced** 🆕: Tailwind CSS basics, CSS architecture (BEM, utility-first), dark mode and reduced motion, performance and critical CSS. Project: rebuild a design to spec, light and dark.
 
 ### JavaScript · Class 10+ · runs in the app (JS, live preview)
 - **Basic** (⭐📝 12 + project; draft in `content-drafts/js-basic.md`): variables values, operators, decisions, loops, functions and closures, arrays, callbacks and modules, objects, classes, errors, DOM and storage, async and fetch. Project: make Sharma Classes work.
-- **Intermediate** 🆕: modules in depth, fetch and real APIs (loading, error and empty states), async patterns (`Promise.all`, retries), localStorage apps, form validation, array methods for data. Project: a weather or train-status app with a mock API.
+- **Intermediate** (📝 6 + project; draft in `content-drafts/js-intermediate.md`): working with data, money dates and text (Intl), fetch in the real world, waiting for many things (`Promise.all`, retries), forms with JavaScript, state and storage. Project: Is my train on time? (practice server). Modules in depth moves to Advanced.
 - **Advanced** 🆕: testing (unit tests with a Vitest-style runner), TypeScript basics, security (XSS, safe HTML), performance (debounce, lazy loading), build tools and npm scripts. Project: a tested, typed to-do app.
 
 ---
