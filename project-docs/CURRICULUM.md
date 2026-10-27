@@ -39,7 +39,7 @@ hook (a real situation) → three cards, each with an animation → try it (tap 
 - **Advanced** 🆕: Tailwind CSS basics, CSS architecture (BEM, utility-first), dark mode and reduced motion, performance and critical CSS. Project: rebuild a design to spec, light and dark.
 
 ### JavaScript · Class 10+ · runs in the app (JS, live preview)
-- **Basic** (✅ 12): variables values, operators, decisions, loops, functions and closures, arrays, callbacks and modules, objects, classes, errors, DOM and storage, async and fetch. Project: expense tracker.
+- **Basic** (✅ 12; v3 draft in `content-drafts/js-basic.md`): variables values, operators, decisions, loops, functions and closures, arrays, callbacks and modules, objects, classes, errors, DOM and storage, async and fetch. Project: expense tracker.
 - **Intermediate** 🆕: modules in depth, fetch and real APIs (loading, error and empty states), async patterns (`Promise.all`, retries), localStorage apps, form validation, array methods for data. Project: a weather or train-status app with a mock API.
 - **Advanced** 🆕: testing (unit tests with a Vitest-style runner), TypeScript basics, security (XSS, safe HTML), performance (debounce, lazy loading), build tools and npm scripts. Project: a tested, typed to-do app.
 
