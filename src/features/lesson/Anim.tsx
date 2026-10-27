@@ -579,6 +579,97 @@ function ImageLoad() {
   );
 }
 
+function Cascade() {
+  const b = useBeat(3);
+  return (
+    <>
+      <View style={{ gap: 6, alignSelf: 'center' }}>
+        <View style={b >= 1 ? { opacity: 0.4 } : undefined}>
+          <Chip tone="code">{'h1 { color: navy; }'}</Chip>
+        </View>
+        {b >= 1 ? <Chip tone="warm" k="later">{'h1 { color: orange; }'}</Chip> : null}
+      </View>
+      <View style={[styles.page, { alignSelf: 'center', minWidth: 200 }]}>
+        <T style={[styles.pageLine, { fontFamily: fonts.bodyBold, fontSize: 16, color: b >= 2 ? colors.saffronShadow : colors.primary }]}>Riya’s Tiffins</T>
+      </View>
+      <Caption>{b < 2 ? 'Two rules set the same thing…' : 'The later rule wins: that is the cascade.'}</Caption>
+    </>
+  );
+}
+function Specificity() {
+  const b = useBeat(4);
+  const rules: [string, string, string][] = [['p', '0-0-1', colors.ink], ['.price', '0-1-0', colors.saffronShadow], ['#offer', '1-0-0', colors.successInk]];
+  const win = Math.min(b, 3) - 1;
+  return (
+    <>
+      <View style={{ gap: 4, alignSelf: 'center' }}>
+        {rules.slice(0, b).map(([sel, score], i) => (
+          <Animated.View key={sel} entering={FadeInLeft.duration(220)} style={styles.row}>
+            <Chip tone={i === win ? 'ok' : 'soft'}>{sel}</Chip>
+            <T style={[styles.pageTitle, { marginLeft: 8 }]}>{score}</T>
+          </Animated.View>
+        ))}
+      </View>
+      <View style={[styles.page, { alignSelf: 'center' }]}>
+        <T style={[styles.pageLine, { color: win >= 0 ? rules[win][2] : colors.ink }]}>Dal rice ₹80</T>
+      </View>
+      <Caption>The higher score wins: id beats class, class beats tag.</Caption>
+    </>
+  );
+}
+function BoxModel() {
+  const b = useBeat(4);
+  const label = ['content', 'padding: space inside', 'border: the line', 'margin: space outside'][b];
+  return (
+    <>
+      <View style={{ padding: b >= 3 ? 14 : 0, borderWidth: 1, borderStyle: 'dashed', borderColor: b >= 3 ? colors.saffron : 'transparent', borderRadius: 10 }}>
+        <View style={{ borderWidth: b >= 2 ? 3 : 0, borderColor: colors.primary, borderRadius: 8 }}>
+          <View style={{ padding: b >= 1 ? 14 : 2, backgroundColor: b >= 1 ? colors.successSoft : 'transparent', borderRadius: 6 }}>
+            <View style={{ backgroundColor: colors.primarySoft, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 4 }}>
+              <T style={styles.pageLine}>Dal rice ₹80</T>
+            </View>
+          </View>
+        </View>
+      </View>
+      <Caption>{label}</Caption>
+    </>
+  );
+}
+function FlexAxis() {
+  const b = useBeat(3);
+  const mode = (['flex-start', 'center', 'space-between'] as const)[b];
+  return (
+    <>
+      <View style={[styles.page, { width: 240, flexDirection: 'row', justifyContent: mode, alignItems: 'center', paddingVertical: 10, gap: 6 }]}>
+        {['A', 'B', 'C'].map((x) => (
+          <View key={x} style={[styles.box, { minWidth: 36, height: 32 }]}>
+            <T style={styles.boxValue}>{x}</T>
+          </View>
+        ))}
+      </View>
+      <Chip k={mode} tone="code">{`justify-content: ${mode};`}</Chip>
+      <Caption>Flex lines the children up, then spaces them along the line.</Caption>
+    </>
+  );
+}
+function GridTracks() {
+  const b = useBeat(4);
+  const filled = [0, 2, 4, 6][b];
+  return (
+    <>
+      <View style={{ width: 228, flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <View key={i} style={[styles.box, { width: 72, minWidth: 72, height: 34 }, i >= filled && { borderStyle: 'dashed', backgroundColor: 'transparent' }]}>
+            {i < filled ? <T style={styles.boxValue}>{`dish ${i + 1}`}</T> : null}
+          </View>
+        ))}
+      </View>
+      <Chip tone="code">grid-template-columns: repeat(3, 1fr);</Chip>
+      <Caption>Grid draws the columns first, then fills each cell in order.</Caption>
+    </>
+  );
+}
+
 const SCENES: Record<AnimKey, () => ReactNode> = {
   variable: Variable,
   print: Print,
@@ -610,6 +701,11 @@ const SCENES: Record<AnimKey, () => ReactNode> = {
   outline: Outline,
   linkJump: LinkJump,
   imageLoad: ImageLoad,
+  cascade: Cascade,
+  specificity: Specificity,
+  boxModel: BoxModel,
+  flexAxis: FlexAxis,
+  gridTracks: GridTracks,
 };
 export const ANIM_KEYS = Object.keys(SCENES) as AnimKey[];
 

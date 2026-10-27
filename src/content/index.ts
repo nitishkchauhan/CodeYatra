@@ -10,7 +10,7 @@ import { drillBase, drillLesson, DRILL_PREFIX } from './drills';
 import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
 import { ticketHtml } from './web';
 import { flexRow } from './styling';
-import { CSS_FOUNDATIONS, CSS_PROJECT } from './tracks/cssFoundations';
+import { CSS_BASIC, CSS_PROJECT_V3 as CSS_PROJECT } from './tracks/cssV3';
 import { searchForm } from './html';
 import { HTML_BASIC } from './tracks/htmlV3';
 import { HTML_PROJECT_V3 as HTML_PROJECT } from './tracks/htmlV3More';
@@ -237,7 +237,7 @@ const ALL: Lesson[] = [
   ...PYTHON_MORE,
   ...HTML_BASIC,
   HTML_PROJECT,
-  ...CSS_FOUNDATIONS,
+  ...CSS_BASIC,
   CSS_PROJECT,
   ...JS_FOUNDATIONS,
   JS_PROJECT,

@@ -35,6 +35,14 @@ describe('module notes', () => {
   });
 
   it.each(Object.entries(NOTES))('%s: the worked example prints (or shows) exactly what the notes say', (_, n) => {
+    if (n.lang === 'css') {
+      // The styles are well formed (every brace closed, every declaration ended) and the page shows the listed text.
+      const css = n.example.code.join('\n');
+      expect(css.split('{').length).toBe(css.split('}').length);
+      for (const decl of css.replace(/\/\*[\s\S]*?\*\//g, '').match(/[\w-]+\s*:[^;{}]+[;}]/g) ?? []) expect(decl.trim().endsWith(';')).toBe(true);
+      expect(pageText(n.example.page ?? '')).toEqual(n.example.output);
+      return;
+    }
     if (n.lang === 'html') {
       expect(pageText(n.example.code.join('\n'))).toEqual(n.example.output);
       return;
@@ -60,6 +68,6 @@ describe('see it build (web pages)', () => {
     const lines = s.steps.map((x) => x.line);
     expect(lines).toEqual([...lines].sort((a, b) => a - b));
     expect(lines[0]).toBeGreaterThanOrEqual(1);
-    expect(lines.at(-1)).toBe(s.html.length);
+    expect(lines.at(-1)).toBe((s.css ?? s.html).length);
   });
 });

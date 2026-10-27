@@ -57,6 +57,11 @@ export type ConceptStep = {
 
 /** The animations a concept card can show. Each is a short, looping, built-in scene (no image files). */
 export type AnimKey =
+  | 'cascade'
+  | 'specificity'
+  | 'boxModel'
+  | 'flexAxis'
+  | 'gridTracks'
   | 'variable'
   | 'print'
   | 'types'
@@ -278,7 +283,9 @@ export type PageBuildStep = {
   title: string;
   instructions: string;
   html: string[];
-  /** In order; `line` is 1-based and the preview shows the page up to and including it. */
+  /** For CSS lessons: the page (`html`) stays whole and the steps walk through these style lines instead. */
+  css?: string[];
+  /** In order; `line` is 1-based and the preview shows the page (or its styles) up to and including it. */
   steps: { line: number; note: string }[];
 };
 
@@ -362,6 +369,8 @@ export type ModuleNotes = {
     code: string[];
     /** Line-by-line explanation; `line` is 1-based. */
     walk: { line: number; text: string }[];
+    /** For CSS notes: the page the styles in `code` are applied to; the notes show it live. */
+    page?: string;
     /** What it prints (or, for a web page, the text it shows); tests run or render it and compare. */
     output: string[];
   };

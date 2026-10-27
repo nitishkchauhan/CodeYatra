@@ -1,0 +1,411 @@
+// Module notes for CSS Basic. Each worked example styles `page` live; tests check the styles are well formed
+// and that `output` is the text the page shows.
+import type { ModuleNotes } from '../types';
+
+const MENU = '<h1>Today’s menu</h1>\n<p class="price">Dal rice ₹80</p>\n<p id="offer">Free delivery above ₹300</p>';
+const MENU_TEXT = ['Today’s menu', 'Dal rice ₹80', 'Free delivery above ₹300'];
+
+export const CSS_NOTES: Record<string, ModuleNotes> = {
+  'w-css-1': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'Looks, not meaning', body: 'HTML says what each part of a page is; CSS says how it looks. Keeping them apart means you can restyle a whole site without touching its content, and the same page can have a light theme, a dark theme and a print style. Browsers have their own default styles, which is why plain HTML looks the way it does; your CSS sits on top of them.', anim: 'htmlTags' },
+      { heading: 'Rules, selectors and declarations', body: 'A rule has a selector, which says what to style, and a block of declarations in braces. Each declaration is property: value; ending with a semicolon. Properties are fixed words like color, font-size and margin; values depend on the property. If the browser doesn’t understand a declaration, it quietly skips it, which is why a missing semicolon breaks things without an error.', code: ['h1 {', '  color: #C2410C;', '  font-size: 32px;', '}'], anim: 'cascade' },
+      { heading: 'Where CSS lives, and the cascade', body: 'Put CSS in a file and link it in the head with <link rel="stylesheet" href="style.css">, so every page shares it and the browser can cache it. You can also use a <style> tag or a style attribute, but those are harder to maintain. When rules clash, the browser looks at importance, then specificity, then order: the later rule wins. That is the cascade.', code: ['<link rel="stylesheet" href="style.css">'], anim: 'cascade' },
+    ],
+    example: {
+      title: 'Riya’s first stylesheet',
+      code: ['body {', '  background: #FFF7ED;', '  font-family: system-ui, sans-serif;', '}', 'h1 {', '  color: #C2410C;', '}', 'p {', '  font-size: 18px;', '}'],
+      page: MENU,
+      walk: [
+        { line: 1, text: 'body styles the whole page: background and font.' },
+        { line: 5, text: 'Only the h1 turns saffron.' },
+        { line: 8, text: 'Every paragraph gets larger text.' },
+      ],
+      output: MENU_TEXT,
+    },
+    industry: 'Front-end teams keep styles in shared stylesheets or component styles, and reviewers check CSS like any other code. Design teams hand over colours and sizes, and developers turn them into rules.',
+    interview: [
+      { q: 'What is the difference between HTML and CSS?', a: 'HTML describes the structure and meaning of content; CSS controls how it looks.' },
+      { q: 'What does “cascading” mean?', a: 'When several rules apply, the browser picks a winner by importance, specificity and then order.' },
+      { q: 'Why use an external stylesheet?', a: 'One file styles every page, is cached by the browser and keeps HTML clean.' },
+    ],
+    cheat: [
+      { code: 'selector { }', meaning: 'what to style' },
+      { code: 'property: value;', meaning: 'one declaration' },
+      { code: '<link rel="stylesheet">', meaning: 'link a CSS file' },
+      { code: '/* … */', meaning: 'a comment' },
+      { code: 'later rule wins', meaning: 'when equally specific' },
+    ],
+  },
+  'c-sel-1': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'The main selectors', body: 'A tag selector (p) styles every element of that type. A class selector (.price) styles every element with that class, and is the one you will use most. An id selector (#offer) styles one element. A descendant selector (.menu p) styles paragraphs inside .menu. A comma groups selectors: h1, h2 { … } styles both.', code: ['.menu p { color: #333; }', 'h1, h2 { font-weight: 700; }'], anim: 'specificity' },
+      { heading: 'Specificity, the score', body: 'When two rules set the same property, the more specific one wins. Count ids, then classes (and pseudo-classes), then tags: #offer is 1-0-0, .menu .price is 0-2-0, p is 0-0-1. Compare from the left. Only when scores tie does the later rule win. Inline style attributes beat all of them, and !important beats even that.', anim: 'specificity' },
+      { heading: 'Keep it simple', body: 'Style mostly with single classes. They are easy to reuse and easy to override. Avoid ids for styling and long chains like #page .menu ul li a, which are hard to beat later. !important wins every fight, so it starts an arms race; save it for rare emergencies.', anim: 'cascade' },
+    ],
+    example: {
+      title: 'Prices and the offer',
+      code: ['p {', '  color: #333333;', '}', '.price {', '  color: #C2410C;', '}', '#offer {', '  color: #15803D;', '}'],
+      page: MENU,
+      walk: [
+        { line: 1, text: 'Every paragraph: dark grey.' },
+        { line: 4, text: 'A class beats a tag, so prices are orange.' },
+        { line: 7, text: 'An id beats a class, so the offer is green.' },
+      ],
+      output: MENU_TEXT,
+    },
+    industry: 'Teams agree on class-naming rules, such as BEM (card__title) or utility classes (Tailwind), so specificity stays low and predictable. Linting tools flag !important and overly long selectors.',
+    interview: [
+      { q: 'What is specificity?', a: 'The score the browser uses to decide which of several matching rules wins: ids, then classes, then tags.' },
+      { q: 'Why prefer classes over ids for styling?', a: 'Classes are reusable and have lower specificity, so they are easier to override.' },
+      { q: 'Why avoid !important?', a: 'It overrides normal specificity, so the only way to beat it is another !important.' },
+    ],
+    cheat: [
+      { code: 'p', meaning: 'every paragraph' },
+      { code: '.price', meaning: 'class="price"' },
+      { code: '#offer', meaning: 'id="offer"' },
+      { code: '.menu p', meaning: 'p inside .menu' },
+      { code: 'h1, h2', meaning: 'both' },
+      { code: 'id > class > tag', meaning: 'who wins' },
+    ],
+  },
+  'c-units': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'Writing colours', body: 'Hex colours are six digits: two each for red, green and blue, like #E8590C. rgb(232 89 12) is the same colour in numbers, and hsl(24 90% 48%) describes hue, saturation and lightness, which is handy for making lighter or darker shades. Add / 50% for transparency. Check text contrast: body text needs at least a 4.5 to 1 contrast ratio with its background.', code: ['color: #E8590C;', 'background: rgb(232 89 12 / 15%);'], anim: 'cascade' },
+      { heading: 'Choosing a unit', body: 'px is a fixed size, fine for borders and small details. rem is relative to the root text size, so a page sized in rem grows when a user sets larger text: use it for font sizes and spacing. em is relative to the element’s own font size. % is a share of the parent, and vw and vh are shares of the screen.', anim: 'boxModel' },
+      { heading: 'Sizes with limits', body: 'max-width: 40rem lets a box shrink on phones but stops it at 40rem on big screens; margin: 0 auto centres it. min-width does the opposite. clamp(1.75rem, 5vw, 3rem) picks the middle value but never goes below the first or above the last, so a heading scales smoothly between phone and laptop.', code: ['.page { max-width: 40rem; margin: 0 auto; }', 'h1 { font-size: clamp(1.75rem, 5vw, 3rem); }'], anim: 'boxModel' },
+    ],
+    example: {
+      title: 'A centred, readable column',
+      code: ['body {', '  font-size: 1rem;', '}', '.page {', '  max-width: 40rem;', '  margin: 0 auto;', '}', 'h1 {', '  color: #E8590C;', '}'],
+      page: '<div class="page">\n  <h1>Today’s menu</h1>\n  <p>Dal rice ₹80</p>\n</div>',
+      walk: [
+        { line: 2, text: '1rem follows the user’s text-size setting.' },
+        { line: 5, text: 'Never wider than 40rem.' },
+        { line: 6, text: 'Equal auto margins centre the column.' },
+      ],
+      output: ['Today’s menu', 'Dal rice ₹80'],
+    },
+    industry: 'Design systems define a fixed set of colours and a spacing scale in rem, and accessibility checks test colour contrast automatically. Brand colours are given to developers as exact hex values.',
+    interview: [
+      { q: 'rem versus em versus px?', a: 'px is fixed; rem is relative to the root font size; em is relative to the element’s own font size.' },
+      { q: 'What does clamp() do?', a: 'Returns a preferred value kept between a minimum and a maximum.' },
+      { q: 'How do you centre a block horizontally?', a: 'Give it a width or max-width and margin: 0 auto.' },
+    ],
+    cheat: [
+      { code: '#E8590C', meaning: 'hex colour' },
+      { code: 'rgb(… / 50%)', meaning: 'see-through colour' },
+      { code: 'rem', meaning: 'follows text size' },
+      { code: '% / vw', meaning: 'parent / screen share' },
+      { code: 'max-width + margin: 0 auto', meaning: 'centred column' },
+      { code: 'clamp(min, ideal, max)', meaning: 'size with limits' },
+    ],
+  },
+  'c-text-1': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'Font stacks', body: 'font-family takes a list. The browser uses the first font it has, so put your choice first and end with a generic family: sans-serif, serif or monospace. system-ui uses the phone’s own font, which is fast and familiar. Names with spaces go in quotes, like "Noto Sans".', code: ['font-family: "Poppins", system-ui, sans-serif;'], anim: 'htmlTags' },
+      { heading: 'Readable text', body: 'Body text of at least 16px (1rem) is comfortable on phones. line-height around 1.5, written without a unit so it scales with the text, opens up paragraphs. Lines of about 45 to 75 characters read best, so cap text width with max-width: 65ch. Left-aligned text is easier to read than justified text on narrow screens.', code: ['body { line-height: 1.5; }', '.page { max-width: 65ch; }'], anim: 'outline' },
+      { heading: 'Web fonts', body: 'Services like Google Fonts host fonts you can link in the head, including Indian-language fonts such as Mukta or Noto Sans Devanagari. Each font weight is a download, so use one or two families and only the weights you need. font-display: swap shows text in a fallback font while the web font loads, so nobody stares at a blank page.', anim: 'webRequest' },
+    ],
+    example: {
+      title: 'A readable about page',
+      code: ['body {', '  font-family: "Poppins", system-ui, sans-serif;', '  line-height: 1.5;', '}', 'h1 {', '  font-weight: 700;', '}'],
+      page: '<h1>About us</h1>\n<p>Fresh home food, cooked every morning in Pune.</p>',
+      walk: [
+        { line: 2, text: 'Poppins first, then the system font, then any sans-serif.' },
+        { line: 3, text: 'Comfortable line spacing.' },
+        { line: 6, text: '700 is bold.' },
+      ],
+      output: ['About us', 'Fresh home food, cooked every morning in Pune.'],
+    },
+    industry: 'Brands choose one or two type families and a fixed set of sizes, called a type scale. Performance teams watch font file sizes because fonts can delay the first view of a page.',
+    interview: [
+      { q: 'What is a font stack?', a: 'A list of fonts in order of preference, ending with a generic family as the fallback.' },
+      { q: 'Why is a unitless line-height preferred?', a: 'It scales with each element’s own font size instead of being fixed.' },
+      { q: 'How do you stop invisible text while a web font loads?', a: 'Use font-display: swap.' },
+    ],
+    cheat: [
+      { code: 'font-family', meaning: 'font list with fallback' },
+      { code: 'font-size', meaning: 'text size' },
+      { code: 'font-weight: 700', meaning: 'bold' },
+      { code: 'line-height: 1.5', meaning: 'line spacing' },
+      { code: 'max-width: 65ch', meaning: 'comfortable line length' },
+      { code: 'text-align', meaning: 'left, center, right' },
+    ],
+  },
+  'c-box-1': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'Four layers', body: 'Every element is a box. In the middle is the content. Padding is space inside the border, and takes the background colour. The border is the line around it. Margin is space outside the border, always transparent, pushing other boxes away. In DevTools, the box diagram shows all four for any element.', anim: 'boxModel' },
+      { heading: 'Shorthand and border-box', body: 'padding: 8px 16px means 8px top and bottom, 16px left and right; four values go top, right, bottom, left. By default width is the content only, so padding and border add to it. * { box-sizing: border-box; } makes width include them, which is far easier to reason about, and nearly every project starts with it.', code: ['* { box-sizing: border-box; }', '.card { padding: 8px 16px; }'], anim: 'boxModel' },
+      { heading: 'Block and inline', body: 'Block elements like div, p and h1 start on a new line and fill the width. Inline elements like a, strong and span sit within a line of text, and ignore width and top or bottom margins. display: inline-block gives you both: in a line, but with a size. Vertical margins between blocks can merge into one, called margin collapsing.', anim: 'outline' },
+    ],
+    example: {
+      title: 'Menu cards with room',
+      code: ['* {', '  box-sizing: border-box;', '}', '.card {', '  padding: 16px;', '  border: 2px solid #E8590C;', '  margin-bottom: 24px;', '}'],
+      page: '<div class="card">\n  <h2>Dal rice</h2>\n  <p>₹80 · serves one</p>\n</div>',
+      walk: [
+        { line: 2, text: 'Widths now include padding and border.' },
+        { line: 5, text: 'Space inside, around the text.' },
+        { line: 7, text: 'Space outside, before the next card.' },
+      ],
+      output: ['Dal rice', '₹80 · serves one'],
+    },
+    industry: 'CSS resets used in most projects start with box-sizing: border-box. Developers debug spacing bugs in DevTools by hovering an element and reading its box diagram.',
+    interview: [
+      { q: 'Padding versus margin?', a: 'Padding is inside the border and shows the background; margin is outside and pushes other elements away.' },
+      { q: 'What does box-sizing: border-box do?', a: 'Makes width and height include padding and border.' },
+      { q: 'Block versus inline?', a: 'Blocks start on a new line and fill the width; inline elements flow within text.' },
+    ],
+    cheat: [
+      { code: 'padding', meaning: 'space inside' },
+      { code: 'border', meaning: 'the line' },
+      { code: 'margin', meaning: 'space outside' },
+      { code: 'box-sizing: border-box', meaning: 'width includes padding' },
+      { code: 'padding: 8px 16px', meaning: 'vertical horizontal' },
+      { code: 'display: inline-block', meaning: 'in a line, with a size' },
+    ],
+  },
+  'c-flex-1': {
+    minutes: 6,
+    lang: 'css',
+    sections: [
+      { heading: 'Container and items', body: 'display: flex goes on the parent, the flex container. Its direct children become flex items and line up along the main axis: a row by default, or a column with flex-direction: column. Only direct children are affected; grandchildren keep their normal layout unless their own parent is also flex.', code: ['.top { display: flex; }'], anim: 'flexAxis' },
+      { heading: 'Two axes', body: 'justify-content arranges items along the main axis: flex-start, center, flex-end, space-between or space-around. align-items lines them up across it: stretch (the default), center, flex-start. In a row, justify is horizontal and align is vertical; in a column, they swap. The famous way to centre anything is both set to center.', code: ['.box {', '  display: flex;', '  justify-content: center;', '  align-items: center;', '}'], anim: 'flexAxis' },
+      { heading: 'Growing, gaps and wrapping', body: 'gap: 1rem puts equal space between items, with no margin tricks. flex: 1 lets an item grow to fill spare space, which is useful for a search box beside a button. flex-wrap: wrap lets items flow onto a new line when they don’t fit, so a row of tags or cards works on any screen.', code: ['.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }'], anim: 'flexAxis' },
+    ],
+    example: {
+      title: 'Riya’s header',
+      code: ['.top {', '  display: flex;', '  justify-content: space-between;', '  align-items: center;', '  gap: 1rem;', '}'],
+      page: '<header class="top">\n  <strong>Riya’s Tiffins</strong>\n  <a href="#order">Order</a>\n</header>',
+      walk: [
+        { line: 2, text: 'The name and the link sit in a row.' },
+        { line: 3, text: 'Name left, link right.' },
+        { line: 4, text: 'Both lined up in the middle.' },
+      ],
+      output: ['Riya’s Tiffins', 'Order'],
+    },
+    industry: 'Flexbox is the everyday layout tool for components: nav bars, toolbars, form rows and card footers. React Native, used for many mobile apps, lays out every screen with flexbox.',
+    interview: [
+      { q: 'How do you centre an element both ways?', a: 'On the parent: display: flex; justify-content: center; align-items: center.' },
+      { q: 'justify-content versus align-items?', a: 'justify-content works along the main axis; align-items works across it.' },
+      { q: 'What does flex: 1 do?', a: 'Lets the item grow to take up the remaining space.' },
+    ],
+    cheat: [
+      { code: 'display: flex', meaning: 'on the parent' },
+      { code: 'flex-direction: column', meaning: 'stack instead of row' },
+      { code: 'justify-content', meaning: 'along the line' },
+      { code: 'align-items', meaning: 'across the line' },
+      { code: 'gap', meaning: 'space between' },
+      { code: 'flex-wrap: wrap', meaning: 'allow new lines' },
+    ],
+  },
+  'c-grid-1': {
+    minutes: 6,
+    lang: 'css',
+    sections: [
+      { heading: 'Columns first', body: 'display: grid on a parent turns its children into grid items. grid-template-columns describes the columns: 200px 1fr means a fixed 200px column and one that takes the rest. Items fill the cells in order, row by row, and new rows are created as needed. gap sets the space between rows and columns.', code: ['.menu {', '  display: grid;', '  grid-template-columns: 200px 1fr;', '  gap: 1rem;', '}'], anim: 'gridTracks' },
+      { heading: 'fr and repeat', body: '1fr is one share of the free space, so 1fr 2fr makes the second column twice as wide as the first. repeat(3, 1fr) is short for 1fr 1fr 1fr. The magic line repeat(auto-fill, minmax(8rem, 1fr)) fits as many columns of at least 8rem as there is room for, then shares out the leftover space, so the grid adapts with no media queries.', code: ['grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));'], anim: 'gridTracks' },
+      { heading: 'Spanning and areas', body: 'An item can stretch across columns with grid-column: span 2, which is handy for a featured card. For page layouts, grid-template-areas lets you name regions like "header header" "sidebar main" and place elements by name. Flexbox handles one direction; grid handles rows and columns together.', code: ['.featured { grid-column: span 2; }'], anim: 'gridTracks' },
+    ],
+    example: {
+      title: 'A dish grid that adapts',
+      code: ['.menu {', '  display: grid;', '  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));', '  gap: 1rem;', '}'],
+      page: '<div class="menu">\n  <div>Dal rice ₹80</div>\n  <div>Poha ₹30</div>\n  <div>Thali ₹120</div>\n</div>',
+      walk: [
+        { line: 2, text: 'The children become grid items.' },
+        { line: 3, text: 'As many 8rem-plus columns as fit.' },
+        { line: 4, text: 'Space between the cells.' },
+      ],
+      output: ['Dal rice ₹80', 'Poha ₹30', 'Thali ₹120'],
+    },
+    industry: 'Product listings, galleries and dashboards are built on grid. Page templates often use grid for the overall layout and flexbox inside each component.',
+    interview: [
+      { q: 'Flexbox or grid?', a: 'Flexbox for one direction, like a row of items; grid for two-dimensional layouts with rows and columns.' },
+      { q: 'What is the fr unit?', a: 'A fraction of the free space in the grid container.' },
+      { q: 'auto-fill with minmax does what?', a: 'Creates as many columns of at least the minimum size as fit, and stretches them to fill the row.' },
+    ],
+    cheat: [
+      { code: 'display: grid', meaning: 'on the parent' },
+      { code: 'grid-template-columns', meaning: 'describe columns' },
+      { code: '1fr', meaning: 'a share of free space' },
+      { code: 'repeat(3, 1fr)', meaning: 'three equal columns' },
+      { code: 'repeat(auto-fill, minmax(8rem, 1fr))', meaning: 'adapts to the screen' },
+      { code: 'grid-column: span 2', meaning: 'two columns wide' },
+    ],
+  },
+  'c-pos-1': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'The five positions', body: 'static is the default: normal flow. relative keeps the box in the flow but lets you nudge it with top or left, and makes it an anchor for absolute children. absolute takes a box out of the flow and places it inside its nearest positioned ancestor. fixed places it relative to the screen. sticky behaves normally until you scroll to it, then sticks.', code: ['.card  { position: relative; }', '.badge { position: absolute; top: 8px; right: 8px; }'], anim: 'boxModel' },
+      { heading: 'Stacking with z-index', body: 'When positioned boxes overlap, z-index decides which is on top: higher numbers come forward. It only works on positioned elements (and flex or grid items). Some properties, like a transform or opacity below 1, create a new stacking context, so a child’s z-index only counts within its parent. Use small, planned values like 10 and 100.', code: ['.top { position: sticky; top: 0; z-index: 10; }'], anim: 'boxModel' },
+      { heading: 'Use it sparingly', body: 'Positioning is for special cases: badges, tooltips, sticky headers, dialogs and floating buttons. For the main layout, use normal flow, flexbox and grid, which adapt to the screen. A page built from absolute boxes breaks as soon as the text or screen size changes.', anim: 'gridTracks' },
+    ],
+    example: {
+      title: 'A bestseller badge',
+      code: ['.card {', '  position: relative;', '}', '.badge {', '  position: absolute;', '  top: 8px;', '  right: 8px;', '}'],
+      page: '<div class="card">\n  <span class="badge">Bestseller</span>\n  <h2>Thali</h2>\n</div>',
+      walk: [
+        { line: 2, text: 'The card becomes the anchor.' },
+        { line: 5, text: 'The badge leaves the flow.' },
+        { line: 6, text: '8px from the card’s top and right edges.' },
+      ],
+      output: ['Bestseller', 'Thali'],
+    },
+    industry: 'Component libraries use positioning for menus, tooltips and modals, and manage z-index with a small fixed scale so layers never fight. Sticky headers and table headers are common on dashboards.',
+    interview: [
+      { q: 'absolute versus fixed?', a: 'absolute is placed relative to the nearest positioned ancestor; fixed is placed relative to the screen.' },
+      { q: 'Why might z-index not work?', a: 'The element isn’t positioned, or it sits in a different stacking context.' },
+      { q: 'What does sticky need?', a: 'A threshold like top: 0, and room to scroll inside its parent.' },
+    ],
+    cheat: [
+      { code: 'position: relative', meaning: 'nudge and anchor' },
+      { code: 'position: absolute', meaning: 'exact spot in the anchor' },
+      { code: 'position: fixed', meaning: 'stuck to the screen' },
+      { code: 'position: sticky; top: 0', meaning: 'sticks on scroll' },
+      { code: 'z-index', meaning: 'stacking order' },
+    ],
+  },
+  'c-pseudo': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'States', body: ':hover applies while a mouse is over an element; phones have no hover, so never hide anything important behind it. :focus-visible applies when an element is reached with the keyboard, and should always show a clear outline. :disabled, :checked and :invalid style form controls in those states. :active applies while something is being pressed.', code: ['.btn:hover { background: #C2410C; }', '.btn:focus-visible { outline: 3px solid #1D4ED8; }'], anim: 'branch' },
+      { heading: 'Positions', body: ':first-child and :last-child pick the first or last child of a parent. :nth-child(even) picks the 2nd, 4th and so on; :nth-child(3n) every third; :nth-child(-n+3) the first three. :not(.done) picks everything that isn’t .done. Newer browsers also support :has(), which selects a parent by what it contains.', code: ['tr:nth-child(even) { background: #FFF7ED; }', 'li:last-child { border: 0; }'], anim: 'outline' },
+      { heading: 'Pseudo-elements', body: '::before and ::after insert a decoration at the start or end of an element’s content, and need a content value, even content: "". They are perfect for icons, stars on required labels and decorative shapes. ::placeholder styles the hint text in inputs, and ::selection the highlighted text. Screen readers may read content text, so keep it decorative.', code: ['.required::after { content: " *"; color: #B91C1C; }'], anim: 'htmlTags' },
+    ],
+    example: {
+      title: 'A striped fee table',
+      code: ['tr:nth-child(even) {', '  background: #FFF7ED;', '}', '.required::after {', '  content: " *";', '}'],
+      page: '<table>\n  <tr><th>Plan</th><th>Price</th></tr>\n  <tr><td>Daily</td><td>₹80</td></tr>\n</table>\n<p class="required">Phone</p>',
+      walk: [
+        { line: 1, text: 'Even rows: here the Daily row.' },
+        { line: 4, text: 'A red star appears after the label.' },
+      ],
+      output: ['Plan', 'Price', 'Daily', '₹80', 'Phone'],
+    },
+    industry: 'Every design system defines hover, focus, active and disabled states for its buttons and inputs, and accessibility audits fail pages without visible focus styles.',
+    interview: [
+      { q: 'Pseudo-class versus pseudo-element?', a: 'A pseudo-class (one colon) selects an element in a state or position; a pseudo-element (two colons) styles a part of it or adds content.' },
+      { q: 'Why not use outline: none?', a: 'Keyboard users lose track of where they are; style :focus-visible instead.' },
+      { q: 'What does ::after need?', a: 'A content property, even if it is empty.' },
+    ],
+    cheat: [
+      { code: ':hover', meaning: 'mouse over' },
+      { code: ':focus-visible', meaning: 'keyboard focus' },
+      { code: ':disabled', meaning: 'switched off' },
+      { code: ':nth-child(even)', meaning: '2nd, 4th, 6th…' },
+      { code: ':not(.x)', meaning: 'everything except' },
+      { code: '::before / ::after', meaning: 'added decoration' },
+    ],
+  },
+  'c-resp-1': {
+    minutes: 6,
+    lang: 'css',
+    sections: [
+      { heading: 'Mobile first', body: 'Write the styles that work on a small phone first, with no media query. Most simple layouts, one column of full-width blocks, already work there. Then add rules for larger screens. This keeps phone CSS small and fast, and matches how most people in India browse.', anim: 'gridTracks' },
+      { heading: 'Media queries', body: '@media (min-width: 40rem) { … } applies its rules only when the screen is at least 40rem wide. Add breakpoints where your content starts to look wrong, not for particular phone models. Other useful queries: prefers-color-scheme for dark mode, prefers-reduced-motion, and orientation. None of this works without the viewport meta tag.', code: ['@media (min-width: 40rem) {', '  .menu { grid-template-columns: 1fr 1fr; }', '}'], anim: 'gridTracks' },
+      { heading: 'Fluid everything', body: 'img { max-width: 100%; height: auto; } stops pictures overflowing. Prefer max-width over width, rem and % over fixed px, and grid with auto-fill or flex-wrap so layouts adapt by themselves. Test by narrowing a desktop browser window or using DevTools device mode, and on a real phone.', code: ['img { max-width: 100%; height: auto; }'], anim: 'imageLoad' },
+    ],
+    example: {
+      title: 'One column, then two',
+      code: ['.menu {', '  display: grid;', '  gap: 1rem;', '}', '@media (min-width: 40rem) {', '  .menu {', '    grid-template-columns: 1fr 1fr;', '  }', '}'],
+      page: '<div class="menu">\n  <div>Dal rice ₹80</div>\n  <div>Poha ₹30</div>\n</div>',
+      walk: [
+        { line: 1, text: 'Phone styles: one column with a gap.' },
+        { line: 5, text: 'From 40rem wide and up…' },
+        { line: 7, text: '…two columns. On a phone this preview stays at one.' },
+      ],
+      output: ['Dal rice ₹80', 'Poha ₹30'],
+    },
+    industry: 'Teams test every page at phone, tablet and desktop widths before release, often automatically with screenshots. Analytics usually show most visitors on phones, so phone layouts get designed first.',
+    interview: [
+      { q: 'Mobile-first versus desktop-first?', a: 'Mobile-first writes base styles for small screens and adds min-width queries; desktop-first does the reverse with max-width queries.' },
+      { q: 'How do you choose breakpoints?', a: 'Where the content starts to look wrong, not by device sizes.' },
+      { q: 'How do you make images responsive?', a: 'max-width: 100% and height: auto, plus srcset for different sizes.' },
+    ],
+    cheat: [
+      { code: '@media (min-width: 40rem)', meaning: 'from that width up' },
+      { code: 'max-width: 100%', meaning: 'never overflow' },
+      { code: 'viewport meta tag', meaning: 'needed on every page' },
+      { code: 'prefers-color-scheme', meaning: 'dark or light' },
+      { code: 'DevTools device mode', meaning: 'test sizes' },
+    ],
+  },
+  'c-motion-1': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'Transitions', body: 'A transition animates a change between two states. Put it on the normal state: transition: background 0.2s ease. When the hover or focus style changes the background, it fades instead of jumping. List several properties with commas. Keep interface transitions short, 0.1 to 0.3 seconds, so the page feels quick.', code: ['.btn { transition: background 0.2s ease, transform 0.2s ease; }'], anim: 'flexAxis' },
+      { heading: 'Keyframe animations', body: '@keyframes name { from { … } to { … } } or percentage steps describe a movement. animation: name 2s ease-in-out infinite runs it, with a duration, easing and how many times. Use them for loaders, attention pulses and entrances. Easing like ease-in-out starts and ends gently, which looks natural.', code: ['@keyframes pulse { 50% { transform: scale(1.05); } }', '.offer { animation: pulse 2s ease-in-out infinite; }'], anim: 'flexAxis' },
+      { heading: 'Smooth and kind', body: 'transform (move, scale, rotate) and opacity can be animated cheaply; width, height, top and margin make the browser recalculate the layout every frame and stutter on low-end phones. Motion can make some people dizzy, so wrap big or looping motion in a check: @media (prefers-reduced-motion: reduce) { … } turns it off.', code: ['@media (prefers-reduced-motion: reduce) {', '  .offer { animation: none; }', '}'], anim: 'imageLoad' },
+    ],
+    example: {
+      title: 'A gentle pulse',
+      code: ['@keyframes pulse {', '  50% {', '    transform: scale(1.05);', '  }', '}', '.offer {', '  animation: pulse 2s ease-in-out infinite;', '}'],
+      page: '<p class="offer">Free delivery above ₹300</p>',
+      walk: [
+        { line: 1, text: 'Name the animation and describe its steps.' },
+        { line: 3, text: 'Halfway through, 5% bigger.' },
+        { line: 7, text: 'Run it every 2 seconds, forever.' },
+      ],
+      output: ['Free delivery above ₹300'],
+    },
+    industry: 'Product teams use motion guidelines with set durations and easings. Performance reviews check that animations use transform and opacity, and accessibility reviews check reduced-motion support.',
+    interview: [
+      { q: 'Transition versus animation?', a: 'A transition runs between two states when something changes; an animation runs its own keyframes, once or repeatedly.' },
+      { q: 'Why animate transform instead of top?', a: 'transform doesn’t trigger layout, so it stays smooth.' },
+      { q: 'What is prefers-reduced-motion?', a: 'A user setting asking sites to minimise motion; respect it with a media query.' },
+    ],
+    cheat: [
+      { code: 'transition: prop 0.2s ease', meaning: 'smooth a change' },
+      { code: '@keyframes name { }', meaning: 'define steps' },
+      { code: 'animation: name 2s infinite', meaning: 'run them' },
+      { code: 'transform / opacity', meaning: 'cheap to animate' },
+      { code: 'prefers-reduced-motion', meaning: 'less motion' },
+    ],
+  },
+  'c-vars-1': {
+    minutes: 5,
+    lang: 'css',
+    sections: [
+      { heading: 'Define and use', body: 'A custom property is any name starting with two dashes: --brand: #E8590C;. Define it on :root to use it anywhere on the page. Read it with var(--brand). Give a fallback in case it is missing: var(--brand, orange). Unlike variables in tools like Sass, CSS variables live in the browser, so they can change while the page runs.', code: [':root { --brand: #E8590C; }', 'h1 { color: var(--brand); }'], anim: 'variable' },
+      { heading: 'Themes and dark mode', body: 'Because every rule reads the variables, changing them changes everything. For dark mode, redefine only the colour variables inside @media (prefers-color-scheme: dark). Variables also inherit, so setting --brand on one section recolours just that section. JavaScript can change them too, for a theme switch.', code: ['@media (prefers-color-scheme: dark) {', '  :root { --bg: #111827; --text: #F9FAFB; }', '}'], anim: 'cascade' },
+      { heading: 'Tidy CSS', body: 'Keep a small set of design tokens: a few colours, a spacing scale like 0.5, 1, 2 and 4rem, and two or three font sizes. Build reusable classes like .card and .btn rather than styling each element separately. Group the stylesheet in order: variables, base styles, layout, components. Your future self will thank you.', anim: 'outline' },
+    ],
+    example: {
+      title: 'One brand colour',
+      code: [':root {', '  --brand: #E8590C;', '  --space: 1rem;', '}', 'h1 {', '  color: var(--brand);', '}', '.card {', '  padding: var(--space);', '  border: 2px solid var(--brand);', '}'],
+      page: '<h1>Riya’s Tiffins</h1>\n<div class="card">Thali ₹120</div>',
+      walk: [
+        { line: 2, text: 'The brand colour, stored once.' },
+        { line: 6, text: 'The heading reads it.' },
+        { line: 10, text: 'So does the card border. Change line 2 and both update.' },
+      ],
+      output: ['Riya’s Tiffins', 'Thali ₹120'],
+    },
+    industry: 'Design systems publish their tokens as CSS variables, and dark mode in most modern sites is a swap of variable values. White-label products set each customer’s colours through variables.',
+    interview: [
+      { q: 'CSS variables versus Sass variables?', a: 'Sass variables are replaced when the CSS is built; CSS variables exist in the browser, inherit and can change at runtime.' },
+      { q: 'How would you add dark mode?', a: 'Define colours as variables and redefine them in a prefers-color-scheme: dark media query or a theme class.' },
+      { q: 'What does var(--x, red) mean?', a: 'Use --x, or red if --x isn’t defined.' },
+    ],
+    cheat: [
+      { code: '--name: value;', meaning: 'define' },
+      { code: 'var(--name)', meaning: 'use' },
+      { code: 'var(--name, fallback)', meaning: 'use, with a backup' },
+      { code: ':root', meaning: 'the whole page' },
+      { code: 'prefers-color-scheme: dark', meaning: 'dark-mode values' },
+    ],
+  },
+};

@@ -34,7 +34,7 @@ hook (a real situation) → three cards, each with an animation → try it (tap 
 - **Advanced** 🆕: an accessibility audit (WCAG checks), Lighthouse and Core Web Vitals, publishing (GitHub Pages, custom domain), a progressive web app basics overview. Project: audit and fix a real-looking site, then publish it.
 
 ### CSS · Class 9+ · runs in the app (live preview)
-- **Basic** (✅ 12): how CSS works, selectors and specificity, colours and units, typography, box model, Flexbox, Grid, positioning, pseudo-classes, responsive design, transitions, custom properties. Project: style the landing page.
+- **Basic** (⭐📝 12 + project; draft in `content-drafts/`): how CSS works, selectors and specificity, colours and units, typography, box model, Flexbox, Grid, positioning, pseudo-classes, responsive design, transitions, custom properties. Project: style Sharma Classes.
 - **Intermediate** 🆕: layout patterns (cards, sidebars, holy grail), animation and keyframes, design tokens and themes, forms that look good, responsive navigation. Project: a responsive portfolio.
 - **Advanced** 🆕: Tailwind CSS basics, CSS architecture (BEM, utility-first), dark mode and reduced motion, performance and critical CSS. Project: rebuild a design to spec, light and dark.
 

@@ -7,6 +7,7 @@ import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { CodeBlock } from '@/components/Code';
+import { WebPreview } from '@/components/WebPreview';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
@@ -16,6 +17,7 @@ import { getNotes } from '@/content/notes';
 import { Anim } from '@/features/lesson/Anim';
 import { ConsoleView } from '@/features/lesson/EditorStep';
 import { haptic } from '@/lib/haptics';
+import { buildPage } from '@/lib/web/page';
 import { card, colors, fonts } from '@/theme';
 
 const LEVEL = { basic: 'Basic', intermediate: 'Intermediate', advanced: 'Advanced' } as const;
@@ -116,7 +118,11 @@ export default function NotesScreen() {
               </T>
             </Pressable>
           ))}
-          <ConsoleView output={notes.example.output} />
+          {notes.example.page ? (
+            <WebPreview doc={buildPage({ html: notes.example.page, css: notes.example.code.join('\n') })} height={200} />
+          ) : (
+            <ConsoleView output={notes.example.output} />
+          )}
         </View>
 
         <View style={[styles.box, { backgroundColor: colors.saffronSoft }]}>

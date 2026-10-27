@@ -449,7 +449,8 @@ export function PageBuildStep({ step, onDone }: { step: PageBuild; onDone: () =>
   const [at, setAt] = useState(0);
   const cur = step.steps[at];
   const last = at === step.steps.length - 1;
-  const doc = buildPage({ html: step.html.slice(0, cur.line).join('\n') });
+  const code = step.css ?? step.html;
+  const doc = step.css ? buildPage({ html: step.html.join('\n'), css: step.css.slice(0, cur.line).join('\n') }) : buildPage({ html: step.html.slice(0, cur.line).join('\n') });
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -462,7 +463,7 @@ export function PageBuildStep({ step, onDone }: { step: PageBuild; onDone: () =>
               Step {at + 1} of {step.steps.length} · line {cur.line}
             </T>
           </View>
-          <CodeBlock lines={step.html} lang="html" highlight={cur.line - 1} />
+          <CodeBlock lines={code} lang={step.css ? 'css' : 'html'} highlight={cur.line - 1} />
         </View>
         <Animated.View key={at} entering={FadeIn.duration(200)} style={styles.note} accessibilityLiveRegion="polite">
           <Icon name="bulb" size={18} color={colors.saffronShadow} />
