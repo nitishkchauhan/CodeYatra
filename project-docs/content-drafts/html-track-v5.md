@@ -7,14 +7,14 @@ Source: the owner's "HTML Track – Complete Lesson Content" (9 modules, 38 less
 | # | Module | Lessons | Badge |
 |---|---|---|---|
 | 1 | Getting Started | 1.1–1.5 | 🏷 First Tag |
-| 2 | Working with Text | 2.1–2.5 | ✍️ Wordsmith |
-| 3 | Style Basics | 3.1–3.4 | 🎨 Colour Painter |
+| 2 | Working with Text | 2.1–2.6 | ✍️ Wordsmith |
+| 3 | Style Basics | 3.1–3.3 | 🎨 Colour Painter |
 | 4 | Links and Images | 4.1–4.4 | 🔗 Link Explorer |
-| 5 | Organising Content | 5.1–5.4 | 🗂 Organiser |
-| 6 | Page Building | 6.1–6.4 | 🏗 Page Architect |
+| 5 | Organising Content | 5.1–5.5 | 🗂 Organiser |
+| 6 | Page Building | 6.1–6.5 | 🏗 Page Architect |
 | 7 | Forms | 7.1–7.4 | 📝 Form Builder |
 | 8 | Media and Graphics | 8.1–8.4 | 🎬 Media Maker |
-| 9 | Going Further | 9.1–9.5 (9.3 is new) | 🏆 HTML Pro (final challenge: the portfolio project) |
+| 9 | Going Further | 9.1–9.3 (9.3 is new) | 🏆 HTML Pro (final challenge: the portfolio project) |
 
 Each module ends with its Challenge (`html-M-ch`); stars: no mistakes = 3, up to 2 = 2, otherwise 1.
 
