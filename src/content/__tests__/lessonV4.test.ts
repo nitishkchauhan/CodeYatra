@@ -7,7 +7,7 @@ import { parseTrace, traceProgram } from '../trace';
 import { python, runPyFull } from '../testing/run';
 
 // Lesson v4 (APP-PLAN Part 3): every screen asks for an action, and every answer is checked against real Python.
-const v4: Lesson[] = allLessons().filter((l) => l.format === 'v4');
+const v4: Lesson[] = allLessons().filter((l) => l.format === 'v4' && l.kind === 'lesson');
 const rows = <T,>(r: T[]): T[] => (r.length ? r : ([['(none)', null]] as unknown as T[]));
 const stepsOf = <T extends { type: string }>(type: T['type']) => v4.flatMap((l) => l.steps.filter((s) => s.type === type).map((s) => [`${l.id}: ${(s as { title?: string }).title ?? type}`, s as unknown as T] as const));
 

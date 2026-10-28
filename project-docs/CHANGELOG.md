@@ -2,6 +2,10 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 28 Oct 2026 (branch `lesson-v3`): the Python project in Lesson v4
+- `p-project` is now **Riya’s billing app** (`tracks/pythonProjectV4.ts`, same id): Riya’s brief, a “plan it” match, six typed steps with tests (price, subtotal, 10% off and 5% GST, receipt, safe quantities with try/except, saving to a file), a quick check, a bug to spot and recall cards. Uses all 12 modules; plain English menu (tea, coffee, toast, sandwich).
+- When `lesson-v3` is merged, regenerate `supabase/track-lessons.sql`: the project title changed.
+
 ## 28 Oct 2026 (branch `lesson-v3`): Python Basic Modules 4–12 in Lesson v4
 - All twelve Python Basic modules now use the v4 format (`tracks/pythonV4b.ts` for 4–12, same ids): guess first, cards with one-tap checks, try it with targets, predict-then-run pauses, spot the bug, sort or match, quick checks, build it and recall.
 - Notes v4 for Modules 4–12 (`notes/pythonV4.ts`): In 30 seconds, real mistakes, Check yourself. Every code block in these notes now runs on its own (a block that shows an error on purpose names it in a comment), and the last Hindi words in the List and Dictionary examples were replaced (tea, sandwich, toast, juice).

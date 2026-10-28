@@ -53,7 +53,9 @@ describe('stages', () => {
       for (const u of stage.units) {
         const l = getLesson(u.lessons[0].id)!;
         const first = l.steps[0];
-        if (l.format === 'v4') expect(first.type === 'quiz' && first.kicker).toBe('GUESS FIRST');
+        // A v4 project opens with the client's brief instead.
+        if (l.format === 'v4' && l.kind === 'project') expect(first.type).toBe('scenario');
+        else if (l.format === 'v4') expect(first.type === 'quiz' && first.kicker).toBe('GUESS FIRST');
         else expect(['concept', 'hook']).toContain(first.type);
       }
     }

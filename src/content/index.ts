@@ -34,7 +34,7 @@ import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS, GIT_PROJECT } from './tracks/git';
 import { JAVA_LESSONS, JAVA_PROJECT } from './tracks/java';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
-import { PYTHON_PROJECT } from './tracks/pythonFoundations';
+import { PYTHON_PROJECT_V4 as PYTHON_PROJECT } from './tracks/pythonProjectV4';
 import { PYTHON_BASIC } from './tracks/pythonV3';
 import { PYTHON_INTERMEDIATE, PYTHON_INTERMEDIATE_PROJECT } from './tracks/pythonIntermediate';
 import { PYTHON_ADVANCED, PYTHON_ADVANCED_PROJECT } from './tracks/pythonAdvanced';
