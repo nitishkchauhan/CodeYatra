@@ -6,8 +6,8 @@ Agreed with the owner one part at a time, starting 28 Oct 2026. This is the plan
 |---|---|---|
 | 1 | First open | ✅ agreed 28 Oct 2026 |
 | 2 | Home, roadmap, module complete and Yatri | ✅ agreed 28 Oct 2026 (designs on the canvas, page “v4 · Final plan”) |
-| 3 | The lesson screen (interactivity) | 📋 next |
-| 4 | Reading material (notes) | 📋 |
+| 3 | The lesson screen (interactivity) | ✅ agreed 28 Oct 2026 (playable on the canvas: “Lesson · Python Module 1”) |
+| 4 | Reading material (notes) | 📋 next |
 | 5 | Module by module content | 📋 |
 | 6 | Practice and revision | 📋 |
 | 7 | Profile, rewards and Plus | 📋 |
@@ -82,3 +82,26 @@ Home answers one question: **what do I do now?** Designs: canvas page “v4 · F
 Tap Yatri: it waves and says a short line; eyes follow the finger; it blinks.
 
 **Signature animation:** the logo’s footprints: the short opening animation, and footprints walking on the roadmap when a module is finished. Nowhere else.
+
+---
+
+## Part 3 · The lesson screen
+
+**Rule:** every screen asks the learner to do something, and the answer moves them on (no Next button after an answer). Never more than one plain “read and tap Next” screen in a row. Playable design: canvas page “v4 · Final plan”, “Lesson · Python Module 1”.
+
+| # | Screen | What the learner does |
+|---|---|---|
+| 1 | Guess first | A two-line story and code; tap a guess before any teaching |
+| 2–4 | Learn cards | ≤40 words; the learner drives the animation (run a line, put a value in a box); a one-tap check ends each card |
+| 5 | Try it with goals | Change values to hit 2 targets, ticked live |
+| 6 | Predict, then run | The program runs itself and stops at key lines to ask what happens next |
+| 7 | Spot the bug | Read the real error, tap the broken line, pick the fix, see it run |
+| 8 | Match or sort | Pairs, or sort into groups, then Check |
+| 9 | Quick check | 2–3 mixed questions: fill the gap, put lines in order, predict the output |
+| 10 | Build it | Tap pieces into gaps; checks tick live; the program runs |
+| 11 | Recall | 3 flip cards: think first, flip, “I knew it” / “Not yet” (“Not yet” goes to the warm-up) |
+| 12 | Module complete | The Part 2 screen |
+
+**Feedback:** right → green tick, one-line reason, moves on by itself. First wrong → a hint, try again. Second wrong → Yatri (encourage), the answer and why, Continue; the item comes back in the warm-up. **No lives or hearts.** “Right first try %” is the score.
+
+**Pilot:** Python Basic Modules 1–3 first, tested on the owner’s phone, then all tracks.
