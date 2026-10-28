@@ -140,8 +140,8 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     minutes: 5,
     sections: [
       { heading: 'Comparisons give True or False', body: '== asks “equal?”, != “not equal?”, and <, >, <=, >= compare sizes. Each comparison gives a boolean: True or False. Keep = (store) and == (compare) apart; mixing them is the most common beginner bug. Text comparisons care about capitals, so "a" == "A" is False; compare after .lower() when case shouldn’t matter.', code: ['print(5 > 3, "a" == "A")   # True False'], anim: 'types' },
-      { heading: 'if, elif and else', body: 'if runs its indented block only when the condition is True. elif checks another condition if the earlier ones failed, and else catches everything left. Python checks from the top and runs exactly one block, then skips the rest, so put the most specific checks first. The indentation (four spaces) is how Python knows which lines belong to which branch.', code: ['if marks >= 90:', '    grade = "A"', 'elif marks >= 60:', '    grade = "B"', 'else:', '    grade = "C"'], anim: 'branch' },
-      { heading: 'Combining conditions', body: 'and needs both sides True, or needs at least one, and not flips True and False. Python stops early: in a and b, if a is False it never looks at b. Brackets make mixed conditions clear. You can also chain comparisons: 18 <= age < 60 means age is at least 18 and under 60.', code: ['if age >= 60 or student:', '    discount = True'], anim: 'branch' },
+      { heading: 'if, elif and else', body: 'if runs its indented block only when the condition is True. elif checks another condition if the earlier ones failed, and else catches everything left. Python checks from the top and runs exactly one block, then skips the rest, so put the most specific checks first. The indentation (four spaces) is how Python knows which lines belong to which branch.', code: ['marks = 72', 'if marks >= 90:', '    grade = "A"', 'elif marks >= 60:', '    grade = "B"', 'else:', '    grade = "C"', 'print(grade)   # B'], anim: 'branch' },
+      { heading: 'Combining conditions', body: 'and needs both sides True, or needs at least one, and not flips True and False. Python stops early: in a and b, if a is False it never looks at b. Brackets make mixed conditions clear. You can also chain comparisons: 18 <= age < 60 means age is at least 18 and under 60.', code: ['age = 64', 'student = False', 'if age >= 60 or student:', '    print("Discount")'], anim: 'branch' },
     ],
     example: {
       title: 'Ticket concession',
@@ -203,9 +203,9 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
   'p-while-1': {
     minutes: 5,
     sections: [
-      { heading: 'Repeat while something is true', body: 'while condition: repeats its block as long as the condition stays True, checking it before every round. Use it when you don’t know in advance how many rounds are needed: until the user types the right PIN, until a number is small enough, until the game ends.', code: ['n = 40', 'while n > 5:', '    n = n // 2'], anim: 'whileLoop' },
-      { heading: 'Make sure it can stop', body: 'Something inside the loop must change the condition, or it runs forever and the program freezes. Before writing a while loop, ask what changes each round and when the condition becomes False. If the loop needs a safety limit, count rounds and stop at a maximum.', code: ['tries = 0', 'while tries < 3:', '    tries += 1'], anim: 'whileLoop' },
-      { heading: 'break and continue', body: 'break leaves the loop at once, even in the middle; continue skips the rest of this round and goes back to the check. while True: with a break inside is a common pattern for “keep asking until it’s right”. Use them sparingly so the loop stays easy to follow.', code: ['while True:', '    pin = next_try()', '    if pin == "4321":', '        break'], anim: 'loop' },
+      { heading: 'Repeat while something is true', body: 'while condition: repeats its block as long as the condition stays True, checking it before every round. Use it when you don’t know in advance how many rounds are needed: until the user types the right PIN, until a number is small enough, until the game ends.', code: ['n = 40', 'while n > 5:', '    n = n // 2', 'print(n)   # 5'], anim: 'whileLoop' },
+      { heading: 'Make sure it can stop', body: 'Something inside the loop must change the condition, or it runs forever and the program freezes. Before writing a while loop, ask what changes each round and when the condition becomes False. If the loop needs a safety limit, count rounds and stop at a maximum.', code: ['tries = 0', 'while tries < 3:', '    tries += 1', 'print(tries)   # 3'], anim: 'whileLoop' },
+      { heading: 'break and continue', body: 'break leaves the loop at once, even in the middle; continue skips the rest of this round and goes back to the check. while True: with a break inside is a common pattern for “keep asking until it’s right”. Use them sparingly so the loop stays easy to follow.', code: ['for pin in ["1111", "4321", "9999"]:', '    if pin == "4321":', '        print("Unlocked")', '        break'], anim: 'loop' },
     ],
     example: {
       title: 'Savings goal',
@@ -234,19 +234,19 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     minutes: 5,
     sections: [
       { heading: 'Lists keep things in order', body: 'A list holds values in order inside square brackets: seats = [12, 0, 7]. Positions start at 0, and negative positions count from the end. len(list) gives how many items. Lists can hold any values, even other lists, and the same value can appear more than once.', code: ['seats = [12, 0, 7]', 'print(seats[0], seats[-1], len(seats))   # 12 7 3'], anim: 'list' },
-      { heading: 'Changing a list', body: 'Unlike strings, lists can change in place. append(x) adds to the end, insert(i, x) adds at a position, list[i] = x replaces, remove(x) deletes the first match and pop() removes and returns the last item. sort() sorts the list itself; sorted(list) returns a new sorted list and leaves the original alone.', code: ['seats.append(3)', 'seats[1] = 5', 'seats.sort()'], anim: 'list' },
-      { heading: 'Looping and checking', body: 'for item in list visits every item. x in list checks if a value is there. sum, min and max work on a list of numbers. Two names can point to the same list: after b = a, changing b also changes a. Use a.copy() when you need a separate list.', code: ['if 0 in seats:', '    print("A coach is full")'], anim: 'loop' },
+      { heading: 'Changing a list', body: 'Unlike strings, lists can change in place. append(x) adds to the end, insert(i, x) adds at a position, list[i] = x replaces, remove(x) deletes the first match and pop() removes and returns the last item. sort() sorts the list itself; sorted(list) returns a new sorted list and leaves the original alone.', code: ['seats = [12, 0, 7]', 'seats.append(3)', 'seats[1] = 5', 'seats.sort()', 'print(seats)   # [3, 5, 7, 12]'], anim: 'list' },
+      { heading: 'Looping and checking', body: 'for item in list visits every item. x in list checks if a value is there. sum, min and max work on a list of numbers. Two names can point to the same list: after b = a, changing b also changes a. Use a.copy() when you need a separate list.', code: ['seats = [12, 0, 7]', 'if 0 in seats:', '    print("A coach is full")'], anim: 'loop' },
     ],
     example: {
       title: 'Today’s orders',
-      code: ['orders = ["chai", "samosa"]', 'orders.append("chai")', 'orders.insert(0, "vada")', 'print(orders)', 'print(orders.count("chai"), len(orders))', 'print(sorted(orders))'],
+      code: ['orders = ["tea", "sandwich"]', 'orders.append("tea")', 'orders.insert(0, "toast")', 'print(orders)', 'print(orders.count("tea"), len(orders))', 'print(sorted(orders))'],
       walk: [
-        { line: 2, text: 'append adds "chai" at the end.' },
-        { line: 3, text: 'insert(0, …) puts "vada" at the front, shifting the rest along.' },
+        { line: 2, text: 'append adds "tea" at the end.' },
+        { line: 3, text: 'insert(0, …) puts "toast" at the front, shifting the rest along.' },
         { line: 5, text: 'count tells how many times a value appears.' },
         { line: 6, text: 'sorted gives a new list in alphabetical order; orders is unchanged.' },
       ],
-      output: ["['vada', 'chai', 'samosa', 'chai']", '2 4', "['chai', 'chai', 'samosa', 'vada']"],
+      output: ["['toast', 'tea', 'sandwich', 'tea']", '2 4', "['sandwich', 'tea', 'tea', 'toast']"],
     },
     industry: 'Lists hold rows from a database, items in a cart and results from an API. A classic bug in real code is two variables sharing one list by accident; another is changing a list while looping over it. Knowing when a list is copied and when it is shared saves hours of debugging.',
     interview: [
@@ -267,19 +267,19 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     minutes: 5,
     sections: [
       { heading: 'Keys and values', body: 'A dictionary maps keys to values: marks = {"Asha": 91, "Ravi": 72}. You look up a value by its key, marks["Asha"], instead of by position. Keys are unique; storing under an existing key replaces its value. Keys are usually strings or numbers, and values can be anything, including lists and other dictionaries.', code: ['marks = {"Asha": 91, "Ravi": 72}', 'print(marks["Asha"])   # 91'], anim: 'dict' },
-      { heading: 'Adding, changing, checking', body: 'd[key] = value adds a new entry or replaces an old one. key in d checks if a key exists, and d.get(key, default) returns the value or the default when the key is missing, instead of crashing with a KeyError. del d[key] removes an entry. len(d) counts the keys.', code: ['marks["Zoya"] = 85', 'print(marks.get("Kabir", 0))   # 0'], anim: 'dict' },
-      { heading: 'Looping and counting', body: 'for key in d loops over the keys; d.items() gives key and value together: for name, m in marks.items(). A dictionary is the natural way to count things: counts[word] = counts.get(word, 0) + 1 adds one for each word. Dictionaries keep the order keys were added.', code: ['for name, m in marks.items():', '    print(name, m)'], anim: 'dict' },
+      { heading: 'Adding, changing, checking', body: 'd[key] = value adds a new entry or replaces an old one. key in d checks if a key exists, and d.get(key, default) returns the value or the default when the key is missing, instead of crashing with a KeyError. del d[key] removes an entry. len(d) counts the keys.', code: ['marks = {"Asha": 91, "Ravi": 72}', 'marks["Zoya"] = 85', 'print(marks.get("Kabir", 0))   # 0'], anim: 'dict' },
+      { heading: 'Looping and counting', body: 'for key in d loops over the keys; d.items() gives key and value together: for name, m in marks.items(). A dictionary is the natural way to count things: counts[word] = counts.get(word, 0) + 1 adds one for each word. Dictionaries keep the order keys were added.', code: ['marks = {"Asha": 91, "Ravi": 72}', 'for name, m in marks.items():', '    print(name, m)'], anim: 'dict' },
     ],
     example: {
       title: 'Count the votes',
-      code: ['votes = ["chai", "coffee", "chai", "lassi", "chai"]', 'counts = {}', 'for v in votes:', '    counts[v] = counts.get(v, 0) + 1', 'print(counts)', 'print(max(counts, key=counts.get))'],
+      code: ['votes = ["tea", "coffee", "tea", "juice", "tea"]', 'counts = {}', 'for v in votes:', '    counts[v] = counts.get(v, 0) + 1', 'print(counts)', 'print(max(counts, key=counts.get))'],
       walk: [
         { line: 2, text: 'An empty dictionary to fill.' },
         { line: 4, text: 'get(v, 0) is 0 the first time a drink is seen, so each count starts at 1.' },
         { line: 5, text: 'Keys appear in the order they were first added.' },
         { line: 6, text: 'max with key=counts.get finds the key with the biggest count.' },
       ],
-      output: ["{'chai': 3, 'coffee': 1, 'lassi': 1}", 'chai'],
+      output: ["{'tea': 3, 'coffee': 1, 'juice': 1}", 'tea'],
     },
     industry: 'JSON from APIs, rows from databases and app settings all become dictionaries in Python. Developers use them for fast lookups (finding a user by ID) and for counting and grouping data. Using .get() for fields that might be missing is a habit that prevents many production crashes.',
     interview: [
@@ -300,7 +300,7 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     sections: [
       { heading: 'Define once, use many times', body: 'def fare(km): creates a function named fare. The indented lines below are its body, and they run only when the function is called: fare(10). Functions give a name to a piece of work, so you can reuse it, test it on its own and read the main program like a list of steps.', code: ['def greet(name):', '    print("Hello,", name)', '', 'greet("Asha")'], anim: 'function' },
       { heading: 'Parameters and arguments', body: 'In def fare(km), km is a parameter: a name for the input. In fare(10), 10 is the argument: the actual value. When the function runs, km holds 10. A function can take several parameters, separated by commas, and they are matched in order.', code: ['def fare(km, rate):', '    return km * rate', 'print(fare(10, 2))   # 20'], anim: 'function' },
-      { heading: 'return sends the answer back', body: 'return value ends the function and hands the value back to whoever called it, so you can store it or use it in another calculation. print only shows a value; it does not give it back. A function without return gives back None. Prefer functions that return results and let the caller decide what to print.', code: ['total = fare(10, 2) + fare(5, 2)', 'print(total)   # 30'], anim: 'function' },
+      { heading: 'return sends the answer back', body: 'return value ends the function and hands the value back to whoever called it, so you can store it or use it in another calculation. print only shows a value; it does not give it back. A function without return gives back None. Prefer functions that return results and let the caller decide what to print.', code: ['def fare(km, rate):', '    return km * rate', 'total = fare(10, 2) + fare(5, 2)', 'print(total)   # 30'], anim: 'function' },
     ],
     example: {
       title: 'Fare with a minimum',
@@ -330,8 +330,8 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     minutes: 5,
     sections: [
       { heading: 'Read the error from the bottom', body: 'When something goes wrong, Python stops and prints a traceback. The last line is the most useful: the error’s type (like ValueError) and a message. The line above shows where it happened. Errors are not failures; they are Python telling you exactly what to fix.', code: ["int(\"abc\")   # ValueError: invalid literal for int() with base 10: 'abc'"], anim: 'error' },
-      { heading: 'try and except', body: 'Put code that might fail inside try:. If an error happens there, Python jumps to the matching except block instead of crashing, and the program carries on. Use it for things outside your control, like what a user types or whether a file exists. Code after the except runs either way.', code: ['try:', '    seats = int(text)', 'except ValueError:', '    seats = 0'], anim: 'error' },
-      { heading: 'Catch only what you expect', body: 'Name the specific error: except ValueError. A bare except: hides every problem, including your own bugs, and makes them very hard to find. else: runs when no error happened, and finally: always runs, which is useful for cleaning up. You can raise your own errors with raise ValueError("message").', code: ['if seats < 1:', '    raise ValueError("seats must be at least 1")'], anim: 'error' },
+      { heading: 'try and except', body: 'Put code that might fail inside try:. If an error happens there, Python jumps to the matching except block instead of crashing, and the program carries on. Use it for things outside your control, like what a user types or whether a file exists. Code after the except runs either way.', code: ['text = "two"', 'try:', '    seats = int(text)', 'except ValueError:', '    seats = 0', 'print(seats)   # 0'], anim: 'error' },
+      { heading: 'Catch only what you expect', body: 'Name the specific error: except ValueError. A bare except: hides every problem, including your own bugs, and makes them very hard to find. else: runs when no error happened, and finally: always runs, which is useful for cleaning up. You can raise your own errors with raise ValueError("message").', code: ['seats = 0', 'if seats < 1:', '    raise ValueError("seats must be at least 1")', '# ValueError: seats must be at least 1'], anim: 'error' },
     ],
     example: {
       title: 'Safe seat input',
@@ -363,7 +363,7 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     sections: [
       { heading: 'Opening a file', body: 'open(name, mode) opens a file. "r" reads (the default), "w" writes and empties the file first, and "a" appends to the end. Always use with open(…) as f:, which closes the file automatically when the block ends, even if an error happens.', code: ['with open("notes.txt", "w") as f:', '    f.write("Hello\\n")'], anim: 'file' },
       { heading: 'Writing lines', body: 'f.write(text) writes exactly what you give it, with no new line added, so end each line with "\\n". print(…, file=f) is another way that adds the new line for you. Writing numbers needs str() or an f-string first, because write only accepts text.', code: ['with open("log.txt", "a") as f:', '    f.write(f"booked {3} seats\\n")'], anim: 'file' },
-      { heading: 'Reading back', body: 'for line in f: reads one line at a time, which works even for huge files. Each line ends with "\\n", so call line.strip() before using it. f.read() gives the whole file as one string. A file that doesn’t exist raises FileNotFoundError, which you can catch.', code: ['with open("log.txt") as f:', '    for line in f:', '        print(line.strip())'], anim: 'file' },
+      { heading: 'Reading back', body: 'for line in f: reads one line at a time, which works even for huge files. Each line ends with "\\n", so call line.strip() before using it. f.read() gives the whole file as one string. A file that doesn’t exist raises FileNotFoundError, which you can catch.', code: ['with open("log.txt", "a") as f:', '    f.write("booked 3 seats\\n")', 'with open("log.txt") as f:', '    for line in f:', '        print(line.strip())'], anim: 'file' },
     ],
     example: {
       title: 'A tiny marks file',
@@ -393,9 +393,9 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
   'p-class-1': {
     minutes: 6,
     sections: [
-      { heading: 'A class describes a kind of object', body: 'class Ticket: describes what every ticket has and can do. Each ticket made from it is an object (an instance) with its own values. Classes keep related data and actions together, so a program about tickets reads like it is about tickets.', code: ['class Ticket:', '    pass', '', 't = Ticket()'], anim: 'classObject' },
-      { heading: '__init__ and self', body: '__init__ runs automatically when an object is made, and sets up its starting values. self is the object itself: self.name = name stores name on that particular ticket. Every method takes self as its first parameter; Python passes it in for you when you call t.add(1).', code: ['class Ticket:', '    def __init__(self, name, seats):', '        self.name = name', '        self.seats = seats'], anim: 'classObject' },
-      { heading: 'Methods change and use the object', body: 'A method is a function inside a class. It can read and change the object’s attributes through self, so the rules for changing a ticket live in one place. Two objects never share attributes: changing one ticket’s seats leaves the others alone.', code: ['    def add(self, n):', '        self.seats += n'], anim: 'classObject' },
+      { heading: 'A class describes a kind of object', body: 'class Ticket: describes what every ticket has and can do. Each ticket made from it is an object (an instance) with its own values. Classes keep related data and actions together, so a program about tickets reads like it is about tickets.', code: ['class Ticket:', '    pass', '', 't = Ticket()', 'print(type(t).__name__)   # Ticket'], anim: 'classObject' },
+      { heading: '__init__ and self', body: '__init__ runs automatically when an object is made, and sets up its starting values. self is the object itself: self.name = name stores name on that particular ticket. Every method takes self as its first parameter; Python passes it in for you when you call t.add(1).', code: ['class Ticket:', '    def __init__(self, name, seats):', '        self.name = name', '        self.seats = seats', '', 't = Ticket("Asha", 2)', 'print(t.name, t.seats)   # Asha 2'], anim: 'classObject' },
+      { heading: 'Methods change and use the object', body: 'A method is a function inside a class. It can read and change the object’s attributes through self, so the rules for changing a ticket live in one place. Two objects never share attributes: changing one ticket’s seats leaves the others alone.', code: ['class Ticket:', '    def __init__(self, seats):', '        self.seats = seats', '    def add(self, n):', '        self.seats += n', '', 't = Ticket(2)', 't.add(1)', 'print(t.seats)   # 3'], anim: 'classObject' },
     ],
     example: {
       title: 'Two tickets',

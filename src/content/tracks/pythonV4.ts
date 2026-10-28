@@ -6,10 +6,10 @@ import { bug, group, lesson, order, quiz, read, recall, trace, tryIt } from '../
 import type { CodeStep, Lesson, Reading } from '../types';
 
 const REVIEWED = '2026-10-28';
-const doc = (title: string, page: string): Reading => ({ title, url: `https://docs.python.org/3/${page}`, kind: 'docs', reviewed: REVIEWED, version: 'Python 3' });
-const LEARN = (n: number) => `LEARN · ${n} OF 3`;
+export const doc = (title: string, page: string): Reading => ({ title, url: `https://docs.python.org/3/${page}`, kind: 'docs', reviewed: REVIEWED, version: 'Python 3' });
+export const LEARN = (n: number) => `LEARN · ${n} OF 3`;
 
-const v4 = (id: string, title: string, learned: [string, string, string], steps: Lesson['steps'], reading: Reading[]): Lesson => ({
+export const v4 = (id: string, title: string, learned: [string, string, string], steps: Lesson['steps'], reading: Reading[]): Lesson => ({
   ...lesson(id, title, 'python', learned, steps, 10),
   level: 'basic',
   format: 'v4',

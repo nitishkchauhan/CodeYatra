@@ -1,6 +1,6 @@
 # Python · Basic · Lesson v4 draft (Modules 4–12)
 
-**Status:** draft for owner review (28 Oct 2026). Same format as the approved pilot (Modules 1–3): guess first → 3 cards, each ending in a one-tap check → try it with 2 targets → predict, then run (2 pauses) → spot the bug (real error or wrong output) → sort or match → 3 quick checks (fill the gap, put lines in order, predict) → build it → 3 recall cards. Notes for each module get the v4 sections too (In 30 seconds, runnable code, common mistakes, check yourself).
+**Status:** approved by the owner on 28 Oct 2026 and built on `lesson-v3` (`tracks/pythonV4b.ts`). Same format as the approved pilot (Modules 1–3): guess first → 3 cards, each ending in a one-tap check → try it with 2 targets → predict, then run (2 pauses) → spot the bug (real error or wrong output) → sort or match → 3 quick checks (fill the gap, put lines in order, predict) → build it → 3 recall cards. Notes for each module get the v4 sections too (In 30 seconds, runnable code, common mistakes, check yourself).
 
 Module ids stay the same, so progress is kept. **Every output and error below was run in real Python on 28 Oct 2026**; the tests will run them again. Plain English, no Hindi words. The story stays at **Riya’s tea stall**.
 

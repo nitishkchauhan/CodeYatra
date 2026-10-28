@@ -5,6 +5,7 @@ import { group, match, trace } from '../dsl';
 import type { AnimKey, Lesson, Step } from '../types';
 import { PYTHON_FOUNDATIONS } from './pythonFoundations';
 import { PYTHON_V4 } from './pythonV4';
+import { PYTHON_V4_MORE } from './pythonV4b';
 
 const RUN = 'WATCH IT RUN';
 const CHECK = 'QUICK CHECK';
@@ -332,6 +333,6 @@ function upgrade(l: Lesson): Lesson {
 }
 
 // Modules already rebuilt in the Lesson v4 format replace their v3 versions (same ids, so progress is kept).
-const V4 = new Map(PYTHON_V4.map((l) => [l.id, l]));
+const V4 = new Map([...PYTHON_V4, ...PYTHON_V4_MORE].map((l) => [l.id, l]));
 export const PYTHON_BASIC: Lesson[] = PYTHON_FOUNDATIONS.map((l) => V4.get(l.id) ?? upgrade(l));
 export const PYTHON_UPGRADED = Object.keys(UPGRADES);

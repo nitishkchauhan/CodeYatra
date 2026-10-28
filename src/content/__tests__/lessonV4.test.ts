@@ -13,7 +13,7 @@ const stepsOf = <T extends { type: string }>(type: T['type']) => v4.flatMap((l) 
 
 describe('Lesson v4 shape', () => {
   it('has the pilot modules', () => {
-    expect(v4.map((l) => l.id)).toEqual(['p-var-1', 'p-num-1', 'p-str-1']);
+    expect(v4.map((l) => l.id)).toEqual(['p-var-1', 'p-num-1', 'p-str-1', 'p-if-1', 'p-loop-1', 'p-while-1', 'p-loop-2', 'p-dict-1', 'p-fn-1', 'p-err-1', 'p-file-1', 'p-class-1']);
   });
 
   it.each(v4.map((l) => [l.id, l] as const))('%s: guess first, 3 cards with checks, try with targets, predict, bug, sort, checks, build, recall', (_, l) => {
@@ -28,7 +28,7 @@ describe('Lesson v4 shape', () => {
     expect(l.steps.some((s) => s.type === 'try' && (s.goals?.length ?? 0) >= 2)).toBe(true);
     expect(l.steps.some((s) => s.type === 'trace' && (s.stops?.length ?? 0) >= 2)).toBe(true);
     expect(l.steps.some((s) => s.type === 'bug' && !!s.error)).toBe(true);
-    expect(types).toContain('group');
+    expect(types.includes('group') || types.includes('match')).toBe(true);
     expect(types).toContain('code');
     expect(types.at(-1)).toBe('recall');
     expect(l.learned).toHaveLength(3);
@@ -71,7 +71,8 @@ describe('Lesson v4 against real Python', () => {
   it.each(rows(stepsOf<BugStep>('bug').filter(([, s]) => s.error)))('%s: the buggy program really prints the error, and the fix works', (_, step) => {
     if (!step || !python) return;
     const bad = runPyFull(step.lines.join('\n'));
-    const said = /Error\b/.test(step.error!) ? bad.error.trim().split('\n').at(-1) : bad.output.at(-1);
+    // A crash is compared by its last line; printed output is compared in full.
+    const said = /Error\b/.test(step.error!) ? bad.error.trim().split('\n').at(-1) : bad.output.join('\n');
     expect(said).toBe(step.error);
     const fixed = runPyFull(step.lines.map((l, i) => (i === step.bug ? step.fix : l)).join('\n'));
     expect(fixed.error).toBe('');
@@ -112,10 +113,18 @@ describe('Notes v4', () => {
     if (!python) return;
     for (const m of n.mistakes!) {
       const bad = runPyFull(m.bad.join('\n'));
-      const said = /Error\b/.test(m.error) ? bad.error.trim().split('\n').at(-1) : bad.output.at(-1);
+      const said = /Error\b/.test(m.error) ? bad.error.trim().split('\n').at(-1) : bad.output.join('\n');
       expect(said).toBe(m.error);
       expect(runPyFull(m.fix.join('\n')).error).toBe('');
     }
-    if (n.runnable) for (const sec of n.sections) if (sec.code) expect(runPyFull(sec.code.join('\n')).error).toBe('');
+    // Every block runs on its own. A block that shows an error on purpose names it in a comment.
+    if (n.runnable)
+      for (const sec of n.sections) {
+        if (!sec.code) continue;
+        const r = runPyFull(sec.code.join('\n'));
+        const shown = sec.code.join('\n').match(/#\s*(\w+Error: .*)$/m)?.[1];
+        if (shown) expect(r.error.trim().split('\n').at(-1)).toBe(shown);
+        else expect(r.error).toBe('');
+      }
   });
 });

@@ -8,7 +8,7 @@ Agreed with the owner one part at a time, starting 28 Oct 2026. This is the plan
 | 2 | Home, roadmap, module complete and Yatri | ✅ agreed 28 Oct 2026 (designs on the canvas, page “v4 · Final plan”) |
 | 3 | The lesson screen (interactivity) | ✅ agreed 28 Oct 2026 (playable on the canvas: “Lesson · Python Module 1”) |
 | 4 | Reading material (notes) | ✅ agreed 28 Oct 2026 (canvas: “Notes · Python Module 1”) |
-| 5 | Module by module content | 🚧 Python Basic 1–3 drafted (content-drafts/python-basic-v4.md) |
+| 5 | Module by module content | 🚧 Python Basic 1–12 built in v4 (28 Oct 2026); project and other tracks next |
 | 6 | Practice and revision | 📋 |
 | 7 | Profile, rewards and Plus | 📋 |
 

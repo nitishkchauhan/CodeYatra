@@ -2,6 +2,11 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 28 Oct 2026 (branch `lesson-v3`): Python Basic Modules 4–12 in Lesson v4
+- All twelve Python Basic modules now use the v4 format (`tracks/pythonV4b.ts` for 4–12, same ids): guess first, cards with one-tap checks, try it with targets, predict-then-run pauses, spot the bug, sort or match, quick checks, build it and recall.
+- Notes v4 for Modules 4–12 (`notes/pythonV4.ts`): In 30 seconds, real mistakes, Check yourself. Every code block in these notes now runs on its own (a block that shows an error on purpose names it in a comment), and the last Hindi words in the List and Dictionary examples were replaced (tea, sandwich, toast, juice).
+- Tests: bug steps and notes mistakes compare full printed output; v4 lessons may use match instead of sort. 4219 tests pass.
+
 ## 28 Oct 2026 (branch `lesson-v3`): Lesson v4 pilot
 - **The final app plan** (`APP-PLAN.md`): Parts 1–4 agreed with the owner (first open, Home and Yatri, the lesson screen, notes); Part 5 started. Rule added: no Hindi words anywhere in the app.
 - **Lesson v4 engine** (`format: 'v4'` on a lesson):
