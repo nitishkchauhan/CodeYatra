@@ -7,8 +7,8 @@ Agreed with the owner one part at a time, starting 28 Oct 2026. This is the plan
 | 1 | First open | ✅ agreed 28 Oct 2026 |
 | 2 | Home, roadmap, module complete and Yatri | ✅ agreed 28 Oct 2026 (designs on the canvas, page “v4 · Final plan”) |
 | 3 | The lesson screen (interactivity) | ✅ agreed 28 Oct 2026 (playable on the canvas: “Lesson · Python Module 1”) |
-| 4 | Reading material (notes) | 📋 next |
-| 5 | Module by module content | 📋 |
+| 4 | Reading material (notes) | 🎨 designed 28 Oct 2026, awaiting owner OK (canvas: “Notes · Python Module 1”) |
+| 5 | Module by module content | 📋 next |
 | 6 | Practice and revision | 📋 |
 | 7 | Profile, rewards and Plus | 📋 |
 
@@ -105,3 +105,25 @@ Tap Yatri: it waves and says a short line; eyes follow the finger; it blinks.
 **Feedback:** right → green tick, one-line reason, moves on by itself. First wrong → a hint, try again. Second wrong → Yatri (encourage), the answer and why, Continue; the item comes back in the warm-up. **No lives or hearts.** “Right first try %” is the score.
 
 **Pilot:** Python Basic Modules 1–3 first, tested on the owner’s phone, then all tracks.
+
+---
+
+## Part 4 · Reading material (notes)
+
+Each module’s notes are its **textbook page**: free, never forced, about a 6-minute read, going deeper than the lesson (the why and the edge cases). Design: canvas “Notes · Python Module 1”.
+
+| # | Section |
+|---|---|
+| 1 | **In 30 seconds**: the 3 key points (for quick revision) |
+| 2 | **Jump to** chips: Explain · Example · Mistakes · Interview · Check · Cheat sheet |
+| 3 | **Explained**: 3–5 short sections, every new word defined on first use; **every code block runs, and key values can be changed** |
+| 4 | **Worked example**: tap each step to light up its line, then the output |
+| 5 | **Common mistakes**: 2–3 real mistakes with the real error message and the fix |
+| 6 | **In industry**: where real products use it |
+| 7 | **Interview questions**: tap to reveal |
+| 8 | **Exam corner** (CBSE track only): a board-style question with the points that earn marks |
+| 9 | **Check yourself**: 3 questions; misses go to the warm-up |
+| 10 | **Cheat sheet**, with **Save as image** |
+| 11 | **Official docs** with the date each link was checked |
+
+Reading comfort: A− / A+ text size, Listen (read aloud), bookmarks per section, **Mark as read** (a tick on the roadmap). A **Notes library with search** lives in the Tracks tab. Writing rules: plain English a Class 9 student can read, short sentences, no Hindi words, every code example run by the tests. A later Plus extra could be downloading a whole track’s notes as a PDF; reading itself stays free.
