@@ -7,8 +7,8 @@ Agreed with the owner one part at a time, starting 28 Oct 2026. This is the plan
 | 1 | First open | ✅ agreed 28 Oct 2026 |
 | 2 | Home, roadmap, module complete and Yatri | ✅ agreed 28 Oct 2026 (designs on the canvas, page “v4 · Final plan”) |
 | 3 | The lesson screen (interactivity) | ✅ agreed 28 Oct 2026 (playable on the canvas: “Lesson · Python Module 1”) |
-| 4 | Reading material (notes) | 🎨 designed 28 Oct 2026, awaiting owner OK (canvas: “Notes · Python Module 1”) |
-| 5 | Module by module content | 📋 next |
+| 4 | Reading material (notes) | ✅ agreed 28 Oct 2026 (canvas: “Notes · Python Module 1”) |
+| 5 | Module by module content | 🚧 Python Basic 1–3 drafted (content-drafts/python-basic-v4.md) |
 | 6 | Practice and revision | 📋 |
 | 7 | Profile, rewards and Plus | 📋 |
 
@@ -127,3 +127,18 @@ Each module’s notes are its **textbook page**: free, never forced, about a 6-m
 | 11 | **Official docs** with the date each link was checked |
 
 Reading comfort: A− / A+ text size, Listen (read aloud), bookmarks per section, **Mark as read** (a tick on the roadmap). A **Notes library with search** lives in the Tracks tab. Writing rules: plain English a Class 9 student can read, short sentences, no Hindi words, every code example run by the tests. A later Plus extra could be downloading a whole track’s notes as a PDF; reading itself stays free.
+
+---
+
+## Part 5 · Module by module content
+
+**How every module is made:** draft in `content-drafts/` (screens table + notes outline, every output run in real Python/JS) → owner OK → build → tests → owner tries it in a test APK.
+
+**Order (one track at a time, best first):**
+1. **Python Basic, Modules 1–3 (pilot)** → owner tests on the phone → fix the format if needed.
+2. Python Basic 4–12 and the project.
+3. HTML, CSS and JavaScript Basic moved to the v4 format (they are already v3, so this is mostly new screen types).
+4. The Intermediate levels already drafted (HTML, CSS, JS) in v4 format, then Python Intermediate and Advanced.
+5. SQL, then the other tracks by how many learners use them.
+
+**Honest note:** 16 tracks × 12 modules is about 200 modules. At v4 quality that takes months, so every track stays live in its current form until its turn; nothing is hidden or removed.
