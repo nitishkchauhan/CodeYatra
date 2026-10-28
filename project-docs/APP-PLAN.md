@@ -5,14 +5,16 @@ Agreed with the owner one part at a time, starting 28 Oct 2026. This is the plan
 | Part | What | Status |
 |---|---|---|
 | 1 | First open | ✅ agreed 28 Oct 2026 |
-| 2 | Home | 📋 next |
-| 3 | The lesson screen (interactivity) | 📋 |
+| 2 | Home, roadmap, module complete and Yatri | ✅ agreed 28 Oct 2026 (designs on the canvas, page “v4 · Final plan”) |
+| 3 | The lesson screen (interactivity) | 📋 next |
 | 4 | Reading material (notes) | 📋 |
 | 5 | Module by module content | 📋 |
 | 6 | Practice and revision | 📋 |
 | 7 | Profile, rewards and Plus | 📋 |
 
 **Kept as decided:** the name stays **CodeYatra** (Forge was considered and dropped on 28 Oct 2026: the name is crowded in tech, and CodeYatra fits Indian learners). The logo stays “cy, leaving footprints” (16 Oct 2026).
+
+**Language rule (28 Oct 2026):** no Hindi words anywhere in the app: plain, simple English only. No Hindi greetings or phrases (“Namaste”, “chalo”, “arre”…), no Devanagari text, no Hindi language switch. Exceptions still to confirm with the owner: the brand names CodeYatra and Yatri, people’s and place names, and Indian dish names in lesson stories.
 
 ---
 
@@ -45,3 +47,38 @@ Agreed with the owner one part at a time, starting 28 Oct 2026. This is the plan
 - **Back works on every screen**, and a progress bar shows screens 2–5.
 - **Funnel counts without personal data:** how many people reach each screen and finish the first lesson, and the “how did you hear” answers as totals, so the owner can see where people drop off and which channels work. The Play data safety form is updated if anything new is collected.
 - **No fake loaders, no fake counts** (“10,000 students joined today”).
+
+---
+
+## Part 2 · Home
+
+Home answers one question: **what do I do now?** Designs: canvas page “v4 · Final plan” (Home roadmap and module complete; Yatri · moods and reactions).
+
+| Part | What it shows |
+|---|---|
+| Header | Greeting; the **track name** (tap to switch track); streak; today’s ring (“2/3”). XP moves to Profile and the league. |
+| Up next | One big card: next module, what you’ll make, time, progress, one **Continue** button. |
+| Today | A checklist of 3: a 2-minute warm-up (revision due), finish a module, a 1-minute daily challenge. Doing one keeps the streak. |
+| Your journey | The track’s roadmap: done ✓ with footprints between, **You are here** glowing, locked ahead. Tap a done module to redo it or read its notes. |
+| Tabs | Home · Tracks (was Paths; career paths live inside) · Practice · Profile. |
+
+**Removed from Home:** the track-switcher row, the four-card carousel (“For you” and “My path” move to Tracks; daily cards become the warm-up).
+
+**Special cases:** back after a few days → “Welcome back. 2-minute warm-up?” (no guilt); track finished → certificate card and the next suggested track; offline → loaded lessons still work.
+
+**Module complete screen (≈4 s, tap to skip, reduce motion = no movement):** footprints walk to the badge → tick → “<Module>: done” → minutes, % right first try, XP → **You can now** (the module’s 3 goals) → streak +1 → **Next: Module N**, Read notes, Home. Back on Home the footprints walk to the next module.
+
+**Yatri (redesigned 28 Oct 2026):** helmet with a dark visor face, teal eyes, saffron scarf, the logo’s footprints on its chest, backpack, antenna light by mood. Appears **only at moments**, never bobbing on Home:
+
+| Mood | When |
+|---|---|
+| Happy | a right answer, or a right fix after a mistake |
+| Thinking | code taking more than a second to run |
+| Celebrate | module, track or certificate finished |
+| Encourage | after the second wrong try, with a pointer (never the answer) |
+| Welcome back | returning after 3+ days (asleep; wakes when tapped) |
+| Coding | small, in Playground and Practice; tap for a hint |
+
+Tap Yatri: it waves and says a short line; eyes follow the finger; it blinks.
+
+**Signature animation:** the logo’s footprints: the short opening animation, and footprints walking on the roadmap when a module is finished. Nowhere else.
