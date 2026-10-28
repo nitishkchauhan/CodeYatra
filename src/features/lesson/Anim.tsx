@@ -87,9 +87,9 @@ function Print() {
   return (
     <>
       <Row>
-        <Chip>{'print("Namaste")'}</Chip>
+        <Chip>{'print("Hello")'}</Chip>
         <Arrow />
-        <Console lines={b >= 1 ? ['Namaste', ...(b >= 2 ? ['…and on a new line'] : [])] : []} />
+        <Console lines={b >= 1 ? ['Hello', ...(b >= 2 ? ['…and on a new line'] : [])] : []} />
       </Row>
       <Caption>print() shows text on the screen, one line each time.</Caption>
     </>

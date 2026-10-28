@@ -10,7 +10,7 @@ import { FootSteps } from '@/components/ui/Progress';
 import { T } from '@/components/ui/Text';
 import { colors } from '@/theme';
 
-export function LessonTopBar({ steps, index, xp, onClose }: { steps: number; index: number; xp: number; onClose: () => void }) {
+export function LessonTopBar({ steps, index, xp, onClose, onNotes }: { steps: number; index: number; xp: number; onClose: () => void; onNotes?: () => void }) {
   return (
     <View style={styles.top}>
       <Pressable accessibilityRole="button" accessibilityLabel="Exit lesson" onPress={onClose} hitSlop={6} style={styles.close}>
@@ -19,6 +19,14 @@ export function LessonTopBar({ steps, index, xp, onClose }: { steps: number; ind
       <View accessibilityRole="progressbar" accessibilityLabel={`Step ${index + 1} of ${steps}`} style={{ flex: 1 }}>
         <FootSteps count={steps} done={index} />
       </View>
+      {onNotes ? (
+        <Pressable accessibilityRole="button" accessibilityLabel="Open this module's notes" onPress={onNotes} hitSlop={4} style={styles.notes}>
+          <Icon name="learn" size={16} color={colors.primary} />
+          <T variant="labelSm" color={colors.primary}>
+            Notes
+          </T>
+        </Pressable>
+      ) : null}
       <View style={styles.xp}>
         <T variant="labelSm" color={colors.saffronInk}>
           +{xp} XP
@@ -97,6 +105,7 @@ const styles = StyleSheet.create({
   badge: { position: 'absolute', right: -4, bottom: 0, width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: '#FFFFFF' },
   top: { height: 56, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 16 },
   close: { width: 44, height: 44, marginLeft: -10, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  notes: { height: 32, flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, borderRadius: 16, backgroundColor: colors.primarySoft },
   xp: { height: 28, paddingHorizontal: 10, borderRadius: 14, backgroundColor: colors.saffronSoft, justifyContent: 'center' },
   bar: { borderTopWidth: 1, paddingHorizontal: 16, paddingTop: 16, gap: 12 },
 });

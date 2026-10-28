@@ -5,6 +5,7 @@ import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { ConsoleView } from './EditorStep';
 import { ActionBar, StepHeader, VerdictBar } from './Shell';
+import { AskBlock } from './V4';
 import { CodeBlock } from '@/components/Code';
 import { WebPreview } from '@/components/WebPreview';
 import { Yatri } from '@/components/Yatri';
@@ -30,7 +31,8 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
   const [trace, setTrace] = useState<TraceData | null>(null);
   const [failed, setFailed] = useState<string | null>(null);
   const [at, setAt] = useState(0);
-  const [playing, setPlaying] = useState(false);
+  // With stops (Lesson v4) the run plays by itself as soon as the trace is ready.
+  const [playing, setPlaying] = useState(!!step.stops?.length);
   const [pick, setPick] = useState<number | null>(null);
   const [verdict, setVerdict] = useState<boolean | null>(null);
   const [ruledOut, setRuledOut] = useState<number[]>([]);
@@ -55,8 +57,21 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
   const frame = frames[at];
   const done = !!trace && at === last;
 
-  // Playing stops by itself at the last step.
-  const isPlaying = playing && at < last;
+  // Lesson v4 stops: the run plays by itself and pauses before each stop's line to ask what happens next.
+  const stops = step.stops ?? [];
+  const [solved, setSolved] = useState(0);
+  const stopAt: number[] = [];
+  for (const st of stops) stopAt.push(frames.findIndex((f, i) => f.line === st.line && i > (stopAt.at(-1) ?? -1)));
+  const waiting = solved < stops.length && stopAt[solved] === at;
+  const stopsDone = stops.length > 0 && solved >= stops.length;
+  useEffect(() => {
+    if (!stopsDone || !done) return;
+    const t = setTimeout(onDone, 2200);
+    return () => clearTimeout(t);
+  }, [stopsDone, done, onDone]);
+
+  // Playing stops by itself at the last step, and at a stop that hasn't been answered.
+  const isPlaying = playing && at < last && !waiting;
   useEffect(() => {
     if (!isPlaying) return;
     timer.current = setTimeout(() => setAt((a) => a + 1), 900);
@@ -67,11 +82,19 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
 
   const changed = frame ? changedVars(frames[at - 1], frame) : [];
   const ask = step.ask;
-  const canContinue = failed !== null || (done && (!ask || verdict === true));
+  const canContinue = failed !== null || (done && (!ask || verdict === true) && (!stops.length || stopsDone));
+  const traceScroll = useRef<ScrollView>(null);
+  const toEnd = () => traceScroll.current?.scrollToEnd({ animated: true });
+  // When the run pauses at a stop, bring its question into view.
+  useEffect(() => {
+    if (!waiting) return;
+    const t = setTimeout(() => traceScroll.current?.scrollToEnd({ animated: true }), 250);
+    return () => clearTimeout(t);
+  }, [waiting]);
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView ref={traceScroll} contentContainerStyle={styles.content}>
         <Animated.View entering={FadeInDown.duration(320)}>
           <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
         </Animated.View>
@@ -137,7 +160,7 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
                   {isPlaying ? 'Pause' : done ? 'Replay' : 'Play'}
                 </T>
               </Pressable>
-              <Pressable accessibilityRole="button" accessibilityLabel="Next step" disabled={done} onPress={() => { haptic.tap(); setPlaying(false); setAt((a) => Math.min(last, a + 1)); }} style={[styles.ctrl, done && { opacity: 0.4 }]}>
+              <Pressable accessibilityRole="button" accessibilityLabel="Next step" disabled={done || waiting} onPress={() => { haptic.tap(); setPlaying(false); setAt((a) => Math.min(last, a + 1)); }} style={[styles.ctrl, (done || waiting) && { opacity: 0.4 }]}>
                 <View style={{ transform: [{ rotate: '180deg' }] }}>
                   <Icon name="back" size={18} color={colors.ink} />
                 </View>
@@ -146,6 +169,23 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
           </>
         ) : null}
 
+        {waiting ? (
+          <Animated.View key={solved} entering={FadeInDown.duration(260)} style={styles.stop}>
+            <T variant="labelSm" color={colors.saffronInk}>
+              PAUSED · LINE {stops[solved].line} RUNS NEXT
+            </T>
+            <AskBlock
+              ask={stops[solved]}
+              onMistake={onMistake}
+              onFeedback={toEnd}
+              onSolved={() => {
+                setSolved((n) => n + 1);
+                setPlaying(true);
+                setAt((a) => Math.min(last, a + 1));
+              }}
+            />
+          </Animated.View>
+        ) : null}
         {ask && done ? (
           <Animated.View entering={FadeInDown.duration(260)} style={{ gap: 8 }} accessibilityRole="radiogroup">
             <T variant="label">{ask.prompt}</T>
@@ -198,7 +238,7 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
               }}
             />
           ) : (
-            <Button label={canContinue ? t('continue') : 'Step to the end to continue'} disabled={!canContinue} onPress={onDone} />
+            <Button label={canContinue ? t('continue') : stops.length ? 'Answer the questions as it runs' : 'Step to the end to continue'} disabled={!canContinue} onPress={onDone} />
           )}
         </ActionBar>
       )}
@@ -502,6 +542,7 @@ export function PageBuildStep({ step, onDone }: { step: PageBuild; onDone: () =>
 }
 
 const styles = StyleSheet.create({
+  stop: { gap: 10, borderRadius: 18, borderWidth: 2, borderColor: colors.saffron, backgroundColor: colors.surface, padding: 14 },
   content: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 24, gap: 14 },
   codeCard: { borderRadius: 16, backgroundColor: colors.code.bg, overflow: 'hidden' },
   codeHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 14, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.code.line },

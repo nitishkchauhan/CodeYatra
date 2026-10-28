@@ -53,7 +53,15 @@ export type ConceptStep = {
   tip?: string;
   /** Lesson v3: a small looping animation of the idea (see ANIMS in features/lesson/Anim.tsx). */
   anim?: AnimKey;
+  /** Lesson v4: a one-tap question under the card; answering it moves on (no Next button). */
+  check?: Ask;
 };
+
+/**
+ * Lesson v4: a one-tap question. A right answer moves on by itself; the first wrong answer shows `hint`,
+ * the second shows the answer and `why`. Used by concept cards and by stops in a trace.
+ */
+export type Ask = { prompt: string; options: string[]; answer: number; hint: string; why: string; mono?: boolean; code?: string[] };
 
 /** The animations a concept card can show. Each is a short, looping, built-in scene (no image files). */
 export type AnimKey =
@@ -99,6 +107,8 @@ export type AnimKey =
 
 export type QuizStep = {
   type: 'quiz';
+  /** Lesson v4: the heading over the question, e.g. "GUESS FIRST" (QUICK CHECK if not given). */
+  kicker?: string;
   prompt: string;
   code?: CodeSample;
   options: string[];
@@ -166,6 +176,8 @@ export type BugStep = {
   /** The corrected line, shown after answering. */
   fix: string;
   explain: string;
+  /** Lesson v4: what the program printed or the error it gave, shown above the code (tests check it). */
+  error?: string;
 };
 
 /** Read the code and type exactly what it prints. */
@@ -235,6 +247,8 @@ export type TryStep = {
   files?: { html: string; css?: string; js?: string };
   /** Small changes to try, e.g. "Change 72 to 100". */
   ideas: string[];
+  /** Lesson v4: targets ticked when a run prints them (the last line of output must equal `output`). */
+  goals?: { label: string; output: string }[];
 };
 
 /** Lesson v2: Yatri shows a mistake beginners really make, the error it gives, and the fix. */
@@ -277,6 +291,11 @@ export type TraceStep = {
     /** Where the right option comes from, so tests can check it: a variable's final value, or the last line printed. */
     check: { var: string } | { out: true };
   };
+  /**
+   * Lesson v4: the trace plays by itself and pauses before `line` runs to ask what will happen.
+   * `check` is read from the step right after that line ran, so tests can verify the answer.
+   */
+  stops?: (Ask & { line: number; check: { var: string } | { out: true } })[];
 };
 
 /**
@@ -335,8 +354,16 @@ export type ScenarioStep = {
   task: string;
 };
 
+/** Lesson v4: flip cards at the end. The learner tries to remember, flips, then says if they knew it. */
+export type RecallStep = {
+  type: 'recall';
+  kicker: string;
+  title: string;
+  cards: { q: string; a: string }[];
+};
+
 /** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
-export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild'] as const;
+export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild', 'recall'] as const;
 /** A step that only teaches. Watching a program run is teaching too, unless it ends with a question. */
 export const isTeaching = (s: Step) => (TEACHING_STEPS as readonly string[]).includes(s.type) || (s.type === 'trace' && !s.ask);
 
@@ -358,7 +385,8 @@ export type Step =
   | PageBuildStep
   | MatchStep
   | GroupStep
-  | ScenarioStep;
+  | ScenarioStep
+  | RecallStep;
 
 /**
  * "Read more": a module's notes, a short article read after (or instead of) the lesson.
@@ -386,6 +414,14 @@ export type ModuleNotes = {
   industry: string;
   interview: { q: string; a: string }[];
   cheat: { code: string; meaning: string }[];
+  /** Notes v4: the three key points, shown first for quick revision. */
+  summary?: string[];
+  /** Notes v4: real mistakes with the exact error (tests run `bad` and compare) and the fix. */
+  mistakes?: { title: string; bad: string[]; error: string; fix: string[]; why: string }[];
+  /** Notes v4: three quick questions at the end. */
+  check?: { q: string; options: string[]; answer: number; why: string }[];
+  /** Notes v4: code in sections can be run, and the output is checked by tests. */
+  runnable?: boolean;
 };
 
 /** How far along a module is: Basic (read and explain), Intermediate (solve alone), Advanced (do real job tasks). */
@@ -399,6 +435,8 @@ export type Lesson = {
   kind: 'lesson' | 'practice' | 'project';
   /** Lesson v3: Basic, Intermediate or Advanced. */
   level?: Level;
+  /** Lesson v4 (APP-PLAN Part 3): answers are tapped, hints come before answers, right answers move on by themselves. */
+  format?: 'v4';
   minutes: number;
   skill: SkillKey;
   steps: Step[];

@@ -48,8 +48,14 @@ describe('stages', () => {
 
   it('teaches before it tests: every module opens with reading', () => {
     for (const stage of STAGES.slice(1)) {
-      // Lesson v2 modules open with a hook (a real situation) instead of a reading card.
-      for (const u of stage.units) expect(['concept', 'hook']).toContain(getLesson(u.lessons[0].id)?.steps[0].type);
+      // Lesson v2 modules open with a hook (a real situation) instead of a reading card; Lesson v4 modules open with
+      // a "guess first" question, which teaches by making the learner curious (it is never held against them).
+      for (const u of stage.units) {
+        const l = getLesson(u.lessons[0].id)!;
+        const first = l.steps[0];
+        if (l.format === 'v4') expect(first.type === 'quiz' && first.kicker).toBe('GUESS FIRST');
+        else expect(['concept', 'hook']).toContain(first.type);
+      }
     }
   });
 

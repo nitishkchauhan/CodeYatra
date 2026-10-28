@@ -1,6 +1,6 @@
 # Python · Basic · Lesson v4 pilot draft (Modules 1–3)
 
-**Status:** draft for owner review (28 Oct 2026). Pilot of the final lesson format (APP-PLAN Part 3) and notes format (Part 4). Module ids stay the same (`p-var-1`, `p-num-1`, `p-str-1`), so learners keep their progress. Module 1 is also playable on the design canvas (“Lesson · Python Module 1” and “Notes · Python Module 1”).
+**Status:** approved by the owner on 28 Oct 2026 and built on `lesson-v3` (`tracks/pythonV4.ts`). Changes while building: Try-it targets follow the values the app offers when tapped (Module 1: 600 and 960; Module 3: 3 x tea = ₹36 and 4 x tea = ₹48); the Module 2 bug uses `typed = "40"` (what input() gives) so tests can run it; the Module 3 build-it distractor is r instead of F. Pilot of the final lesson format (APP-PLAN Part 3) and notes format (Part 4). Module ids stay the same (`p-var-1`, `p-num-1`, `p-str-1`), so learners keep their progress. Module 1 is also playable on the design canvas (“Lesson · Python Module 1” and “Notes · Python Module 1”).
 
 **Rules used:** every screen asks the learner to do something; no Next button after an answer; hint on the first wrong try, the answer and why on the second; plain English, **no Hindi words**; every output and error below was run in real Python (3.10) on 28 Oct 2026, and the tests will run them again.
 

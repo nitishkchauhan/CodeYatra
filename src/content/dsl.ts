@@ -1,6 +1,6 @@
 // Small builders that keep lesson files short and readable.
 // Each returns a plain step object; content tests check every one of them.
-import type { BugStep, CodeLang, ConceptStep, GroupStep, HookStep, PageBuildStep, Lesson, MatchStep, MistakeStep, OrderStep, PredictStep, QuizStep, ScenarioStep, SkillKey, Step, TapStep, TraceStep, TryStep } from './types';
+import type { BugStep, CodeLang, ConceptStep, GroupStep, HookStep, PageBuildStep, Lesson, MatchStep, MistakeStep, OrderStep, PredictStep, QuizStep, RecallStep, ScenarioStep, SkillKey, Step, TapStep, TraceStep, TryStep } from './types';
 
 const LABEL: Record<CodeLang, string> = {
   python: 'Python',
@@ -15,7 +15,7 @@ const LABEL: Record<CodeLang, string> = {
 };
 
 /** A reading card. `code` is one sample in `lang`. */
-export function read(o: { kicker: string; title: string; body: string; lang?: CodeLang; code?: string[]; tip?: string; visual?: ConceptStep['visual']; anim?: ConceptStep['anim'] }): ConceptStep {
+export function read(o: { kicker: string; title: string; body: string; lang?: CodeLang; code?: string[]; tip?: string; visual?: ConceptStep['visual']; anim?: ConceptStep['anim']; check?: ConceptStep['check'] }): ConceptStep {
   return {
     type: 'concept',
     kicker: o.kicker,
@@ -25,13 +25,15 @@ export function read(o: { kicker: string; title: string; body: string; lang?: Co
     tip: o.tip,
     visual: o.visual,
     anim: o.anim,
+    check: o.check,
   };
 }
 
 /** A multiple-choice check. The first option is the right one; the app shuffles them. */
-export function quiz(o: { prompt: string; options: [string, ...string[]]; right: string; wrong: string; lang?: CodeLang; code?: string[]; mono?: boolean }): QuizStep {
+export function quiz(o: { kicker?: string; prompt: string; options: [string, ...string[]]; right: string; wrong: string; lang?: CodeLang; code?: string[]; mono?: boolean }): QuizStep {
   return {
     type: 'quiz',
+    kicker: o.kicker,
     prompt: o.prompt,
     options: o.options,
     answer: 0,
@@ -66,6 +68,7 @@ export const traceJs = (o: Omit<TraceStep, 'type' | 'lang'>): TraceStep => ({ ty
 export const match = (o: Omit<MatchStep, 'type'>): MatchStep => ({ type: 'match', ...o });
 export const group = (o: Omit<GroupStep, 'type'>): GroupStep => ({ type: 'group', ...o });
 export const scenario = (o: Omit<ScenarioStep, 'type'>): ScenarioStep => ({ type: 'scenario', ...o });
+export const recall = (o: Omit<RecallStep, 'type'>): RecallStep => ({ type: 'recall', ...o });
 export const pageBuild = (o: Omit<PageBuildStep, 'type'>): PageBuildStep => ({ type: 'pagebuild', ...o });
 
 /** A lesson: reading first, then practice. */

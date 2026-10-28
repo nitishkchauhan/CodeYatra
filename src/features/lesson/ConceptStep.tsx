@@ -6,6 +6,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Anim } from './Anim';
 import { ConceptVisual } from './ConceptVisual';
 import { ActionBar } from './Shell';
+import { AskBlock } from './V4';
 import { Yatri } from '@/components/Yatri';
 import { CodeBlock } from '@/components/Code';
 import { Button } from '@/components/ui/Button';
@@ -18,12 +19,13 @@ import { colors, fonts } from '@/theme';
 
 const ROUND_MS = 700;
 
-export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }) {
+export function ConceptStep({ step, onDone, onMistake }: { step: Step; onDone: () => void; onMistake?: () => void }) {
   const t = useT();
   const [tab, setTab] = useState(0);
   const [round, setRound] = useState(-1);
   const [speaking, setSpeaking] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scroller = useRef<ScrollView>(null);
 
   const demo = step.demo;
   const rounds = demo?.values.length ?? 0;
@@ -60,7 +62,7 @@ export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView ref={scroller} contentContainerStyle={styles.content}>
         <Animated.View entering={FadeInDown.duration(320)} style={{ gap: 6 }}>
           <T variant="kicker">{step.kicker}</T>
           <T variant="display" accessibilityRole="header">
@@ -161,8 +163,18 @@ export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }
             </T>
           </Animated.View>
         ) : null}
+
+        {step.check ? (
+          <Animated.View entering={FadeInDown.delay(300).duration(320)} style={styles.check}>
+            <T variant="labelSm" color={colors.primary}>
+              QUICK CHECK
+            </T>
+            <AskBlock ask={step.check} onSolved={onDone} onMistake={onMistake ?? (() => {})} onFeedback={() => scroller.current?.scrollToEnd({ animated: true })} />
+          </Animated.View>
+        ) : null}
       </ScrollView>
 
+      {step.check ? null : (
       <ActionBar>
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <Button
@@ -175,6 +187,7 @@ export function ConceptStep({ step, onDone }: { step: Step; onDone: () => void }
           <Button label={t('continue')} onPress={onDone} style={{ flex: 1 }} />
         </View>
       </ActionBar>
+      )}
     </View>
   );
 }
@@ -206,5 +219,6 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   chip: { height: 30, paddingHorizontal: 8, borderRadius: 8, justifyContent: 'center' },
+  check: { gap: 10, paddingTop: 6, borderTopWidth: 1, borderTopColor: colors.lineSoft },
   tip: { flexDirection: 'row', gap: 10, borderRadius: 16, backgroundColor: colors.warnSoft, borderWidth: 1, borderColor: colors.warnLine, padding: 12 },
 });

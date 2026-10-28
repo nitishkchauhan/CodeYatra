@@ -10,6 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ActionBar, VerdictYatri } from './Shell';
+import { AskBlock } from './V4';
 import { CodeBlock } from '@/components/Code';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -19,7 +20,37 @@ import { useT } from '@/i18n';
 import { haptic } from '@/lib/haptics';
 import { colors, fonts } from '@/theme';
 
-export function QuizStep({ step, onDone, onMistake }: { step: Step; onDone: () => void; onMistake: () => void }) {
+export function QuizStep({ step, onDone, onMistake, v4 }: { step: Step; onDone: () => void; onMistake: () => void; v4?: boolean }) {
+  if (v4) return <QuizV4 step={step} onDone={onDone} onMistake={onMistake} />;
+  return <QuizV3 step={step} onDone={onDone} onMistake={onMistake} />;
+}
+
+export const GUESS = 'GUESS FIRST';
+
+/** Lesson v4: tap an answer; a right one moves on by itself (see AskBlock). */
+function QuizV4({ step, onDone, onMistake }: { step: Step; onDone: () => void; onMistake: () => void }) {
+  const scroller = useRef<ScrollView>(null);
+  return (
+    <ScrollView ref={scroller} contentContainerStyle={styles.content}>
+      <Animated.View entering={FadeInDown.duration(320)} style={{ gap: 6 }}>
+        <T variant="kicker">{step.kicker ?? 'QUICK CHECK'}</T>
+        <T variant="title" accessibilityRole="header">
+          {step.prompt}
+        </T>
+      </Animated.View>
+      {step.code ? (
+        <Animated.View entering={FadeInDown.delay(80).duration(320)} style={styles.code}>
+          <CodeBlock lines={step.code.lines} lang={step.code.lang} />
+        </Animated.View>
+      ) : null}
+      <Animated.View entering={FadeInDown.delay(160).duration(320)}>
+        <AskBlock ask={{ prompt: '', options: step.options, answer: step.answer, hint: step.wrong, why: step.right, mono: step.mono }} onSolved={onDone} onMistake={onMistake} guess={step.kicker === GUESS} onFeedback={() => scroller.current?.scrollToEnd({ animated: true })} />
+      </Animated.View>
+    </ScrollView>
+  );
+}
+
+function QuizV3({ step, onDone, onMistake }: { step: Step; onDone: () => void; onMistake: () => void }) {
   const t = useT();
   const [pick, setPick] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);

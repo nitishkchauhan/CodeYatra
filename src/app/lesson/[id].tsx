@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '@/components/ui/Button';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { buildReview, getLesson, nextLessonAfter, type Lesson } from '@/content';
+import { buildReview, getLesson, isTeaching, nextLessonAfter, type Lesson } from '@/content';
 import { CHECKPOINT_PREFIX, PASS_MARK, scoreCheckpoint } from '@/content/checkpoints';
 import { getNotes } from '@/content/notes';
 import { CodeStep } from '@/features/lesson/CodeStep';
@@ -20,6 +20,7 @@ import { QuizStep } from '@/features/lesson/QuizStep';
 import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/features/lesson/PracticeSteps';
 import { LessonTopBar } from '@/features/lesson/Shell';
 import { HookStep, MistakeStep, TryStep } from '@/features/lesson/V2Steps';
+import { BugStepV4, RecallStep } from '@/features/lesson/V4';
 import { GroupStep, MatchStep, PageBuildStep, ScenarioStep, TraceStep } from '@/features/lesson/V3Steps';
 import { WebBuildStep } from '@/features/lesson/WebBuildStep';
 import { track } from '@/lib/telemetry';
@@ -82,7 +83,11 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
     recordMistake(stepKey);
   }, [stepKey, recordMistake]);
   const accuracy = accuracyFor(mistakes);
+  // Lesson v4 scores the share of checked steps answered right the first time.
+  const checked = lesson.steps.filter((s) => (!isTeaching(s) && !(s.type === 'quiz' && s.kicker === 'GUESS FIRST')) || (s.type === 'concept' && !!s.check)).length;
+  const firstTry = checked ? Math.round(((checked - missed.size) / checked) * 100) : 100;
   const step = lesson.steps[index];
+  const v4 = lesson.format === 'v4';
 
   const next = () => {
     if (index < lesson.steps.length - 1) setIndex(index + 1);
@@ -116,7 +121,8 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
         xp={reward.xp}
         coins={reward.coins}
         replay={replay}
-        accuracy={checkpoint ? Math.round((checkpoint.score / checkpoint.total) * 100) : accuracy}
+        accuracy={checkpoint ? Math.round((checkpoint.score / checkpoint.total) * 100) : v4 ? firstTry : accuracy}
+        v4={v4}
         seconds={Math.max(1, Math.round((finishedAt - startedAt) / 1000))}
         learned={lesson.learned}
         reading={lesson.reading}
@@ -165,19 +171,19 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
     // The step shrinks with the keyboard, so the code stays scrollable and Run stays above the keyboard.
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.bg }}>
-      <LessonTopBar steps={lesson.steps.length} index={index} xp={reward.xp} onClose={() => router.back()} />
+      <LessonTopBar steps={lesson.steps.length} index={index} xp={reward.xp} onClose={() => router.back()} onNotes={notesFor && v4 ? () => router.push({ pathname: '/notes/[id]', params: { id: lesson.id } }) : undefined} />
       <Animated.View key={index} entering={FadeIn.duration(220)} style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          {step.type === 'concept' && <ConceptStep step={step} onDone={next} />}
+          {step.type === 'concept' && <ConceptStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'hook' && <HookStep step={step} onDone={next} />}
           {step.type === 'try' && <TryStep step={step} onDone={next} />}
           {step.type === 'mistake' && <MistakeStep step={step} onDone={next} />}
-          {step.type === 'quiz' && <QuizStep step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'quiz' && <QuizStep step={step} onDone={next} onMistake={onMistake} v4={v4} />}
           {step.type === 'puzzle' && <PuzzleStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'code' && <CodeStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'editor' && <EditorStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'order' && <OrderLinesStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'bug' && <FindBugStep step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'bug' && (v4 ? <BugStepV4 step={step} onDone={next} onMistake={onMistake} /> : <FindBugStep step={step} onDone={next} onMistake={onMistake} />)}
           {step.type === 'predict' && <PredictOutputStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'tap' && <TapTokenStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'web' && <WebBuildStep step={step} onDone={next} onMistake={onMistake} />}
@@ -186,6 +192,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
           {step.type === 'group' && <GroupStep step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'scenario' && <ScenarioStep step={step} onDone={next} />}
           {step.type === 'pagebuild' && <PageBuildStep step={step} onDone={next} />}
+          {step.type === 'recall' && <RecallStep step={step} onDone={next} />}
         </View>
       </Animated.View>
     </SafeAreaView>

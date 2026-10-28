@@ -39,6 +39,7 @@ export function CompleteView({
   next,
   reading,
   notes,
+  v4 = false,
 }: {
   title: string;
   subtitle: string;
@@ -63,6 +64,8 @@ export function CompleteView({
   reading?: Reading[];
   /** "Read more": the module's notes, when it has them. */
   notes?: { minutes: number; onPress: () => void };
+  /** Lesson v4: the score is “right first try”, the goals read “You can now”, and footprints walk in. */
+  v4?: boolean;
 }) {
   const t = useT();
   const insets = useSafeAreaInsets();
@@ -71,7 +74,7 @@ export function CompleteView({
   const stats = [
     { label: 'XP', value: `+${xp}`, ink: colors.primary, bg: colors.surfaceTint, line: '#D9D5F7', glyph: true },
     { label: 'COINS', value: `+${coins}`, ink: colors.saffronInk, bg: colors.warnSoft, line: '#FFD9A3', glyph: false },
-    { label: 'ACCURACY', value: `${accuracy}%`, ink: '#166534', bg: '#F1FAF4', line: '#BFE8CC', glyph: false },
+    { label: v4 ? 'FIRST TRY' : 'ACCURACY', value: `${accuracy}%`, ink: '#166534', bg: '#F1FAF4', line: '#BFE8CC', glyph: false },
     { label: 'TIME', value: time, ink: colors.ink2, bg: colors.bg, line: colors.line, glyph: false },
   ];
 
@@ -96,9 +99,18 @@ export function CompleteView({
               }}
             />
           ))}
-          <Animated.View entering={ZoomIn.delay(120).springify().damping(12)}>
-            <Yatri size={124} mood="celebrate" bob />
+          <Animated.View entering={ZoomIn.delay(v4 ? 900 : 120).springify().damping(12)}>
+            <Yatri size={124} mood="celebrate" bob={!v4} />
           </Animated.View>
+          {v4
+            ? [0, 1, 2, 3, 4].map((i) => (
+                <Animated.View
+                  key={`step${i}`}
+                  entering={ZoomIn.delay(120 + i * 140).duration(220)}
+                  style={[styles.step, { left: 18 + i * 22, top: 150 - i * 6 + (i % 2 ? -6 : 6) }]}
+                />
+              ))
+            : null}
         </View>
 
         <Animated.View entering={FadeInDown.delay(150)} style={{ alignItems: 'center', gap: 2 }}>
@@ -176,7 +188,7 @@ export function CompleteView({
 
         <Animated.View entering={FadeInDown.delay(350)} style={styles.learned}>
           <T variant="label" style={{ fontSize: 13 }}>
-            What you learned
+            {v4 ? 'You can now' : 'What you learned'}
           </T>
           {learned.map((item) => (
             <View key={item} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -275,6 +287,7 @@ const styles = StyleSheet.create({
   hero: { height: 180, alignItems: 'center', justifyContent: 'center' },
   halo: { position: 'absolute', width: 170, height: 170, borderRadius: 85, backgroundColor: '#F1EFFE' },
   stat: { flex: 1, borderRadius: 16, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 4, alignItems: 'center', gap: 2 },
+  step: { position: 'absolute', width: 10, height: 14, borderRadius: 7, backgroundColor: colors.saffron, transform: [{ rotate: '80deg' }] },
   learned: { borderRadius: 18, borderWidth: 1, borderColor: colors.line, padding: 14, gap: 9 },
   read: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8 },
   revise: { minHeight: 36, flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 12, borderRadius: 18, backgroundColor: colors.primarySoft },

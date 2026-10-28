@@ -1,11 +1,12 @@
 // Lesson v2 teaching steps: the opening hook, "try it" (run code freely) and "common mistake".
 // None of them are checked, so they never count as mistakes.
-import { useDeferredValue, useState } from 'react';
+import { useDeferredValue, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 import { ConsoleView } from './EditorStep';
 import { ActionBar } from './Shell';
+import { AUTO_NEXT_MS, Feedback } from './V4';
 import { CodeBlock, LANG_COLOR } from '@/components/Code';
 import { TweakCode, useTweaks } from '@/components/TapToBuild';
 import { WebPreview } from '@/components/WebPreview';
@@ -169,6 +170,15 @@ function CodeTry({ step, onDone }: { step: Try; onDone: () => void }) {
   const [firstPython, setFirstPython] = useState(step.lang !== 'javascript');
   const [out, setOut] = useState<{ output: string[]; error?: string } | null>(null);
   const [runs, setRuns] = useState(0);
+  // Lesson v4 goals: each is ticked once a run's last printed line matches it, and stays ticked.
+  const goals = step.goals ?? [];
+  const [hit, setHit] = useState<string[]>([]);
+  const allHit = goals.length > 0 && goals.every((g) => hit.includes(g.output));
+  useEffect(() => {
+    if (!allHit) return;
+    const t = setTimeout(onDone, AUTO_NEXT_MS + 400);
+    return () => clearTimeout(t);
+  }, [allHit, onDone]);
 
   const runCode = async () => {
     haptic.tap();
@@ -178,6 +188,12 @@ function CodeTry({ step, onDone }: { step: Try; onDone: () => void }) {
     setFirstPython(false);
     setOut({ output: r.output, error: r.ok ? undefined : r.error });
     setRuns((n) => n + 1);
+    const last = r.ok ? r.output.at(-1)?.trim() : undefined;
+    const g = goals.find((x) => x.output === last && !hit.includes(x.output));
+    if (g) {
+      haptic.success();
+      setHit((h) => [...h, g.output]);
+    }
   };
 
   return (
@@ -196,7 +212,28 @@ function CodeTry({ step, onDone }: { step: Try; onDone: () => void }) {
         </Animated.View>
 
         <TweakCode tweak={tweak} source={step.starter} lang={lang} file={step.file} />
-        <Ideas ideas={step.ideas} />
+        {goals.length ? (
+          <View style={{ gap: 6 }}>
+            <T variant="labelSm" color={colors.ink2}>
+              YOUR TARGETS
+            </T>
+            {goals.map((g) => {
+              const ok = hit.includes(g.output);
+              return (
+                <View key={g.output} style={[styles.target, ok && { backgroundColor: colors.successSoft, borderColor: colors.success }]} accessibilityLabel={`${g.label}${ok ? ', done' : ''}`}>
+                  <View style={[styles.tick, { backgroundColor: ok ? colors.success : colors.line }]}>
+                    <Icon name="check" size={13} color="#FFFFFF" strokeWidth={3} />
+                  </View>
+                  <T variant="bodySm" color={colors.ink} style={{ flex: 1 }}>
+                    {g.label}
+                  </T>
+                </View>
+              );
+            })}
+          </View>
+        ) : (
+          <Ideas ideas={step.ideas} />
+        )}
 
         {busy ? (
           <View style={styles.loading} accessibilityLiveRegion="polite">
@@ -211,6 +248,7 @@ function CodeTry({ step, onDone }: { step: Try; onDone: () => void }) {
             <ConsoleView output={out.output} error={out.error} />
           </Animated.View>
         ) : null}
+        {allHit ? <Feedback phase="right" text="Both targets hit. You changed values and the program worked out the rest." /> : null}
       </ScrollView>
 
       <ActionBar>
@@ -303,6 +341,8 @@ const styles = StyleSheet.create({
   codeCard: { borderRadius: 16, backgroundColor: colors.code.bg, overflow: 'hidden' },
   codeHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 14, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.code.line },
   idea: { flexDirection: 'row', gap: 8, alignItems: 'center', borderRadius: 12, backgroundColor: colors.warnSoft, borderWidth: 1, borderColor: colors.warnLine, paddingHorizontal: 12, paddingVertical: 8 },
+  target: { flexDirection: 'row', gap: 10, alignItems: 'center', borderRadius: 12, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, paddingHorizontal: 12, minHeight: 44 },
+  tick: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
   chip: { alignSelf: 'flex-start', minHeight: 40, flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, borderRadius: 20, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.line },
   loading: { flexDirection: 'row', gap: 10, alignItems: 'center', padding: 12, borderRadius: 14, backgroundColor: colors.primarySoft },
   think: { flexDirection: 'row', gap: 10, alignItems: 'center', borderRadius: 16, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.line, padding: 12 },

@@ -393,7 +393,7 @@ function NameStep({ name, onChange }: { name: string; onChange: (v: string) => v
       <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 10 }}>
         <Yatri size={78} mood="happy" />
         <View style={styles.bubble}>
-          <T variant="label">Namaste! I’m Yatri.</T>
+          <T variant="label">Hi! I’m Yatri.</T>
           <T variant="bodySm" color={colors.ink2}>
             What should I call you?
           </T>

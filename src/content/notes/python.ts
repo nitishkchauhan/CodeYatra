@@ -4,9 +4,21 @@ import type { ModuleNotes } from '../types';
 export const PYTHON_NOTES: Record<string, ModuleNotes> = {
   // ── Basic ──────────────────────────────────────────────────────────────
   'p-var-1': {
-    minutes: 5,
+    minutes: 6,
+    runnable: true,
+    summary: ['print() shows text and numbers on the screen.', 'A variable is a name for a stored value: price = 12.', 'Giving a variable a new value replaces the old one.'],
+    mistakes: [
+      { title: 'Joining text and a number with +', bad: ['print("Cups: " + 40)'], error: 'TypeError: can only concatenate str (not "int") to str', fix: ['print("Cups:", 40)'], why: '+ joins text to text, not text to a number. A comma lets print show both.' },
+      { title: 'A capital P', bad: ['Print("Hi")'], error: "NameError: name 'Print' is not defined. Did you mean: 'print'?", fix: ['print("Hi")'], why: 'Python cares about capital letters. print is always lower case.' },
+      { title: 'Using a name before it has a value', bad: ['print(cups)', 'cups = 40'], error: "NameError: name 'cups' is not defined", fix: ['cups = 40', 'print(cups)'], why: 'Python runs top to bottom. A variable needs its value before any line uses it.' },
+    ],
+    check: [
+      { q: 'What does print(3 * 5) show?', options: ['15', '3 * 5', '35', '8'], answer: 0, why: '3 * 5 is worked out first: 15.' },
+      { q: 'x = 7, then x = x - 2. What is x now?', options: ['5', '7', '-2', '9'], answer: 0, why: 'x - 2 uses the 7 already in x: 7 - 2 = 5.' },
+      { q: 'Which is a valid variable name?', options: ['cup_count', '2cups', 'cup count', 'cup-count'], answer: 0, why: 'Names use letters, digits and _, cannot start with a digit, and cannot contain spaces or -.' },
+    ],
     sections: [
-      { heading: 'A program runs top to bottom', body: 'Python reads your file one line at a time, from the first line to the last, and does what each line says. print() is how a program talks to you: whatever is inside the brackets is shown on the screen. Text must be inside quotes so Python knows it is text and not a name. Numbers are written without quotes. Separate several values with commas and print puts a space between them.', code: ['print("Namaste!")', 'print("Cups:", 40)'], anim: 'print' },
+      { heading: 'A program runs top to bottom', body: 'Python reads your file one line at a time, from the first line to the last, and does what each line says. print() is how a program talks to you: whatever is inside the brackets is shown on the screen. Text must be inside quotes so Python knows it is text and not a name. Numbers are written without quotes. Separate several values with commas and print puts a space between them.', code: ['print("Good morning")', 'print("Cups:", 40)'], anim: 'print' },
       { heading: 'Variables are named boxes', body: 'A variable stores a value so you can use it later. price = 12 creates a box called price and puts 12 in it. The = sign means “store”, not “is equal to”. Names can use letters, digits and underscores but can’t start with a digit, and Python cares about capitals: Price and price are different boxes. Choose names that say what the value means, like cups_sold.', code: ['price = 12', 'cups_sold = 40'], anim: 'variable' },
       { heading: 'A box keeps only its latest value', body: 'Storing a new value replaces the old one completely. You can use the old value to work out the new one: total = total + 25 reads total, adds 25 and stores the result back. Python works out the right side first, then stores it on the left. This pattern, updating a value from itself, is how counters and running totals work in every program.', code: ['total = 100', 'total = total + 25'], anim: 'variable' },
     ],
@@ -36,7 +48,19 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     ],
   },
   'p-num-1': {
-    minutes: 5,
+    minutes: 6,
+    runnable: true,
+    summary: ['+ - * / work like school maths; / always gives a decimal.', '// counts whole groups and % gives what is left over.', 'Typed text is text: int() turns it into a number.'],
+    mistakes: [
+      { title: 'Doing maths with typed text', bad: ['cups = "40"', 'print(cups * 12)'], error: '404040404040404040404040', fix: ['cups = int("40")', 'print(cups * 12)'], why: 'Text times 12 repeats the text. int() makes it a number first, so it prints 480.' },
+      { title: 'Dividing by zero', bad: ['people = 0', 'print(1250 / people)'], error: 'ZeroDivisionError: division by zero', fix: ['people = 5', 'print(1250 / people)'], why: 'Nothing can be split into zero groups. Check the number before dividing.' },
+      { title: 'int() of a decimal in text', bad: ['print(int("12.5"))'], error: "ValueError: invalid literal for int() with base 10: '12.5'", fix: ['print(float("12.5"))'], why: 'int() only reads whole numbers. float() reads decimals.' },
+    ],
+    check: [
+      { q: 'What does print(10 / 4) show?', options: ['2.5', '2', '2.0', '3'], answer: 0, why: '/ gives the exact answer as a decimal: 2.5.' },
+      { q: '50 cups, trays of 8. How many cups are left over (50 % 8)?', options: ['2', '6', '6.25', '0'], answer: 0, why: 'Six trays hold 48, so 2 are left over.' },
+      { q: 'What does print(int("7") + 3) show?', options: ['10', '73', '"73"', 'An error'], answer: 0, why: 'int("7") is the number 7, and 7 + 3 is 10.' },
+    ],
     sections: [
       { heading: 'Two kinds of number', body: 'Python has whole numbers (int), like 38, and decimals (float), like 3.5. Maths works as at school: + − * and /, with brackets first and then * and / before + and −. Division with / always gives a float, even 10 / 2 gives 5.0. ** is a power: 2 ** 10 is 1024. Python ints can be as large as you like, so you never run out of digits.', code: ['print(10 / 2, 2 ** 10)   # 5.0 1024'], anim: 'math' },
       { heading: 'Groups and leftovers', body: '// divides and drops the decimals, giving how many whole groups fit. % gives the remainder, what is left over. Together they answer everyday questions: 38 students in vans of 12 is 38 // 12 = 3 full vans and 38 % 12 = 2 students left. % 2 tells even from odd, and % 10 gives the last digit of a number.', code: ['print(38 // 12, 38 % 12)   # 3 2'], anim: 'math' },
@@ -68,7 +92,19 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     ],
   },
   'p-str-1': {
-    minutes: 5,
+    minutes: 6,
+    runnable: true,
+    summary: ['Text in quotes is a string: + joins, * repeats, len() counts.', 'f"…{value}…" puts any value or maths inside text.', 'Methods like strip() and title() give back new text; store it to keep it.'],
+    mistakes: [
+      { title: 'Forgetting the f', bad: ['total = 24', 'print("Total: {total}")'], error: 'Total: {total}', fix: ['total = 24', 'print(f"Total: {total}")'], why: 'Without the f, { } is just text. With it, Python fills in the value: Total: 24.' },
+      { title: 'A quote inside the same kind of quotes', bad: ["print('Riya's tea')"], error: 'SyntaxError: unterminated string literal (detected at line 1)', fix: ["print(\"Riya's tea\")"], why: 'The second quote mark ends the string early. Use double quotes outside when the text has an apostrophe.' },
+      { title: 'Expecting upper() to change the variable', bad: ['name = "riya"', 'name.upper()', 'print(name)'], error: 'riya', fix: ['name = "riya"', 'name = name.upper()', 'print(name)'], why: 'upper() gives back new text. Store it back in name to keep it.' },
+    ],
+    check: [
+      { q: 'What does print("ab" * 3) show?', options: ['ababab', 'ab ab ab', 'ab3', 'An error'], answer: 0, why: '* repeats the text with nothing in between.' },
+      { q: 'qty = 4. What does print(f"{qty * 12} rupees") show?', options: ['48 rupees', 'qty * 12 rupees', '{qty * 12} rupees', '412 rupees'], answer: 0, why: 'Python works out qty * 12 inside { }: 48.' },
+      { q: 'What is "  tea ".strip()?', options: ['"tea"', '"  tea "', '"tea "', '"TEA"'], answer: 0, why: 'strip() removes the spaces at both ends.' },
+    ],
     sections: [
       { heading: 'Strings are text', body: 'A string is text inside quotes: "Pune" or \'Pune\'. + joins two strings and * repeats one: "ab" * 3 is "ababab". len(s) counts the characters. Each character has a position starting at 0, so city[0] is the first letter and city[-1] the last. Slices like city[0:3] take a piece, stopping before the second number.', code: ['city = "Pune"', 'print(city[0], city[-1], len(city))   # P e 4'], anim: 'string' },
       { heading: 'f-strings put values inside text', body: 'Write f before the quotes and put values in curly brackets: f"Hello {name}, you have {n} seats". Python fills them in. Inside the brackets you can do maths, call functions and format numbers, like {price:.2f} for two decimal places. f-strings are the clearest way to build messages, and they avoid mixing up + and commas.', code: ['name, n = "Asha", 2', 'print(f"Hello {name}, {n} seats")'], anim: 'print' },
@@ -262,7 +298,7 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
   'p-fn-1': {
     minutes: 5,
     sections: [
-      { heading: 'Define once, use many times', body: 'def fare(km): creates a function named fare. The indented lines below are its body, and they run only when the function is called: fare(10). Functions give a name to a piece of work, so you can reuse it, test it on its own and read the main program like a list of steps.', code: ['def greet(name):', '    print("Namaste,", name)', '', 'greet("Asha")'], anim: 'function' },
+      { heading: 'Define once, use many times', body: 'def fare(km): creates a function named fare. The indented lines below are its body, and they run only when the function is called: fare(10). Functions give a name to a piece of work, so you can reuse it, test it on its own and read the main program like a list of steps.', code: ['def greet(name):', '    print("Hello,", name)', '', 'greet("Asha")'], anim: 'function' },
       { heading: 'Parameters and arguments', body: 'In def fare(km), km is a parameter: a name for the input. In fare(10), 10 is the argument: the actual value. When the function runs, km holds 10. A function can take several parameters, separated by commas, and they are matched in order.', code: ['def fare(km, rate):', '    return km * rate', 'print(fare(10, 2))   # 20'], anim: 'function' },
       { heading: 'return sends the answer back', body: 'return value ends the function and hands the value back to whoever called it, so you can store it or use it in another calculation. print only shows a value; it does not give it back. A function without return gives back None. Prefer functions that return results and let the caller decide what to print.', code: ['total = fare(10, 2) + fare(5, 2)', 'print(total)   # 30'], anim: 'function' },
     ],
@@ -325,7 +361,7 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
   'p-file-1': {
     minutes: 5,
     sections: [
-      { heading: 'Opening a file', body: 'open(name, mode) opens a file. "r" reads (the default), "w" writes and empties the file first, and "a" appends to the end. Always use with open(…) as f:, which closes the file automatically when the block ends, even if an error happens.', code: ['with open("notes.txt", "w") as f:', '    f.write("Namaste\\n")'], anim: 'file' },
+      { heading: 'Opening a file', body: 'open(name, mode) opens a file. "r" reads (the default), "w" writes and empties the file first, and "a" appends to the end. Always use with open(…) as f:, which closes the file automatically when the block ends, even if an error happens.', code: ['with open("notes.txt", "w") as f:', '    f.write("Hello\\n")'], anim: 'file' },
       { heading: 'Writing lines', body: 'f.write(text) writes exactly what you give it, with no new line added, so end each line with "\\n". print(…, file=f) is another way that adds the new line for you. Writing numbers needs str() or an f-string first, because write only accepts text.', code: ['with open("log.txt", "a") as f:', '    f.write(f"booked {3} seats\\n")'], anim: 'file' },
       { heading: 'Reading back', body: 'for line in f: reads one line at a time, which works even for huge files. Each line ends with "\\n", so call line.strip() before using it. f.read() gives the whole file as one string. A file that doesn’t exist raises FileNotFoundError, which you can catch.', code: ['with open("log.txt") as f:', '    for line in f:', '        print(line.strip())'], anim: 'file' },
     ],

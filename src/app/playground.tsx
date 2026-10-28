@@ -18,7 +18,7 @@ import { colors } from '@/theme';
 
 const NL = '\n';
 const WEB_STARTER = {
-  html: ['<h1>Namaste!</h1>', '<p>Tap a highlighted value and watch this page change.</p>', '<button id="btn">Tap me</button>', ''].join(NL),
+  html: ['<h1>Hello!</h1>', '<p>Tap a highlighted value and watch this page change.</p>', '<button id="btn">Tap me</button>', ''].join(NL),
   css: [
     'body {',
     '  background: #F6F5FA;',

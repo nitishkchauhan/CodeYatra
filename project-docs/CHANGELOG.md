@@ -2,6 +2,20 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 28 Oct 2026 (branch `lesson-v3`): Lesson v4 pilot
+- **The final app plan** (`APP-PLAN.md`): Parts 1–4 agreed with the owner (first open, Home and Yatri, the lesson screen, notes); Part 5 started. Rule added: no Hindi words anywhere in the app.
+- **Lesson v4 engine** (`format: 'v4'` on a lesson):
+  - Answers are a tap: a right answer shows why and moves on by itself; the first wrong answer gives a hint, the second shows the answer and why, then Continue. No lives, no Check button (`AskBlock` in `features/lesson/V4.tsx`).
+  - Learn cards end in a one-tap check (`ConceptStep.check`), so no card is just “read and Next”.
+  - Try it has targets that tick when a run prints them (`TryStep.goals`).
+  - See it run becomes “Predict, then run”: it plays by itself and pauses before chosen lines to ask what happens (`TraceStep.stops`).
+  - Spot the bug shows the real error or output first; tapping a line answers (`BugStep.error`, `BugStepV4`).
+  - Recall cards at the end (`recall` step): think, flip, “I knew it” / “Not yet”.
+  - Module complete shows “First try %”, “You can now” and footprints walking in.
+  - A **Notes** button in the lesson’s top bar opens the module’s notes at any time.
+- **Notes v4**: “In 30 seconds” summary, jump links, A−/A+ text size, a Run button on every code block, Common mistakes with the real error, and Check yourself.
+- **Python Basic Modules 1–3 rebuilt** in v4 (`tracks/pythonV4.ts`, same ids so progress is kept), plus v4 notes. New tests (`lessonV4.test.ts`) run every stop answer, bug message, target, build-it solution and notes mistake through real Python.
+
 ## 27 Oct 2026 (drafts, branch `lesson-v3`)
 - **Intermediate drafts for HTML, CSS and JavaScript** for owner review, in `content-drafts/html-intermediate.md`, `css-intermediate.md` and `js-intermediate.md`: 6 modules each plus a project, with At work scenarios (Saathi Web Studio, Indore). Projects: the Nayi Disha School website, your own portfolio, and “Is my train on time?” on the practice server. Open decisions are listed at the end of each draft. CURRICULUM lines updated.
 
