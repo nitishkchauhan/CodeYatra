@@ -40,6 +40,7 @@ export function CompleteView({
   reading,
   notes,
   v4 = false,
+  badge,
 }: {
   title: string;
   subtitle: string;
@@ -66,6 +67,8 @@ export function CompleteView({
   notes?: { minutes: number; onPress: () => void };
   /** Lesson v4: the score is “right first try”, the goals read “You can now”, and footprints walk in. */
   v4?: boolean;
+  /** A Module Challenge: the badge earned and its stars (3 = no mistakes, 2 = a few, 1 = passed). */
+  badge?: { icon: string; name: string; stars: number };
 }) {
   const t = useT();
   const insets = useSafeAreaInsets();
@@ -135,6 +138,21 @@ export function CompleteView({
             </View>
           ))}
         </Animated.View>
+
+        {badge ? (
+          <Animated.View entering={ZoomIn.delay(500).springify().damping(12)} style={styles.badge} accessibilityLabel={`${badge.name} badge earned, ${badge.stars} of 3 stars`}>
+            <T style={{ fontSize: 40 }}>{badge.icon}</T>
+            <View style={{ flex: 1, gap: 2 }}>
+              <T variant="labelSm" color={colors.saffronInk}>
+                BADGE EARNED
+              </T>
+              <T variant="heading" style={{ fontSize: 19 }}>
+                {badge.name}
+              </T>
+              <T style={{ fontSize: 22, letterSpacing: 2 }}>{'★'.repeat(badge.stars) + '☆'.repeat(3 - badge.stars)}</T>
+            </View>
+          </Animated.View>
+        ) : null}
 
         {replay ? (
           <T variant="bodySm" color={colors.ink2} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
@@ -287,6 +305,7 @@ const styles = StyleSheet.create({
   hero: { height: 180, alignItems: 'center', justifyContent: 'center' },
   halo: { position: 'absolute', width: 170, height: 170, borderRadius: 85, backgroundColor: '#F1EFFE' },
   stat: { flex: 1, borderRadius: 16, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 4, alignItems: 'center', gap: 2 },
+  badge: { flexDirection: 'row', gap: 14, alignItems: 'center', borderRadius: 18, borderWidth: 2, borderColor: colors.saffron, backgroundColor: colors.saffronSoft, padding: 14 },
   step: { position: 'absolute', width: 10, height: 14, borderRadius: 7, backgroundColor: colors.saffron, transform: [{ rotate: '80deg' }] },
   learned: { borderRadius: 18, borderWidth: 1, borderColor: colors.line, padding: 14, gap: 9 },
   read: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8 },

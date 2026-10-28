@@ -21,6 +21,7 @@ import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/
 import { LessonTopBar } from '@/features/lesson/Shell';
 import { HookStep, MistakeStep, TryStep } from '@/features/lesson/V2Steps';
 import { BugStepV4, RecallStep } from '@/features/lesson/V4';
+import { ArrangeScreen, ChatScreen, ExploreScreen, LiveScreen, PlaceScreen, RecapScreen, RevealScreen, SwipeScreen, TapBugScreen, ToggleScreen, XrayScreen } from '@/features/lesson/V5';
 import { GroupStep, MatchStep, PageBuildStep, ScenarioStep, TraceStep } from '@/features/lesson/V3Steps';
 import { WebBuildStep } from '@/features/lesson/WebBuildStep';
 import { track } from '@/lib/telemetry';
@@ -87,7 +88,8 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
   const checked = lesson.steps.filter((s) => (!isTeaching(s) && !(s.type === 'quiz' && s.kicker === 'GUESS FIRST')) || (s.type === 'concept' && !!s.check)).length;
   const firstTry = checked ? Math.round(((checked - missed.size) / checked) * 100) : 100;
   const step = lesson.steps[index];
-  const v4 = lesson.format === 'v4';
+  // v5 (the HTML track) answers questions the v4 way too.
+  const v4 = lesson.format === 'v4' || lesson.format === 'v5';
 
   const next = () => {
     if (index < lesson.steps.length - 1) setIndex(index + 1);
@@ -115,7 +117,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
     };
     return (
       <CompleteView
-        title={lesson.kind === 'project' ? 'Project built!' : lesson.kind === 'lesson' ? 'Lesson complete!' : 'Practice complete!'}
+        title={lesson.badge ? 'Challenge complete!' : lesson.kind === 'project' ? 'Project built!' : lesson.kind === 'lesson' ? 'Lesson complete!' : 'Practice complete!'}
         subtitle={`${lesson.title} · Well done!`}
         feedbackAbout={`lesson ${lesson.id}`}
         xp={reward.xp}
@@ -123,6 +125,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
         replay={replay}
         accuracy={checkpoint ? Math.round((checkpoint.score / checkpoint.total) * 100) : v4 ? firstTry : accuracy}
         v4={v4}
+        badge={lesson.badge ? { ...lesson.badge, stars: mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1 } : undefined}
         seconds={Math.max(1, Math.round((finishedAt - startedAt) / 1000))}
         learned={lesson.learned}
         reading={lesson.reading}
@@ -193,6 +196,17 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
           {step.type === 'scenario' && <ScenarioStep step={step} onDone={next} />}
           {step.type === 'pagebuild' && <PageBuildStep step={step} onDone={next} />}
           {step.type === 'recall' && <RecallStep step={step} onDone={next} />}
+          {step.type === 'chat' && <ChatScreen step={step} onDone={next} />}
+          {step.type === 'reveal' && <RevealScreen step={step} onDone={next} />}
+          {step.type === 'explore' && <ExploreScreen step={step} onDone={next} />}
+          {step.type === 'toggle' && <ToggleScreen step={step} onDone={next} />}
+          {step.type === 'live' && <LiveScreen step={step} onDone={next} />}
+          {step.type === 'recap' && <RecapScreen step={step} onDone={next} />}
+          {step.type === 'place' && <PlaceScreen step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'tapbug' && <TapBugScreen step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'swipe' && <SwipeScreen step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'xray' && <XrayScreen step={step} onDone={next} onMistake={onMistake} />}
+          {step.type === 'arrange' && <ArrangeScreen step={step} onDone={next} onMistake={onMistake} />}
         </View>
       </Animated.View>
     </SafeAreaView>

@@ -2,6 +2,13 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 29 Oct 2026 (branch `lesson-v3`): the HTML track in Lesson v5
+- **The owner's HTML track spec, built in full** (`tracks/htmlV5/`, `format: 'v5'`): 9 modules, 39 short lessons (the spec's 38 plus 9.3 "Pages for everyone" on accessibility) and a Module Challenge per module (5 quick questions and 6 tasks, a badge and 1–3 stars). The record of the spec and what changed is in `content-drafts/html-track-v5.md`.
+- **New screen types** (`features/lesson/V5.tsx`): chat, tap to reveal, explore (tap a line, the live page highlights it), tap to place (instead of drag), toggle and before/after, live edit with a slider or choices, tap the bug, recap, swipe true/false, X-ray (tap the live page to name its parts) and arrange the blocks.
+- Lessons that replace an older HTML module keep its id (`w-html-1`, `h-attr-1`, `h-text`, `w-html-2`, `h-list-1`, `h-table-1`, `h-head-1`, `h-sem-1`, `h-form-1`, `h-inputs-1`, `h-media`, `h-a11y-1`, `h-project`), so progress, notes and practice sets carry over. The final challenge is the portfolio project with 10 checks.
+- Tests: `lessonV5.test.ts` (296 checks: every answer, placed piece, bug, arrange order and project solution run through jsdom). 4457 tests pass.
+- When `lesson-v3` is merged, run the regenerated `supabase/track-lessons.sql` (the HTML lesson list changed).
+
 ## 28 Oct 2026 (branch `lesson-v3`): the Python project in Lesson v4
 - `p-project` is now **Riya’s billing app** (`tracks/pythonProjectV4.ts`, same id): Riya’s brief, a “plan it” match, six typed steps with tests (price, subtotal, 10% off and 5% GST, receipt, safe quantities with try/except, saving to a file), a quick check, a bug to spot and recall cards. Uses all 12 modules; plain English menu (tea, coffee, toast, sandwich).
 - When `lesson-v3` is merged, regenerate `supabase/track-lessons.sql`: the project title changed.

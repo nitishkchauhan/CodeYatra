@@ -362,8 +362,123 @@ export type RecallStep = {
   cards: { q: string; a: string }[];
 };
 
+// ── Lesson v5 (the HTML track): short phone screens, each with one thing to do. ─────────────────────────
+
+/** A web page shown in a live preview: body HTML, with optional CSS. */
+export type PagePreview = { html: string; css?: string };
+
+/** Yatri talks: a few short speech bubbles, then a button. */
+export type ChatStep = { type: 'chat'; kicker?: string; lines: string[]; button?: string; code?: string[]; page?: PagePreview };
+
+/** Tap each tile to flip it and see what it means. Continue once every tile has been flipped. */
+export type RevealStep = {
+  type: 'reveal';
+  kicker: string;
+  title: string;
+  intro?: string;
+  code?: string[];
+  items: { front: string; back: string; icon?: string; mono?: boolean }[];
+};
+
+/** Tap a line of code: its note shows, and the part of the live page it makes lights up. */
+export type ExploreStep = {
+  type: 'explore';
+  kicker: string;
+  title: string;
+  intro?: string;
+  code: string[];
+  /** The page shown under the code. Defaults to the code itself. */
+  page?: PagePreview;
+  /** `line` is 1-based; `select` is a CSS selector for the part of the page to light up. */
+  notes: { line: number; text: string; select?: string }[];
+  /** Different lines to tap before Continue (defaults to all notes, at most 3). */
+  minTaps?: number;
+};
+
+/** Put pieces into the gaps in the code; the live page updates as each one lands. Checked when every gap is full. */
+export type PlaceStep = {
+  type: 'place';
+  kicker: string;
+  title: string;
+  instructions: string;
+  lines: Seg[][];
+  pieces: string[];
+  /** The right piece for each gap. */
+  answer: string[];
+  css?: string;
+  /** Shown after it is right. */
+  reveal: string;
+  /** false: no live page (for code that isn't a page, like file names). */
+  preview?: boolean;
+};
+
+/** Switch between versions of a page and see what changes. Continue once every version has been seen. */
+export type ToggleStep = {
+  type: 'toggle';
+  kicker: string;
+  title: string;
+  intro?: string;
+  views: { label: string; code: string[]; page?: PagePreview; caption: string }[];
+};
+
+/** Change one value in the code and watch the page update. `{{v}}` in `code` marks the value. */
+export type LiveStep = {
+  type: 'live';
+  kicker: string;
+  title: string;
+  instructions: string;
+  code: string[];
+  css?: string;
+  choices: string[];
+  /** Let the learner type their own value too (short text, like their name). */
+  free?: boolean;
+  caption?: string;
+};
+
+/** Tap the exact wrong word or symbol. Each bug's `text` appears once on its line. */
+export type TapBugStep = {
+  type: 'tapbug';
+  kicker: string;
+  title: string;
+  instructions?: string;
+  code: string[];
+  bugs: { line: number; text: string; fix: string }[];
+  explain: string;
+};
+
+/** The lesson's key points; tap each to tick it off. */
+export type RecapStep = { type: 'recap'; title?: string; points: { icon: string; text: string }[] };
+
+/** True or false, one card at a time. */
+export type SwipeStep = { type: 'swipe'; kicker: string; title: string; cards: { text: string; answer: boolean; why: string }[] };
+
+/** Tap a part of a real page, then pick the tag behind it. */
+export type XrayStep = {
+  type: 'xray';
+  kicker: string;
+  title: string;
+  instructions: string;
+  page: PagePreview;
+  /** `select` finds the part in the page; `answer` must be one of `options`. */
+  parts: { select: string; label: string; answer: string; options: string[] }[];
+  /** How many parts must be named (defaults to all). */
+  need?: number;
+};
+
+/** Put shuffled blocks of code in order; the live page shows the result. */
+export type ArrangeStep = {
+  type: 'arrange';
+  kicker: string;
+  title: string;
+  instructions: string;
+  /** In the right order. */
+  blocks: string[];
+  css?: string;
+  goal: string;
+};
+
 /** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
-export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild', 'recall'] as const;
+export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild', 'recall', 'chat', 'reveal', 'explore', 'toggle', 'live', 'recap'] as const;
 /** A step that only teaches. Watching a program run is teaching too, unless it ends with a question. */
 export const isTeaching = (s: Step) => (TEACHING_STEPS as readonly string[]).includes(s.type) || (s.type === 'trace' && !s.ask);
 
@@ -386,7 +501,18 @@ export type Step =
   | MatchStep
   | GroupStep
   | ScenarioStep
-  | RecallStep;
+  | RecallStep
+  | ChatStep
+  | RevealStep
+  | ExploreStep
+  | PlaceStep
+  | ToggleStep
+  | LiveStep
+  | TapBugStep
+  | RecapStep
+  | SwipeStep
+  | XrayStep
+  | ArrangeStep;
 
 /**
  * "Read more": a module's notes, a short article read after (or instead of) the lesson.
@@ -436,7 +562,9 @@ export type Lesson = {
   /** Lesson v3: Basic, Intermediate or Advanced. */
   level?: Level;
   /** Lesson v4 (APP-PLAN Part 3): answers are tapped, hints come before answers, right answers move on by themselves. */
-  format?: 'v4';
+  format?: 'v4' | 'v5';
+  /** Lesson v5 challenges: the badge earned for finishing the module. */
+  badge?: { icon: string; name: string };
   minutes: number;
   skill: SkillKey;
   steps: Step[];

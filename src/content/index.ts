@@ -12,8 +12,7 @@ import { ticketHtml } from './web';
 import { flexRow } from './styling';
 import { CSS_BASIC, CSS_PROJECT_V3 as CSS_PROJECT } from './tracks/cssV3';
 import { searchForm } from './html';
-import { HTML_BASIC } from './tracks/htmlV3';
-import { HTML_PROJECT_V3 as HTML_PROJECT } from './tracks/htmlV3More';
+import { HTML_UNITS, HTML_V5 } from './tracks/htmlV5';
 import { cheapTickets } from './js';
 import { JS_BASIC, JS_PROJECT_V3 as JS_PROJECT } from './tracks/jsV3';
 import { dynamicRoute, routeHandler } from './next';
@@ -235,8 +234,7 @@ const ALL: Lesson[] = [
   PYTHON_ADVANCED_PROJECT,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
-  ...HTML_BASIC,
-  HTML_PROJECT,
+  ...HTML_V5,
   ...CSS_BASIC,
   CSS_PROJECT,
   ...JS_BASIC,
@@ -389,25 +387,13 @@ export const STAGES: Stage[] = [
     short: 'HTML',
     sub: 'Structure of every web page',
     audience: 'Class 9+',
-    blurb: '12 modules and a project with a live preview: structure, links, lists, tables, forms and validation, semantics, media, accessibility and SEO.',
+    blurb: '9 modules of short, hands-on lessons with a live preview, each ending in a Challenge: structure, text, style, links and images, lists and tables, page building, forms, media and a final portfolio.',
     color: '#C2410C',
     soft: '#FFEDE3',
     accent: '#FDBA8C',
     icon: 'M8 8l-4 4 4 4 M16 8l4 4-4 4 M13.5 5l-3 14',
     units: [
-      unit('h-u1', 'First page', ref('w-html-1', 'How the web works and your first page', 'Lesson + live page · 7 min')),
-      unit('h-u11', 'Text', ref('h-text', 'Headings, paragraphs and text', 'Lesson + live page · 7 min')),
-      unit('h-u2', 'Links and images', ref('w-html-2', 'Links and images', 'Lesson + live page · 7 min')),
-      unit('h-u6', 'Attributes', ref('h-attr-1', 'Attributes, ids and classes', 'Lesson + live page · 7 min')),
-      unit('h-u3', 'Lists', ref('h-list-1', 'Lists', 'Lesson + live page · 6 min')),
-      unit('h-u7', 'Tables', ref('h-table-1', 'Tables', 'Lesson + live page · 7 min')),
-      unit('h-u4', 'Forms', ref('h-form-1', 'Forms and inputs', 'Lesson + live page · 8 min')),
-      unit('h-u8', 'Validation', ref('h-inputs-1', 'Choices and validation', 'Lesson + live page · 8 min')),
-      unit('h-u5', 'Page layout', ref('h-sem-1', 'Semantic page layout', 'Lesson + live page · 7 min')),
-      unit('h-u12', 'Media', ref('h-media', 'Audio, video and SVG', 'Lesson + live page · 7 min')),
-      unit('h-u9', 'Accessibility', ref('h-a11y-1', 'Accessible pages', 'Lesson + live page · 8 min')),
-      unit('h-u10', 'Head and SEO', ref('h-head-1', 'The head, metadata and SEO', 'Lesson + live page · 7 min')),
-      unit('h-u13', 'Project', ref('h-project', 'Project: a coaching centre landing page', 'Project · 3 steps · 25 min')),
+      ...HTML_UNITS,
     ],
     practice: [
       { id: 'x-ticket', title: 'Build a ticket card', kind: 'HTML', difficulty: 'Easy', xp: 15 },

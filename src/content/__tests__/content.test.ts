@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { allLessons, findStage, optionOrder, PROJECTS, getLesson, hasContent, STAGES, stageLessonStatuses, type CodeStep } from '..';
+import { allLessons, findStage, isTeaching, optionOrder, PROJECTS, getLesson, hasContent, STAGES, stageLessonStatuses, type CodeStep } from '..';
 import { LEVELS } from '@/game/levels';
 
 const lessons = allLessons();
@@ -40,7 +40,8 @@ describe('stages', () => {
   it('has a track per language, each with at least 10 playable modules', () => {
     expect(STAGES.map((s) => s.id)).toEqual(['foundations', 'cbse', 'html', 'css', 'js', 'python', 'c', 'java', 'react', 'node', 'next', 'dsa', 'dsa2', 'sql', 'git', 'placement']);
     for (const stage of STAGES) {
-      expect(stage.units.length).toBeGreaterThanOrEqual(10);
+      // Lesson v5 tracks group several short lessons into each module.
+      expect(stage.units.length >= 10 || stage.units.flatMap((u) => u.lessons).length >= 10).toBe(true);
       for (const u of stage.units) for (const l of u.lessons) expect(hasContent(l.id)).toBe(true);
       for (const p of stage.practice) expect(hasContent(p.id)).toBe(true);
     }
@@ -54,7 +55,8 @@ describe('stages', () => {
         const l = getLesson(u.lessons[0].id)!;
         const first = l.steps[0];
         // A v4 project opens with the client's brief instead.
-        if (l.format === 'v4' && l.kind === 'project') expect(first.type).toBe('scenario');
+        if (l.format === 'v5') expect(isTeaching(first)).toBe(true);
+        else if (l.format === 'v4' && l.kind === 'project') expect(first.type).toBe('scenario');
         else if (l.format === 'v4') expect(first.type === 'quiz' && first.kicker).toBe('GUESS FIRST');
         else expect(['concept', 'hook']).toContain(first.type);
       }
