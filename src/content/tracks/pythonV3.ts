@@ -37,7 +37,7 @@ const UPGRADES: Record<string, Upgrade> = {
         { text: '12', group: 1 },
         { text: '"12"', group: 0 },
         { text: '3.5', group: 1 },
-        { text: '"Namaste!"', group: 0 },
+        { text: '"Hello!"', group: 0 },
         { text: '40', group: 1 },
       ],
       mono: true,
@@ -82,7 +82,7 @@ const UPGRADES: Record<string, Upgrade> = {
       title: 'Match the code to its result',
       instructions: 'Tap the code, then what it gives.',
       pairs: [
-        ['"chai".upper()', "'CHAI'"],
+        ['"tea".upper()', "'TEA'"],
         ['"  hi ".strip()', "'hi'"],
         ['len("Pune")', '4'],
         ['"ab" * 2', "'abab'"],
@@ -271,7 +271,7 @@ const UPGRADES: Record<string, Upgrade> = {
       kicker: RUN,
       title: 'Write, then read back',
       instructions: 'Watch the file get written, then counted line by line.',
-      code: ['with open("orders.txt", "w") as f:', '    f.write("chai\\n")', '    f.write("samosa\\n")', 'count = 0', 'with open("orders.txt") as f:', '    for line in f:', '        count = count + 1', 'print(count, "orders")'],
+      code: ['with open("orders.txt", "w") as f:', '    f.write("tea\\n")', '    f.write("muffin\\n")', 'count = 0', 'with open("orders.txt") as f:', '    for line in f:', '        count = count + 1', 'print(count, "orders")'],
       ask: { prompt: 'What is count at the end?', options: ['2', '1', '0', '3'], answer: 0, explain: 'Two lines were written, and the loop runs once per line.', check: { var: 'count' } },
     }),
     check: group({

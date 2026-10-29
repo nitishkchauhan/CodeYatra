@@ -32,7 +32,7 @@ export const DSA_DRILLS: Record<string, Step[]> = {
   ],
   'dsa-sort': [
     p('sorted vs sort', ['a = [3, 1, 2]', 'b = sorted(a)', 'print(a, b)'], '[3, 1, 2] [1, 2, 3]', 'sorted() returns a new list and leaves a unchanged.'),
-    p('Sort by key', ['words = ["chai", "dosa", "idli", "samosa"]', 'print(sorted(words, key=len)[-1])'], 'samosa', 'Sorting by length puts the longest word last.'),
+    p('Sort by key', ['words = ["tea", "wrap", "pancake", "muffin"]', 'print(sorted(words, key=len)[-1])'], 'pancake', 'Sorting by length puts the longest word last.'),
     p('Two keys', ['m = [("Ravi", 82), ("Asha", 91), ("Kabir", 82)]', 'print([n for n, s in sorted(m, key=lambda x: (-x[1], x[0]))])'], "['Asha', 'Kabir', 'Ravi']", 'Highest marks first; the 82s are ordered by name.'),
     quiz({ prompt: 'What is the time complexity of Python’s sorted()?', options: ['O(n log n)', 'O(n²)', 'O(n)', 'O(log n)'], right: 'Right. It uses Timsort.', wrong: 'Python’s built-in sort is O(n log n) in the worst case.', mono: true }),
   ],
@@ -81,7 +81,7 @@ export const DSA_DRILLS: Record<string, Step[]> = {
   'dsa-recursion': [
     p('Factorial', ['def f(n):', '    return 1 if n <= 1 else n * f(n - 1)', 'print(f(6))'], '720', '6 × 5 × 4 × 3 × 2 × 1 = 720.'),
     p('Fibonacci', ['def fib(n):', '    if n < 2:', '        return n', '    return fib(n - 1) + fib(n - 2)', 'print([fib(i) for i in range(8)])'], '[0, 1, 1, 2, 3, 5, 8, 13]', 'Each number is the sum of the two before it.'),
-    p('Reverse a string', ['def rev(s):', '    return s if len(s) <= 1 else rev(s[1:]) + s[0]', 'print(rev("chai"))'], 'iahc', 'Reverse the rest, then put the first letter at the end.'),
+    p('Reverse a string', ['def rev(s):', '    return s if len(s) <= 1 else rev(s[1:]) + s[0]', 'print(rev("tea"))'], 'aet', 'Reverse the rest, then put the first letter at the end.'),
     quiz({ prompt: 'What is the base case of factorial?', options: ['n <= 1 returns 1', 'n * factorial(n - 1)', 'n == 100', 'There isn’t one'], right: 'Right. It returns without calling itself.', wrong: 'The base case is the part that answers directly: factorial(1) is 1.' }),
   ],
 };

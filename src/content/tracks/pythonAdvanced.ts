@@ -449,7 +449,7 @@ export const PYTHON_ADVANCED: Lesson[] = [
       title: 'Functions are values',
       body: 'A function can be stored in a variable, put in a list or passed to another function, just like a number. sorted(names, key=len) passes the len function so sorted can call it on each name.',
       lang: 'python',
-      code: ['def shout(text):', '    return text.upper()', '', 'say = shout', 'print(say("namaste"))   # NAMASTE'],
+      code: ['def shout(text):', '    return text.upper()', '', 'say = shout', 'print(say("hello"))   # HELLO'],
       anim: 'function',
     }),
     read({
@@ -510,9 +510,9 @@ export const PYTHON_ADVANCED: Lesson[] = [
       kicker: CHECK,
       title: 'What does this print?',
       lang: 'python',
-      lines: ['from functools import cache', 'work = 0', '', '@cache', 'def price(item):', '    global work', '    work += 1', '    return len(item) * 10', '', 'print(price("chai"), price("chai"), price("vada"), work)'],
-      answer: '40 40 40 2',
-      explain: 'The second price("chai") came from the cache, so the body ran only twice.',
+      lines: ['from functools import cache', 'work = 0', '', '@cache', 'def price(item):', '    global work', '    work += 1', '    return len(item) * 10', '', 'print(price("tea"), price("tea"), price("cutlet"), work)'],
+      answer: '30 30 60 2',
+      explain: 'The second price("tea") came from the cache, so the body ran only twice.',
     }),
     scenario({
       kicker: WORK,

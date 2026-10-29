@@ -1,9 +1,9 @@
 // CSS track · Module 12 · Responsive and Modern CSS, and the final challenge. Lessons 12.1 and 12.4 keep the old
 // responsive and variables module ids (c-resp-1, c-vars-1); the final challenge keeps the project id (c-project)
 // and its four checked build steps for Sharma Classes.
-import type { Lesson, WebStep } from '../../types';
-import { CSS_PROJECT_V3 } from '../cssV3';
+import type { Lesson } from '../../types';
 import { BASE, MENU } from './cafe';
+import { SHARMA_STEPS } from './sharmaProject';
 import { beforeAfter, bugTask, challenge, chat, check, explore, lesson, live, matchUp, mcq, pairs, pickCode, recap, resize, reveal, swipe, tapbug, toggle, truth, xray } from './kit';
 
 const BRIEF = 'Mr Sharma (Sharma Classes, Jaipur): “Make our page look professional. Deep blue and gold, easy on phones, and an enquiry button that stands out.”';
@@ -210,8 +210,6 @@ export const CSS_M12: Lesson[] = [
       ],
     ),
     // The old project's four checked steps. The first one carries Mr Sharma's brief.
-    ...CSS_PROJECT_V3.steps
-      .filter((s): s is WebStep => s.type === 'web')
-      .map((s, i) => ({ ...s, kicker: `FINAL PROJECT · STEP ${i + 1} OF 4`, instructions: i === 0 ? `${BRIEF} ${s.instructions}` : s.instructions })),
+    ...SHARMA_STEPS.map((s, i) => ({ ...s, kicker: `FINAL PROJECT · STEP ${i + 1} OF 4`, instructions: i === 0 ? `${BRIEF} ${s.instructions}` : s.instructions })),
   ], 'project'),
 ];

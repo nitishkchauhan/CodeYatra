@@ -34,7 +34,7 @@ export const LOGIC_FOUNDATIONS: Lesson[] = [
     read({
       kicker: LEARN(1),
       title: 'What is an algorithm?',
-      body: 'An algorithm is a set of steps that solves a problem. A recipe for chai is an algorithm: boil water, add tea leaves, add milk and sugar, boil, strain. Each step is clear, and the order matters.',
+      body: 'An algorithm is a set of steps that solves a problem. A recipe for tea is an algorithm: boil water, add tea leaves, add milk and sugar, boil, strain. Each step is clear, and the order matters.',
     }),
     read({
       kicker: LEARN(2),
@@ -53,9 +53,9 @@ export const LOGIC_FOUNDATIONS: Lesson[] = [
       kicker: OOPS,
       title: 'Steps in the wrong order',
       lang: 'python',
-      wrong: ['print("Pour the chai")', 'print("Boil the water")', 'print("Add tea leaves")'],
-      error: 'Pour the chai\nBoil the water\nAdd tea leaves',
-      right: ['print("Boil the water")', 'print("Add tea leaves")', 'print("Pour the chai")'],
+      wrong: ['print("Pour the tea")', 'print("Boil the water")', 'print("Add tea leaves")'],
+      error: 'Pour the tea\nBoil the water\nAdd tea leaves',
+      right: ['print("Boil the water")', 'print("Add tea leaves")', 'print("Pour the tea")'],
       explain: 'The computer did exactly what it was told, in that order. Pouring before boiling makes no sense, so the algorithm was wrong.',
     }),
     quiz({
@@ -264,7 +264,7 @@ export const LOGIC_FOUNDATIONS: Lesson[] = [
       lang: 'python',
       code: ['price = 20', 'count = 3', 'print("Total:", price * count)'],
     }),
-    play('Boxes of values', 'Run it, then change the values.', 'gems = 0\nprint("Start:", gems)\ngems = gems + 5\nprint("After the bazaar:", gems)\ngems = gems - 2\nprint("After buying chai:", gems)\n', ['Start with 10 gems', 'Double the gems with gems * 2', 'Add a name variable and print it']),
+    play('Boxes of values', 'Run it, then change the values.', 'gems = 0\nprint("Start:", gems)\ngems = gems + 5\nprint("After the bazaar:", gems)\ngems = gems - 2\nprint("After buying tea:", gems)\n', ['Start with 10 gems', 'Double the gems with gems * 2', 'Add a name variable and print it']),
     mistake({
       kicker: OOPS,
       title: 'Using a box before filling it',
@@ -525,7 +525,7 @@ export const LOGIC_FOUNDATIONS: Lesson[] = [
       story: 'Yatri does “move, pick” so often that it deserves its own block. Functions let you name a group of steps and use it whenever you like, just like move() and pick() themselves.',
       goal: 'Define functions with parameters and return values.',
       lang: 'python',
-      code: ['def greet(name):', '    print("Namaste,", name)', '', 'greet("Asha")'],
+      code: ['def greet(name):', '    print("Hello,", name)', '', 'greet("Asha")'],
     }),
     read({
       kicker: LEARN(1),

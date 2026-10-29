@@ -499,7 +499,7 @@ function HtmlTags() {
       <View style={[styles.page, { alignSelf: 'center', minWidth: 240, gap: 6 }]}>
         <Row gap={4}>
           {b >= 1 ? <Chip tone="soft" k="h1o">{'<h1>'}</Chip> : null}
-          <T style={[styles.pageLine, b >= 3 && { fontFamily: fonts.monoMedium, fontSize: 16 }]}>Riya’s Tiffins</T>
+          <T style={[styles.pageLine, b >= 3 && { fontFamily: fonts.monoMedium, fontSize: 16 }]}>Riya’s café</T>
           {b >= 1 ? <Chip tone="soft" k="h1c">{'</h1>'}</Chip> : null}
         </Row>
         <Row gap={4}>
@@ -590,7 +590,7 @@ function Cascade() {
         {b >= 1 ? <Chip tone="warm" k="later">{'h1 { color: orange; }'}</Chip> : null}
       </View>
       <View style={[styles.page, { alignSelf: 'center', minWidth: 200 }]}>
-        <T style={[styles.pageLine, { fontFamily: fonts.bodyBold, fontSize: 16, color: b >= 2 ? colors.saffronShadow : colors.primary }]}>Riya’s Tiffins</T>
+        <T style={[styles.pageLine, { fontFamily: fonts.bodyBold, fontSize: 16, color: b >= 2 ? colors.saffronShadow : colors.primary }]}>Riya’s café</T>
       </View>
       <Caption>{b < 2 ? 'Two rules set the same thing…' : 'The later rule wins: that is the cascade.'}</Caption>
     </>
@@ -721,7 +721,7 @@ function Callback() {
 }
 function DomTree() {
   const b = useBeat(4);
-  const nodes: [string, number, boolean][] = [['body', 0, false], ['h1  Riya’s Tiffins', 1, false], ['p  Items: <span id="count">', 1, b >= 2], ['button#add  Add', 1, false]];
+  const nodes: [string, number, boolean][] = [['body', 0, false], ['h1  Riya’s café', 1, false], ['p  Items: <span id="count">', 1, b >= 2], ['button#add  Add', 1, false]];
   return (
     <>
       <View style={{ gap: 4, alignSelf: 'center' }}>

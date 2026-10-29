@@ -7,7 +7,7 @@ const K = 'PRACTICE · LOGIC';
 export const LOGIC_DRILLS: Record<string, Step[]> = {
   'f-seq-1': [
     quiz({ prompt: 'Why must an algorithm’s steps be clear?', options: ['A computer can’t guess what you meant', 'So it looks neat', 'Computers like long words', 'It doesn’t matter'], right: 'Right.', wrong: 'Computers follow steps exactly, so unclear steps give wrong results.' }),
-    order({ kicker: K, title: 'Make a cup of chai', instructions: 'Put the steps in order.', lang: 'python', lines: ['print("Boil water")', 'print("Add tea leaves")', 'print("Add milk and sugar")', 'print("Strain into a cup")'], explain: 'Each step needs the one before it.' }),
+    order({ kicker: K, title: 'Make a cup of tea', instructions: 'Put the steps in order.', lang: 'python', lines: ['print("Boil water")', 'print("Add tea leaves")', 'print("Add milk and sugar")', 'print("Strain into a cup")'], explain: 'Each step needs the one before it.' }),
     predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['print("move")', 'print("move")', 'print("flag!")'], answer: 'move\nmove\nflag!', explain: 'Lines run from top to bottom, one at a time.' }),
     quiz({ prompt: 'Yatri faces East at column 0. After three Move blocks, which column is Yatri in?', options: ['3', '1', '2', '0'], right: 'Right.', wrong: 'Each Move goes one square: 0 → 1 → 2 → 3.', mono: true }),
   ],

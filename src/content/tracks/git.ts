@@ -388,7 +388,7 @@ export const GIT_LESSONS: Lesson[] = [
       title: 'Conflicts',
       body: 'If both branches changed the same lines, Git stops and marks them in the file: your version between <<<<<<< and =======, theirs between ======= and >>>>>>>. Nothing is lost; Git just needs you to choose.',
       lang: 'bash',
-      code: ['<<<<<<< HEAD', '<h1>Namaste</h1>', '=======', '<h1>Hello</h1>', '>>>>>>> feature'],
+      code: ['<<<<<<< HEAD', '<h1>Welcome</h1>', '=======', '<h1>Hello</h1>', '>>>>>>> feature'],
     }),
     read({
       kicker: LEARN(3),
@@ -403,9 +403,9 @@ export const GIT_LESSONS: Lesson[] = [
       title: 'Both sides changed the same line',
       lang: 'bash',
       note: SAYS,
-      wrong: ['git init', 'echo "<h1>Hi</h1>" > index.html', 'git add index.html', 'git commit -m "Add heading"', 'git switch -c feature', 'echo "<h1>Hello</h1>" > index.html', 'git commit -am "Say hello"', 'git switch main', 'echo "<h1>Namaste</h1>" > index.html', 'git commit -am "Say namaste"', 'git merge feature'],
+      wrong: ['git init', 'echo "<h1>Hi</h1>" > index.html', 'git add index.html', 'git commit -m "Add heading"', 'git switch -c feature', 'echo "<h1>Hello</h1>" > index.html', 'git commit -am "Say hello"', 'git switch main', 'echo "<h1>Welcome</h1>" > index.html', 'git commit -am "Say hello"', 'git merge feature'],
       error: 'CONFLICT (content): Merge conflict in index.html\nAutomatic merge failed; fix conflicts and then commit the result.',
-      right: ['git init', 'echo "<h1>Hi</h1>" > index.html', 'git add index.html', 'git commit -m "Add heading"', 'git switch -c feature', 'echo "<h1>Hello</h1>" > index.html', 'git commit -am "Say hello"', 'git switch main', 'echo "<h1>Namaste</h1>" > index.html', 'git commit -am "Say namaste"', 'git merge feature', 'echo "<h1>Namaste</h1>" > index.html', 'git add index.html', 'git commit -m "Merge feature"'],
+      right: ['git init', 'echo "<h1>Hi</h1>" > index.html', 'git add index.html', 'git commit -m "Add heading"', 'git switch -c feature', 'echo "<h1>Hello</h1>" > index.html', 'git commit -am "Say hello"', 'git switch main', 'echo "<h1>Welcome</h1>" > index.html', 'git commit -am "Say hello"', 'git merge feature', 'echo "<h1>Welcome</h1>" > index.html', 'git add index.html', 'git commit -m "Merge feature"'],
       explain: 'A conflict isn’t an error in your code: Git needs a human to choose. Write the final version, add it and commit.',
     }),
     quiz({
@@ -425,8 +425,8 @@ export const GIT_LESSONS: Lesson[] = [
       instructions: 'Write has_conflict(text) that returns True if the text still contains conflict markers: a line starting with "<<<<<<<", "=======" on its own, or a line starting with ">>>>>>>".',
       starter: 'def has_conflict(text):\n    return "=" in text\n',
       tests: [
-        { call: 'has_conflict("<<<<<<< HEAD\\n<h1>Namaste</h1>\\n=======\\n<h1>Hello</h1>\\n>>>>>>> feature\\n")', expect: 'True' },
-        { call: 'has_conflict("<h1>Namaste</h1>\\n")', expect: 'False' },
+        { call: 'has_conflict("<<<<<<< HEAD\\n<h1>Welcome</h1>\\n=======\\n<h1>Hello</h1>\\n>>>>>>> feature\\n")', expect: 'True' },
+        { call: 'has_conflict("<h1>Welcome</h1>\\n")', expect: 'False' },
         { call: 'has_conflict("a = 1\\nb == 2\\n")', expect: 'False' },
         { call: 'has_conflict("ok\\n>>>>>>> feature\\n")', expect: 'True' },
       ],

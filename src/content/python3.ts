@@ -10,11 +10,11 @@ export const canteenBill: EditorStep = {
   starter: 'def bill(menu, order):\n    total = 0\n    return total\n',
   tests: [
     {
-      call: 'bill({"chai": 10, "samosa": 15}, ["chai", "samosa", "chai"])',
+      call: 'bill({"tea": 10, "muffin": 15}, ["tea", "muffin", "tea"])',
       expect: '35',
     },
-    { call: 'bill({"chai": 10}, ["dosa"])', expect: '0' },
-    { call: 'bill({"idli": 30}, [])', expect: '0' },
+    { call: 'bill({"tea": 10}, ["wrap"])', expect: '0' },
+    { call: 'bill({"pancake": 30}, [])', expect: '0' },
   ],
   hint: 'for item in order:\n    if item in menu:\n        total += menu[item]',
   solution: 'def bill(menu, order):\n    total = 0\n    for item in order:\n        if item in menu:\n            total += menu[item]\n    return total\n',

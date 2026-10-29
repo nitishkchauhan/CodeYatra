@@ -12,13 +12,13 @@ export const PYTHON_MORE_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'From raw rows to a report',
-      code: ['rows = [("chai", 10, 5), ("samosa", 15, 0), ("vada", 20, 3)]', 'in_stock = [name for name, price, qty in rows if qty > 0]', 'value = {name: price * qty for name, price, qty in rows}', 'print(in_stock)', 'print(value)'],
+      code: ['rows = [("tea", 10, 5), ("muffin", 15, 0), ("cutlet", 20, 3)]', 'in_stock = [name for name, price, qty in rows if qty > 0]', 'value = {name: price * qty for name, price, qty in rows}', 'print(in_stock)', 'print(value)'],
       walk: [
         { line: 2, text: 'Each tuple is unpacked into name, price and qty; only items with stock are kept.' },
         { line: 3, text: 'A dictionary comprehension: each name maps to price × qty.' },
-        { line: 5, text: 'Samosa is still in the dictionary, with a value of 0.' },
+        { line: 5, text: 'Muffin is still in the dictionary, with a value of 0.' },
       ],
-      output: ["['chai', 'vada']", "{'chai': 50, 'samosa': 0, 'vada': 60}"],
+      output: ["['tea', 'cutlet']", "{'tea': 50, 'muffin': 0, 'cutlet': 60}"],
     },
     industry: 'Data cleaning, building lookup tables from database rows and preparing API responses are full of comprehensions. Teams like them for short transforms because they read like a sentence, and avoid them for anything with side effects, like saving or sending.',
     interview: [
@@ -75,13 +75,13 @@ export const PYTHON_MORE_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'Days, counts and averages',
-      code: ['from collections import Counter', 'from datetime import date', 'from statistics import mean', '', 'orders = ["chai", "vada", "chai", "chai", "samosa"]', 'print(Counter(orders).most_common(2))', 'print((date(2026, 11, 20) - date(2026, 10, 26)).days, "days to the exam")', 'print(mean([72, 90, 48]))'],
+      code: ['from collections import Counter', 'from datetime import date', 'from statistics import mean', '', 'orders = ["tea", "cutlet", "tea", "tea", "muffin"]', 'print(Counter(orders).most_common(2))', 'print((date(2026, 11, 20) - date(2026, 10, 26)).days, "days to the exam")', 'print(mean([72, 90, 48]))'],
       walk: [
         { line: 6, text: 'Counter counts every item; most_common(2) gives the top two.' },
         { line: 7, text: 'Subtracting dates gives a timedelta; .days is the number of days.' },
         { line: 8, text: 'mean is in statistics, so there is no need to write sum / len.' },
       ],
-      output: ["[('chai', 3), ('vada', 1)]", '25 days to the exam', '70'],
+      output: ["[('tea', 3), ('cutlet', 1)]", '25 days to the exam', '70'],
     },
     industry: 'Professional Python is mostly gluing together well-tested libraries. Knowing what exists, keeping dependencies listed and pinned, and using a virtual environment per project are basics every team expects. Fewer hand-written helpers means fewer bugs.',
     interview: [

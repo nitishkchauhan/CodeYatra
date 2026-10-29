@@ -31,7 +31,7 @@ export const JAVA_LESSONS: Lesson[] = [
       story: 'Banks, booking sites and Android apps run on Java, and it is the most common language in Indian campus placement tests. It is stricter than Python: every value has a type and every line lives inside a class. That strictness catches mistakes before the program runs.',
       goal: 'Write, run and read your first Java program.',
       lang: 'java',
-      code: main(['System.out.println("Namaste, Java!");']),
+      code: main(['System.out.println("Hello, Java!");']),
     }),
     read({
       kicker: LEARN(1),
@@ -45,7 +45,7 @@ export const JAVA_LESSONS: Lesson[] = [
       title: 'Running it',
       body: 'Save the code as Main.java. Since Java 11 you can run one file directly with java Main.java. Bigger projects compile first: javac Main.java makes Main.class (bytecode), and java Main runs it on the Java Virtual Machine, on any computer.',
       lang: 'bash',
-      code: ['java Main.java', '# Namaste, Java!', '', 'javac Main.java   # makes Main.class', 'java Main'],
+      code: ['java Main.java', '# Hello, Java!', '', 'javac Main.java   # makes Main.class', 'java Main'],
     }),
     read({
       kicker: LEARN(3),
@@ -54,15 +54,15 @@ export const JAVA_LESSONS: Lesson[] = [
       lang: 'java',
       code: ['System.out.print("Code");', 'System.out.println("Yatra");', 'System.out.printf("Fare: %.2f%n", 349.5);'],
     }),
-    play('Java’s println, modelled', 'This JavaScript gives you a tiny System.out so the lines look like Java. Run it and change them.', 'const System = { out: { println: (x) => console.log(String(x)) } };\n\nSystem.out.println("Namaste, Java!");\nSystem.out.println("Total: " + 2 + 3);\nSystem.out.println(2 + 3 + " seats");\n', ['Print your own name', 'Put brackets round 2 + 3 in the first total', 'Print a ticket line with a fare']),
+    play('Java’s println, modelled', 'This JavaScript gives you a tiny System.out so the lines look like Java. Run it and change them.', 'const System = { out: { println: (x) => console.log(String(x)) } };\n\nSystem.out.println("Hello, Java!");\nSystem.out.println("Total: " + 2 + 3);\nSystem.out.println(2 + 3 + " seats");\n', ['Print your own name', 'Put brackets round 2 + 3 in the first total', 'Print a ticket line with a fare']),
     mistake({
       kicker: OOPS,
       title: 'A missing semicolon',
       lang: 'java',
       note: 'The compiler stops with:',
-      wrong: main(['System.out.println("Namaste")']),
+      wrong: main(['System.out.println("Hello")']),
       error: 'error: \';\' expected',
-      right: main(['System.out.println("Namaste");']),
+      right: main(['System.out.println("Hello");']),
       explain: 'Every Java statement ends with ;. The compiler points to the line where it expected one.',
     }),
     predict({
@@ -86,7 +86,7 @@ export const JAVA_LESSONS: Lesson[] = [
       title: 'A complete program',
       instructions: 'Put the lines in order.',
       lang: 'java',
-      lines: main(['System.out.println("Chalo!");']),
+      lines: main(['System.out.println("Let’s go!");']),
       explain: 'The class, then main, then the statement, then close both braces.',
     }),
     js({

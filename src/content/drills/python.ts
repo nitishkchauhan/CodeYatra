@@ -314,7 +314,7 @@ export const PYTHON_DRILLS: Record<string, Step[]> = {
     quiz({
       prompt: 'Which comprehension gives the lengths of the words?',
       lang: 'python',
-      code: ['words = ["chai", "samosa", "dosa"]'],
+      code: ['words = ["tea", "muffin", "wrap"]'],
       options: ['[len(w) for w in words]', '[w for len(w) in words]', '[len(words) for w in words]', 'len([w for w in words])'],
       right: 'Right: [4, 6, 4]. The expression before "for" is what goes into the new list.',
       wrong: 'Put what you want in the list first (len(w)), then "for w in words".',

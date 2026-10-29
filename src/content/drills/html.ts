@@ -73,7 +73,7 @@ export const HTML_DRILLS: Record<string, Step[]> = {
   ],
   'h-head-1': [
     quiz({ prompt: 'Which tag makes a page fit a phone screen?', options: ['<meta name="viewport" content="width=device-width, initial-scale=1">', '<meta charset="utf-8">', '<title>', '<link rel="icon">'], right: 'Right.', wrong: 'The viewport meta tag sets the page width to the device width.', mono: true }),
-    quiz({ prompt: 'What does <meta charset="utf-8"> do?', options: ['Makes characters like ₹ and Hindi show correctly', 'Speeds up the page', 'Adds a logo', 'Sets the language'], right: 'Right.', wrong: 'charset tells the browser how to read the text, so ₹ and हिंदी display properly.' }),
+    quiz({ prompt: 'What does <meta charset="utf-8"> do?', options: ['Makes characters like ₹ and é show correctly', 'Speeds up the page', 'Adds a logo', 'Sets the language'], right: 'Right.', wrong: 'charset tells the browser how to read the text, so ₹ and é display properly.' }),
     quiz({ prompt: 'Which tag loads your CSS file?', options: ['<link rel="stylesheet" href="style.css">', '<style src="style.css">', '<script href="style.css">', '<css>style.css</css>'], right: 'Right. rel="stylesheet" marks the linked file as CSS.', wrong: 'External CSS is loaded with <link rel="stylesheet" href="…">.', mono: true }),
     quiz({ prompt: 'Which helps search engines most?', options: ['Clear headings, useful text and good alt text', 'Repeating keywords 50 times', 'Hidden text', 'A long title with every keyword'], right: 'Right. Good content and structure win.', wrong: 'Keyword stuffing and hidden text hurt rankings. Clear, useful content helps.' }),
   ],

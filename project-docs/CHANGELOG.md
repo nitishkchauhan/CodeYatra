@@ -5,6 +5,12 @@ Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/Cod
 ## 29 Oct 2026 (branch `lesson-v3`): no Hindi words in the module notes
 - **HTML, more HTML, CSS and JavaScript notes** (`content/notes/html.ts`, `htmlMore.ts`, `css.ts`, `js.ts`) now use Riya’s Café (Lemon Tea, Coffee, Cheese Toast, Veg Sandwich, Chicken Sandwich, Cookies; `toast.jpg`) instead of tiffin and thali examples. Every worked-example output updated to match, including the sort example (now Iced Tea and Lemon Tea at ₹40 to show the tie-break by name). 5441 tests pass.
 
+## 29 Oct 2026 (branch `lesson-v3`): no Hindi words anywhere
+- Every remaining Hindi word in lessons, practice drills, notes and animations is replaced with plain English, the same way everywhere so each program still prints what its lesson says (chai → tea, thali → combo, namaste → hello, samosa → muffin, vada pav → veg burger, dosa → wrap, idli → pancake, roti → bread, and so on). Devanagari examples are gone too: the React context lesson now switches between English and French.
+- Answers that depended on word length were updated (two DSA drills, one Python caching example), and the Git merge lesson’s conflict now uses “Welcome” against “Hello”.
+- Old unused track files (`htmlV3.ts`, `htmlV3More.ts`, `jsV3.ts`, `cssV3.ts`) are deleted; the Sharma Classes CSS steps moved to `cssV5/sharmaProject.ts`.
+- New guard test (`language.test.ts`) scans every lesson, track, note, drill and mock-test question for Hindi words and Devanagari text. “Hindi” as the name of a language (for example on YouTube course links) is allowed.
+
 ## 29 Oct 2026 (branch `lesson-v3`): the JavaScript track in Lesson v5
 - **JavaScript rebuilt in full** (`tracks/jsV5/`, approved draft `content-drafts/js-track-v5.md`): 13 modules, 71 short lessons and 13 challenges with badges and stars, covering every topic on the W3Schools JavaScript list (checklist only; our own wording and Riya’s Café examples). The final challenge, **Make Sharma Classes work** (`j-project`), adds a course filter, form checks, batches from the server and a saved dark mode to the page from the HTML and CSS tracks.
 - **Three new screens** (`features/lesson/V5.tsx`):

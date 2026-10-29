@@ -39,7 +39,7 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
     hook({
       kicker: 'MODULE 1 · PYTHON FOUNDATIONS',
       title: 'Your first program',
-      story: 'Riya runs a chai stall outside her college. Every evening she adds up the cups in a notebook. A three-line program could do it for her, and update the moment the price changes.',
+      story: 'Riya runs a tea stall outside her college. Every evening she adds up the cups in a notebook. A three-line program could do it for her, and update the moment the price changes.',
       goal: 'Show messages with print() and store values like prices and names in variables.',
       lang: 'python',
       code: ['price = 12', 'cups = 40', 'print("Today:", price * cups)'],
@@ -49,8 +49,8 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
       title: 'print() shows things on screen',
       body: 'A program is a list of instructions that run from top to bottom. print() is the first one everyone learns: whatever is inside the brackets appears on the screen. Text goes inside quotes. Numbers don’t need them.',
       lang: 'python',
-      code: ['print("Namaste!")', 'print(42)', 'print("Chai", 12)'],
-      tip: 'print("Chai", 12) puts a space between the two values for you.',
+      code: ['print("Hello!")', 'print(42)', 'print("Tea", 12)'],
+      tip: 'print("Tea", 12) puts a space between the two values for you.',
     }),
     read({
       kicker: LEARN(2),
@@ -79,10 +79,10 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
       kicker: OOPS,
       title: 'Forgetting the quotes',
       lang: 'python',
-      wrong: ['print(Namaste)'],
-      error: "NameError: name 'Namaste' is not defined",
-      right: ['print("Namaste")'],
-      explain: 'Without quotes, Python thinks Namaste is the name of a variable. There is no box called Namaste, so it stops with a NameError. Text always goes inside quotes.',
+      wrong: ['print(Hello)'],
+      error: "NameError: name 'Hello' is not defined",
+      right: ['print("Hello")'],
+      explain: 'Without quotes, Python thinks Hello is the name of a variable. There is no box called Hello, so it stops with a NameError. Text always goes inside quotes.',
     }),
     predict({
       kicker: CHECK,
@@ -244,9 +244,9 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
       kicker: CHECK,
       title: 'What does this print?',
       lang: 'python',
-      lines: ['word = "chai"', 'print(word.upper(), len(word))'],
-      answer: 'CHAI 4',
-      explain: 'upper() gives "CHAI", and "chai" has 4 characters.',
+      lines: ['word = "tea"', 'print(word.upper(), len(word))'],
+      answer: 'TEA 4',
+      explain: 'upper() gives "TEA", and "tea" has 4 characters.',
     }),
     bug({
       kicker: CHECK,
@@ -592,31 +592,31 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
     hook({
       kicker: 'MODULE 8 · PYTHON FOUNDATIONS',
       title: 'Dictionaries',
-      story: 'The canteen menu pairs every dish with a price: chai ₹10, samosa ₹15, dosa ₹40. When someone orders, you look up the dish by name, not by position. That is exactly what a dictionary does.',
+      story: 'The canteen menu pairs every dish with a price: tea ₹10, muffin ₹15, wrap ₹40. When someone orders, you look up the dish by name, not by position. That is exactly what a dictionary does.',
       goal: 'Store pairs of keys and values, look values up by key, and loop over them.',
       lang: 'python',
-      code: ['menu = {"chai": 10, "samosa": 15}', 'print(menu["samosa"])   # 15'],
+      code: ['menu = {"tea": 10, "muffin": 15}', 'print(menu["muffin"])   # 15'],
     }),
     read({
       kicker: LEARN(1),
       title: 'Keys and values',
       body: 'A dictionary is written with curly brackets. Each entry is a key, a colon and a value. Look a value up by putting its key in square brackets. Each key appears only once.',
       lang: 'python',
-      code: ['menu = {"chai": 10, "samosa": 15, "dosa": 40}', 'print(menu["dosa"])   # 40', 'print(len(menu))      # 3'],
+      code: ['menu = {"tea": 10, "muffin": 15, "wrap": 40}', 'print(menu["wrap"])   # 40', 'print(len(menu))      # 3'],
     }),
     read({
       kicker: LEARN(2),
       title: 'Add, change and check',
       body: 'Storing a value under a key adds it, or changes it if the key is already there. Check whether a key exists with in, or use get() to give a default value instead of an error.',
       lang: 'python',
-      code: ['menu = {"chai": 10}', 'menu["vada"] = 20       # add', 'menu["chai"] = 12       # price up', 'print("idli" in menu)   # False', 'print(menu.get("idli", 0))   # 0'],
+      code: ['menu = {"tea": 10}', 'menu["cutlet"] = 20       # add', 'menu["tea"] = 12       # price up', 'print("pancake" in menu)   # False', 'print(menu.get("pancake", 0))   # 0'],
     }),
     read({
       kicker: LEARN(3),
       title: 'Loop over a dictionary',
       body: 'Looping over a dictionary gives its keys. items() gives each key and its value together, which is usually what you want.',
       lang: 'python',
-      code: ['menu = {"chai": 10, "samosa": 15}', 'for dish, price in menu.items():', '    print(dish, "costs", price)'],
+      code: ['menu = {"tea": 10, "muffin": 15}', 'for dish, price in menu.items():', '    print(dish, "costs", price)'],
       tip: 'Dictionaries are great for counting: counts[x] = counts.get(x, 0) + 1.',
     }),
     tryIt({
@@ -625,22 +625,22 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
       instructions: 'Change the menu and run it.',
       lang: 'python',
       file: 'menu.py',
-      starter: 'menu = {"chai": 10, "samosa": 15, "dosa": 40}\nmenu["vada"] = 20\nfor dish, price in menu.items():\n    print(dish, "costs", price)\nprint("Dosa costs", menu["dosa"])\n',
-      ideas: ['Add your favourite dish with a price', 'Raise the chai price to 12', 'Try print(menu.get("idli", "not on the menu"))'],
+      starter: 'menu = {"tea": 10, "muffin": 15, "wrap": 40}\nmenu["cutlet"] = 20\nfor dish, price in menu.items():\n    print(dish, "costs", price)\nprint("Wrap costs", menu["wrap"])\n',
+      ideas: ['Add your favourite dish with a price', 'Raise the tea price to 12', 'Try print(menu.get("pancake", "not on the menu"))'],
     }),
     mistake({
       kicker: OOPS,
       title: 'Looking up a missing key',
       lang: 'python',
-      wrong: ['menu = {"chai": 10, "samosa": 15}', 'print(menu["idli"])'],
-      error: "KeyError: 'idli'",
-      right: ['menu = {"chai": 10, "samosa": 15}', 'print(menu.get("idli", "Not on the menu"))'],
-      explain: 'Asking for a key that isn’t there raises KeyError. get() returns a default instead, or check first with if "idli" in menu.',
+      wrong: ['menu = {"tea": 10, "muffin": 15}', 'print(menu["pancake"])'],
+      error: "KeyError: 'pancake'",
+      right: ['menu = {"tea": 10, "muffin": 15}', 'print(menu.get("pancake", "Not on the menu"))'],
+      explain: 'Asking for a key that isn’t there raises KeyError. get() returns a default instead, or check first with if "pancake" in menu.',
     }),
     quiz({
-      prompt: 'menu = {"idli": 30}. What is menu["idli"] * 2?',
+      prompt: 'menu = {"pancake": 30}. What is menu["pancake"] * 2?',
       options: ['60', '"idliidli"', '30', 'KeyError'],
-      right: 'Right. menu["idli"] is the number 30, and 30 × 2 = 60.',
+      right: 'Right. menu["pancake"] is the number 30, and 30 × 2 = 60.',
       wrong: 'The lookup gives the number 30, so the answer is 60.',
       mono: true,
     }),
@@ -670,14 +670,14 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
       title: 'def makes a reusable block',
       body: 'def starts a function: a name, brackets and a colon, then the indented body. Defining a function doesn’t run it. Calling it by name with brackets does, as many times as you like.',
       lang: 'python',
-      code: ['def greet():', '    print("Namaste!")', '', 'greet()', 'greet()'],
+      code: ['def greet():', '    print("Hello!")', '', 'greet()', 'greet()'],
     }),
     read({
       kicker: LEARN(2),
       title: 'Parameters are inputs',
       body: 'Names in the brackets are parameters: placeholders for the values you pass in. greet("Asha", "Pune") puts "Asha" into name and "Pune" into city for that call.',
       lang: 'python',
-      code: ['def greet(name, city):', '    print(f"Namaste {name} from {city}!")', '', 'greet("Asha", "Pune")', 'greet("Kabir", "Kochi")'],
+      code: ['def greet(name, city):', '    print(f"Hello {name} from {city}!")', '', 'greet("Asha", "Pune")', 'greet("Kabir", "Kochi")'],
     }),
     read({
       kicker: LEARN(3),
@@ -965,7 +965,7 @@ export const PYTHON_FOUNDATIONS: Lesson[] = [
 ];
 
 // The final project: one program built in four tested steps, using every module above.
-const MENU = 'MENU = {"chai": 10, "samosa": 15, "dosa": 40, "vada": 20}\n';
+const MENU = 'MENU = {"tea": 10, "muffin": 15, "wrap": 40, "cutlet": 20}\n';
 const PRICE = 'def price(item):\n    return MENU.get(item, 0)\n';
 const SUBTOTAL = 'def subtotal(order):\n    total = 0\n    for item in order:\n        total += price(item)\n    return total\n';
 const TOTAL = 'def total(order, student):\n    amount = subtotal(order)\n    if student:\n        amount = amount * 0.9\n    return round(amount * 1.05, 2)\n';
@@ -984,7 +984,7 @@ export const PYTHON_PROJECT: Lesson = {
       story: 'The college canteen still writes bills by hand, and the queue is long. You’ll build the program that does it: a menu, an order, a student discount, GST, and a printed receipt.',
       goal: 'A working billing program in 4 steps, each with its own tests. It uses everything from the 12 modules.',
       lang: 'python',
-      code: ['receipt(["chai", "samosa", "chai"])', '# chai x2 = 20', '# samosa x1 = 15', '# Total: 35'],
+      code: ['receipt(["tea", "muffin", "tea"])', '# tea x2 = 20', '# muffin x1 = 15', '# Total: 35'],
     }),
     py({
       title: 'Step 1 · Look up a price',
@@ -992,8 +992,8 @@ export const PYTHON_PROJECT: Lesson = {
       file: 'canteen.py',
       starter: `${MENU}\ndef price(item):\n    return 0\n`,
       tests: [
-        { call: 'price("dosa")', expect: '40' },
-        { call: 'price("chai")', expect: '10' },
+        { call: 'price("wrap")', expect: '40' },
+        { call: 'price("tea")', expect: '10' },
         { call: 'price("pizza")', expect: '0' },
       ],
       hint: 'MENU.get(item, 0) gives the price, or 0 when the item is missing.',
@@ -1005,8 +1005,8 @@ export const PYTHON_PROJECT: Lesson = {
       file: 'canteen.py',
       starter: `${MENU}\n${PRICE}\ndef subtotal(order):\n    total = 0\n    # add the price of each item\n    return total\n`,
       tests: [
-        { call: 'subtotal(["chai", "samosa", "chai"])', expect: '35' },
-        { call: 'subtotal(["dosa", "pizza"])', expect: '40' },
+        { call: 'subtotal(["tea", "muffin", "tea"])', expect: '35' },
+        { call: 'subtotal(["wrap", "pizza"])', expect: '40' },
         { call: 'subtotal([])', expect: '0' },
       ],
       hint: 'for item in order:\n    total += price(item)',
@@ -1018,8 +1018,8 @@ export const PYTHON_PROJECT: Lesson = {
       file: 'canteen.py',
       starter: `${MENU}\n${PRICE}\n${SUBTOTAL}\ndef total(order, student):\n    amount = subtotal(order)\n    # student discount, then GST, then round\n    return amount\n`,
       tests: [
-        { call: 'total(["dosa"], False)', expect: '42.0' },
-        { call: 'total(["dosa", "dosa"], True)', expect: '75.6' },
+        { call: 'total(["wrap"], False)', expect: '42.0' },
+        { call: 'total(["wrap", "wrap"], True)', expect: '75.6' },
         { call: 'total([], True)', expect: '0.0' },
       ],
       hint: 'if student:\n    amount = amount * 0.9\nreturn round(amount * 1.05, 2)',
@@ -1030,10 +1030,10 @@ export const PYTHON_PROJECT: Lesson = {
       instructions:
         'receipt(order) prints one line per item with how many and their cost, then the total, like:\nchai x2 = 20\nsamosa x1 = 15\nTotal: 35\nCount the items with a dictionary first, in the order they appear.',
       file: 'canteen.py',
-      starter: `${MENU}\n${PRICE}\n${SUBTOTAL}\ndef receipt(order):\n    counts = {}\n    # count each item, then print a line for each\n    print("Total:", subtotal(order))\n\nreceipt(["chai", "samosa", "chai"])\n`,
-      tests: [{ stdout: 'chai x2 = 20\nsamosa x1 = 15\nTotal: 35' }],
+      starter: `${MENU}\n${PRICE}\n${SUBTOTAL}\ndef receipt(order):\n    counts = {}\n    # count each item, then print a line for each\n    print("Total:", subtotal(order))\n\nreceipt(["tea", "muffin", "tea"])\n`,
+      tests: [{ stdout: 'tea x2 = 20\nsamosa x1 = 15\nTotal: 35' }],
       hint: 'for item in order:\n    counts[item] = counts.get(item, 0) + 1\nfor item, n in counts.items():\n    print(f"{item} x{n} = {price(item) * n}")',
-      solution: `${MENU}\n${PRICE}\n${SUBTOTAL}\ndef receipt(order):\n    counts = {}\n    for item in order:\n        counts[item] = counts.get(item, 0) + 1\n    for item, n in counts.items():\n        print(f"{item} x{n} = {price(item) * n}")\n    print("Total:", subtotal(order))\n\nreceipt(["chai", "samosa", "chai"])\n`,
+      solution: `${MENU}\n${PRICE}\n${SUBTOTAL}\ndef receipt(order):\n    counts = {}\n    for item in order:\n        counts[item] = counts.get(item, 0) + 1\n    for item, n in counts.items():\n        print(f"{item} x{n} = {price(item) * n}")\n    print("Total:", subtotal(order))\n\nreceipt(["tea", "muffin", "tea"])\n`,
     }),
   ],
 };

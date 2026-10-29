@@ -38,7 +38,7 @@ export const NODE_DRILLS: Record<string, Step[]> = {
   'n-express-1': [
     quiz({ prompt: 'For GET /trains?from=Delhi, where is "Delhi"?', options: ['req.query.from', 'req.params.from', 'req.body.from', 'req.from'], right: 'Right.', wrong: 'The ?key=value part is in req.query.', mono: true }),
     quiz({ prompt: 'Which sends a 404 with a JSON error?', options: ['res.status(404).json({ error: "Not found" })', 'res.json(404)', 'res.send(404, "Not found")', 'return 404'], right: 'Right.', wrong: 'Set the status, then send the body.', mono: true }),
-    order({ kicker: K, title: 'A minimal Express app', instructions: 'Arrange the lines.', lang: 'javascript', lines: ['import express from "express";', 'const app = express();', 'app.get("/", (req, res) => res.send("Namaste"));', 'app.listen(3000);'], explain: 'Import, create the app, add routes, then listen.' }),
+    order({ kicker: K, title: 'A minimal Express app', instructions: 'Arrange the lines.', lang: 'javascript', lines: ['import express from "express";', 'const app = express();', 'app.get("/", (req, res) => res.send("Hello"));', 'app.listen(3000);'], explain: 'Import, create the app, add routes, then listen.' }),
   ],
   'n-middleware-1': [
     quiz({ prompt: 'In which order does middleware run?', options: ['The order it was added with app.use', 'Alphabetical order', 'Random order', 'Error handlers first'], right: 'Right.', wrong: 'Express runs middleware in the order you registered it.' }),

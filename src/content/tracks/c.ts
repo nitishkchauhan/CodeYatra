@@ -30,7 +30,7 @@ export const C_LESSONS: Lesson[] = [
       story: 'Linux, Windows, Android’s core, your phone’s Wi-Fi chip and Python itself are written in C. Learning C shows you how computers really handle memory, and it is still a favourite in Indian engineering exams and interviews.',
       goal: 'Write, compile and run your first C program.',
       lang: 'c',
-      code: prog(['printf("Namaste, C!\\n");']),
+      code: prog(['printf("Hello, C!\\n");']),
     }),
     read({
       kicker: LEARN(1),
@@ -44,7 +44,7 @@ export const C_LESSONS: Lesson[] = [
       title: 'Compiling',
       body: 'C is compiled: gcc turns your source file into a machine-code program before it runs. gcc hello.c -o hello builds it; ./hello (or hello.exe on Windows) runs it. Add -Wall to get warnings about likely mistakes.',
       lang: 'bash',
-      code: ['gcc -Wall hello.c -o hello', './hello', '# Namaste, C!'],
+      code: ['gcc -Wall hello.c -o hello', './hello', '# Hello, C!'],
     }),
     read({
       kicker: LEARN(3),
@@ -77,7 +77,7 @@ export const C_LESSONS: Lesson[] = [
       title: 'A complete program',
       instructions: 'Put the lines in order.',
       lang: 'c',
-      lines: prog(['printf("Namaste\\n");']),
+      lines: prog(['printf("Hello\\n");']),
       explain: 'Include first, then main with its body, return 0, and the closing brace.',
     }),
     py({
