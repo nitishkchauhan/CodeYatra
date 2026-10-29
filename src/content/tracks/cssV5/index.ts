@@ -33,8 +33,8 @@ const MODULES: [string, string, Lesson[]][] = [
 export const CSS_V5: Lesson[] = MODULES.flatMap(([, , lessons]) => lessons);
 
 /** The track's units, one per module: its lessons, then its Challenge. */
-export const CSS_UNITS: Unit[] = MODULES.map(([id, title, lessons], m) => ({
+export const CSS_UNITS: Unit[] = MODULES.map(([id, title, lessons]) => ({
   id,
-  title: `Module ${m + 1} · ${title}`,
+  title,
   lessons: lessons.map((l) => ({ id: l.id, title: l.title, meta: l.badge ? `Challenge · ${l.badge.icon} ${l.badge.name}` : `Lesson · ${l.minutes} min` })),
 }));
