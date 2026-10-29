@@ -13,9 +13,9 @@ export const HTML_M7: Lesson[] = [
       [3, '<input> is the box the user types in.', '#fname'],
       [4, 'type="submit" makes the send button.', 'input[type=submit]'],
     ], { page: { html: '<form action="#" onsubmit="return false"><label for="fname">First name:</label><input type="text" id="fname" name="fname"> <input type="submit" value="Send"></form>', css: FORM_CSS } }),
-    reveal('Why every input needs a name', [['📦 name="fname"', 'When the form is sent, each value travels with its name, like fname=Riya. An input without a name is not sent at all.']]),
+    reveal('Why every input needs a name', [['📦 name="fname"', 'When the form is sent, each value travels with its name, like fname=Rosa. An input without a name is not sent at all.']]),
     toggle('GET or POST?', [
-      ['GET', ['<form action="/search" method="get">'], 'The data shows in the address bar: /search?fname=Riya. Good for searches, never for passwords. If you set no method, GET is used.'],
+      ['GET', ['<form action="/search" method="get">'], 'The data shows in the address bar: /search?fname=Rosa. Good for searches, never for passwords. If you set no method, GET is used.'],
       ['POST', ['<form action="/signup" method="post">'], 'The data travels hidden inside the request. Use it for logins, payments and anything private.'],
     ]),
     place('Connect the label', 'Give the label and the input matching names, so tapping the label jumps into the box.', [['<label ', { gap: 0 }, '>Email</label>'], ['<input ', { gap: 1 }, ' name="email">']], ['for="email"', 'id="email"', 'name="email-box"'], ['for="email"', 'id="email"'], 'A label’s for must match the input’s id. It helps people tapping small boxes, and screen readers.', { css: FORM_CSS }),
@@ -34,7 +34,7 @@ export const HTML_M7: Lesson[] = [
       ['☑️ Checkboxes', 'Pick any number of options.'],
     ], { intro: 'A pizza order: one size, but as many toppings as you like.' }),
     live('One group, one choice', 'Tap a name for the second radio button, then try choosing both sizes in the page.', ['<input type="radio" id="s" name="size" value="small">', '<label for="s">Small</label>', '<input type="radio" id="l" name="{{v}}" value="large">', '<label for="l">Large</label>'], ['size', 'size2'], { caption: 'With the same name, picking one un-picks the other. With different names, both can be picked.' }),
-    explore('A dropdown', ['<select id="city" name="city">', '  <option value="del">Delhi</option>', '  <option value="mum" selected>Mumbai</option>', '</select>'], [
+    explore('A dropdown', ['<select id="city" name="city">', '  <option value="del">Dublin</option>', '  <option value="mum" selected>Madrid</option>', '</select>'], [
       [1, '<select> makes a dropdown. Add multiple to allow several choices.', 'select'],
       [3, 'selected picks the option shown at the start.', 'select'],
     ], { minTaps: 2 }),
@@ -100,7 +100,7 @@ export const HTML_M7: Lesson[] = [
       ['autofocus', 'The cursor starts in this field.'],
       ['autocomplete', 'Lets the browser suggest saved entries (on or off).'],
     ], { mono: true }),
-    beforeAfter('value or placeholder?', [['<input value="Riya">'], 'value is real text: it is sent with the form.', { html: '<input value="Riya">' }], [['<input placeholder="Your name">'], 'placeholder is only a grey hint: it is not sent.', { html: '<input placeholder="Your name">' }], undefined, ['value', 'placeholder']),
+    beforeAfter('value or placeholder?', [['<input value="Rosa">'], 'value is real text: it is sent with the form.', { html: '<input value="Rosa">' }], [['<input placeholder="Your name">'], 'placeholder is only a grey hint: it is not sent.', { html: '<input placeholder="Your name">' }], undefined, ['value', 'placeholder']),
     toggle('Checks the browser does for you', [
       ['required', ['<input name="n" required>', '<button>Send</button>'], 'The field can’t be empty. Tap Send with it empty to see the warning.', { html: '<form onsubmit="return false"><input name="n" required> <button>Send</button></form>' }],
       ['maxlength', ['<input name="n" maxlength="10">'], 'At most 10 characters (minlength sets the fewest).', { html: '<input name="n" maxlength="10" placeholder="Try typing a lot">' }],
@@ -136,7 +136,7 @@ export const HTML_M7: Lesson[] = [
     pickCode('Which label is connected to its input?', ['<label for="age">Age</label><input id="age" name="age">', '<label id="age">Age</label><input for="age">', '<label name="age">Age</label><input name="age">'], 'The label’s for matches the input’s id.'),
     bugTask(['<form action="/order" method="post">', '  <input type="radio" name="size" value="s"> Small', '  <input type="radio" name="sizes" value="l"> Large', '  <button type="submit">Order</button>', '</form>'], [[3, 'name="sizes"', 'name="size"']], 'Radios need the same name, or both sizes can be picked at once.'),
     xray(
-      { html: '<form onsubmit="return false"><input class="who" type="text" placeholder="Your name"><br><input type="date"><br><select><option>Pune</option><option>Jaipur</option></select><br><input type="radio" name="g" id="r1"><label for="r1">Day batch</label><br><input type="checkbox" id="c1"><label for="c1">I agree</label><br><textarea rows="2">Message</textarea><br><button type="submit">Send</button></form>', css: 'input,select,textarea,button{margin:4px 0;font:14px sans-serif}' },
+      { html: '<form onsubmit="return false"><input class="who" type="text" placeholder="Your name"><br><input type="date"><br><select><option>Paris</option><option>Jersey</option></select><br><input type="radio" name="g" id="r1"><label for="r1">Day batch</label><br><input type="checkbox" id="c1"><label for="c1">I agree</label><br><textarea rows="2">Message</textarea><br><button type="submit">Send</button></form>', css: 'input,select,textarea,button{margin:4px 0;font:14px sans-serif}' },
       [
         ['.who', 'The box with grey hint text', '<input placeholder>', ['<input placeholder>', '<textarea>', '<label>']],
         ['input[type=date]', 'The calendar field', 'type="date"', ['type="date"', 'type="time"', 'type="number"']],

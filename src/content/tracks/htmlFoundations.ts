@@ -82,7 +82,7 @@ export const HTML_FOUNDATIONS: Lesson[] = [
       title: 'Your first page',
       instructions: 'Make a complete page: a <title> of "My Page" inside <head>, and inside <body> an <h1> with your name and a <p> about you.',
       starter: { html: '<!DOCTYPE html>\n<html lang="en">\n  <head></head>\n  <body></body>\n</html>\n' },
-      solution: { html: '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <title>My Page</title>\n  </head>\n  <body>\n    <h1>Asha Verma</h1>\n    <p>I am in Class 10 and I love coding.</p>\n  </body>\n</html>\n' },
+      solution: { html: '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <title>My Page</title>\n  </head>\n  <body>\n    <h1>Ava Vance</h1>\n    <p>I am in Class 10 and I love coding.</p>\n  </body>\n</html>\n' },
       checks: [
         { label: 'The title is "My Page"', file: 'html', pattern: /<head>[\s\S]*<title>\s*My Page\s*<\/title>[\s\S]*<\/head>/ },
         { label: 'The body has an <h1>', file: 'html', pattern: /<body>[\s\S]*<h1>[^<]+<\/h1>[\s\S]*<\/body>/ },
@@ -114,7 +114,7 @@ export const HTML_FOUNDATIONS: Lesson[] = [
       title: 'Paragraphs and line breaks',
       body: 'Wrap each paragraph in <p>. Browsers ignore extra spaces and new lines in your code, so pressing Enter does nothing on the page. Use <br> only where a line break is part of the content, like an address.',
       lang: 'html',
-      code: ['<p>We teach coding to school students.</p>', '<p>', '  12 MG Road<br>', '  Indore 452001', '</p>'],
+      code: ['<p>We teach coding to school students.</p>', '<p>', '  12 MG Road<br>', '  Irvine 452001', '</p>'],
     }),
     read({
       kicker: LEARN(3),
@@ -183,7 +183,7 @@ export const HTML_FOUNDATIONS: Lesson[] = [
       title: 'Images and alt text',
       body: '<img> has no closing tag. src is the file, alt is a short description read aloud when the image can’t be seen. width and height let the browser save space before it loads. Decorative images get alt="".',
       lang: 'html',
-      code: ['<img src="topper.jpg" alt="Asha holding her certificate" width="400" height="300">'],
+      code: ['<img src="topper.jpg" alt="Ava holding her certificate" width="400" height="300">'],
     }),
     read({
       kicker: LEARN(3),
@@ -200,7 +200,7 @@ export const HTML_FOUNDATIONS: Lesson[] = [
       note: 'What a screen reader announces:',
       wrong: ['<p>For fees, <a href="fees.html">click here</a>.</p>', '<img src="topper.jpg">'],
       error: '“link, click here” and “image, topper.jpg”: neither says what it is.',
-      right: ['<p><a href="fees.html">See the fee structure</a>.</p>', '<img src="topper.jpg" alt="Asha holding her certificate">'],
+      right: ['<p><a href="fees.html">See the fee structure</a>.</p>', '<img src="topper.jpg" alt="Ava holding her certificate">'],
       explain: 'Link text should make sense on its own, and every meaningful image needs alt text that describes it.',
     }),
     quiz({
@@ -215,9 +215,9 @@ export const HTML_FOUNDATIONS: Lesson[] = [
       title: 'Find the bug',
       instructions: 'The image is missing its description. Tap the line to fix.',
       lang: 'html',
-      lines: ['<h2>Our toppers</h2>', '<img src="topper.jpg">', '<p>Asha scored 98%.</p>'],
+      lines: ['<h2>Our toppers</h2>', '<img src="topper.jpg">', '<p>Ava scored 98%.</p>'],
       bug: 1,
-      fix: '<img src="topper.jpg" alt="Asha holding her certificate">',
+      fix: '<img src="topper.jpg" alt="Ava holding her certificate">',
       explain: 'Every meaningful image needs alt text.',
     }),
     web({
@@ -294,14 +294,14 @@ export const HTML_FOUNDATIONS: Lesson[] = [
     web({
       title: 'Label your elements',
       instructions: 'Give the heading id="title", and give both paragraphs class="stop".',
-      starter: { html: '<h1>Route</h1>\n<p>Delhi</p>\n<p>Agra</p>\n' },
-      solution: { html: '<h1 id="title">Route</h1>\n<p class="stop">Delhi</p>\n<p class="stop">Agra</p>\n' },
+      starter: { html: '<h1>Route</h1>\n<p>Dublin</p>\n<p>Athens</p>\n' },
+      solution: { html: '<h1 id="title">Route</h1>\n<p class="stop">Dublin</p>\n<p class="stop">Athens</p>\n' },
       checks: [
         { label: 'The heading has id="title"', file: 'html', pattern: /<h1[^>]*\bid="title"/ },
-        { label: 'Delhi has class="stop"', file: 'html', pattern: /<p[^>]*\bclass="stop"[^>]*>\s*Delhi/ },
-        { label: 'Agra has class="stop"', file: 'html', pattern: /<p[^>]*\bclass="stop"[^>]*>\s*Agra/ },
+        { label: 'Dublin has class="stop"', file: 'html', pattern: /<p[^>]*\bclass="stop"[^>]*>\s*Dublin/ },
+        { label: 'Athens has class="stop"', file: 'html', pattern: /<p[^>]*\bclass="stop"[^>]*>\s*Athens/ },
       ],
-      hint: '<h1 id="title">Route</h1> and <p class="stop">Delhi</p>',
+      hint: '<h1 id="title">Route</h1> and <p class="stop">Dublin</p>',
     }),
   ], [mdn('HTML attribute reference', 'Web/HTML/Reference/Attributes'), mdn('Using data attributes', 'Web/HTML/How_to/Use_data_attributes')]),
 
@@ -471,7 +471,7 @@ export const HTML_FOUNDATIONS: Lesson[] = [
     read({
       kicker: LEARN(3),
       title: 'name and input types',
-      body: 'name is the key the value is sent under, like email=asha@… type changes the box: email, tel, number, password, date. On phones the right type shows the right keyboard, like digits for tel.',
+      body: 'name is the key the value is sent under, like email=ava@… type changes the box: email, tel, number, password, date. On phones the right type shows the right keyboard, like digits for tel.',
       lang: 'html',
       code: ['<input name="phone" type="tel">', '<input name="age" type="number" min="13">', '<input name="dob" type="date">'],
     }),
@@ -815,17 +815,17 @@ export const HTML_FOUNDATIONS: Lesson[] = [
     hook({
       kicker: 'MODULE 12 · HTML',
       title: 'Being found',
-      story: 'A parent searches “coding classes in Indore”. Google shows a title and two lines of description for each site. Those lines come from your <head>, and good HTML structure decides whether your page appears at all.',
+      story: 'A parent searches “coding classes in Irvine”. Google shows a title and two lines of description for each site. Those lines come from your <head>, and good HTML structure decides whether your page appears at all.',
       goal: 'Fill in the head of a page and follow simple SEO basics.',
       lang: 'html',
-      code: ['<title>Coding classes in Indore | Sunrise Coaching</title>', '<meta name="description" content="Python and web classes for Class 9–12.">'],
+      code: ['<title>Coding classes in Irvine | Sunrise Coaching</title>', '<meta name="description" content="Python and web classes for Class 9–12.">'],
     }),
     read({
       kicker: LEARN(1),
       title: 'Title and description',
       body: '<title> names the page in the browser tab and in search results; make it specific, under about 60 characters. <meta name="description"> is the short summary search engines often show. Every page should have its own of both.',
       lang: 'html',
-      code: ['<head>', '  <meta charset="utf-8">', '  <title>Python for Class 11 | Sunrise Coaching</title>', '  <meta name="description" content="A 12-week Python course for Class 11 students in Indore.">', '</head>'],
+      code: ['<head>', '  <meta charset="utf-8">', '  <title>Python for Class 11 | Sunrise Coaching</title>', '  <meta name="description" content="A 12-week Python course for Class 11 students in Irvine.">', '</head>'],
     }),
     read({
       kicker: LEARN(2),

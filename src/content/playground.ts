@@ -9,13 +9,13 @@ export type PlayProgram = { id: string; label: string; code: string };
 
 const OWN: Record<PlayLang, PlayProgram[]> = {
   python: [
-    { id: 'py-hello', label: 'Hello', code: 'name = "Yatri"\ncity = "Pune"\nprint("Hello,", name, "from", city)\n' },
+    { id: 'py-hello', label: 'Hello', code: 'name = "Yatri"\ncity = "Paris"\nprint("Hello,", name, "from", city)\n' },
     { id: 'py-table', label: 'Times table', code: 'n = 5\nfor i in range(1, 11):\n    print(i, "x", n, "=", i * n)\n' },
     { id: 'py-fare', label: 'Fare', code: 'def fare(km):\n    if km <= 10:\n        return 20\n    return 20 + (km - 10) * 2\n\ntrip = 25\nprint("Fare for", trip, "km:", fare(trip))\n' },
-    { id: 'py-list', label: 'List', code: 'cities = ["Delhi", "Jaipur", "Pune"]\nfor c in cities:\n    print(c.upper())\nprint(len(cities), "cities")\n' },
+    { id: 'py-list', label: 'List', code: 'cities = ["Dublin", "Jersey", "Paris"]\nfor c in cities:\n    print(c.upper())\nprint(len(cities), "cities")\n' },
   ],
   javascript: [
-    { id: 'js-hello', label: 'Hello', code: 'const name = "Yatri";\nconst city = "Pune";\nconsole.log(`Hello, ${name} from ${city}`);\n' },
+    { id: 'js-hello', label: 'Hello', code: 'const name = "Yatri";\nconst city = "Paris";\nconsole.log(`Hello, ${name} from ${city}`);\n' },
     { id: 'js-table', label: 'Times table', code: 'const n = 5;\nfor (let i = 1; i <= 10; i++) {\n  console.log(i, "x", n, "=", i * n);\n}\n' },
     { id: 'js-fare', label: 'Fare', code: 'function fare(km) {\n  if (km <= 10) return 20;\n  return 20 + (km - 10) * 2;\n}\n\nconst trip = 25;\nconsole.log("Fare for", trip, "km:", fare(trip));\n' },
     { id: 'js-seats', label: 'Seats', code: 'const seats = [12, 0, 7, 3];\nconst open = seats.filter((s) => s > 0);\nconsole.log(open, open.length);\n' },

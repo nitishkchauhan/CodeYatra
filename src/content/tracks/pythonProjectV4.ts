@@ -15,7 +15,7 @@ const step = (n: number, o: Omit<EditorStep, 'type' | 'kicker' | 'lang' | 'file'
 
 export const PYTHON_PROJECT_V4: Lesson = {
   id: 'p-project',
-  title: 'Project: Riya’s billing app',
+  title: 'Project: Rosa’s billing app',
   kind: 'project',
   format: 'v4',
   level: 'basic',
@@ -26,8 +26,8 @@ export const PYTHON_PROJECT_V4: Lesson = {
   steps: [
     scenario({
       kicker: 'PROJECT · PYTHON BASIC',
-      title: 'Riya’s billing app',
-      from: 'Riya · runs the tea stall',
+      title: 'Rosa’s billing app',
+      from: 'Rosa · runs the tea stall',
       message: 'The evening queue is long because I add up every bill by hand. Can you make my phone do it? It should know my prices, give my regular customers 10% off, add 5% GST, print a neat receipt and keep a copy.',
       artifact: { kind: 'report', title: 'The receipt you will build', lines: ['tea x2 = 24', 'toast x1 = 20', 'Total: 44'] },
       task: 'Build it in 6 steps. Each step has tests, so you know it works before you move on.',
@@ -111,7 +111,7 @@ export const PYTHON_PROJECT_V4: Lesson = {
     }),
     step(5, {
       title: 'Safe quantities',
-      instructions: 'Riya types how many cups. Write qty(text): give back the number, or 0 if the text isn’t a whole number, and 0 for negative numbers.',
+      instructions: 'Rosa types how many cups. Write qty(text): give back the number, or 0 if the text isn’t a whole number, and 0 for negative numbers.',
       starter: 'def qty(text):\n    return int(text)\n',
       tests: [
         { call: 'qty("3")', expect: '3' },

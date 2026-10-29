@@ -12,12 +12,12 @@ const SWITCH_CSS = `${BASE} .sw { display: inline-block; padding: 8px 12px; bord
 
 export const CSS_M11: Lesson[] = [
   lesson('css-11-1', 'Styling images', 6, [
-    chat(['Riya’s photos come in every shape: wide, tall, square. Her menu cards need them all the same size.', 'Stretching them looks awful. object-fit crops them neatly instead.']),
+    chat(['Rosa’s photos come in every shape: wide, tall, square. Her menu cards need them all the same size.', 'Stretching them looks awful. object-fit crops them neatly instead.']),
     live('object-fit', 'A wide photo in a square box. Tap a value.', ['.photo { object-fit: {{v}}; }'], ['fill', 'cover', 'contain', 'none', 'scale-down'], { html: PHOTO, css: PHOTO_CSS, caption: 'fill (the default) stretches. cover fills and crops. contain shows it all with gaps.' }),
     live('object-position', 'With cover, choose which part stays in view.', ['.photo { object-fit: cover; object-position: {{v}}; }'], ['center', 'left', 'right', '20% 80%'], { html: PHOTO, css: PHOTO_CSS }),
     toggle('Shapes and centring', [
       ['Rounded', ['.photo { border-radius: 16px; }'], 'Soft corners.', { html: PHOTO, css: `${PHOTO_CSS} .photo { object-fit: cover; border-radius: 16px; }` }],
-      ['Circle', ['.photo { border-radius: 50%; }'], 'A square with 50% radius becomes a circle, good for profile photos.', { html: '<img class="photo" src="riya.svg" alt="Riya">', css: `${PHOTO_CSS} .photo { object-fit: cover; border-radius: 50%; }` }],
+      ['Circle', ['.photo { border-radius: 50%; }'], 'A square with 50% radius becomes a circle, good for profile photos.', { html: '<img class="photo" src="portrait.svg" alt="Rosa">', css: `${PHOTO_CSS} .photo { object-fit: cover; border-radius: 50%; }` }],
       ['Centred', ['.photo { display: block;', '  margin: 0 auto; }'], 'An image is inline; make it a block, then auto margins centre it.', { html: PHOTO, css: `${PHOTO_CSS} .photo { object-fit: cover; display: block; margin: 0 auto; }` }],
     ]),
     explore('A caption over the photo', ['.frame { position: relative; }', '.frame .cap {', '  position: absolute; inset: auto 0 0 0;', '  background: rgb(0 0 0 / 0.55);', '}'], [
@@ -79,7 +79,7 @@ export const CSS_M11: Lesson[] = [
       ['backface-visibility: hidden', 'Hides the back of a card when it faces away.'],
       ['transform-style: preserve-3d', 'Lets children keep their 3D position (for cubes and flips).'],
     ], { mono: true }),
-    live('Turn like a door', 'Tap an angle.', ['.door { transform: perspective(500px) rotateY({{v}}); }'], ['0deg', '30deg', '60deg', '-45deg'], { html: '<div class="door">Riya’s Café</div>', css: `${BASE} .door { width: 180px; height: 110px; margin: 20px auto; display: grid; place-items: center; background: #C2410C; color: white; font-weight: bold; border-radius: 10px; }` }),
+    live('Turn like a door', 'Tap an angle.', ['.door { transform: perspective(500px) rotateY({{v}}); }'], ['0deg', '30deg', '60deg', '-45deg'], { html: '<div class="door">Rosa’s Café</div>', css: `${BASE} .door { width: 180px; height: 110px; margin: 20px auto; display: grid; place-items: center; background: #C2410C; color: white; font-weight: bold; border-radius: 10px; }` }),
     explore('A card flip', ['.card { transition: transform 0.6s; transform-style: preserve-3d; }', '.flipped { transform: rotateY(180deg); }', '.front, .back { backface-visibility: hidden; }', '.back { transform: rotateY(180deg); }'], [
       [1, 'The card keeps 3D for its two faces, and animates its turn.', '.card'],
       [2, 'Tap the switch: the whole card turns over.', '.card'],
@@ -157,7 +157,7 @@ export const CSS_M11: Lesson[] = [
     pickCode('Which makes a button grow smoothly on hover?', ['.btn { transition: transform 0.2s; } .btn:hover { transform: scale(1.05); }', '.btn:hover { animation: scale 1.05; }', '.btn { transform: hover 0.2s; }', '.btn:hover { transition: grow; }'], 'The transition on the button; the change on :hover.'),
     bugTask(['@keyframes fade {', '  from { opacity: 0 }', '  to { opacity: 1 }', '}', '.card { animation: fade; }', '.photo { object-fit: crop; }'], [[5, 'animation: fade;', 'animation: fade 0.5s;'], [6, 'crop', 'cover']], 'An animation needs a duration (the default is 0s), and object-fit has no crop value; cover crops.'),
     xray(
-      { html: '<img class="round" src="riya.svg" alt="Riya"><img class="grey" src="dish.svg" alt="Toast"><span class="tag">SALE</span>', css: 'body{font-family:system-ui,sans-serif;margin:16px} img{width:110px;height:110px;object-fit:cover;margin:4px} .round{border-radius:50%} .grey{filter:grayscale(1);border-radius:10px} .tag{display:inline-block;margin:20px;padding:6px 14px;background:#C2410C;color:white;font-weight:bold;border-radius:8px;transform:rotate(-12deg)}' },
+      { html: '<img class="round" src="portrait.svg" alt="Rosa"><img class="grey" src="dish.svg" alt="Toast"><span class="tag">SALE</span>', css: 'body{font-family:system-ui,sans-serif;margin:16px} img{width:110px;height:110px;object-fit:cover;margin:4px} .round{border-radius:50%} .grey{filter:grayscale(1);border-radius:10px} .tag{display:inline-block;margin:20px;padding:6px 14px;background:#C2410C;color:white;font-weight:bold;border-radius:8px;transform:rotate(-12deg)}' },
       [
         ['.round', 'The round photo', 'border-radius: 50%', ['border-radius: 50%', 'clip-path: inset(0)', 'object-fit: contain']],
         ['.grey', 'The black-and-white photo', 'filter: grayscale(1)', ['filter: grayscale(1)', 'opacity: 0.5', 'mask-image']],

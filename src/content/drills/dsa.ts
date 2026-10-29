@@ -16,7 +16,7 @@ export const DSA_DRILLS: Record<string, Step[]> = {
     p('Negative index', ['a = [3, 6, 9, 12]', 'print(a[-1] + a[-2])'], '21', 'The last two items are 12 and 9.'),
     p('Reverse with a slice', ['s = "yatra"', 'print(s[::-1], s[1:4])'], 'artay atr', '[::-1] reverses; [1:4] takes indexes 1, 2 and 3.'),
     quiz({ prompt: 'Which is O(1) on a Python list?', options: ['a.append(x)', 'a.insert(0, x)', 'x in a', 'a.remove(x)'], right: 'Right. Adding at the end is O(1).', wrong: 'insert at the front, searching and remove all walk the list: O(n).', mono: true }),
-    bug({ kicker: K, title: 'Find the bug', instructions: 'This should print the last name. Tap the buggy line.', lang: 'python', lines: ['names = ["Asha", "Ravi", "Kabir"]', 'print(names[3])'], bug: 1, fix: 'print(names[-1])', explain: 'Indexes stop at len − 1 = 2. names[-1] is the last item.' }),
+    bug({ kicker: K, title: 'Find the bug', instructions: 'This should print the last name. Tap the buggy line.', lang: 'python', lines: ['names = ["Ava", "Reed", "Kaden"]', 'print(names[3])'], bug: 1, fix: 'print(names[-1])', explain: 'Indexes stop at len − 1 = 2. names[-1] is the last item.' }),
   ],
   'dsa-linear': [
     p('First match', ['a = [5, 3, 5, 1]', 'for i, x in enumerate(a):', '    if x == 5:', '        print(i)', '        break'], '0', 'break stops at the first 5, at index 0.'),
@@ -33,13 +33,13 @@ export const DSA_DRILLS: Record<string, Step[]> = {
   'dsa-sort': [
     p('sorted vs sort', ['a = [3, 1, 2]', 'b = sorted(a)', 'print(a, b)'], '[3, 1, 2] [1, 2, 3]', 'sorted() returns a new list and leaves a unchanged.'),
     p('Sort by key', ['words = ["tea", "wrap", "pancake", "muffin"]', 'print(sorted(words, key=len)[-1])'], 'pancake', 'Sorting by length puts the longest word last.'),
-    p('Two keys', ['m = [("Ravi", 82), ("Asha", 91), ("Kabir", 82)]', 'print([n for n, s in sorted(m, key=lambda x: (-x[1], x[0]))])'], "['Asha', 'Kabir', 'Ravi']", 'Highest marks first; the 82s are ordered by name.'),
+    p('Two keys', ['m = [("Reed", 82), ("Ava", 91), ("Kaden", 82)]', 'print([n for n, s in sorted(m, key=lambda x: (-x[1], x[0]))])'], "['Ava', 'Kaden', 'Reed']", 'Highest marks first; the 82s are ordered by name.'),
     quiz({ prompt: 'What is the time complexity of Python’s sorted()?', options: ['O(n log n)', 'O(n²)', 'O(n)', 'O(log n)'], right: 'Right. It uses Timsort.', wrong: 'Python’s built-in sort is O(n log n) in the worst case.', mono: true }),
   ],
   'dsa-hash': [
     p('Set operations', ['a = {1, 2, 3}', 'b = {2, 3, 4}', 'print(sorted(a & b), sorted(a | b))'], '[2, 3] [1, 2, 3, 4]', '& keeps what is in both; | keeps everything.'),
     p('Count', ['from collections import Counter', 'print(Counter("banana").most_common(1))'], "[('a', 3)]", 'Counter counts each letter; "a" appears three times.'),
-    bug({ kicker: K, title: 'Find the bug', instructions: 'This should count cities. Tap the buggy line.', lang: 'python', lines: ['counts = {}', 'for c in ["Pune", "Goa", "Pune"]:', '    counts[c] += 1', 'print(counts)'], bug: 2, fix: '    counts[c] = counts.get(c, 0) + 1', explain: 'counts[c] doesn’t exist the first time, so += raises KeyError. Use get(c, 0).' }),
+    bug({ kicker: K, title: 'Find the bug', instructions: 'This should count cities. Tap the buggy line.', lang: 'python', lines: ['counts = {}', 'for c in ["Paris", "Geneva", "Paris"]:', '    counts[c] += 1', 'print(counts)'], bug: 2, fix: '    counts[c] = counts.get(c, 0) + 1', explain: 'counts[c] doesn’t exist the first time, so += raises KeyError. Use get(c, 0).' }),
     quiz({ prompt: 'What does a dictionary trade to make lookups O(1)?', options: ['Extra memory', 'Correctness', 'The ability to store strings', 'Nothing'], right: 'Right. It stores a hash table, which takes extra space.', wrong: 'Hash tables use more memory than a plain list in exchange for fast lookups.' }),
   ],
   'dsa-pointers': [

@@ -4,7 +4,7 @@ import type { Lesson } from '../../types';
 import { UI } from './cafe';
 import { arrange, bugTask, challenge, chat, check, explore, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, truth, xray } from './kit';
 
-const MENU_HTML = '<h1 id="title">Riya’s Café</h1>\n<ul id="menu">\n  <li class="dish">Lemon Tea</li>\n  <li class="dish veg">Cheese Toast</li>\n</ul>\n<p class="total">Total: ₹0</p>';
+const MENU_HTML = '<h1 id="title">Rosa’s Café</h1>\n<ul id="menu">\n  <li class="dish">Lemon Tea</li>\n  <li class="dish veg">Cheese Toast</li>\n</ul>\n<p class="total">Total: ₹0</p>';
 
 export const JS_M12: Lesson[] = [
   lesson('j-dom-1', 'The DOM', 5, [
@@ -20,7 +20,7 @@ export const JS_M12: Lesson[] = [
       [3, 'querySelectorAll gives every match, as a list you can loop over.', '.dish'],
       [4, 'The older way to find by id. Same result as querySelector("#menu").', '#menu'],
     ], { page: { html: MENU_HTML, css: UI }, minTaps: 3 }),
-    tapPage('Find and change', 'Tap a button. Each one finds a different element.', { html: `${MENU_HTML}\n<button id="a">Change the title</button>\n<button id="b">Mark every dish</button>`, css: UI, js: 'document.querySelector("#a").addEventListener("click", () => {\n  document.querySelector("#title").textContent = "Riya’s Café · Open";\n  console.log("Title changed");\n});\ndocument.querySelector("#b").addEventListener("click", () => {\n  const dishes = document.querySelectorAll(".dish");\n  for (const d of dishes) d.textContent = "✓ " + d.textContent;\n  console.log("Marked " + dishes.length + " dishes");\n});' }, 'Marked 2 dishes', [{ click: '#a' }, { click: '#b' }]),
+    tapPage('Find and change', 'Tap a button. Each one finds a different element.', { html: `${MENU_HTML}\n<button id="a">Change the title</button>\n<button id="b">Mark every dish</button>`, css: UI, js: 'document.querySelector("#a").addEventListener("click", () => {\n  document.querySelector("#title").textContent = "Rosa’s Café · Open";\n  console.log("Title changed");\n});\ndocument.querySelector("#b").addEventListener("click", () => {\n  const dishes = document.querySelectorAll(".dish");\n  for (const d of dishes) d.textContent = "✓ " + d.textContent;\n  console.log("Marked " + dishes.length + " dishes");\n});' }, 'Marked 2 dishes', [{ click: '#a' }, { click: '#b' }]),
     check('Which finds every element with class="dish"?', ['document.querySelectorAll(".dish")', 'document.querySelector(".dish")', 'document.getElementById("dish")', 'document.dish'], 'querySelectorAll gives them all.', 'One finds the first; one finds all.'),
     recap([
       ['🌳', 'The DOM is the page as a tree of objects'],
@@ -181,7 +181,7 @@ export const JS_M12: Lesson[] = [
     pickCode('Which shows the typed name safely?', ['out.textContent = input.value;', 'out.innerHTML = input.value;', 'out = input.value;', 'out.value.textContent = input;'], 'textContent shows it as plain text.'),
     bugTask(['const btn = document.querySelector("#add");', 'btn.addEventListener("click", addTea());', 'form.addEventListener("submit", (e) => {', '  save();', '});'], [[2, 'addTea()', 'addTea'], [4, 'save();', 'e.preventDefault(); save();']], 'Pass the function itself, and stop the reload before saving.'),
     xray(
-      { html: '<h1 id="title">Riya’s Café · Open</h1><ul id="menu"><li class="dish soldout">Cheese Toast</li><li class="dish">Lemon Tea</li></ul><p id="cart">🛒 2</p>', css: `${UI} .soldout { text-decoration: line-through; color: #999; }` },
+      { html: '<h1 id="title">Rosa’s Café · Open</h1><ul id="menu"><li class="dish soldout">Cheese Toast</li><li class="dish">Lemon Tea</li></ul><p id="cart">🛒 2</p>', css: `${UI} .soldout { text-decoration: line-through; color: #999; }` },
       [
         ['#title', 'The heading that was changed', 'textContent', ['textContent', 'classList', 'createElement']],
         ['.soldout', 'The crossed-out dish', 'classList.add("soldout")', ['classList.add("soldout")', 'style.display = "none"', 'remove()']],

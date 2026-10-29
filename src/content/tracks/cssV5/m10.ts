@@ -66,7 +66,7 @@ export const CSS_M10: Lesson[] = [
       [5, '::after inserts at the end. Good for icons and decorations.', '.new'],
       [6, 'Style the inserted part like any text.', '.new'],
     ], { page: { html: '<p class="price">₹40</p><h2 class="new">Cold Coffee</h2>', css: `${BASE} .price::before { content: "Only "; color: #7C5E45; } .new::after { content: " ★"; color: gold; }` }, minTaps: 3 }),
-    live('Style a part', 'Tap a pseudo-element.', ['.story{{v}} { color: #C2410C; font-weight: bold; font-size: 1.4em; }'], ['::first-letter', '::first-line', '::selection'], { html: '<p class="story">Riya started the café with one kettle and four chairs. Students from the college nearby came for the lemon tea and stayed for the toast.</p>', css: BASE, caption: '::selection styles text when someone selects it. Try pressing and holding the text.' }),
+    live('Style a part', 'Tap a pseudo-element.', ['.story{{v}} { color: #C2410C; font-weight: bold; font-size: 1.4em; }'], ['::first-letter', '::first-line', '::selection'], { html: '<p class="story">Rosa started the café with one kettle and four chairs. Students from the college nearby came for the lemon tea and stayed for the toast.</p>', css: BASE, caption: '::selection styles text when someone selects it. Try pressing and holding the text.' }),
     matchUp('Match the part', [['::placeholder', 'Hint text in an input'], ['::marker', 'A list bullet'], ['::first-letter', 'A big opening letter'], ['::after', 'Added at the end']], 'Each pseudo-element is one part of an element.'),
     tapbug('The star doesn’t appear', ['.new::after {', '  color: gold;', '}'], [[2, 'color: gold;', 'content: "★"; color: gold;']], '::before and ::after show nothing without a content property.'),
     recap([
@@ -117,7 +117,7 @@ export const CSS_M10: Lesson[] = [
       ['user-select: none', 'Stops text being selected, for buttons only. Don’t block copying content.'],
       ['scroll-behavior: smooth', 'Glides to links on the same page, unless reduced motion is on.'],
     ], { mono: true }),
-    check('Riya wants outline: none on buttons because the ring looks odd. What should she do?', ['Replace it with a :focus-visible style', 'Just remove it', 'Hide the buttons from keyboards', 'Make the text bigger'], 'Keyboard users need to see where they are. Restyle the ring, don’t remove it.', 'Who relies on the ring?', { mono: false }),
+    check('Rosa wants outline: none on buttons because the ring looks odd. What should she do?', ['Replace it with a :focus-visible style', 'Just remove it', 'Hide the buttons from keyboards', 'Make the text bigger'], 'Keyboard users need to see where they are. Restyle the ring, don’t remove it.', 'Who relies on the ring?', { mono: false }),
     tapbug('Keyboard users are lost', ['button:focus {', '  outline: none;', '}'], [[2, 'outline: none;', 'outline: 3px solid #4B3FD8;']], 'Removing the focus ring with nothing in its place hides where the keyboard is.'),
     recap([
       ['🌓', 'Strong text contrast'],
@@ -142,7 +142,7 @@ export const CSS_M10: Lesson[] = [
     pickCode('Which adds “New” in front of every .new heading?', ['.new::before { content: "New "; }', '.new::before { text: "New "; }', '.new:before-text { "New " }', '.new { before: "New "; }'], '::before with content.'),
     bugTask(['.btn:hover {', '  background: #9A3412;', '}', '.btn:focus {', '  outline: none;', '}', 'li:nth-child(odd {', '  background: #FFF1D6;', '}'], [[5, 'outline: none;', 'outline: 3px solid #4B3FD8;'], [7, 'li:nth-child(odd {', 'li:nth-child(odd) {']], 'Never remove focus without a replacement, and close the bracket in :nth-child().'),
     xray(
-      { html: '<ol class="recipe"><li>Boil water</li><li>Add lemon</li></ol><p class="story">Riya started the café with one kettle.</p><button class="btn" disabled>Pay</button>', css: 'body{font-family:system-ui,sans-serif;margin:12px} .recipe{counter-reset:s;list-style:none;padding:0} .recipe li{counter-increment:s;margin:4px 0} .recipe li::before{content:"Step " counter(s);background:#C2410C;color:white;border-radius:10px;padding:1px 8px;margin-right:8px;font-size:12px} .story::first-letter{font-size:2em;color:#C2410C;font-weight:bold} .btn{padding:10px 16px} .btn:disabled{opacity:0.4}' },
+      { html: '<ol class="recipe"><li>Boil water</li><li>Add lemon</li></ol><p class="story">Rosa started the café with one kettle.</p><button class="btn" disabled>Pay</button>', css: 'body{font-family:system-ui,sans-serif;margin:12px} .recipe{counter-reset:s;list-style:none;padding:0} .recipe li{counter-increment:s;margin:4px 0} .recipe li::before{content:"Step " counter(s);background:#C2410C;color:white;border-radius:10px;padding:1px 8px;margin-right:8px;font-size:12px} .story::first-letter{font-size:2em;color:#C2410C;font-weight:bold} .btn{padding:10px 16px} .btn:disabled{opacity:0.4}' },
       [
         ['.recipe', 'The “Step 1” labels', 'counter + ::before', ['counter + ::before', 'list-style: decimal', ':first-child']],
         ['.story', 'The big orange first letter', '::first-letter', ['::first-letter', '::first-line', ':first-child']],

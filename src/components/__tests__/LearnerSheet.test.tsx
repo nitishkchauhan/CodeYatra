@@ -13,7 +13,7 @@ jest.mock('@/lib/moderation', () => ({
   blockLearner: jest.fn(async () => null),
 }));
 
-const learner: LeagueLearner = { user_id: 'u-2', display_name: 'Ravi', week_xp: 240, streak: 5, outfit: null, avatar_url: null };
+const learner: LeagueLearner = { user_id: 'u-2', display_name: 'Reed', week_xp: 240, streak: 5, outfit: null, avatar_url: null };
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -22,7 +22,7 @@ beforeEach(() => {
 describe('LearnerSheet', () => {
   it('shows the learner and both actions', async () => {
     await render(<LearnerSheet learner={learner} onClose={jest.fn()} onBlocked={jest.fn()} />);
-    expect(screen.getByText('Ravi')).toBeTruthy();
+    expect(screen.getByText('Reed')).toBeTruthy();
     expect(screen.getByText('240 XP this week')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Report' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Block' })).toBeTruthy();
@@ -42,7 +42,7 @@ describe('LearnerSheet', () => {
   it('asks before blocking, and Cancel blocks nobody', async () => {
     await render(<LearnerSheet learner={learner} onClose={jest.fn()} onBlocked={jest.fn()} />);
     await fireEvent.press(screen.getByRole('button', { name: 'Block' }));
-    expect(screen.getByText('Block Ravi?')).toBeTruthy();
+    expect(screen.getByText('Block Reed?')).toBeTruthy();
     await fireEvent.press(screen.getByRole('button', { name: 'Cancel' }));
     expect(blockLearner).not.toHaveBeenCalled();
     expect(screen.getByRole('button', { name: 'Report' })).toBeTruthy();

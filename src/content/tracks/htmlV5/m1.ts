@@ -63,7 +63,7 @@ export const HTML_M1: Lesson[] = [
       ['🏠 index.html', 'The name browsers and web servers look for first in a folder.'],
     ]),
     check('Which file will open as a web page?', ['page.html', 'page.txt', 'page.doc'], 'The .html ending tells the computer to open it in a browser.', 'Look at the ending after the dot.'),
-    live('Make it yours', 'Tap a greeting, or type your own name below.', ['<h1>{{v}}</h1>'], ['Hello, world!', 'Hello, Riya!', 'My first page'], { free: true }),
+    live('Make it yours', 'Tap a greeting, or type your own name below.', ['<h1>{{v}}</h1>'], ['Hello, world!', 'Hello, Rosa!', 'My first page'], { free: true }),
     reveal('See the code of any website', [['🔍 View Page Source', 'On a computer, right-click any page and choose View Page Source. Every site’s HTML is open for you to learn from.']]),
     recap([
       ['📝', 'Any plain text editor can write HTML'],

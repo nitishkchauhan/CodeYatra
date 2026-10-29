@@ -3,15 +3,15 @@ import type { Lesson } from '../../types';
 import { BASE, CARD } from './cafe';
 import { arrange, beforeAfter, bugTask, challenge, chat, check, copy, explore, lesson, live, matchUp, mcq, pairs, pickCode, place, recap, resize, reveal, swipe, tapbug, toggle, truth, xray } from './kit';
 
-const SWATCH = '<div class="swatch">Riya’s Café</div>';
+const SWATCH = '<div class="swatch">Rosa’s Café</div>';
 const SW_CSS = `${BASE} .swatch { height: 90px; border-radius: 14px; display: grid; place-items: center; color: white; font: bold 20px system-ui, sans-serif; }`;
 const STRIPES = 'background: repeating-linear-gradient(45deg, #4B3FD8 0 12px, #fff 12px 24px);';
-const BANNER = '<div class="banner"><h2>Riya’s Café</h2></div>';
+const BANNER = '<div class="banner"><h2>Rosa’s Café</h2></div>';
 const BANNER_CSS = `${BASE} .banner { height: 160px; border-radius: 14px; border: 2px solid #E5D3B3; display: grid; place-items: center; } .banner h2 { margin: 0; color: #7C2D12; background: rgba(255,255,255,.75); padding: 4px 10px; border-radius: 8px; }`;
 
 export const CSS_M3: Lesson[] = [
   lesson('c-units', 'Colours in CSS', 5, [
-    chat(['Riya’s brand colour is a warm orange, like the evening sun on her shop sign.', 'Let’s learn every way CSS can write that colour, and when to use each.']),
+    chat(['Rosa’s brand colour is a warm orange, like the evening sun on her shop sign.', 'Let’s learn every way CSS can write that colour, and when to use each.']),
     reveal('Five ways to write one colour', [
       ['orangered', 'A name. About 140 are built in. Easy to read, but only a few choices.'],
       ['#FF4500', 'Hex: red, green and blue as pairs from 00 to FF.'],
@@ -46,7 +46,7 @@ export const CSS_M3: Lesson[] = [
       ['opacity', 'alpha colour'],
     ),
     live('How faded?', 'Tap an opacity.', ['.sold-out { opacity: {{v}}; }'], ['1', '0.6', '0.3', '0'], { html: `${CARD}<div class="card sold-out"><h2>Iced Coffee</h2><p class="price">Sold out</p></div>`, css: `${BASE} .card { background: #FFF1D6; padding: 10px; border-radius: 10px; margin: 6px 0; } .card h2 { margin: 0; font-size: 18px; }`, caption: 'At 0 it is invisible but still takes up space.' }),
-    check('Riya wants a see-through banner background but sharp text. Which?', ['background: rgb(0 0 0 / 0.4);', 'opacity: 0.4;'], 'Alpha on the background colour only fades the background.', 'opacity fades the text too.'),
+    check('Rosa wants a see-through banner background but sharp text. Which?', ['background: rgb(0 0 0 / 0.4);', 'opacity: 0.4;'], 'Alpha on the background colour only fades the background.', 'opacity fades the text too.'),
     truth([
       ['opacity: 0 removes the element from the layout', false, 'It is invisible but still takes up its space.'],
       ['opacity goes from 0 to 1', true, '1 is fully visible.'],
@@ -61,7 +61,7 @@ export const CSS_M3: Lesson[] = [
   ]),
 
   lesson('css-3-3', 'Backgrounds', 6, [
-    chat(['Riya wants a picture of her café behind the name on the home page.', 'Backgrounds can be a colour, a picture, or both, and you control how the picture repeats, sits and scales.']),
+    chat(['Rosa wants a picture of her café behind the name on the home page.', 'Backgrounds can be a colour, a picture, or both, and you control how the picture repeats, sits and scales.']),
     live('Repeat or not?', 'A small cup picture, repeated in different ways.', ['.banner { background-image: url(cup.svg); background-repeat: {{v}}; }'], ['repeat', 'no-repeat', 'repeat-x', 'repeat-y'], { html: BANNER, css: BANNER_CSS, caption: 'By default a background picture repeats to fill the box, like tiles.' }),
     live('Cover or contain?', 'A wide picture in a box. Tap a size.', ['.banner { background: url(banner.svg) center / {{v}} no-repeat #FFF8EC; }'], ['auto', 'cover', 'contain', '100% 100%'], { html: BANNER, css: BANNER_CSS, caption: 'cover fills the box and may crop. contain shows the whole picture and may leave gaps. 100% 100% stretches it.' }),
     reveal('The other background settings', [
@@ -128,7 +128,7 @@ export const CSS_M3: Lesson[] = [
       [3, 'max() picks the larger: half the screen, but at least 300px.'],
       [4, 'clamp(smallest, ideal, largest): grows with the screen but stays between the two limits.'],
     ], { page: { html: '<p>Maths lets one rule work on every screen size.</p>', css: BASE }, minTaps: 3 }),
-    resize('A heading that scales', 'Tap each width. The heading grows with the screen, but never too small or too big.', { html: '<h1>Riya’s Café</h1><p>Open 7 am to 9 pm</p>', css: 'body { font-family: system-ui, sans-serif; margin: 16px; }\nh1 {\n  font-size: clamp(1.5rem, 6vw, 3.5rem);\n  color: #C2410C;\n}' }, 'Without clamp, 6vw would be tiny on a phone and huge on a big screen.'),
+    resize('A heading that scales', 'Tap each width. The heading grows with the screen, but never too small or too big.', { html: '<h1>Rosa’s Café</h1><p>Open 7 am to 9 pm</p>', css: 'body { font-family: system-ui, sans-serif; margin: 16px; }\nh1 {\n  font-size: clamp(1.5rem, 6vw, 3.5rem);\n  color: #C2410C;\n}' }, 'Without clamp, 6vw would be tiny on a phone and huge on a big screen.'),
     live('Room for a sidebar', 'The main area fills the width, minus a gap for the sidebar.', ['.main { width: calc(100% - {{v}}); }'], ['100px', '40px', '160px'], { html: '<div class="row"><div class="main">Menu</div><div class="side">Offers</div></div>', css: `${BASE} .row { display: flex; } .main { background: #FFF1D6; padding: 10px; } .side { flex: 1; background: #E0E7FF; padding: 10px; }` }),
     check('What does min(100%, 600px) give on a 360px-wide phone?', ['360px (100%)', '600px', '0px', '960px'], 'min() picks the smaller of the two.', 'Which is smaller on a phone?', { mono: false }),
     tapbug('calc() is ignored', ['.main {', '  width: calc(100%-40px);', '}'], [[2, '100%-40px', '100% - 40px']], 'In calc(), + and - need a space on each side. Without spaces, 100%-40px isn’t read as a sum.'),
@@ -155,13 +155,13 @@ export const CSS_M3: Lesson[] = [
     pickCode('Which gives a top-to-bottom orange-to-red background?', ['background: linear-gradient(orange, red);', 'color: linear-gradient(orange, red);', 'background: gradient(orange to red);', 'background-color: orange red;'], 'linear-gradient goes top to bottom by default, and it is a background.'),
     bugTask(['.banner {', '  background-image: url(banner.svg)', '  background-size: cover;', '  height: 200;', '}'], [[2, 'url(banner.svg)', 'url(banner.svg);'], [4, '200', '200px']], 'A missing semicolon swallows the next line, and a length needs a unit.'),
     xray(
-      { html: '<div class="hero"><h2>Riya’s Café</h2></div><div class="tag">Today: 10% off</div><div class="strip"></div>', css: 'body{font-family:system-ui,sans-serif;margin:14px} .hero{height:120px;background:url(banner.svg) center/cover;border-radius:12px;display:grid;place-items:center} .hero h2{margin:0;background:rgb(255 255 255 / 0.7);padding:4px 10px;border-radius:8px} .tag{margin:10px 0;padding:8px;color:white;background:hsl(16 100% 45%);border-radius:8px} .strip{height:30px;border-radius:8px;background:linear-gradient(90deg,#FDBA74,#C2410C)}' },
+      { html: '<div class="hero"><h2>Rosa’s Café</h2></div><div class="tag">Today: 10% off</div><div class="strip"></div>', css: 'body{font-family:system-ui,sans-serif;margin:14px} .hero{height:120px;background:url(banner.svg) center/cover;border-radius:12px;display:grid;place-items:center} .hero h2{margin:0;background:rgb(255 255 255 / 0.7);padding:4px 10px;border-radius:8px} .tag{margin:10px 0;padding:8px;color:white;background:hsl(16 100% 45%);border-radius:8px} .strip{height:30px;border-radius:8px;background:linear-gradient(90deg,#FDBA74,#C2410C)}' },
       [
         ['.hero', 'The café picture', 'background: url(banner.svg)', ['background: url(banner.svg)', 'img', 'color: banner']],
         ['.tag', 'The orange label', 'background: hsl(16 100% 45%)', ['background: hsl(16 100% 45%)', 'opacity: 0.5', 'border: orange']],
         ['.strip', 'The fading strip', 'linear-gradient', ['linear-gradient', 'radial-gradient', 'opacity']],
       ],
     ),
-    arrange(['.hero {\n  background: url(banner.svg) center / cover;\n}', '.hero h2 {\n  background: rgb(255 255 255 / 0.7);\n}', '.tag {\n  background: hsl(16 100% 45%);\n}'], 'the picture on .hero first, then the see-through label behind the heading, then the orange tag', `${BASE} .hero{height:140px;border-radius:12px;display:grid;place-items:center} .hero h2{margin:0;padding:4px 10px;border-radius:8px} .tag{margin-top:10px;padding:8px;color:white;border-radius:8px}`, '<div class="hero"><h2>Riya’s Café</h2></div><div class="tag">Today: 10% off</div>'),
+    arrange(['.hero {\n  background: url(banner.svg) center / cover;\n}', '.hero h2 {\n  background: rgb(255 255 255 / 0.7);\n}', '.tag {\n  background: hsl(16 100% 45%);\n}'], 'the picture on .hero first, then the see-through label behind the heading, then the orange tag', `${BASE} .hero{height:140px;border-radius:12px;display:grid;place-items:center} .hero h2{margin:0;padding:4px 10px;border-radius:8px} .tag{margin-top:10px;padding:8px;color:white;border-radius:8px}`, '<div class="hero"><h2>Rosa’s Café</h2></div><div class="tag">Today: 10% off</div>'),
   ]),
 ];

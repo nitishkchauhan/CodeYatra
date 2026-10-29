@@ -262,8 +262,8 @@ export function buildPuzzle(code: string, lang: CodeLang, seed: string, starter 
 // ── Tap to change: values a learner can swap in "try it" and the playground ────
 export type Tweakable = { line: number; col: number; value: string; options: string[] };
 
-const NAMES = ['Asha', 'Ravi', 'Zoya', 'Kabir', 'Meera', 'Arjun'];
-const CITIES = ['Delhi', 'Pune', 'Jaipur', 'Chennai', 'Mumbai', 'Agra'];
+const NAMES = ['Ava', 'Reed', 'Zoey', 'Kaden', 'Megan', 'Arden'];
+const CITIES = ['Dublin', 'Paris', 'Jersey', 'Chicago', 'Madrid', 'Athens'];
 const COLOURS = ['#4B3FD8', '#FF9F1C', '#0EA5E9', '#16A34A', '#DC2626', '#111827'];
 const PRINTS = ['print', 'printf', 'log', 'format'];
 

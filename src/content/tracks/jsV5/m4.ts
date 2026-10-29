@@ -5,7 +5,7 @@ import { arrange, bugTask, challenge, chat, check, lesson, matchUp, mcq, pairs, 
 
 export const JS_M4: Lesson[] = [
   lesson('j-cond-1', 'if and else', 5, [
-    chat(['Riya gives free delivery on bills of ₹300 or more. Smaller bills pay ₹30.', 'Programs make choices like this with if and else.']),
+    chat(['Rosa gives free delivery on bills of ₹300 or more. Smaller bills pay ₹30.', 'Programs make choices like this with if and else.']),
     run('Free delivery?', 'Pick a bill.', ['const bill = {{v}};', 'if (bill >= 300) {', '  console.log("Free delivery");', '} else {', '  console.log("Delivery ₹30");', '}'], ['120', '300', '450', '299'], { caption: 'The condition in ( ) is checked. True runs the first block; false runs the else block.' }),
     reveal('The parts of an if', [
       ['if (condition)', 'Ask a true-or-false question.'],

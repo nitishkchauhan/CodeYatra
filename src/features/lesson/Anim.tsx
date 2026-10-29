@@ -97,7 +97,7 @@ function Print() {
 }
 function Types() {
   const b = useBeat(4);
-  const items: [string, string][] = [['42', 'int'], ['3.5', 'float'], ['"Asha"', 'str'], ['True', 'bool']];
+  const items: [string, string][] = [['42', 'int'], ['3.5', 'float'], ['"Ava"', 'str'], ['True', 'bool']];
   return (
     <>
       <Row>
@@ -132,7 +132,7 @@ function StringScene() {
           <Box key={c} value={c} tag={String(i)} hot={i === b} k={`${c}${i === b}`} />
         ))}
       </Row>
-      <Caption>{`A string is a row of characters. city[${b}] is "${'Pune'[b]}".`}</Caption>
+      <Caption>{`A string is a row of characters. city[${b}] is "${'Paris'[b]}".`}</Caption>
     </>
   );
 }
@@ -188,7 +188,7 @@ function WhileLoop() {
 }
 function List() {
   const b = useBeat(3);
-  const items = ['"Delhi"', '"Pune"', ...(b >= 1 ? ['"Agra"'] : [])];
+  const items = ['"Dublin"', '"Paris"', ...(b >= 1 ? ['"Athens"'] : [])];
   return (
     <>
       <Row gap={4}>
@@ -196,13 +196,13 @@ function List() {
           <Box key={c} value={c} tag={String(i)} hot={b === 1 && i === 2} />
         ))}
       </Row>
-      <Caption>{b >= 1 ? 'cities.append("Agra") adds to the end' : 'A list keeps items in order, counted from 0.'}</Caption>
+      <Caption>{b >= 1 ? 'cities.append("Athens") adds to the end' : 'A list keeps items in order, counted from 0.'}</Caption>
     </>
   );
 }
 function Dict() {
   const b = useBeat(3);
-  const rows: [string, string][] = [['"Asha"', '91'], ['"Ravi"', '72'], ['"Zoya"', '85']];
+  const rows: [string, string][] = [['"Ava"', '91'], ['"Reed"', '72'], ['"Zoey"', '85']];
   return (
     <>
       <View style={{ gap: 4, alignSelf: 'center' }}>
@@ -267,7 +267,7 @@ function FileScene() {
         <Arrow />
         <View style={styles.page}>
           <T style={styles.pageTitle}>marks.txt</T>
-          {['Asha 91', 'Ravi 72'].slice(0, b === 0 ? 1 : 2).map((l) => (
+          {['Ava 91', 'Reed 72'].slice(0, b === 0 ? 1 : 2).map((l) => (
             <Animated.View key={l} entering={FadeInDown.duration(220)}>
               <T style={styles.pageLine}>{l}</T>
             </Animated.View>
@@ -289,7 +289,7 @@ function ClassObject() {
         </View>
         <Arrow />
         <View style={{ gap: 4 }}>
-          {[['Asha', 2], ['Ravi', 1]].slice(0, b + 1 > 2 ? 2 : b + 1).map(([n, s]) => (
+          {[['Ava', 2], ['Reed', 1]].slice(0, b + 1 > 2 ? 2 : b + 1).map(([n, s]) => (
             <Animated.View key={String(n)} entering={FadeInRight.duration(240)} style={styles.page}>
               <T style={styles.pageLine}>
                 {n} · {s}
@@ -397,13 +397,13 @@ function SetScene() {
   return (
     <>
       <Row gap={4}>
-        {['"Pune"', '"Agra"', '"Pune"', '"Goa"'].map((c, i) => (
+        {['"Paris"', '"Athens"', '"Paris"', '"Geneva"'].map((c, i) => (
           <Box key={i} value={c} hot={b === 1 && i === 2} />
         ))}
       </Row>
       <Arrow down />
       <Row gap={4}>
-        {['"Pune"', '"Agra"', '"Goa"'].map((c) => (
+        {['"Paris"', '"Athens"', '"Geneva"'].map((c) => (
           <Box key={c} value={c} />
         ))}
       </Row>
@@ -499,7 +499,7 @@ function HtmlTags() {
       <View style={[styles.page, { alignSelf: 'center', minWidth: 240, gap: 6 }]}>
         <Row gap={4}>
           {b >= 1 ? <Chip tone="soft" k="h1o">{'<h1>'}</Chip> : null}
-          <T style={[styles.pageLine, b >= 3 && { fontFamily: fonts.monoMedium, fontSize: 16 }]}>Riya’s café</T>
+          <T style={[styles.pageLine, b >= 3 && { fontFamily: fonts.monoMedium, fontSize: 16 }]}>Rosa’s café</T>
           {b >= 1 ? <Chip tone="soft" k="h1c">{'</h1>'}</Chip> : null}
         </Row>
         <Row gap={4}>
@@ -590,7 +590,7 @@ function Cascade() {
         {b >= 1 ? <Chip tone="warm" k="later">{'h1 { color: orange; }'}</Chip> : null}
       </View>
       <View style={[styles.page, { alignSelf: 'center', minWidth: 200 }]}>
-        <T style={[styles.pageLine, { fontFamily: fonts.bodyBold, fontSize: 16, color: b >= 2 ? colors.saffronShadow : colors.primary }]}>Riya’s café</T>
+        <T style={[styles.pageLine, { fontFamily: fonts.bodyBold, fontSize: 16, color: b >= 2 ? colors.saffronShadow : colors.primary }]}>Rosa’s café</T>
       </View>
       <Caption>{b < 2 ? 'Two rules set the same thing…' : 'The later rule wins: that is the cascade.'}</Caption>
     </>
@@ -721,7 +721,7 @@ function Callback() {
 }
 function DomTree() {
   const b = useBeat(4);
-  const nodes: [string, number, boolean][] = [['body', 0, false], ['h1  Riya’s café', 1, false], ['p  Items: <span id="count">', 1, b >= 2], ['button#add  Add', 1, false]];
+  const nodes: [string, number, boolean][] = [['body', 0, false], ['h1  Rosa’s café', 1, false], ['p  Items: <span id="count">', 1, b >= 2], ['button#add  Add', 1, false]];
   return (
     <>
       <View style={{ gap: 4, alignSelf: 'center' }}>

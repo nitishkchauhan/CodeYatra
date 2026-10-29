@@ -4,7 +4,7 @@ import { arrange, bugTask, challenge, chat, check, lesson, matchUp, mcq, pairs, 
 
 export const JS_M2: Lesson[] = [
   lesson('j-var-1', 'Variables', 5, [
-    chat(['Riya’s app has to remember things: how many teas, the price, the customer’s table.', 'A variable is a labelled box that holds one value. You can look inside it, and (sometimes) put something new in.']),
+    chat(['Rosa’s app has to remember things: how many teas, the price, the customer’s table.', 'A variable is a labelled box that holds one value. You can look inside it, and (sometimes) put something new in.']),
     run('A box called teas', 'Pick a starting number. The program adds 2 more.', ['let teas = {{v}};', 'teas = teas + 2;', 'console.log("Teas:", teas);'], ['1', '5', '10', '0'], { caption: 'let teas = 1 makes the box. teas = teas + 2 reads it, adds 2 and puts the result back.' }),
     reveal('Making variables', [
       ['let', 'A box whose value can change later: let teas = 0;'],
@@ -37,7 +37,7 @@ export const JS_M2: Lesson[] = [
       ['var is the modern choice', false, 'Use let and const.'],
       ['A counter should usually be let', true, 'Its value changes.'],
     ]),
-    place('Pick the right box', 'The shop name never changes; the order count goes up.', [[{ gap: 0 }, ' shop = "Riya’s Café";'], [{ gap: 1 }, ' orders = 0;'], ['orders = orders + 1;'], ['console.log(shop, orders);']], ['const', 'let', 'var'], ['const', 'let'], 'Fixed values get const; values that change get let.'),
+    place('Pick the right box', 'The shop name never changes; the order count goes up.', [[{ gap: 0 }, ' shop = "Rosa’s Café";'], [{ gap: 1 }, ' orders = 0;'], ['orders = orders + 1;'], ['console.log(shop, orders);']], ['const', 'let', 'var'], ['const', 'let'], 'Fixed values get const; values that change get let.'),
     tapbug('TypeError: Assignment to constant variable.', ['const teas = 0;', 'teas = teas + 1;'], [[1, 'const', 'let']], 'teas changes, so it must be let. const boxes can’t be refilled.'),
     recap([
       ['🔒', 'const by default'],
@@ -48,7 +48,7 @@ export const JS_M2: Lesson[] = [
 
   lesson('js-2-3', 'Data types', 5, [
     reveal('Kinds of value', [
-      ['String', 'Text in quotes: "Lemon Tea", \'Pune\'.', '🔤'],
+      ['String', 'Text in quotes: "Lemon Tea", \'Paris\'.', '🔤'],
       ['Number', 'Whole or decimal: 40, 2.5, -3.', '🔢'],
       ['Boolean', 'true or false: isOpen = true.', '✅'],
       ['undefined', 'A box with nothing put in it yet.', '❔'],
@@ -99,7 +99,7 @@ export const JS_M2: Lesson[] = [
       ['typeof null is "object"', true, 'An old quirk of the language.'],
       ['= checks whether two things are equal', false, '= stores. === compares.'],
     ]),
-    pairs([['"Pune"', 'string'], ['2.5', 'number'], ['false', 'boolean'], ['null', 'empty on purpose']], 'Every value has a type.'),
+    pairs([['"Paris"', 'string'], ['2.5', 'number'], ['false', 'boolean'], ['null', 'empty on purpose']], 'Every value has a type.'),
     pickCode('Which turns the typed text "4" into a number?', ['Number("4")', 'String("4")', 'typeof "4"', '"4".number'], 'Number() converts text to a number.'),
     bugTask(['const total = 0;', 'total = total + 40;', 'let 2cups = 2;'], [[1, 'const', 'let'], [3, '2cups', 'cups']], 'A total that changes must be let, and names can’t start with a digit.'),
     predictTask(['const typed = "2";', 'const cups = Number(typed) + 3;', 'console.log("Cups:", cups);'], 'What does it print?', ['Cups: 5', 'Cups: 23', 'Cups: NaN', 'Cups: "5"'], 'Number("2") is 2, plus 3 is 5.'),

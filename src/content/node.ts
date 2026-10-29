@@ -50,7 +50,7 @@ export const expressRoute = fill({
     ['const app = express();'],
     [''],
     ['app.', { gap: 0 }, '("/trains", (req, res) => {'],
-    ['  res.', { gap: 1 }, '([{ name: "Rajdhani" }]);'],
+    ['  res.', { gap: 1 }, '([{ name: "Royal" }]);'],
     ['});'],
     [''],
     ['app.', { gap: 2 }, '(3000);'],
@@ -61,7 +61,7 @@ export const expressRoute = fill({
     { value: 'json', check: 'res.json sends JSON back' },
     { value: 'listen', check: 'app.listen starts the server' },
   ],
-  output: ['Listening on http://localhost:3000', 'GET /trains → 200 [{"name":"Rajdhani"}]'],
+  output: ['Listening on http://localhost:3000', 'GET /trains → 200 [{"name":"Royal"}]'],
 });
 
 export const parseBooking: EditorStep = {

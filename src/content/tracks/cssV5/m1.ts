@@ -3,14 +3,14 @@ import type { Lesson } from '../../types';
 import { BASE, CAFE_CSS, MENU } from './cafe';
 import { arrange, beforeAfter, bugTask, challenge, chat, check, copy, explore, lesson, live, matchUp, mcq, pairs, pickCode, place, recap, reveal, swipe, tapbug, toggle, truth, xray } from './kit';
 
-const P = '<h1>Riya’s Café</h1><p>Fresh tea all day.</p>';
+const P = '<h1>Rosa’s Café</h1><p>Fresh tea all day.</p>';
 
 export const CSS_M1: Lesson[] = [
   lesson('w-css-1', 'What is CSS?', 4, [
-    chat(['Riya opened a small café in Pune and built its menu page in HTML.', 'It works, but it looks like a school notice. Let’s give it a real look, without changing a word of the HTML.'], { page: { html: MENU } }),
+    chat(['Rosa opened a small café in Paris and built its menu page in HTML.', 'It works, but it looks like a school notice. Let’s give it a real look, without changing a word of the HTML.'], { page: { html: MENU } }),
     beforeAfter(
       'Same HTML, new look',
-      [['<h1>Riya’s Café</h1>', '<div class="card">…</div>'], 'Plain HTML: every browser shows it in black serif text on white.', { html: MENU }],
+      [['<h1>Rosa’s Café</h1>', '<div class="card">…</div>'], 'Plain HTML: every browser shows it in black serif text on white.', { html: MENU }],
       [['h1 { color: #C2410C; }', '.card { background: white;', '  border-radius: 12px; }'], 'The same HTML with a few CSS rules: colours, fonts, space and cards.', { html: MENU, css: CAFE_CSS }],
       'Tap After. The words don’t change, only the look.',
     ),
@@ -24,7 +24,7 @@ export const CSS_M1: Lesson[] = [
       ['Phone and laptop', 'The same page lays out in one column on a phone and three on a laptop.', '📱'],
       ['Brand colours', 'A shop’s colours and fonts are set once in CSS and used on every page.', '🏷'],
     ], { intro: 'Tap each card: where you meet CSS every day.' }),
-    live('Set the mood', 'Tap a background for Riya’s page.', ['body { background: {{v}}; }'], ['white', '#FFF8EC', '#E7F5EA', '#1F1B2E'], { html: P, css: BASE, caption: 'On the dark one, the text is hard to read. Good CSS keeps text readable, not just pretty.' }),
+    live('Set the mood', 'Tap a background for Rosa’s page.', ['body { background: {{v}}; }'], ['white', '#FFF8EC', '#E7F5EA', '#1F1B2E'], { html: P, css: BASE, caption: 'On the dark one, the text is hard to read. Good CSS keeps text readable, not just pretty.' }),
     check('What does CSS decide?', ['How the page looks', 'What the page says', 'Where the page is saved'], 'Yes. HTML is the content, CSS is the look.', 'Think paint, not bricks.', { mono: false }),
     recap([
       ['🎨', 'CSS decides how a page looks'],
@@ -59,7 +59,7 @@ export const CSS_M1: Lesson[] = [
   ]),
 
   lesson('css-1-3', 'Three ways to add CSS', 5, [
-    chat(['Riya’s site has five pages: menu, about, offers, contact and jobs.', 'If each page holds its own styles, changing one colour means editing five files. Let’s see the three places CSS can live.']),
+    chat(['Rosa’s site has five pages: menu, about, offers, contact and jobs.', 'If each page holds its own styles, changing one colour means editing five files. Let’s see the three places CSS can live.']),
     reveal('Three homes for CSS', [
       ['Inline', 'A style="…" attribute on one tag. Quick, but it styles only that tag.', '📍'],
       ['Internal', 'A <style> block in the page’s <head>. Styles that one page.', '📄'],
@@ -70,7 +70,7 @@ export const CSS_M1: Lesson[] = [
       [3, 'A page can link several files. They are read from top to bottom, so when two clash, the later file wins.'],
     ], { page: { html: '<p>Two stylesheets, one page.</p>', css: BASE }, minTaps: 2 }),
     matchUp('Which is which?', [['style="color:red"', 'Inline'], ['<style> … </style>', 'Internal'], ['<link href="cafe.css">', 'External']], 'Inline sits on the tag, internal sits in the head, external is its own file.'),
-    check('Riya wants all five pages to share one look. What should she use?', ['One external .css file', 'Inline styles on every tag', 'A <style> block on each page'], 'One file, linked from every page: change it once and the whole site changes.', 'Which one means editing only one place?', { mono: false }),
+    check('Rosa wants all five pages to share one look. What should she use?', ['One external .css file', 'Inline styles on every tag', 'A <style> block on each page'], 'One file, linked from every page: change it once and the whole site changes.', 'Which one means editing only one place?', { mono: false }),
     truth([
       ['A page can link more than one stylesheet', true, 'They are read top to bottom.'],
       ['Inline styles are the easiest to keep tidy on a big site', false, 'They are scattered across every tag.'],
@@ -123,7 +123,7 @@ export const CSS_M1: Lesson[] = [
       ['3. Order', 'If they are equal, the later rule wins.'],
     ]),
     check('What colour is the paragraph?', ['red', 'green', 'both', 'black'], 'Same selector, same strength: the later rule, red, wins.', 'Read from top to bottom.', { code: ['p { color: green; }', 'p { color: red; }'] }),
-    copy('Match Riya’s heading', 'Pick values until your heading matches the target.', P, `${BASE}\nh1 {\n  color: {{0}};\n  font-size: {{1}};\n}`, [
+    copy('Match Rosa’s heading', 'Pick values until your heading matches the target.', P, `${BASE}\nh1 {\n  color: {{0}};\n  font-size: {{1}};\n}`, [
       ['color', ['black', 'teal', 'tomato'], 'tomato'],
       ['font-size', ['16px', '28px', '44px'], '44px'],
     ]),
@@ -150,7 +150,7 @@ export const CSS_M1: Lesson[] = [
     pickCode('Which makes every paragraph 18px?', ['p { font-size: 18px; }', 'p { font size: 18px; }', 'p = { font-size: 18px }', '.p { font-size 18px; }'], 'One hyphenated property, a colon, a value, a semicolon.'),
     bugTask(['h1 {', '  color: navy', '  text-align: center;', '}', 'p {', '  font-sise: 16px;', '}'], [[2, 'navy', 'navy;'], [6, 'font-sise', 'font-size']], 'A missing semicolon and a misspelt property: both silently switch styles off.'),
     xray(
-      { html: '<h1>Riya’s Café</h1><p class="tag">Fresh tea all day</p><div class="card">Lemon Tea ₹40</div>', css: 'body{font-family:system-ui,sans-serif;margin:14px} h1{color:#C2410C} .tag{font-size:20px} .card{background:#FFF1D6;padding:12px}' },
+      { html: '<h1>Rosa’s Café</h1><p class="tag">Fresh tea all day</p><div class="card">Lemon Tea ₹40</div>', css: 'body{font-family:system-ui,sans-serif;margin:14px} h1{color:#C2410C} .tag{font-size:20px} .card{background:#FFF1D6;padding:12px}' },
       [
         ['h1', 'The orange heading', 'color', ['color', 'font-size', 'background']],
         ['.tag', 'The bigger line of text', 'font-size', ['font-size', 'color', 'padding']],

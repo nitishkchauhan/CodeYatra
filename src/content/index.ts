@@ -214,7 +214,7 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
   practice('x-dsa-stack', 'Balanced brackets', 'dsa', 6, ['Use a stack to match pairs'], balanced),
   practice('x-dsa-hash', 'First repeated booking', 'dsa', 4, ['Use a set for O(1) lookups'], firstRepeat),
   drill('x-sql-drill', 'Query results drill', 'sql', SQL_LESSONS, ['predict'], ['Read queries like the database does']),
-  practice('x-sql-join', "Asha's trains", 'sql', 5, ['Join two tables on a key'], sqlJoin),
+  practice('x-sql-join', "Ava's trains", 'sql', 5, ['Join two tables on a key'], sqlJoin),
   drill('x-git-drill', 'Command drill', 'git', GIT_LESSONS, ['order', 'quiz'], ['Remembered everyday Git commands']),
   drill('x-pl-output', 'Output round', 'placement', PLACEMENT_LESSONS, ['predict'], ['Handled tricky output questions']),
   drill('x-pl-code', 'Coding round', 'placement', PLACEMENT_LESSONS, ['editor'], ['Solved classic coding questions'], 4),
@@ -780,7 +780,7 @@ export const STAGES: Stage[] = [
     ],
     practice: [
       { id: 'x-sql-drill', title: 'Query results drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },
-      { id: 'x-sql-join', title: "Asha's trains", kind: 'Run a query', difficulty: 'Hard', xp: 15 },
+      { id: 'x-sql-join', title: "Ava's trains", kind: 'Run a query', difficulty: 'Hard', xp: 15 },
     ],
   },
   {

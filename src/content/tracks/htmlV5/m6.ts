@@ -43,10 +43,10 @@ export const HTML_M6: Lesson[] = [
       ['<footer>', 'The bottom: copyright and contacts.'],
     ], { mono: true }),
     place('Build a news site', 'Tap the parts in order, top to bottom.', [[{ gap: 0 }], [{ gap: 1 }], [{ gap: 2 }], [{ gap: 3 }]], ['<header>Yatri Times</header>', '<nav>Home · Sport · Tech</nav>', '<main>Today’s top story</main>', '<footer>© 2026 Yatri Times</footer>', '<aside>Yatri Times</aside>'], ['<header>Yatri Times</header>', '<nav>Home · Sport · Tech</nav>', '<main>Today’s top story</main>', '<footer>© 2026 Yatri Times</footer>'], 'header, nav, main, footer: the page reads like a map of itself.', { css: LAYOUT_CSS }),
-    explore('A picture with a caption', ['<figure>', '  <img src="taj.jpg" alt="Taj Mahal at sunrise">', '  <figcaption>The Taj Mahal, Agra</figcaption>', '</figure>'], [
+    explore('A picture with a caption', ['<figure>', '  <img src="taj.jpg" alt="Taj Mahal at sunrise">', '  <figcaption>The Taj Mahal, Athens</figcaption>', '</figure>'], [
       [1, '<figure> groups a picture with its caption.', 'figure'],
       [3, '<figcaption> is the caption.', 'figcaption'],
-    ], { page: { html: `<figure><img src="${pic(240, 120, 'Taj Mahal')}" alt="Taj Mahal at sunrise" width="240"><figcaption>The Taj Mahal, Agra</figcaption></figure>` }, minTaps: 2 }),
+    ], { page: { html: `<figure><img src="${pic(240, 120, 'Taj Mahal')}" alt="Taj Mahal at sunrise" width="240"><figcaption>The Taj Mahal, Athens</figcaption></figure>` }, minTaps: 2 }),
     reveal('Why it matters', [
       ['🔊 Screen readers', 'They can jump straight to the nav or the main content.'],
       ['🔍 Search engines', 'They understand how the page is built.'],

@@ -100,7 +100,7 @@ export const PYTHON_MORE_NOTES: Record<string, ModuleNotes> = {
   'py-json': {
     minutes: 5,
     sections: [
-      { heading: 'Why JSON is everywhere', body: 'JSON is a text format for data that every language understands. APIs reply in it, apps save settings in it and logs often use it. It has objects ({"key": value}), arrays ([...]), strings in double quotes, numbers, true, false and null.', code: ['{"train": "Rajdhani", "seats": [12, 14], "ac": true}'], anim: 'json' },
+      { heading: 'Why JSON is everywhere', body: 'JSON is a text format for data that every language understands. APIs reply in it, apps save settings in it and logs often use it. It has objects ({"key": value}), arrays ([...]), strings in double quotes, numbers, true, false and null.', code: ['{"train": "Royal", "seats": [12, 14], "ac": true}'], anim: 'json' },
       { heading: 'Text ↔ Python', body: 'json.loads(text) turns JSON text into Python: objects become dicts, arrays lists, true True and null None. json.dumps(data) goes the other way; indent=2 makes it readable. The file versions json.load(f) and json.dump(data, f) do the same with open files.', code: ['import json', 'data = json.loads(\'{"ok": true}\')', 'print(data["ok"])   # True'], anim: 'json' },
       { heading: 'Data from outside can surprise you', body: 'Fields may be missing, named differently or the wrong type. Use .get() with a default, check types when it matters, and catch json.JSONDecodeError for text that isn’t valid JSON. Validating what comes in is what keeps an app from crashing on someone else’s mistake.', code: ['seats = data.get("seats", 0)'], anim: 'error' },
     ],
@@ -233,7 +233,7 @@ export const PYTHON_MORE_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'Fix it, and keep a record',
-      code: ['import logging, sys', 'logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s", stream=sys.stdout)', 'rows = [{"email": "A@x.com"}, {"name": "Ravi"}, {"email": "Z@x.com"}]', 'emails = []', 'for i, row in enumerate(rows):', '    email = row.get("email")', '    if not email:', '        logging.warning("row %d has no email, skipped", i)', '        continue', '    emails.append(email.lower())', 'logging.info("imported %d of %d rows", len(emails), len(rows))'],
+      code: ['import logging, sys', 'logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s", stream=sys.stdout)', 'rows = [{"email": "A@x.com"}, {"name": "Reed"}, {"email": "Z@x.com"}]', 'emails = []', 'for i, row in enumerate(rows):', '    email = row.get("email")', '    if not email:', '        logging.warning("row %d has no email, skipped", i)', '        continue', '    emails.append(email.lower())', 'logging.info("imported %d of %d rows", len(emails), len(rows))'],
       walk: [
         { line: 2, text: 'Log to the screen with the level shown, so the output is easy to read here.' },
         { line: 6, text: '.get avoids the KeyError that crashed the original import.' },
@@ -360,13 +360,13 @@ export const PYTHON_MORE_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'Before and after a review',
-      code: ['from dataclasses import dataclass', '', '@dataclass', 'class Booking:', '    name: str', '    seats: int', '    fare: int', '', 'def booking_total(b: Booking, student: bool = False) -> int:', '    total = b.seats * b.fare', '    return round(total * 0.75) if student else total', '', 'b = Booking("Asha", 2, 100)', 'print(b)', 'print(booking_total(b), booking_total(b, student=True))'],
+      code: ['from dataclasses import dataclass', '', '@dataclass', 'class Booking:', '    name: str', '    seats: int', '    fare: int', '', 'def booking_total(b: Booking, student: bool = False) -> int:', '    total = b.seats * b.fare', '    return round(total * 0.75) if student else total', '', 'b = Booking("Ava", 2, 100)', 'print(b)', 'print(booking_total(b), booking_total(b, student=True))'],
       walk: [
         { line: 3, text: '@dataclass writes __init__ and a readable repr from the fields.' },
         { line: 9, text: 'Type hints and a clear name replace a comment explaining what calc(a, b, c) meant.' },
         { line: 14, text: 'The repr shows every field: great in logs.' },
       ],
-      output: ["Booking(name='Asha', seats=2, fare=100)", '200 150'],
+      output: ["Booking(name='Ava', seats=2, fare=100)", '200 150'],
     },
     industry: 'Code is read many more times than it is written. Teams enforce style with formatters and linters in CI, require reviews before merging, and expect type hints in new code. Being easy to review is one of the most valued skills in a junior developer.',
     interview: [

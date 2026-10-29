@@ -36,7 +36,7 @@ export const apiHandler: EditorStep = {
   file: 'api/trains.js',
   starter: 'function handler(req) {\n  const city = req.query.city;\n  // return a response object\n}\n',
   tests: [
-    { call: 'handler({ method: "GET", query: { city: "Pune" } })', expect: '({ status: 200, body: { city: "Pune", trains: 3 } })' },
+    { call: 'handler({ method: "GET", query: { city: "Paris" } })', expect: '({ status: 200, body: { city: "Paris", trains: 3 } })' },
     { call: 'handler({ method: "GET", query: {} })', expect: '({ status: 400, body: { error: "city required" } })' },
   ],
   hint: 'if (!city) return { status: 400, body: { error: "city required" } };',

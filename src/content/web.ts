@@ -11,7 +11,7 @@ export const ticketHtml: CodeStep = {
   file: 'index.html',
   lines: [
     ['<div class="ticket">'],
-    ['  <', { gap: 0 }, '>Delhi → Jaipur</', { gap: 0 }, '>'],
+    ['  <', { gap: 0 }, '>Dublin → Jersey</', { gap: 0 }, '>'],
     ['  <p>Seat 42 · 7 Oct</p>'],
     ['  <', { gap: 1 }, '>Book</', { gap: 1 }, '>'],
     ['</div>'],
@@ -31,7 +31,7 @@ export const ticketHtml: CodeStep = {
       preview: {
         kind: 'html',
         nodes: [
-          { tag: tag(heading), text: 'Delhi → Jaipur' },
+          { tag: tag(heading), text: 'Dublin → Jersey' },
           { tag: 'p', text: 'Seat 42 · 7 Oct' },
           { tag: tag(action), text: 'Book' },
         ],

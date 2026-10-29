@@ -99,11 +99,11 @@ describe('a work scenario', () => {
     const onDone = jest.fn();
     await render(
       <ScenarioStep
-        step={scenario({ kicker: 'AT WORK', title: 'A bug report', from: 'Priya · team lead', message: 'The totals are wrong.', artifact: { kind: 'log', title: 'server.log', lines: ['ERROR: total mismatch'] }, task: 'Fix the total.' })}
+        step={scenario({ kicker: 'AT WORK', title: 'A bug report', from: 'Paula · team lead', message: 'The totals are wrong.', artifact: { kind: 'log', title: 'server.log', lines: ['ERROR: total mismatch'] }, task: 'Fix the total.' })}
         onDone={onDone}
       />,
     );
-    expect(screen.getByText('Priya · team lead')).toBeTruthy();
+    expect(screen.getByText('Paula · team lead')).toBeTruthy();
     expect(screen.getByText('ERROR: total mismatch')).toBeTruthy();
     expect(screen.getByText('Fix the total.')).toBeTruthy();
     await fireEvent.press(screen.getByRole('button', { name: "Let's do it" }));

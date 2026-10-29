@@ -49,8 +49,8 @@ export const C_DRILLS: Record<string, Step[]> = {
     quiz({ prompt: 'Why does a function that takes an array also need its length?', options: ['C passes only the address of the first element', 'Arrays can’t be passed', 'It makes the code faster', 'The compiler requires two parameters'], right: 'Right.', wrong: 'The function gets a pointer and has no way to know the size.' }),
   ],
   'c-strings': [
-    predict({ kicker: K, title: 'What does this print?', lang: 'c', lines: prog(['char s[] = "Delhi";', 'printf("%d %d\\n", (int)strlen(s), (int)sizeof s);'], ['stdio.h', 'string.h']), answer: '5 6', explain: 'strlen counts letters; sizeof includes the \\0.' }),
-    predict({ kicker: K, title: 'What does this print?', lang: 'c', lines: prog(['char s[] = "pune";', 's[0] = s[0] - 32;', 'printf("%s\\n", s);']), answer: 'Pune', explain: 'Lowercase letters are 32 above uppercase in ASCII.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'c', lines: prog(['char s[] = "Dublin";', 'printf("%d %d\\n", (int)strlen(s), (int)sizeof s);'], ['stdio.h', 'string.h']), answer: '6 7', explain: 'strlen counts letters; sizeof includes the \\0.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'c', lines: prog(['char s[] = "paris";', 's[0] = s[0] - 32;', 'printf("%s\\n", s);']), answer: 'Paris', explain: 'Lowercase letters are 32 above uppercase in ASCII.' }),
     predict({ kicker: K, title: 'What does this print?', lang: 'c', lines: prog(['printf("%d\\n", strcmp("abc", "abc"));'], ['stdio.h', 'string.h']), answer: '0', explain: 'strcmp returns 0 for equal strings.' }),
     quiz({ prompt: 'Which is safer for copying into a fixed buffer?', options: ['snprintf(dest, sizeof dest, "%s", src)', 'strcpy(dest, src)', 'dest = src', 'strcat(dest, src)'], right: 'Right. It never writes past the size.', wrong: 'snprintf takes the buffer size and stops there.', mono: true }),
   ],
@@ -61,7 +61,7 @@ export const C_DRILLS: Record<string, Step[]> = {
     quiz({ prompt: 'What is NULL?', options: ['A pointer that points to nothing', 'The number 1', 'An empty string', 'A freed block'], right: 'Right. Never dereference it.', wrong: 'NULL means “no address”.' }),
   ],
   'c-struct': [
-    predict({ kicker: K, title: 'What does this print?', lang: 'c', lines: ['#include <stdio.h>', 'typedef struct { char name[10]; int age; } P;', 'int main(void) {', '    P a = {"Asha", 17};', '    P *p = &a;', '    p->age++;', '    printf("%s %d\\n", a.name, a.age);', '    return 0;', '}'], answer: 'Asha 18', explain: 'p points to a, so p->age++ changes a.age.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'c', lines: ['#include <stdio.h>', 'typedef struct { char name[10]; int age; } P;', 'int main(void) {', '    P a = {"Ava", 17};', '    P *p = &a;', '    p->age++;', '    printf("%s %d\\n", a.name, a.age);', '    return 0;', '}'], answer: 'Ava 18', explain: 'p points to a, so p->age++ changes a.age.' }),
     predict({ kicker: K, title: 'What does this print?', lang: 'c', lines: ['#include <stdio.h>', 'typedef struct { int roll, marks; } S;', 'int main(void) {', '    S c[3] = {{1, 70}, {2, 95}, {3, 80}};', '    int t = 0;', '    for (int i = 0; i < 3; i++) t += c[i].marks;', '    printf("%d\\n", t);', '    return 0;', '}'], answer: '245', explain: '70 + 95 + 80 = 245.' }),
     quiz({ prompt: 'Why pass a pointer to a big struct instead of the struct?', options: ['It avoids copying, and lets the function change it', 'Structs can’t be passed', 'Pointers are always shorter to type', 'It frees the struct'], right: 'Right.', wrong: 'Passing a struct copies all of it.' }),
     quiz({ prompt: 'What does typedef do?', options: ['Gives a type a new name', 'Creates a variable', 'Allocates memory', 'Defines a function'], right: 'Right.', wrong: 'typedef names a type, e.g. Student for struct Student.' }),

@@ -633,7 +633,7 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
       lang: 'javascript',
       file: 'students.js',
       starter:
-        'const students = [{ id: 1, name: "Asha", grade: 10 }];\n\nfunction handle(method, body) {\n  if (method === "GET") return { status: 200, body: students };\n  if (method === "POST") {\n    if (!body || !body.name) return { status: 400, body: { error: "name is required" } };\n    const s = { id: students.length + 1, name: body.name, grade: body.grade };\n    students.push(s);\n    return { status: 201, body: s };\n  }\n  return { status: 405, body: { error: "Method not allowed" } };\n}\n\nconsole.log(JSON.stringify(handle("POST", { name: "Kabir", grade: 9 })));\nconsole.log(JSON.stringify(handle("POST", {})));\nconsole.log(JSON.stringify(handle("GET")));\n',
+        'const students = [{ id: 1, name: "Ava", grade: 10 }];\n\nfunction handle(method, body) {\n  if (method === "GET") return { status: 200, body: students };\n  if (method === "POST") {\n    if (!body || !body.name) return { status: 400, body: { error: "name is required" } };\n    const s = { id: students.length + 1, name: body.name, grade: body.grade };\n    students.push(s);\n    return { status: 201, body: s };\n  }\n  return { status: 405, body: { error: "Method not allowed" } };\n}\n\nconsole.log(JSON.stringify(handle("POST", { name: "Kaden", grade: 9 })));\nconsole.log(JSON.stringify(handle("POST", {})));\nconsole.log(JSON.stringify(handle("GET")));\n',
       ideas: ['Send a PUT request. What comes back?', 'Add a student without a grade', 'Make POST reject grades above 12'],
     }),
     mistake({
@@ -668,8 +668,8 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
       file: 'student.js',
       starter: 'function handleOne(method, students, id) {\n  return { status: 200, body: null };\n}\n',
       tests: [
-        { call: 'handleOne("GET", [{ id: 1, name: "Asha" }], "1")', expect: '({ status: 200, body: { id: 1, name: "Asha" } })' },
-        { call: 'handleOne("GET", [{ id: 1, name: "Asha" }], "9")', expect: '({ status: 404, body: { error: "Not found" } })' },
+        { call: 'handleOne("GET", [{ id: 1, name: "Ava" }], "1")', expect: '({ status: 200, body: { id: 1, name: "Ava" } })' },
+        { call: 'handleOne("GET", [{ id: 1, name: "Ava" }], "9")', expect: '({ status: 404, body: { error: "Not found" } })' },
         { call: '(() => { const s = [{ id: 1 }, { id: 2 }]; const r = handleOne("DELETE", s, "1"); return [r.status, s.length]; })()', expect: '[204, 1]' },
         { call: 'handleOne("PUT", [], "1").status', expect: '405' },
       ],
@@ -718,7 +718,7 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
       lang: 'javascript',
       file: 'validate.js',
       starter:
-        'function validate(form) {\n  const name = String(form.get("name") ?? "").trim();\n  const grade = Number(form.get("grade"));\n  if (name.length < 2) return { error: "Name is too short" };\n  if (!Number.isInteger(grade) || grade < 1 || grade > 12) return { error: "Class must be 1 to 12" };\n  return { error: null, data: { name, grade } };\n}\n\nconsole.log(JSON.stringify(validate(new Map([["name", "Asha"], ["grade", "10"]]))));\nconsole.log(JSON.stringify(validate(new Map([["name", " "], ["grade", "10"]]))));\n',
+        'function validate(form) {\n  const name = String(form.get("name") ?? "").trim();\n  const grade = Number(form.get("grade"));\n  if (name.length < 2) return { error: "Name is too short" };\n  if (!Number.isInteger(grade) || grade < 1 || grade > 12) return { error: "Class must be 1 to 12" };\n  return { error: null, data: { name, grade } };\n}\n\nconsole.log(JSON.stringify(validate(new Map([["name", "Ava"], ["grade", "10"]]))));\nconsole.log(JSON.stringify(validate(new Map([["name", " "], ["grade", "10"]]))));\n',
       ideas: ['Try grade "13" and grade "ten"', 'Leave out the grade field', 'Add a rule: name at most 40 characters'],
     }),
     mistake({
@@ -753,10 +753,10 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
       file: 'validate.js',
       starter: 'function validate(form) {\n  return { error: null };\n}\n',
       tests: [
-        { call: 'validate(new Map([["name", " Asha "], ["grade", "10"]]))', expect: '({ error: null, data: { name: "Asha", grade: 10 } })' },
+        { call: 'validate(new Map([["name", " Ava "], ["grade", "10"]]))', expect: '({ error: null, data: { name: "Ava", grade: 10 } })' },
         { call: 'validate(new Map([["name", "A"], ["grade", "10"]]))', expect: '({ error: "Name is too short" })' },
-        { call: 'validate(new Map([["name", "Kabir"], ["grade", "13"]]))', expect: '({ error: "Class must be 1 to 12" })' },
-        { call: 'validate(new Map([["name", "Kabir"]]))', expect: '({ error: "Class must be 1 to 12" })' },
+        { call: 'validate(new Map([["name", "Kaden"], ["grade", "13"]]))', expect: '({ error: "Class must be 1 to 12" })' },
+        { call: 'validate(new Map([["name", "Kaden"]]))', expect: '({ error: "Class must be 1 to 12" })' },
       ],
       hint: 'String(form.get("name") ?? "").trim() for the name, Number(form.get("grade")) for the class, then Number.isInteger(grade) && grade >= 1 && grade <= 12.',
       solution:
@@ -769,10 +769,10 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
     hook({
       kicker: 'MODULE 10 · NEXT.JS',
       title: 'Looking good and being found',
-      story: 'Parents search Google for “Python classes in Indore”. Your page needs a clear title, a description, quick-loading photos and readable fonts, or they will scroll past it.',
+      story: 'Parents search Google for “Python classes in Irvine”. Your page needs a clear title, a description, quick-loading photos and readable fonts, or they will scroll past it.',
       goal: 'Style pages, load images and fonts efficiently, and give every page a good title and description.',
       lang: 'jsx',
-      code: ['export const metadata = {', '  title: "Python classes in Indore",', '};'],
+      code: ['export const metadata = {', '  title: "Python classes in Irvine",', '};'],
     }),
     read({
       kicker: LEARN(1),
@@ -883,7 +883,7 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
       lang: 'javascript',
       file: 'allowed.js',
       starter:
-        'function canEditMarks(user, student) {\n  if (!user) return false;\n  if (user.role === "admin") return true;\n  return user.role === "teacher" && user.classes.includes(student.class);\n}\n\nconst student = { name: "Asha", class: "10A" };\nconsole.log(canEditMarks({ role: "teacher", classes: ["10A"] }, student));\nconsole.log(canEditMarks({ role: "teacher", classes: ["9B"] }, student));\nconsole.log(canEditMarks(null, student));\n',
+        'function canEditMarks(user, student) {\n  if (!user) return false;\n  if (user.role === "admin") return true;\n  return user.role === "teacher" && user.classes.includes(student.class);\n}\n\nconst student = { name: "Ava", class: "10A" };\nconsole.log(canEditMarks({ role: "teacher", classes: ["10A"] }, student));\nconsole.log(canEditMarks({ role: "teacher", classes: ["9B"] }, student));\nconsole.log(canEditMarks(null, student));\n',
       ideas: ['Add a student user. Should they be allowed?', 'Let a principal edit every class', 'What should happen for a user with no role?'],
     }),
     mistake({
@@ -952,7 +952,7 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
       title: 'What to test',
       body: 'Unit tests (Vitest or Jest) check small pieces of logic, like validate() or canEditMarks(). End-to-end tests (Playwright) open a real browser and click through flows, like submitting the enrolment form. Test the rules that would hurt most if they broke.',
       lang: 'javascript',
-      code: ['import { test, expect } from "vitest";', 'import { validate } from "./validate";', '', 'test("rejects class 13", () => {', '  const form = new Map([["name", "Kabir"], ["grade", "13"]]);', '  expect(validate(form).error).toBe("Class must be 1 to 12");', '});'],
+      code: ['import { test, expect } from "vitest";', 'import { validate } from "./validate";', '', 'test("rejects class 13", () => {', '  const form = new Map([["name", "Kaden"], ["grade", "13"]]);', '  expect(validate(form).error).toBe("Class must be 1 to 12");', '});'],
     }),
     read({
       kicker: LEARN(3),
@@ -1013,7 +1013,7 @@ export const NEXT_FOUNDATIONS: Lesson[] = [
 ];
 
 // The project: a student-management API, built and tested step by step, then moved into Next.js.
-const STORE = 'let students = [\n  { id: 1, name: "Asha", grade: 10 },\n  { id: 2, name: "Kabir", grade: 9 },\n  { id: 3, name: "Meera", grade: 10 },\n];\nlet nextId = 4;\n';
+const STORE = 'let students = [\n  { id: 1, name: "Ava", grade: 10 },\n  { id: 2, name: "Kaden", grade: 9 },\n  { id: 3, name: "Megan", grade: 10 },\n];\nlet nextId = 4;\n';
 const LIST = 'function list(grade) {\n  return grade ? students.filter((s) => s.grade === Number(grade)) : students;\n}\n';
 const CREATE =
   'function create(body) {\n  const name = String(body?.name ?? "").trim();\n  const grade = Number(body?.grade);\n  if (name.length < 2) return { status: 400, body: { error: "name is required" } };\n  if (!Number.isInteger(grade) || grade < 1 || grade > 12) return { status: 400, body: { error: "grade must be 1 to 12" } };\n  const s = { id: nextId++, name, grade };\n  students.push(s);\n  return { status: 201, body: s };\n}\n';
@@ -1042,7 +1042,7 @@ export const NEXT_PROJECT: Lesson = {
       starter: `${STORE}\nfunction list(grade) {\n  return students;\n}\n`,
       tests: [
         { call: 'list().length', expect: '3' },
-        { call: 'list("10").map((s) => s.name)', expect: '["Asha", "Meera"]' },
+        { call: 'list("10").map((s) => s.name)', expect: '["Ava", "Megan"]' },
         { call: 'list("12")', expect: '[]' },
       ],
       hint: 'grade ? students.filter((s) => s.grade === Number(grade)) : students',
@@ -1054,9 +1054,9 @@ export const NEXT_PROJECT: Lesson = {
       file: 'students.js',
       starter: `${STORE}\n${LIST}\nfunction create(body) {\n  return { status: 201, body };\n}\n`,
       tests: [
-        { call: 'create({ name: "Ravi", grade: 8 })', expect: '({ status: 201, body: { id: 4, name: "Ravi", grade: 8 } })' },
+        { call: 'create({ name: "Reed", grade: 8 })', expect: '({ status: 201, body: { id: 4, name: "Reed", grade: 8 } })' },
         { call: 'create({ name: " ", grade: 8 })', expect: '({ status: 400, body: { error: "name is required" } })' },
-        { call: 'create({ name: "Zoya", grade: 15 })', expect: '({ status: 400, body: { error: "grade must be 1 to 12" } })' },
+        { call: 'create({ name: "Zoey", grade: 15 })', expect: '({ status: 400, body: { error: "grade must be 1 to 12" } })' },
       ],
       hint: 'Validate name, then grade, returning a 400 as soon as one fails. Then push { id: nextId++, name, grade }.',
       solution: `${STORE}\n${LIST}\n${CREATE}`,
@@ -1067,8 +1067,8 @@ export const NEXT_PROJECT: Lesson = {
       file: 'students.js',
       starter: `${STORE}\n${LIST}\n${CREATE}\nfunction update(id, changes) {\n  return { status: 200, body: null };\n}\n`,
       tests: [
-        { call: 'update("2", { grade: 10 })', expect: '({ status: 200, body: { id: 2, name: "Kabir", grade: 10 } })' },
-        { call: 'update("2", { id: 99, name: "Kabir S" }).body.id', expect: '2' },
+        { call: 'update("2", { grade: 10 })', expect: '({ status: 200, body: { id: 2, name: "Kaden", grade: 10 } })' },
+        { call: 'update("2", { id: 99, name: "Kaden S" }).body.id', expect: '2' },
         { call: 'update("42", { grade: 5 })', expect: '({ status: 404, body: { error: "Not found" } })' },
       ],
       hint: 'Find the student with Number(id). Then: if ("name" in changes) s.name = changes.name; same for grade.',

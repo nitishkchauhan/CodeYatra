@@ -4,7 +4,7 @@ import { arrange, bugTask, challenge, chat, check, explore, lesson, matchUp, mcq
 
 export const JS_M6: Lesson[] = [
   lesson('js-6-1', 'Strings and templates', 5, [
-    chat(['Text in JavaScript is a string. Riya’s receipts are full of them: dish names, prices, thank-you notes.', 'Gluing strings with + gets messy fast. Template strings fix that.']),
+    chat(['Text in JavaScript is a string. Rosa’s receipts are full of them: dish names, prices, thank-you notes.', 'Gluing strings with + gets messy fast. Template strings fix that.']),
     toggleRun('Gluing text two ways', [
       ['With +', ['const dish = "Lemon Tea";', 'const cups = 2;', 'console.log(cups + " × " + dish + " = ₹" + cups * 40);'], 'Works, but the quotes and pluses are easy to get wrong.', ['2 × Lemon Tea = ₹80']],
       ['Template', ['const dish = "Lemon Tea";', 'const cups = 2;', 'console.log(`${cups} × ${dish} = ₹${cups * 40}`);'], 'Backticks ` ` with ${ } holes: the value (or any maths) drops straight in.', ['2 × Lemon Tea = ₹80']],
@@ -31,7 +31,7 @@ export const JS_M6: Lesson[] = [
       [2, 'What will items be?', ['["tea","toast","coffee"]', '"tea toast coffee"', '["tea,toast,coffee"]'], 'split cuts the text at every comma and gives an array.', { var: 'items' }],
       [4, 'What will it print?', ['tea + toast + coffee', 'tea,toast,coffee', 'tea toast coffee'], 'join glues the pieces back with " + " between them.', { out: true }],
     ]),
-    check('What is "Pune".length?', ['4', '5', '3', '"Pune"'], 'Four letters.', 'Count the characters.'),
+    check('What is "Paris".length?', ['4', '5', '3', '"Paris"'], 'Four letters.', 'Count the characters.'),
     tapbug('It still prints “tea”', ['const dish = "tea";', 'dish.toUpperCase();', 'console.log(dish);'], [[2, 'dish.toUpperCase();', 'const big = dish.toUpperCase();']], 'String methods never change the original. Keep the new string in a variable.'),
     recap([
       ['✂️', 'trim, slice, replace, split'],
@@ -97,7 +97,7 @@ export const JS_M6: Lesson[] = [
   ]),
 
   lesson('js-6-6', 'Patterns (RegExp)', 6, [
-    chat(['Riya’s order form asks for a phone number. People type all sorts: 98765 43210, 123, abc.', 'A pattern (regular expression) describes what valid text looks like, and test() checks it.']),
+    chat(['Rosa’s order form asks for a phone number. People type all sorts: 98765 43210, 123, abc.', 'A pattern (regular expression) describes what valid text looks like, and test() checks it.']),
     explore('Reading a pattern', ['const mobile = /', '  ^[6-9]', '  \\d{9}$', '/;', 'console.log(mobile.test("9876543210"));'], [
       [2, '^ means “the start”. [6-9] is one digit from 6 to 9: Indian mobile numbers start with 6, 7, 8 or 9.'],
       [3, '\\d{9} is exactly nine more digits, and $ means “the end”, so nothing else may follow.'],

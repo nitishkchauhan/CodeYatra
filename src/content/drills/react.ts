@@ -49,7 +49,7 @@ export const REACT_DRILLS: Record<string, Step[]> = {
   ],
   'r-immut': [
     quiz({ prompt: 'Which adds a course to cart state correctly?', options: ['setCart([...cart, course])', 'cart.push(course)', 'setCart(cart.push(course))', 'cart[cart.length] = course'], right: 'Right.', wrong: 'Make a new array with spread. push changes the old one and returns a number.', mono: true }),
-    quiz({ prompt: 'Which updates just the city in user.address?', options: ['setUser({ ...user, address: { ...user.address, city: "Pune" } })', 'user.address.city = "Pune"', 'setUser({ city: "Pune" })', 'setUser({ ...user, city: "Pune" })'], right: 'Right. Copy each level you change.', wrong: 'Copy user and address, then override city.', mono: true }),
+    quiz({ prompt: 'Which updates just the city in user.address?', options: ['setUser({ ...user, address: { ...user.address, city: "Paris" } })', 'user.address.city = "Paris"', 'setUser({ city: "Paris" })', 'setUser({ ...user, city: "Paris" })'], right: 'Right. Copy each level you change.', wrong: 'Copy user and address, then override city.', mono: true }),
     quiz({ prompt: 'How does React tell whether state changed?', options: ['Object.is(old, new): same reference means no change', 'It compares every field deeply', 'It always re-renders', 'It asks the component'], right: 'Right.', wrong: 'React compares by reference with Object.is.' }),
     order({ kicker: K, title: 'Put it in order', instructions: 'Arrange a rename that doesn’t mutate.', lang: 'jsx', lines: ['function rename(id, name) {', '  setCourses(courses.map(c =>', '    c.id === id ? { ...c, name } : c', '  ));', '}'], explain: 'map to a new array, copying only the matching course.' }),
   ],

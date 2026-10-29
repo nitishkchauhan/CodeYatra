@@ -148,12 +148,12 @@ export function BubbleSortSteps() {
   );
 }
 
-const PLATES = ['Asha', 'Ravi', 'Kabir', 'Meera', 'Zoya'];
+const PLATES = ['Ava', 'Reed', 'Kaden', 'Megan', 'Zoey'];
 
 /** One set of items used as a stack (push/pop at the top) or a queue (join the back, leave the front). */
 export function StackQueue() {
   const [mode, setMode] = useState<'stack' | 'queue'>('stack');
-  const [items, setItems] = useState<string[]>(['Asha', 'Ravi']);
+  const [items, setItems] = useState<string[]>(['Ava', 'Reed']);
   const [note, setNote] = useState('');
   const next = PLATES.find((p) => !items.includes(p));
   const add = () => {
@@ -218,8 +218,8 @@ export function StackQueue() {
 
 /** A linked list you can change: add at the head, add at the end, remove the head. */
 export function LinkedListVis() {
-  const pool = ['Meera', 'Zoya', 'Dev', 'Isha'];
-  const [nodes, setNodes] = useState(['Asha', 'Ravi', 'Kabir']);
+  const pool = ['Megan', 'Zoey', 'Dev', 'Isha'];
+  const [nodes, setNodes] = useState(['Ava', 'Reed', 'Kaden']);
   const [note, setNote] = useState('Each box points to the next one. The last points to None.');
   const fresh = pool.find((p) => !nodes.includes(p));
   return (

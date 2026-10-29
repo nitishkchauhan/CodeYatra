@@ -15,7 +15,7 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
       { heading: 'Where CSS lives, and the cascade', body: 'Put CSS in a file and link it in the head with <link rel="stylesheet" href="style.css">, so every page shares it and the browser can cache it. You can also use a <style> tag or a style attribute, but those are harder to maintain. When rules clash, the browser looks at importance, then specificity, then order: the later rule wins. That is the cascade.', code: ['<link rel="stylesheet" href="style.css">'], anim: 'cascade' },
     ],
     example: {
-      title: 'Riya’s first stylesheet',
+      title: 'Rosa’s first stylesheet',
       code: ['body {', '  background: #FFF7ED;', '  font-family: system-ui, sans-serif;', '}', 'h1 {', '  color: #C2410C;', '}', 'p {', '  font-size: 18px;', '}'],
       page: MENU,
       walk: [
@@ -118,13 +118,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'A readable about page',
       code: ['body {', '  font-family: "Poppins", system-ui, sans-serif;', '  line-height: 1.5;', '}', 'h1 {', '  font-weight: 700;', '}'],
-      page: '<h1>About us</h1>\n<p>Fresh home food, cooked every morning in Pune.</p>',
+      page: '<h1>About us</h1>\n<p>Fresh home food, cooked every morning in Paris.</p>',
       walk: [
         { line: 2, text: 'Poppins first, then the system font, then any sans-serif.' },
         { line: 3, text: 'Comfortable line spacing.' },
         { line: 6, text: '700 is bold.' },
       ],
-      output: ['About us', 'Fresh home food, cooked every morning in Pune.'],
+      output: ['About us', 'Fresh home food, cooked every morning in Paris.'],
     },
     industry: 'Brands choose one or two type families and a fixed set of sizes, called a type scale. Performance teams watch font file sizes because fonts can delay the first view of a page.',
     interview: [
@@ -184,15 +184,15 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
       { heading: 'Growing, gaps and wrapping', body: 'gap: 1rem puts equal space between items, with no margin tricks. flex: 1 lets an item grow to fill spare space, which is useful for a search box beside a button. flex-wrap: wrap lets items flow onto a new line when they don’t fit, so a row of tags or cards works on any screen.', code: ['.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }'], anim: 'flexAxis' },
     ],
     example: {
-      title: 'Riya’s header',
+      title: 'Rosa’s header',
       code: ['.top {', '  display: flex;', '  justify-content: space-between;', '  align-items: center;', '  gap: 1rem;', '}'],
-      page: '<header class="top">\n  <strong>Riya’s Café</strong>\n  <a href="#order">Order</a>\n</header>',
+      page: '<header class="top">\n  <strong>Rosa’s Café</strong>\n  <a href="#order">Order</a>\n</header>',
       walk: [
         { line: 2, text: 'The name and the link sit in a row.' },
         { line: 3, text: 'Name left, link right.' },
         { line: 4, text: 'Both lined up in the middle.' },
       ],
-      output: ['Riya’s Café', 'Order'],
+      output: ['Rosa’s Café', 'Order'],
     },
     industry: 'Flexbox is the everyday layout tool for components: nav bars, toolbars, form rows and card footers. React Native, used for many mobile apps, lays out every screen with flexbox.',
     interview: [
@@ -386,13 +386,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'One brand colour',
       code: [':root {', '  --brand: #E8590C;', '  --space: 1rem;', '}', 'h1 {', '  color: var(--brand);', '}', '.card {', '  padding: var(--space);', '  border: 2px solid var(--brand);', '}'],
-      page: '<h1>Riya’s Café</h1>\n<div class="card">Veg Sandwich ₹90</div>',
+      page: '<h1>Rosa’s Café</h1>\n<div class="card">Veg Sandwich ₹90</div>',
       walk: [
         { line: 2, text: 'The brand colour, stored once.' },
         { line: 6, text: 'The heading reads it.' },
         { line: 10, text: 'So does the card border. Change line 2 and both update.' },
       ],
-      output: ['Riya’s Café', 'Veg Sandwich ₹90'],
+      output: ['Rosa’s Café', 'Veg Sandwich ₹90'],
     },
     industry: 'Design systems publish their tokens as CSS variables, and dark mode in most modern sites is a swap of variable values. White-label products set each customer’s colours through variables.',
     interview: [

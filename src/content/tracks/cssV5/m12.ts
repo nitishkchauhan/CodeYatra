@@ -1,20 +1,20 @@
 // CSS track · Module 12 · Responsive and Modern CSS, and the final challenge. Lessons 12.1 and 12.4 keep the old
 // responsive and variables module ids (c-resp-1, c-vars-1); the final challenge keeps the project id (c-project)
-// and its four checked build steps for Sharma Classes.
+// and its four checked build steps for Sutton Classes.
 import type { Lesson } from '../../types';
 import { BASE, MENU } from './cafe';
-import { SHARMA_STEPS } from './sharmaProject';
+import { SUTTON_STEPS } from './sharmaProject';
 import { beforeAfter, bugTask, challenge, chat, check, explore, lesson, live, matchUp, mcq, pairs, pickCode, recap, resize, reveal, swipe, tapbug, toggle, truth, xray } from './kit';
 
-const BRIEF = 'Mr Sharma (Sharma Classes, Jaipur): “Make our page look professional. Deep blue and gold, easy on phones, and an enquiry button that stands out.”';
-const LAYOUT ='<header>Riya’s Café</header>\n<div class="wrap">\n  <main>Today’s menu</main>\n  <aside>Offers</aside>\n</div>';
+const BRIEF = 'Mr Sutton (Sutton Classes, Jersey): “Make our page look professional. Deep blue and gold, easy on phones, and an enquiry button that stands out.”';
+const LAYOUT ='<header>Rosa’s Café</header>\n<div class="wrap">\n  <main>Today’s menu</main>\n  <aside>Offers</aside>\n</div>';
 const LAYOUT_CSS = 'body { font-family: system-ui, sans-serif; margin: 10px; }\nheader, main, aside { padding: 14px; border-radius: 10px; color: white; font-weight: bold; margin-bottom: 8px; }\nheader { background: #C2410C; }\nmain { background: #4B3FD8; }\naside { background: #0F766E; }';
 const THEME = '<div class="card"><h2>Lemon Tea</h2><p>Fresh every morning.</p><a class="btn">Order ₹40</a></div>';
 const THEME_CSS = (vars: string) => `:root { ${vars} } body { font-family: system-ui, sans-serif; margin: 12px; background: var(--bg); color: var(--text); } .card { border: 2px solid var(--brand); border-radius: 12px; padding: 12px; } .card h2 { margin: 0; color: var(--brand); } .btn { display: inline-block; background: var(--brand); color: white; padding: 8px 14px; border-radius: 8px; }`;
 
 export const CSS_M12: Lesson[] = [
   lesson('c-resp-1', 'Responsive design', 6, [
-    chat(['Most of Riya’s customers open her site on a phone. Some on a laptop at work. A few on a tablet.', 'Responsive design means one page that fits all of them. The usual plan: design for the phone first, then add rules for bigger screens.']),
+    chat(['Most of Rosa’s customers open her site on a phone. Some on a laptop at work. A few on a tablet.', 'Responsive design means one page that fits all of them. The usual plan: design for the phone first, then add rules for bigger screens.']),
     reveal('Three building blocks', [
       ['The viewport tag', '<meta name="viewport" content="width=device-width, initial-scale=1"> tells phones to use their real width instead of pretending to be a laptop.', '📱'],
       ['Flexible layouts', 'Flex, grid, % and max-width stretch and wrap by themselves.', '🧩'],
@@ -81,7 +81,7 @@ export const CSS_M12: Lesson[] = [
   ]),
 
   lesson('c-vars-1', 'CSS variables', 6, [
-    chat(['Riya’s orange appears 23 times in her stylesheet. Now she wants a slightly deeper orange.', 'With a variable, she changes it in one place and all 23 follow.']),
+    chat(['Rosa’s orange appears 23 times in her stylesheet. Now she wants a slightly deeper orange.', 'With a variable, she changes it in one place and all 23 follow.']),
     explore('Set once, use everywhere', [':root {', '  --brand: #C2410C;', '  --space: 12px;', '}', '.btn { background: var(--brand); padding: var(--space); }'], [
       [1, ':root is the top of the page, so variables set here work everywhere.'],
       [2, 'A custom property: two dashes, your own name, a value.'],
@@ -159,7 +159,7 @@ export const CSS_M12: Lesson[] = [
   ]),
 
   lesson('css-12-7', 'Clean, fast CSS', 6, [
-    chat(['Riya’s stylesheet has grown to 600 lines. Some rules fight each other, some are never used.', 'A little order keeps CSS easy to change, and fast to load.']),
+    chat(['Rosa’s stylesheet has grown to 600 lines. Some rules fight each other, some are never used.', 'A little order keeps CSS easy to change, and fast to load.']),
     reveal('A tidy stylesheet, top to bottom', [
       ['1. Variables', ':root with colours, fonts and spacing.'],
       ['2. Base', 'body, headings, links: the defaults.'],
@@ -202,14 +202,14 @@ export const CSS_M12: Lesson[] = [
     pickCode('Which switches to two columns from 800px?', ['@media (min-width: 800px) { .wrap { display: grid; grid-template-columns: 1fr 1fr; } }', '@media (max-width: 800px) { .wrap { columns: 2; } }', '@screen 800px { .wrap { grid: 2; } }', '.wrap:800px { display: grid; }'], 'min-width for “800 and up”, then a two-column grid.'),
     bugTask([':root {', '  --brand #C2410C;', '}', '@media (min-width 700px) {', '  .wrap { display: grid; }', '}'], [[2, '--brand #C2410C;', '--brand: #C2410C;'], [4, 'min-width 700px', 'min-width: 700px']], 'Variables and media conditions both need a colon.'),
     xray(
-      { html: '<header class="top">Sharma Classes</header><div class="wrap"><main>Courses</main><aside>Enquire</aside></div><img src="banner.svg" alt="Our classroom">', css: ':root{--blue:#1E3A8A;--gold:#F59E0B} body{font-family:system-ui,sans-serif;margin:10px} .top{background:var(--blue);color:white;padding:10px;border-radius:8px;position:sticky;top:0} .wrap{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px 0} main{background:#EFF6FF;padding:12px;border-radius:8px} aside{background:var(--gold);padding:12px;border-radius:8px} img{max-width:100%;height:auto;border-radius:8px;display:block}' },
+      { html: '<header class="top">Sutton Classes</header><div class="wrap"><main>Courses</main><aside>Enquire</aside></div><img src="banner.svg" alt="Our classroom">', css: ':root{--blue:#1E3A8A;--gold:#F59E0B} body{font-family:system-ui,sans-serif;margin:10px} .top{background:var(--blue);color:white;padding:10px;border-radius:8px;position:sticky;top:0} .wrap{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px 0} main{background:#EFF6FF;padding:12px;border-radius:8px} aside{background:var(--gold);padding:12px;border-radius:8px} img{max-width:100%;height:auto;border-radius:8px;display:block}' },
       [
         ['.top', 'The blue from the brand colours', 'var(--blue)', ['var(--blue)', 'color: blue', '--blue()']],
         ['.wrap', 'The two side-by-side columns', 'grid-template-columns: 2fr 1fr', ['grid-template-columns: 2fr 1fr', 'float: left', 'columns: 2']],
         ['img', 'The picture that never overflows', 'max-width: 100%', ['max-width: 100%', 'width: 600px', 'overflow: hidden']],
       ],
     ),
-    // The old project's four checked steps. The first one carries Mr Sharma's brief.
-    ...SHARMA_STEPS.map((s, i) => ({ ...s, kicker: `FINAL PROJECT · STEP ${i + 1} OF 4`, instructions: i === 0 ? `${BRIEF} ${s.instructions}` : s.instructions })),
+    // The old project's four checked steps. The first one carries Mr Sutton's brief.
+    ...SUTTON_STEPS.map((s, i) => ({ ...s, kicker: `FINAL PROJECT · STEP ${i + 1} OF 4`, instructions: i === 0 ? `${BRIEF} ${s.instructions}` : s.instructions })),
   ], 'project'),
 ];

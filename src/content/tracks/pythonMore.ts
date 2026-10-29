@@ -29,7 +29,7 @@ export const PYTHON_MORE_2: Lesson[] = [
       file: 'names.py',
       starter: 'def long_names(names):\n    return names\n',
       tests: [
-        { call: 'long_names(["Asha", "Kabir", "Meera", "Ravi"])', expect: '["KABIR", "MEERA"]' },
+        { call: 'long_names(["Ava", "Kaden", "Megan", "Reed"])', expect: '["KADEN", "MEGAN"]' },
         { call: 'long_names([])', expect: '[]' },
       ],
       hint: '[n.upper() for n in names if len(n) > 4]',

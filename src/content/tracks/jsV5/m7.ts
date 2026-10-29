@@ -6,7 +6,7 @@ import { arrange, bugTask, challenge, chat, check, lesson, matchUp, mcq, pairs, 
 
 export const JS_M7: Lesson[] = [
   lesson('j-fn-1', 'Functions', 5, [
-    chat(['Riya works out a bill many times a day: price × cups, plus 5% GST.', 'Instead of writing that maths everywhere, wrap it in a function once and call it by name.']),
+    chat(['Rosa works out a bill many times a day: price × cups, plus 5% GST.', 'Instead of writing that maths everywhere, wrap it in a function once and call it by name.']),
     reveal('The parts of a function', [
       ['function bill(price, cups)', 'A name, and parameters: the inputs it needs.'],
       ['{ … }', 'The body: the steps.'],
@@ -33,9 +33,9 @@ export const JS_M7: Lesson[] = [
       ['Fixed', ['function sum(a, b) {', '  return a + b;', '}', 'console.log(sum(40, 60, 80));'], 'Only two parameters, so the 80 is ignored.', ['100']],
       ['Rest ...', ['function sum(...prices) {', '  let t = 0;', '  for (const p of prices) t += p;', '  return t;', '}', 'console.log(sum(40, 60, 80));'], '...prices collects every argument into an array.', ['180']],
     ]),
-    predict('Defaults step by step', ['function greet(who = "friend") {', '  const msg = `Hi, ${who}!`;', '  return msg;', '}', 'console.log(greet());', 'console.log(greet("Riya"));'], [
+    predict('Defaults step by step', ['function greet(who = "friend") {', '  const msg = `Hi, ${who}!`;', '  return msg;', '}', 'console.log(greet());', 'console.log(greet("Rosa"));'], [
       [2, 'greet() was called with nothing. What will msg be?', ['"Hi, friend!"', '"Hi, undefined!"', '"Hi, !"'], 'who used its default, "friend".', { var: 'msg' }],
-      [2, 'Now greet("Riya") runs. What will msg be this time?', ['"Hi, Riya!"', '"Hi, friend!"', '"Hi, who!"'], 'An argument was given, so the default isn’t used.', { var: 'msg' }],
+      [2, 'Now greet("Rosa") runs. What will msg be this time?', ['"Hi, Rosa!"', '"Hi, friend!"', '"Hi, who!"'], 'An argument was given, so the default isn’t used.', { var: 'msg' }],
     ]),
     check('What does function f(x = 5) { return x; } give for f(0)?', ['0', '5', 'undefined', 'NaN'], 'Defaults only replace undefined. 0 is a real value.', 'Is 0 missing?'),
     tapbug('cups is always 1', ['function order(dish, cups = 1) {', '  return cups;', '}', 'console.log(order(3, "Tea"));'], [[4, 'order(3, "Tea")', 'order("Tea", 3)']], 'Arguments fill parameters in order: the first goes to dish, the second to cups.'),
@@ -73,7 +73,7 @@ export const JS_M7: Lesson[] = [
     toggleRun('Where can a variable be seen?', [
       ['Inside', ['function brew() {', '  const water = "hot";', '  console.log(water);', '}', 'brew();'], 'Inside its own function: visible.', ['hot']],
       ['Outside', ['function brew() {', '  const water = "hot";', '}', 'brew();', 'console.log(water);'], 'Outside the function, water doesn’t exist.', ['ReferenceError: water is not defined']],
-      ['Global', ['const shop = "Riya’s Café";', 'function sign() {', '  console.log(shop);', '}', 'sign();'], 'Variables made at the top level can be seen inside functions.', ['Riya’s Café']],
+      ['Global', ['const shop = "Rosa’s Café";', 'function sign() {', '  console.log(shop);', '}', 'sign();'], 'Variables made at the top level can be seen inside functions.', ['Rosa’s Café']],
     ]),
     predict('Block scope', ['let msg = "outside";', 'if (true) {', '  let msg = "inside";', '  console.log(msg);', '}', 'console.log(msg);'], [
       [4, 'Inside the block, what will it print?', ['inside', 'outside', 'Error'], 'The block has its own msg.', { out: true }],

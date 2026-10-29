@@ -10,7 +10,7 @@ const PAGE_CSS = `${BASE} .page { display: grid; gap: 6px; height: 220px; } .pag
 
 export const CSS_M8: Lesson[] = [
   lesson('c-grid-1', 'Grid basics', 5, [
-    chat(['Flexbox lines things up in one direction. Grid works in two at once: rows and columns.', 'Riya’s menu has six dishes. She wants neat cards that line up both ways, like an ice cube tray.']),
+    chat(['Flexbox lines things up in one direction. Grid works in two at once: rows and columns.', 'Rosa’s menu has six dishes. She wants neat cards that line up both ways, like an ice cube tray.']),
     live('How many columns?', 'Tap a column setting.', ['.grid { grid-template-columns: {{v}}; }'], ['1fr', '1fr 1fr', '1fr 1fr 1fr', '100px 1fr', '2fr 1fr'], { html: SIX, css: SIX_CSS, caption: 'fr means a fraction of the free space. 2fr 1fr gives the first column twice as much.' }),
     explore('A grid in three lines', ['.grid {', '  display: grid;', '  grid-template-columns: 1fr 1fr 1fr;', '  gap: 8px;', '}'], [
       [2, 'The parent becomes a grid container. Its children are grid items.', '.grid'],
@@ -118,7 +118,7 @@ export const CSS_M8: Lesson[] = [
     pickCode('Which makes a header span the full width of a 4-column grid?', ['header { grid-column: 1 / -1; }', 'header { grid-column: 4; }', 'header { width: 4fr; }', 'header { grid-row: span 4; }'], 'From the first line to the last.'),
     bugTask(['.menu {', '  display: grid;', '  grid-template-columns: 1fr, 1fr, 1fr;', '  grid-gap 10px;', '}'], [[3, '1fr, 1fr, 1fr', '1fr 1fr 1fr'], [4, 'grid-gap 10px', 'gap: 10px']], 'Track sizes are separated by spaces, not commas. And every declaration needs a colon (gap is the modern name).'),
     xray(
-      { html: '<div class="page"><header>Riya’s Café</header><nav>Menu</nav><main><div class="dishes"><div>Tea</div><div class="wide">★ Special</div><div>Coffee</div><div>Toast</div></div></main></div>', css: 'body{font-family:system-ui,sans-serif;margin:10px} .page{display:grid;grid-template-columns:1fr 3fr;grid-template-areas:"head head" "side main";gap:6px} header{grid-area:head;background:#C2410C;color:white;padding:8px;border-radius:8px} nav{grid-area:side;background:#0F766E;color:white;padding:8px;border-radius:8px} .dishes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px} .dishes>div{background:#FFF1D6;padding:10px 4px;border-radius:8px;text-align:center} .wide{grid-column:span 2;background:#FFE08A !important}' },
+      { html: '<div class="page"><header>Rosa’s Café</header><nav>Menu</nav><main><div class="dishes"><div>Tea</div><div class="wide">★ Special</div><div>Coffee</div><div>Toast</div></div></main></div>', css: 'body{font-family:system-ui,sans-serif;margin:10px} .page{display:grid;grid-template-columns:1fr 3fr;grid-template-areas:"head head" "side main";gap:6px} header{grid-area:head;background:#C2410C;color:white;padding:8px;border-radius:8px} nav{grid-area:side;background:#0F766E;color:white;padding:8px;border-radius:8px} .dishes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px} .dishes>div{background:#FFF1D6;padding:10px 4px;border-radius:8px;text-align:center} .wide{grid-column:span 2;background:#FFE08A !important}' },
       [
         ['header', 'The bar across both columns', 'grid-area: head', ['grid-area: head', 'position: sticky', 'float: top']],
         ['.dishes', 'The three equal columns of dishes', 'repeat(3, 1fr)', ['repeat(3, 1fr)', 'flex-wrap: wrap', '3fr']],

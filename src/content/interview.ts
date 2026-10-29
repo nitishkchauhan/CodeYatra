@@ -271,7 +271,7 @@ export const INTERVIEW: InterviewQuestion[] = [
     topic: 'oop',
     level: 'Beginner',
     question: 'What is the difference between a class and an object?',
-    answer: 'A class is the blueprint: it describes what data and actions something has. An object is one thing made from that blueprint, with its own values. Train is a class; the Rajdhani with 400 seats is an object.',
+    answer: 'A class is the blueprint: it describes what data and actions something has. An object is one thing made from that blueprint, with its own values. Train is a class; the Royal with 400 seats is an object.',
     why: 'Many objects can come from one class, and each keeps its own data.',
     followUps: ['What is a constructor?', 'What is the difference between a class attribute and an instance attribute?'],
     lessons: ['p-class-1'],

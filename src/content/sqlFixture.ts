@@ -4,58 +4,58 @@
 export const SQL_SETUP = `
 CREATE TABLE trains (id INTEGER PRIMARY KEY, name TEXT, from_city TEXT, to_city TEXT, fare INTEGER, seats INTEGER);
 INSERT INTO trains VALUES
-  (12951, 'Rajdhani', 'Mumbai', 'Delhi', 2900, 12),
-  (12002, 'Shatabdi', 'Delhi', 'Bhopal', 1200, 0),
-  (22436, 'Vande Bharat', 'Delhi', 'Varanasi', 1750, 40),
-  (12627, 'Karnataka Express', 'Bengaluru', 'Delhi', 2100, 5),
-  (12301, 'Howrah Rajdhani', 'Kolkata', 'Delhi', 3100, 22),
-  (11013, 'Coimbatore Express', 'Mumbai', 'Coimbatore', 850, 60);
+  (12951, 'Royal', 'Madrid', 'Dublin', 2900, 12),
+  (12002, 'Silver Arrow', 'Dublin', 'Boston', 1200, 0),
+  (22436, 'Valley Express', 'Dublin', 'Vienna', 1750, 40),
+  (12627, 'Keystone Express', 'Barcelona', 'Dublin', 2100, 5),
+  (12301, 'Harbour Royal', 'Kyoto', 'Dublin', 3100, 22),
+  (11013, 'Coastal Express', 'Madrid', 'Copenhagen', 850, 60);
 CREATE TABLE bookings (id INTEGER PRIMARY KEY, train_id INTEGER, passenger TEXT, seats INTEGER);
 INSERT INTO bookings VALUES
-  (1, 12951, 'Asha', 2),
-  (2, 22436, 'Ravi', 1),
-  (3, 12951, 'Kabir', 3),
-  (4, 12627, 'Meera', 1),
-  (5, 22436, 'Asha', 2);
+  (1, 12951, 'Ava', 2),
+  (2, 22436, 'Reed', 1),
+  (3, 12951, 'Kaden', 3),
+  (4, 12627, 'Megan', 1),
+  (5, 22436, 'Ava', 2);
 CREATE TABLE passengers (name TEXT PRIMARY KEY, age INTEGER, city TEXT, phone TEXT);
 INSERT INTO passengers VALUES
-  ('Asha', 15, 'Pune', '90000 00001'),
-  ('Ravi', 34, 'Delhi', NULL),
-  ('Kabir', 22, 'Mumbai', '90000 00003'),
-  ('Meera', 61, 'Bengaluru', NULL),
-  ('Zoya', 19, NULL, '90000 00005');
+  ('Ava', 15, 'Paris', '90000 00001'),
+  ('Reed', 34, 'Dublin', NULL),
+  ('Kaden', 22, 'Madrid', '90000 00003'),
+  ('Megan', 61, 'Barcelona', NULL),
+  ('Zoey', 19, NULL, '90000 00005');
 `;
 
 /** The tables as learners see them in lessons. */
 export const SQL_TABLES = [
   'trains',
-  'id     | name               | from_city | to_city    | fare | seats',
-  '12951  | Rajdhani           | Mumbai    | Delhi      | 2900 | 12',
-  '12002  | Shatabdi           | Delhi     | Bhopal     | 1200 | 0',
-  '22436  | Vande Bharat       | Delhi     | Varanasi   | 1750 | 40',
-  '12627  | Karnataka Express  | Bengaluru | Delhi      | 2100 | 5',
-  '12301  | Howrah Rajdhani    | Kolkata   | Delhi      | 3100 | 22',
-  '11013  | Coimbatore Express | Mumbai    | Coimbatore | 850  | 60',
+  'id    | name             | from_city | to_city    | fare | seats',
+  '12951 | Royal            | Madrid    | Dublin     | 2900 | 12',
+  '12002 | Silver Arrow     | Dublin    | Boston     | 1200 | 0',
+  '22436 | Valley Express   | Dublin    | Vienna     | 1750 | 40',
+  '12627 | Keystone Express | Barcelona | Dublin     | 2100 | 5',
+  '12301 | Harbour Royal    | Kyoto     | Dublin     | 3100 | 22',
+  '11013 | Coastal Express  | Madrid    | Copenhagen | 850  | 60',
 ];
 
 export const PASSENGER_TABLE = [
   'passengers',
   'name  | age | city      | phone',
-  'Asha  | 15  | Pune      | 90000 00001',
-  'Ravi  | 34  | Delhi     | NULL',
-  'Kabir | 22  | Mumbai    | 90000 00003',
-  'Meera | 61  | Bengaluru | NULL',
-  'Zoya  | 19  | NULL      | 90000 00005',
+  'Ava   | 15  | Paris     | 90000 00001',
+  'Reed  | 34  | Dublin    | NULL',
+  'Kaden | 22  | Madrid    | 90000 00003',
+  'Megan | 61  | Barcelona | NULL',
+  'Zoey  | 19  | NULL      | 90000 00005',
 ];
 
 export const BOOKING_TABLE = [
   'bookings',
   'id | train_id | passenger | seats',
-  '1  | 12951    | Asha      | 2',
-  '2  | 22436    | Ravi      | 1',
-  '3  | 12951    | Kabir     | 3',
-  '4  | 12627    | Meera     | 1',
-  '5  | 22436    | Asha      | 2',
+  '1  | 12951    | Ava       | 2',
+  '2  | 22436    | Reed      | 1',
+  '3  | 12951    | Kaden     | 3',
+  '4  | 12627    | Megan     | 1',
+  '5  | 22436    | Ava       | 2',
 ];
 
 /** Splits SQL into statements on semicolons outside quotes. */

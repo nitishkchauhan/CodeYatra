@@ -4,7 +4,7 @@ import { arrange, bugTask, challenge, chat, check, lesson, matchUp, mcq, pairs, 
 
 export const JS_M8: Lesson[] = [
   lesson('j-arr-1', 'Arrays', 5, [
-    chat(['Riya’s menu isn’t one dish, it’s a list. Today’s orders are a list. Table numbers are a list.', 'An array keeps many values in order, in one variable.']),
+    chat(['Rosa’s menu isn’t one dish, it’s a list. Today’s orders are a list. Table numbers are a list.', 'An array keeps many values in order, in one variable.']),
     reveal('Making and reading arrays', [
       ['["Tea", "Coffee", "Toast"]', 'Square brackets, items separated by commas.'],
       ['menu[0]', 'The first item. Counting starts at 0.'],
@@ -37,9 +37,9 @@ export const JS_M8: Lesson[] = [
       ['splice', ['const menu = ["Tea", "Coffee", "Toast"];', 'const gone = menu.splice(0, 2);', 'console.log(gone, menu.length);'], 'splice cuts items out of the original. Only 1 is left.', ['["Tea","Coffee"] 1']],
       ['concat', ['const drinks = ["Tea"];', 'const food = ["Toast"];', 'console.log(drinks.concat(food));'], 'concat joins two arrays into a new one.', ['["Tea","Toast"]']],
     ]),
-    predict('A queue at the counter', ['const queue = ["Asha", "Ravi"];', 'queue.push("Meera");', 'const served = queue.shift();', 'console.log(served, queue);'], [
-      [2, 'What will queue be?', ['["Asha","Ravi","Meera"]', '["Meera","Asha","Ravi"]', '["Asha","Ravi"]'], 'push adds to the end.', { var: 'queue' }],
-      [3, 'Who is served first?', ['"Asha"', '"Meera"', '"Ravi"'], 'shift takes from the start: first come, first served.', { var: 'served' }],
+    predict('A queue at the counter', ['const queue = ["Ava", "Reed"];', 'queue.push("Megan");', 'const served = queue.shift();', 'console.log(served, queue);'], [
+      [2, 'What will queue be?', ['["Ava","Reed","Megan"]', '["Megan","Ava","Reed"]', '["Ava","Reed"]'], 'push adds to the end.', { var: 'queue' }],
+      [3, 'Who is served first?', ['"Ava"', '"Megan"', '"Reed"'], 'shift takes from the start: first come, first served.', { var: 'served' }],
     ]),
     check('Which removes the last item?', ['pop()', 'shift()', 'slice()', 'push()'], 'pop takes from the end.', 'Think of a stack of plates.'),
     recap([
@@ -84,7 +84,7 @@ export const JS_M8: Lesson[] = [
   ]),
 
   lesson('js-8-5', 'map, filter, reduce', 6, [
-    chat(['Three array methods do most of the everyday work: change every item, keep some items, and boil a list down to one value.', 'Riya uses all three for every bill.']),
+    chat(['Three array methods do most of the everyday work: change every item, keep some items, and boil a list down to one value.', 'Rosa uses all three for every bill.']),
     run('One bill, three methods', 'Pick a method.', ['const cart = [', '  { dish: "Tea", price: 40, veg: true },', '  { dish: "Chicken Sandwich", price: 150, veg: false },', '  { dish: "Toast", price: 80, veg: true },', '];', 'console.log({{v}});'], ['cart.map((c) => c.dish)', 'cart.filter((c) => c.veg)', 'cart.reduce((sum, c) => sum + c.price, 0)', 'cart.filter((c) => c.veg).map((c) => c.price)'], { caption: 'They chain: filter, then map, then reduce.' }),
     reveal('What each one gives back', [
       ['map', 'A new array, the same length, every item changed.', '🔁'],

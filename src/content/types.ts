@@ -346,7 +346,7 @@ export type ScenarioStep = {
   type: 'scenario';
   kicker: string;
   title: string;
-  /** Who is asking, e.g. "Priya · team lead". */
+  /** Who is asking, e.g. "Paula · team lead". */
   from: string;
   message: string;
   artifact?: { kind: 'log' | 'report' | 'data' | 'diff' | 'ticket'; title: string; lines: string[] };

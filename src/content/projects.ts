@@ -8,7 +8,7 @@ const code = (o: Omit<EditorStep, 'type'>): EditorStep => ({ type: 'editor', ...
 
 /* ---------- 1. Portfolio page ---------- */
 
-const P1 = '<header>\n  <h1>Asha Verma</h1>\n  <p>Student · Future developer</p>\n</header>\n';
+const P1 = '<header>\n  <h1>Ava Vance</h1>\n  <p>Student · Future developer</p>\n</header>\n';
 const P2 =
   P1 +
   '<section>\n  <h2>Skills</h2>\n  <ul>\n    <li>HTML</li>\n    <li>CSS</li>\n    <li>Python</li>\n  </ul>\n</section>\n';
@@ -153,7 +153,7 @@ export const TODO: Lesson = {
 
 /* ---------- 3. Quiz game (JavaScript) ---------- */
 
-const Q_DATA = 'const questions = [\n  { q: "2 + 2", a: "4" },\n  { q: "Capital of India", a: "New Delhi" },\n  { q: "HTML tag for a link", a: "a" },\n];\n';
+const Q_DATA = 'const questions = [\n  { q: "2 + 2", a: "4" },\n  { q: "Capital of Japan", a: "Tokyo" },\n  { q: "HTML tag for a link", a: "a" },\n];\n';
 const Q1 = Q_DATA + '\nfunction isCorrect(question, answer) {\n  return answer.trim().toLowerCase() === question.a.toLowerCase();\n}\n';
 const Q2 = Q1 + '\nfunction score(answers) {\n  let total = 0;\n  for (let i = 0; i < questions.length; i++) {\n    if (isCorrect(questions[i], answers[i] ?? "")) total++;\n  }\n  return total;\n}\n';
 const Q3 = Q2 + '\nfunction result(answers) {\n  const s = score(answers);\n  const pct = Math.round((s / questions.length) * 100);\n  return `${s}/${questions.length} (${pct}%)` + (pct === 100 ? " Perfect!" : "");\n}\n';
@@ -181,7 +181,7 @@ export const QUIZ_GAME: Lesson = {
       file: 'quiz.js',
       starter: Q_DATA + '\nfunction isCorrect(question, answer) {\n  return answer === question.a;\n}\n',
       tests: [
-        { call: 'isCorrect(questions[1], "  new delhi ")', expect: 'true' },
+        { call: 'isCorrect(questions[1], "  tokyo ")', expect: 'true' },
         { call: 'isCorrect(questions[0], "5")', expect: 'false' },
       ],
       hint: 'answer.trim().toLowerCase() === question.a.toLowerCase()',
@@ -195,8 +195,8 @@ export const QUIZ_GAME: Lesson = {
       file: 'quiz.js',
       starter: Q1 + '\nfunction score(answers) {\n  return 0;\n}\n',
       tests: [
-        { call: 'score(["4", "New Delhi", "a"])', expect: '3' },
-        { call: 'score(["4", "Mumbai"])', expect: '1' },
+        { call: 'score(["4", "Tokyo", "a"])', expect: '3' },
+        { call: 'score(["4", "Madrid"])', expect: '1' },
       ],
       hint: 'Loop over questions and use isCorrect(questions[i], answers[i] ?? "")',
       solution: Q2,
@@ -209,8 +209,8 @@ export const QUIZ_GAME: Lesson = {
       file: 'quiz.js',
       starter: Q2 + '\nfunction result(answers) {\n  return "";\n}\n',
       tests: [
-        { call: 'result(["4", "New Delhi", "x"])', expect: '"2/3 (67%)"' },
-        { call: 'result(["4", "new delhi", "A"])', expect: '"3/3 (100%) Perfect!"' },
+        { call: 'result(["4", "Tokyo", "x"])', expect: '"2/3 (67%)"' },
+        { call: 'result(["4", "tokyo", "A"])', expect: '"3/3 (100%) Perfect!"' },
       ],
       hint: 'const pct = Math.round((s / questions.length) * 100);',
       solution: Q3,

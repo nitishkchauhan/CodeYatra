@@ -7,7 +7,7 @@ const K = 'PRACTICE · NODE.JS';
 export const NODE_DRILLS: Record<string, Step[]> = {
   'n-intro-1': [
     quiz({ prompt: 'Which version of Node.js should most projects use?', options: ['The current LTS version', 'The oldest version', 'Any odd-numbered version', 'Whatever came with a tutorial video'], right: 'Right. LTS versions get fixes for years.', wrong: 'Pick the long-term support (LTS) release.' }),
-    predict({ kicker: K, title: 'What does this print?', lang: 'javascript', lines: ['const argv = ["node", "app.js", "--city", "Pune"];', 'const i = argv.indexOf("--city");', 'console.log(argv[i + 1]);'], answer: 'Pune', explain: 'The value comes right after the flag.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'javascript', lines: ['const argv = ["node", "app.js", "--city", "Paris"];', 'const i = argv.indexOf("--city");', 'console.log(argv[i + 1]);'], answer: 'Paris', explain: 'The value comes right after the flag.' }),
     quiz({ prompt: 'How do you run app.js with Node?', options: ['node app.js', 'npm app.js', 'run app.js', 'open app.js'], right: 'Right.', wrong: 'node followed by the file name runs it.', mono: true }),
   ],
   'n-modules': [
@@ -33,10 +33,10 @@ export const NODE_DRILLS: Record<string, Step[]> = {
   'n-http': [
     quiz({ prompt: 'Which status code means the server crashed while handling the request?', options: ['500', '404', '201', '400'], right: 'Right.', wrong: '5xx codes mean a server-side problem.', mono: true }),
     quiz({ prompt: 'Which method should a request that only reads data use?', options: ['GET', 'POST', 'DELETE', 'PATCH'], right: 'Right.', wrong: 'GET reads; it must not change data.', mono: true }),
-    predict({ kicker: K, title: 'What does this print?', lang: 'javascript', lines: ['const url = "/trains?from=Delhi";', 'const [path, query] = url.split("?");', 'console.log(path, query);'], answer: '/trains from=Delhi', explain: 'The part before ? is the path, the part after is the query.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'javascript', lines: ['const url = "/trains?from=Dublin";', 'const [path, query] = url.split("?");', 'console.log(path, query);'], answer: '/trains from=Dublin', explain: 'The part before ? is the path, the part after is the query.' }),
   ],
   'n-express-1': [
-    quiz({ prompt: 'For GET /trains?from=Delhi, where is "Delhi"?', options: ['req.query.from', 'req.params.from', 'req.body.from', 'req.from'], right: 'Right.', wrong: 'The ?key=value part is in req.query.', mono: true }),
+    quiz({ prompt: 'For GET /trains?from=Dublin, where is "Dublin"?', options: ['req.query.from', 'req.params.from', 'req.body.from', 'req.from'], right: 'Right.', wrong: 'The ?key=value part is in req.query.', mono: true }),
     quiz({ prompt: 'Which sends a 404 with a JSON error?', options: ['res.status(404).json({ error: "Not found" })', 'res.json(404)', 'res.send(404, "Not found")', 'return 404'], right: 'Right.', wrong: 'Set the status, then send the body.', mono: true }),
     order({ kicker: K, title: 'A minimal Express app', instructions: 'Arrange the lines.', lang: 'javascript', lines: ['import express from "express";', 'const app = express();', 'app.get("/", (req, res) => res.send("Hello"));', 'app.listen(3000);'], explain: 'Import, create the app, add routes, then listen.' }),
   ],

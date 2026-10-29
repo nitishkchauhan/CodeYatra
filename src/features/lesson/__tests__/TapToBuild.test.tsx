@@ -54,11 +54,11 @@ function Tinker({ code }: { code: string }) {
 
 describe('tap a value to change it', () => {
   it('swaps a highlighted value for one of its options', async () => {
-    await render(<Tinker code={'name = "Asha"\nprint("Namaste,", name)'} />);
-    await fireEvent.press(screen.getByRole('button', { name: '"Asha". Tap to change it' }));
-    expect(screen.getByText(/Change "Asha" to/)).toBeTruthy();
-    const other = screen.getAllByText(/^"(Ravi|Zoya|Kabir|Meera|Arjun)"$/)[0];
+    await render(<Tinker code={'name = "Ava"\nprint("Namaste,", name)'} />);
+    await fireEvent.press(screen.getByRole('button', { name: '"Ava". Tap to change it' }));
+    expect(screen.getByText(/Change "Ava" to/)).toBeTruthy();
+    const other = screen.getAllByText(/^"(Reed|Zoey|Kaden|Megan|Arden)"$/)[0];
     await fireEvent.press(other);
-    expect(screen.getByTestId('code').props.children).toMatch(/^name = "(Ravi|Zoya|Kabir|Meera|Arjun)"/);
+    expect(screen.getByTestId('code').props.children).toMatch(/^name = "(Reed|Zoey|Kaden|Megan|Arden)"/);
   });
 });

@@ -10,7 +10,7 @@ export const JS_DRILLS: Record<string, Step[]> = {
     p('typeof', ['console.log(typeof 3.5, typeof "3.5", typeof false);'], 'number string boolean', 'Decimals are numbers too; quotes make a string.'),
     p('Template literal', ['const seats = 3;', 'console.log(`${seats} seats, ${seats * 450} rupees`);'], '3 seats, 1350 rupees', 'Anything inside ${} is worked out first.'),
     quiz({ prompt: 'Which should you use for a value that never changes?', options: ['const', 'let', 'var', 'static'], right: 'Right. const by default, let only when it changes.', wrong: 'const declares a name that can’t be reassigned.', mono: true }),
-    bug({ kicker: K, title: 'Find the bug', instructions: 'This should print "Hello, Asha". Tap the buggy line.', lang: 'javascript', lines: ['const name = "Asha";', 'console.log("Hello, ${name}");'], bug: 1, fix: 'console.log(`Hello, ${name}`);', explain: '${…} only works inside backticks, not double quotes.' }),
+    bug({ kicker: K, title: 'Find the bug', instructions: 'This should print "Hello, Ava". Tap the buggy line.', lang: 'javascript', lines: ['const name = "Ava";', 'console.log("Hello, ${name}");'], bug: 1, fix: 'console.log(`Hello, ${name}`);', explain: '${…} only works inside backticks, not double quotes.' }),
   ],
   'j-ops-1': [
     p('Joining or adding?', ['console.log(1 + 2 + "3", "1" + 2 + 3);'], '33 123', 'Left to right: 1 + 2 is 3, then + "3" joins. Once a string appears, + joins.'),
@@ -49,7 +49,7 @@ export const JS_DRILLS: Record<string, Step[]> = {
     quiz({ prompt: 'Which keyword makes a function available to other files?', options: ['export', 'import', 'public', 'return'], right: 'Right. The other file then imports it.', wrong: 'export shares it; import brings it into another file.', mono: true }),
   ],
   'j-obj-1': [
-    p('Destructuring', ['const t = { name: "Duronto", fare: 1800 };', 'const { name, coach = "AC" } = t;', 'console.log(name, coach);'], 'Duronto AC', 'coach isn’t in the object, so the default "AC" is used.'),
+    p('Destructuring', ['const t = { name: "Delta Express", fare: 1800 };', 'const { name, coach = "AC" } = t;', 'console.log(name, coach);'], 'Delta Express AC', 'coach isn’t in the object, so the default "AC" is used.'),
     p('Spread override', ['const a = { seats: 2, coach: "S3" };', 'const b = { ...a, seats: 5 };', 'console.log(a.seats, b.seats, b.coach);'], '2 5 S3', 'b copies a, then replaces seats.'),
     p('Object keys', ['console.log(Object.keys({ a: 1, b: 2, c: 3 }).length);'], '3', 'Object.keys gives the list of keys.'),
     quiz({ prompt: 'What does booking.train?.name give if booking.train is undefined?', options: ['undefined, with no error', 'A TypeError', 'null', '"name"'], right: 'Right. ?. stops safely.', wrong: 'Optional chaining returns undefined instead of throwing.' }),
@@ -58,7 +58,7 @@ export const JS_DRILLS: Record<string, Step[]> = {
     p('A method', ['class Counter {', '  constructor() { this.n = 0; }', '  up() { this.n++; return this; }', '}', 'console.log(new Counter().up().up().n);'], '2', 'Returning this lets calls be chained.'),
     p('extends', ['class A { hi() { return "A"; } }', 'class B extends A { hi() { return "B" + super.hi(); } }', 'console.log(new B().hi());'], 'BA', 'B’s hi calls the parent’s hi with super.'),
     quiz({ prompt: 'What does the constructor do?', options: ['Sets up each new object when you call new', 'Deletes the object', 'Runs once for the whole class', 'Makes the class private'], right: 'Right. It runs every time new is used.', wrong: 'constructor runs for each new object and sets its starting data.' }),
-    bug({ kicker: K, title: 'Find the bug', instructions: 'p.name should be "Asha". Tap the buggy line.', lang: 'javascript', lines: ['class Player {', '  constructor(name) { name = name; }', '}', 'const p = new Player("Asha");', 'console.log(p.name);'], bug: 1, fix: '  constructor(name) { this.name = name; }', explain: 'Store it on the object with this.name; name = name does nothing.' }),
+    bug({ kicker: K, title: 'Find the bug', instructions: 'p.name should be "Ava". Tap the buggy line.', lang: 'javascript', lines: ['class Player {', '  constructor(name) { name = name; }', '}', 'const p = new Player("Ava");', 'console.log(p.name);'], bug: 1, fix: '  constructor(name) { this.name = name; }', explain: 'Store it on the object with this.name; name = name does nothing.' }),
   ],
   'j-error-1': [
     p('Catch the name', ['try {', '  undefinedFunction();', '} catch (e) {', '  console.log(e.name);', '}'], 'ReferenceError', 'Calling a name that doesn’t exist is a ReferenceError.'),

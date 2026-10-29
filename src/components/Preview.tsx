@@ -71,7 +71,7 @@ export function Preview({ spec }: { spec: PreviewSpec }) {
           </View>
         ) : spec.kind === 'button' ? (
           <View style={[styles.page, { alignItems: 'flex-start' }]}>
-            <Text style={[styles.serif, { fontSize: 18, fontWeight: '700' }]}>Delhi → Jaipur</Text>
+            <Text style={[styles.serif, { fontSize: 18, fontWeight: '700' }]}>Dublin → Jersey</Text>
             <View
               style={{
                 marginTop: 8,

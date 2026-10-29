@@ -27,7 +27,7 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
     hook({
       kicker: 'INTERMEDIATE · MODULE 1',
       title: 'One line instead of five',
-      story: 'Ananya’s tuition centre has 200 test scores. She needs only the passing ones, each with 5 grace marks added. With a loop that is five lines; with a comprehension it is one, and it reads like the sentence she would say.',
+      story: 'Angela’s tuition centre has 200 test scores. She needs only the passing ones, each with 5 grace marks added. With a loop that is five lines; with a comprehension it is one, and it reads like the sentence she would say.',
       goal: 'Build lists and dictionaries from other data in a single, readable line.',
       lang: 'python',
       code: ['passed = [m + 5 for m in marks if m >= 40]'],
@@ -105,9 +105,9 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
     scenario({
       kicker: WORK,
       title: 'A messy export',
-      from: 'Meera · data team lead',
+      from: 'Megan · data team lead',
       message: 'Our sign-up export has emails in mixed case with stray spaces, and some rows are blank. Marketing needs a clean list by this evening.',
-      artifact: { kind: 'data', title: 'signups.csv · email column', lines: ['"  Asha@Mail.com"', '"RAVI@mail.com "', '""', '"zoya@mail.com"'] },
+      artifact: { kind: 'data', title: 'signups.csv · email column', lines: ['"  Ava@Mail.com"', '"REED@mail.com "', '""', '"zoey@mail.com"'] },
       task: 'Write clean_emails(raw) that strips spaces, lower-cases every email and drops the blank ones, in one comprehension.',
     }),
     py({
@@ -116,7 +116,7 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
       file: 'clean.py',
       starter: 'def clean_emails(raw):\n    return raw\n',
       tests: [
-        { call: 'clean_emails(["  Asha@Mail.com", "RAVI@mail.com ", "", "zoya@mail.com"])', expect: '["asha@mail.com", "ravi@mail.com", "zoya@mail.com"]' },
+        { call: 'clean_emails(["  Ava@Mail.com", "REED@mail.com ", "", "zoey@mail.com"])', expect: '["ava@mail.com", "reed@mail.com", "zoey@mail.com"]' },
         { call: 'clean_emails([])', expect: '[]' },
         { call: 'clean_emails(["   "])', expect: '[]' },
       ],
@@ -210,7 +210,7 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
     scenario({
       kicker: WORK,
       title: 'Two welcome emails',
-      from: 'Karan · backend developer',
+      from: 'Karen · backend developer',
       message: 'Some users got two welcome emails, so the sign-up log has repeats. Before I fix the mailer, which user IDs signed up on both days?',
       artifact: { kind: 'log', title: 'signups.log', lines: ['day 1: 101 102 103 103', 'day 2: 103 104 101'] },
       task: 'Write repeat_users(day1, day2) that returns a sorted list of the IDs that appear on both days, each once.',
@@ -311,7 +311,7 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
     scenario({
       kicker: WORK,
       title: 'Tonight’s stock order',
-      from: 'Neha · canteen operations',
+      from: 'Nina · canteen operations',
       message: 'I exported today’s orders. Which two snacks sold most, and how many? I order tomorrow’s stock from that.',
       artifact: { kind: 'data', title: 'orders.txt', lines: ['tea', 'veg burger', 'tea', 'muffin', 'veg burger', 'tea'] },
       task: 'Write top_items(orders, n) that returns the n most common items as (item, count) pairs, using collections.Counter.',
@@ -344,9 +344,9 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
     read({
       kicker: LEARN(1),
       title: 'Text that looks like data',
-      body: 'JSON is a text format: {"train": "Rajdhani", "seats": 3}. It looks like a Python dictionary, but it is a string. json.loads(text) reads it into real Python data you can use.',
+      body: 'JSON is a text format: {"train": "Royal", "seats": 3}. It looks like a Python dictionary, but it is a string. json.loads(text) reads it into real Python data you can use.',
       lang: 'python',
-      code: ['import json', 'data = json.loads(\'{"train": "Rajdhani", "seats": 3}\')', 'print(data["seats"] + 1)   # 4'],
+      code: ['import json', 'data = json.loads(\'{"train": "Royal", "seats": 3}\')', 'print(data["seats"] + 1)   # 4'],
       anim: 'json',
     }),
     read({
@@ -371,15 +371,15 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
       instructions: 'Run it, then tap a value to change it.',
       lang: 'python',
       file: 'reply.py',
-      starter: 'import json\n\nreply = \'[{"train": "Rajdhani", "seats": 3}, {"train": "Shatabdi", "seats": 0}]\'\ntrains = json.loads(reply)\nfor t in trains:\n    print(t["train"], "available" if t["seats"] > 0 else "full")\n',
+      starter: 'import json\n\nreply = \'[{"train": "Royal", "seats": 3}, {"train": "Silver Arrow", "seats": 0}]\'\ntrains = json.loads(reply)\nfor t in trains:\n    print(t["train"], "available" if t["seats"] > 0 else "full")\n',
       ideas: ['What type is trains after loads?', 'Which train is full?'],
     }),
     trace({
       kicker: RUN,
       title: 'Text in, text out',
       instructions: 'Watch the text become a dictionary, change, and become text again.',
-      code: ['import json', 'text = \'{"train": "Rajdhani", "seats": 3}\'', 'data = json.loads(text)', 'data["seats"] = data["seats"] - 1', 'out = json.dumps(data)', 'print(out)'],
-      ask: { prompt: 'What does it print?', options: ['{"train": "Rajdhani", "seats": 2}', '{"train": "Rajdhani", "seats": 3}', "{'train': 'Rajdhani', 'seats': 2}", 'An error'], answer: 0, explain: 'loads made a dictionary, seats went down by one, and dumps wrote JSON text with double quotes.', check: { out: true } },
+      code: ['import json', 'text = \'{"train": "Royal", "seats": 3}\'', 'data = json.loads(text)', 'data["seats"] = data["seats"] - 1', 'out = json.dumps(data)', 'print(out)'],
+      ask: { prompt: 'What does it print?', options: ['{"train": "Royal", "seats": 2}', '{"train": "Royal", "seats": 3}', "{'train': 'Royal', 'seats': 2}", 'An error'], answer: 0, explain: 'loads made a dictionary, seats went down by one, and dumps wrote JSON text with double quotes.', check: { out: true } },
     }),
     mistake({
       kicker: OOPS,
@@ -414,9 +414,9 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
     scenario({
       kicker: WORK,
       title: 'Seats for the dashboard',
-      from: 'Arjun · app developer',
+      from: 'Arden · app developer',
       message: 'The booking API sends us JSON. For the dashboard I need the total seats booked on each train.',
-      artifact: { kind: 'data', title: 'bookings.json', lines: ['[', '  {"train": "Rajdhani", "seats": 2},', '  {"train": "Shatabdi", "seats": 1},', '  {"train": "Rajdhani", "seats": 3}', ']'] },
+      artifact: { kind: 'data', title: 'bookings.json', lines: ['[', '  {"train": "Royal", "seats": 2},', '  {"train": "Silver Arrow", "seats": 1},', '  {"train": "Royal", "seats": 3}', ']'] },
       task: 'Write seats_per_train(text) that takes this JSON text and returns a dictionary of train → total seats.',
     }),
     py({
@@ -425,7 +425,7 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
       file: 'dashboard.py',
       starter: 'import json\n\ndef seats_per_train(text):\n    return {}\n',
       tests: [
-        { call: `seats_per_train('[{"train": "Rajdhani", "seats": 2}, {"train": "Shatabdi", "seats": 1}, {"train": "Rajdhani", "seats": 3}]')`, expect: '{"Rajdhani": 5, "Shatabdi": 1}' },
+        { call: `seats_per_train('[{"train": "Royal", "seats": 2}, {"train": "Silver Arrow", "seats": 1}, {"train": "Royal", "seats": 3}]')`, expect: '{"Royal": 5, "Silver Arrow": 1}' },
         { call: "seats_per_train('[]')", expect: '{}' },
       ],
       hint: 'bookings = json.loads(text), then totals[b["train"]] = totals.get(b["train"], 0) + b["seats"] for each booking.',
@@ -516,7 +516,7 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
     scenario({
       kicker: WORK,
       title: 'A change that must not break anything',
-      from: 'Priya · team lead',
+      from: 'Paula · team lead',
       message: 'fare() is called in 40 places. Product wants an optional student discount, but every existing call must keep giving the same answer.',
       artifact: { kind: 'ticket', title: 'TICKET #214 · Student discount', lines: ['Add an optional 25% student discount to fare(km)', 'Existing calls like fare(12) must not change', 'Round the discounted fare to the nearest rupee'] },
       task: 'Change fare(km) so fare(km, student=True) is 25% cheaper (rounded), while fare(km) still gives the full fare of 20 + km × 2.',
@@ -577,7 +577,7 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
       instructions: 'Run it, then change the distance.',
       lang: 'python',
       file: 'tickets.py',
-      starter: 'class Ticket:\n    def __init__(self, name, km):\n        self.name = name\n        self.km = km\n    def fare(self):\n        return 20 + self.km * 2\n    def __str__(self):\n        return f"{self.name} · {self.km} km · ₹{self.fare()}"\n\nclass ACTicket(Ticket):\n    def fare(self):\n        return super().fare() * 2\n\nprint(Ticket("Asha", 10))\nprint(ACTicket("Ravi", 10))\n',
+      starter: 'class Ticket:\n    def __init__(self, name, km):\n        self.name = name\n        self.km = km\n    def fare(self):\n        return 20 + self.km * 2\n    def __str__(self):\n        return f"{self.name} · {self.km} km · ₹{self.fare()}"\n\nclass ACTicket(Ticket):\n    def fare(self):\n        return super().fare() * 2\n\nprint(Ticket("Ava", 10))\nprint(ACTicket("Reed", 10))\n',
       ideas: ['Why does the AC ticket print with the AC fare?', 'Which method did ACTicket not need to write?'],
     }),
     trace({
@@ -622,9 +622,9 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
     scenario({
       kicker: WORK,
       title: 'Code review comments',
-      from: 'Rahul · senior developer',
+      from: 'Ralph · senior developer',
       message: 'Review note: everyone prints tickets field by field. Please give Ticket a proper text form so print(t) is readable, and add an AC ticket that costs double.',
-      artifact: { kind: 'diff', title: 'booking.py · suggested change', lines: ['- print(t.name, t.km, t.fare())', '+ print(t)   # Asha · 10 km · ₹40'] },
+      artifact: { kind: 'diff', title: 'booking.py · suggested change', lines: ['- print(t.name, t.km, t.fare())', '+ print(t)   # Ava · 10 km · ₹40'] },
       task: 'Add __str__ to Ticket returning "name · km km · ₹fare", and an ACTicket subclass whose fare() is double.',
     }),
     py({
@@ -633,10 +633,10 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
       file: 'tickets.py',
       starter: 'class Ticket:\n    def __init__(self, name, km):\n        self.name = name\n        self.km = km\n\n    def fare(self):\n        return 20 + self.km * 2\n',
       tests: [
-        { call: 'str(Ticket("Asha", 10))', expect: '"Asha · 10 km · ₹40"' },
-        { call: 'ACTicket("Ravi", 5).fare()', expect: '60' },
-        { call: 'str(ACTicket("Ravi", 5))', expect: '"Ravi · 5 km · ₹60"' },
-        { call: 'isinstance(ACTicket("Zoya", 1), Ticket)', expect: 'True' },
+        { call: 'str(Ticket("Ava", 10))', expect: '"Ava · 10 km · ₹40"' },
+        { call: 'ACTicket("Reed", 5).fare()', expect: '60' },
+        { call: 'str(ACTicket("Reed", 5))', expect: '"Reed · 5 km · ₹60"' },
+        { call: 'isinstance(ACTicket("Zoey", 1), Ticket)', expect: 'True' },
       ],
       hint: 'def __str__(self):\n    return f"{self.name} · {self.km} km · ₹{self.fare()}"\n\nclass ACTicket(Ticket):\n    def fare(self):\n        return super().fare() * 2',
       solution:
@@ -645,7 +645,7 @@ export const PYTHON_INTERMEDIATE: Lesson[] = [
   ], [doc('Classes (tutorial)', 'tutorial/classes.html')]),
 ];
 
-const BOOKINGS = `'[{"id": 1, "route": "Delhi-Agra", "seats": 2, "status": "confirmed"}, {"id": 2, "route": "Pune-Goa", "seats": 1, "status": "cancelled"}, {"id": 3, "route": "Delhi-Agra", "seats": 3, "status": "confirmed"}, {"id": 4, "route": "Mumbai-Pune", "seats": 2, "status": "confirmed"}]'`;
+const BOOKINGS = `'[{"id": 1, "route": "Dublin-Athens", "seats": 2, "status": "confirmed"}, {"id": 2, "route": "Paris-Geneva", "seats": 1, "status": "cancelled"}, {"id": 3, "route": "Dublin-Athens", "seats": 3, "status": "confirmed"}, {"id": 4, "route": "Madrid-Paris", "seats": 2, "status": "confirmed"}]'`;
 const LOAD = 'import json\n\ndef load_bookings(text):\n    return [b for b in json.loads(text) if b["status"] == "confirmed"]\n';
 const SEATS = 'def seats_by_route(bookings):\n    totals = {}\n    for b in bookings:\n        totals[b["route"]] = totals.get(b["route"], 0) + b["seats"]\n    return totals\n';
 
@@ -666,14 +666,14 @@ export const PYTHON_INTERMEDIATE_PROJECT: Lesson = {
       story: 'Every Monday the operations team needs a short report of last week’s confirmed bookings: how many, how many seats, and the busiest route. You’ll build the program that makes it from the raw API data, in three tested steps.',
       goal: 'A working report in 3 steps, using JSON, comprehensions, dictionaries and functions.',
       lang: 'python',
-      code: ['summary(load_bookings(text))', '# 3 bookings · 7 seats · busiest: Delhi-Agra'],
+      code: ['summary(load_bookings(text))', '# 3 bookings · 7 seats · busiest: Dublin-Athens'],
     }),
     scenario({
       kicker: WORK,
       title: 'The request',
-      from: 'Neha · operations manager',
+      from: 'Nina · operations manager',
       message: 'Can you automate the Monday report? Count only confirmed bookings. I need the number of bookings, total seats and the busiest route.',
-      artifact: { kind: 'data', title: 'bookings.json (from the API)', lines: ['{"id": 1, "route": "Delhi-Agra", "seats": 2, "status": "confirmed"}', '{"id": 2, "route": "Pune-Goa", "seats": 1, "status": "cancelled"}', '{"id": 3, "route": "Delhi-Agra", "seats": 3, "status": "confirmed"}', '{"id": 4, "route": "Mumbai-Pune", "seats": 2, "status": "confirmed"}'] },
+      artifact: { kind: 'data', title: 'bookings.json (from the API)', lines: ['{"id": 1, "route": "Dublin-Athens", "seats": 2, "status": "confirmed"}', '{"id": 2, "route": "Paris-Geneva", "seats": 1, "status": "cancelled"}', '{"id": 3, "route": "Dublin-Athens", "seats": 3, "status": "confirmed"}', '{"id": 4, "route": "Madrid-Paris", "seats": 2, "status": "confirmed"}'] },
       task: 'Step 1: load the JSON and keep only confirmed bookings.',
     }),
     py({
@@ -694,7 +694,7 @@ export const PYTHON_INTERMEDIATE_PROJECT: Lesson = {
       file: 'report.py',
       starter: `${LOAD}\ndef seats_by_route(bookings):\n    return {}\n`,
       tests: [
-        { call: `seats_by_route(load_bookings(${BOOKINGS}))`, expect: '{"Delhi-Agra": 5, "Mumbai-Pune": 2}' },
+        { call: `seats_by_route(load_bookings(${BOOKINGS}))`, expect: '{"Dublin-Athens": 5, "Madrid-Paris": 2}' },
         { call: 'seats_by_route([])', expect: '{}' },
       ],
       hint: 'totals[b["route"]] = totals.get(b["route"], 0) + b["seats"]',
@@ -706,7 +706,7 @@ export const PYTHON_INTERMEDIATE_PROJECT: Lesson = {
       file: 'report.py',
       starter: `${LOAD}\n${SEATS}\ndef summary(bookings):\n    return ""\n`,
       tests: [
-        { call: `summary(load_bookings(${BOOKINGS}))`, expect: '"3 bookings · 7 seats · busiest: Delhi-Agra"' },
+        { call: `summary(load_bookings(${BOOKINGS}))`, expect: '"3 bookings · 7 seats · busiest: Dublin-Athens"' },
         { call: 'summary([])', expect: '"No bookings"' },
       ],
       hint: 'routes = seats_by_route(bookings); busiest = max(routes, key=routes.get); seats = sum(routes.values())',

@@ -47,15 +47,15 @@ export const HTML_M5: Lesson[] = [
       ['<td>', 'A data cell.'],
       ['<caption>', 'The table’s title.'],
     ], { mono: true }),
-    explore('A mark sheet', ['<table>', '  <tr><th>Name</th><th>Marks</th></tr>', '  <tr><td>Aman</td><td>92</td></tr>', '  <tr><td>Riya</td><td>88</td></tr>', '</table>'], [
+    explore('A mark sheet', ['<table>', '  <tr><th>Name</th><th>Marks</th></tr>', '  <tr><td>Adam</td><td>92</td></tr>', '  <tr><td>Rosa</td><td>88</td></tr>', '</table>'], [
       [2, 'The first row holds header cells: Name and Marks.', 'tr:first-child'],
-      [3, 'Aman’s row: two data cells.', 'tr:nth-child(2)'],
-      [4, 'Riya’s row.', 'tr:nth-child(3)'],
-    ], { page: { html: '<table><tr><th>Name</th><th>Marks</th></tr><tr><td>Aman</td><td>92</td></tr><tr><td>Riya</td><td>88</td></tr></table>', css: BORDER } }),
+      [3, 'Adam’s row: two data cells.', 'tr:nth-child(2)'],
+      [4, 'Rosa’s row.', 'tr:nth-child(3)'],
+    ], { page: { html: '<table><tr><th>Name</th><th>Marks</th></tr><tr><td>Adam</td><td>92</td></tr><tr><td>Rosa</td><td>88</td></tr></table>', css: BORDER } }),
     toggle('Borders come from CSS', [
-      ['No borders', ['<table>…</table>'], 'Tables have no borders by default.', { html: '<table><tr><th>Name</th><th>Marks</th></tr><tr><td>Aman</td><td>92</td></tr></table>' }],
-      ['Add borders', ['table, th, td { border: 1px solid black; }'], 'Every cell gets its own border, so the lines look doubled.', { html: '<table><tr><th>Name</th><th>Marks</th></tr><tr><td>Aman</td><td>92</td></tr></table>', css: 'table,th,td{border:1px solid black}' }],
-      ['Collapse', ['table { border-collapse: collapse; }'], 'border-collapse merges the double lines into single ones.', { html: '<table><tr><th>Name</th><th>Marks</th></tr><tr><td>Aman</td><td>92</td></tr></table>', css: 'table,th,td{border:1px solid black} table{border-collapse:collapse}' }],
+      ['No borders', ['<table>…</table>'], 'Tables have no borders by default.', { html: '<table><tr><th>Name</th><th>Marks</th></tr><tr><td>Adam</td><td>92</td></tr></table>' }],
+      ['Add borders', ['table, th, td { border: 1px solid black; }'], 'Every cell gets its own border, so the lines look doubled.', { html: '<table><tr><th>Name</th><th>Marks</th></tr><tr><td>Adam</td><td>92</td></tr></table>', css: 'table,th,td{border:1px solid black}' }],
+      ['Collapse', ['table { border-collapse: collapse; }'], 'border-collapse merges the double lines into single ones.', { html: '<table><tr><th>Name</th><th>Marks</th></tr><tr><td>Adam</td><td>92</td></tr></table>', css: 'table,th,td{border:1px solid black} table{border-collapse:collapse}' }],
     ]),
     place('Stretch a cell', 'Make Lunch cover both columns.', [['<table>'], ['  <tr><th>Mon</th><th>Tue</th></tr>'], ['  <tr><td ', { gap: 0 }, '>Lunch</td></tr>'], ['</table>']], ['colspan="2"', 'rowspan="2"', 'span="2"'], ['colspan="2"'], 'colspan stretches a cell across columns; rowspan stretches it down rows.', { css: BORDER }),
     reveal('Table sections', [
@@ -98,15 +98,15 @@ export const HTML_M5: Lesson[] = [
 
   lesson('html-5-4', 'Div and span', 4, [
     chat(['<div> and <span> are empty containers.', 'They change nothing until you style them.']),
-    explore('A div groups things', ['<div style="background-color:lightblue; padding:10px;">', '  <h2>Pune</h2>', '  <p>A city in Maharashtra, known for its colleges.</p>', '</div>'], [
+    explore('A div groups things', ['<div style="background-color:lightblue; padding:10px;">', '  <h2>Paris</h2>', '  <p>A city in France, known for its museums.</p>', '</div>'], [
       [1, '<div> is a block container: it groups elements so you can style or move them together.', 'div'],
       [2, 'Everything inside the div gets its blue background.', 'h2'],
     ], { minTaps: 2 }),
-    place('Make two city cards', 'Put each city’s heading and paragraph into its own card.', [['<div class="card">', { gap: 0 }, '</div>'], ['<div class="card">', { gap: 1 }, '</div>']], ['<h2>Delhi</h2><p>The capital.</p>', '<h2>Mumbai</h2><p>Home to the film industry.</p>'], ['<h2>Delhi</h2><p>The capital.</p>', '<h2>Mumbai</h2><p>Home to the film industry.</p>'], 'Each div becomes a card holding one city.', { css: '.card{background:#F3F1FF;border-radius:12px;padding:10px;margin:6px 0}' }),
+    place('Make two city cards', 'Put each city’s heading and paragraph into its own card.', [['<div class="card">', { gap: 0 }, '</div>'], ['<div class="card">', { gap: 1 }, '</div>']], ['<h2>Dublin</h2><p>The capital.</p>', '<h2>Madrid</h2><p>Home to the film industry.</p>'], ['<h2>Dublin</h2><p>The capital.</p>', '<h2>Madrid</h2><p>Home to the film industry.</p>'], 'Each div becomes a card holding one city.', { css: '.card{background:#F3F1FF;border-radius:12px;padding:10px;margin:6px 0}' }),
     explore('A span colours part of a line', ['<p>The sky is <span style="color:blue;">blue</span> today.</p>'], [[1, '<span> is an inline container for styling part of a line.', 'span']], { minTaps: 1 }),
     toggle('Side by side', [
-      ['Stacked', ['<div><div class="card">Delhi</div><div class="card">Mumbai</div></div>'], 'Divs stack, one under the other.', { html: '<div><div class="card">Delhi</div><div class="card">Mumbai</div></div>', css: '.card{background:#F3F1FF;border-radius:12px;padding:16px;margin:6px}' }],
-      ['Side by side', ['<div style="display:flex;">', '  <div class="card">Delhi</div><div class="card">Mumbai</div>', '</div>'], 'display:flex on the outer div lines them up. Divs are the building blocks of layouts; the CSS track goes further.', { html: '<div style="display:flex"><div class="card">Delhi</div><div class="card">Mumbai</div></div>', css: '.card{background:#F3F1FF;border-radius:12px;padding:16px;margin:6px;flex:1}' }],
+      ['Stacked', ['<div><div class="card">Dublin</div><div class="card">Madrid</div></div>'], 'Divs stack, one under the other.', { html: '<div><div class="card">Dublin</div><div class="card">Madrid</div></div>', css: '.card{background:#F3F1FF;border-radius:12px;padding:16px;margin:6px}' }],
+      ['Side by side', ['<div style="display:flex;">', '  <div class="card">Dublin</div><div class="card">Madrid</div>', '</div>'], 'display:flex on the outer div lines them up. Divs are the building blocks of layouts; the CSS track goes further.', { html: '<div style="display:flex"><div class="card">Dublin</div><div class="card">Madrid</div></div>', css: '.card{background:#F3F1FF;border-radius:12px;padding:16px;margin:6px;flex:1}' }],
     ]),
     check('You want to colour one word inside a paragraph. Use:', ['<span>', '<div>', '<table>'], 'A span stays in the line, around just that word.', 'You need an inline container.'),
     recap([
@@ -121,11 +121,11 @@ export const HTML_M5: Lesson[] = [
       ['👥 class', 'A group name. Many elements can share it, and one element can have several.'],
       ['🪪 id', 'A unique name. Only one element on the page can have it.'],
     ]),
-    explore('A class styles a group', ['<h2 class="city">Delhi</h2>', '<h2 class="city">Mumbai</h2>'], [
+    explore('A class styles a group', ['<h2 class="city">Dublin</h2>', '<h2 class="city">Madrid</h2>'], [
       [1, 'In CSS a class is picked with a dot: .city { … }', 'h2:first-of-type'],
       [2, 'Every element with class="city" gets the same look.', 'h2:last-of-type'],
-    ], { page: { html: '<h2 class="city">Delhi</h2><h2 class="city">Mumbai</h2>', css: '.city{background:tomato;color:white;padding:6px}' }, minTaps: 2 }),
-    place('Two classes at once', 'Give Delhi both classes, so only Delhi is centred.', [['<h2 class="', { gap: 0 }, '">Delhi</h2>'], ['<h2 class="city">Mumbai</h2>']], ['city main', 'city, main', 'city.main'], ['city main'], 'Separate several classes with a space.', { css: '.city{background:tomato;color:white;padding:6px}.main{text-align:center}' }),
+    ], { page: { html: '<h2 class="city">Dublin</h2><h2 class="city">Madrid</h2>', css: '.city{background:tomato;color:white;padding:6px}' }, minTaps: 2 }),
+    place('Two classes at once', 'Give Dublin both classes, so only Dublin is centred.', [['<h2 class="', { gap: 0 }, '">Dublin</h2>'], ['<h2 class="city">Madrid</h2>']], ['city main', 'city, main', 'city.main'], ['city main'], 'Separate several classes with a space.', { css: '.city{background:tomato;color:white;padding:6px}.main{text-align:center}' }),
     explore('An id names one element', ['<h1 id="banner">Big Sale</h1>'], [[1, 'In CSS an id is picked with a hash: #banner { … }', '#banner']], { page: { html: '<h1 id="banner">Big Sale</h1>', css: '#banner{background:black;color:gold;padding:8px}' }, minTaps: 1 }),
     reveal('What ids are for', [
       ['🎨 Styling', 'Style one specific element.'],
@@ -169,6 +169,6 @@ export const HTML_M5: Lesson[] = [
         ['.card', 'The coloured card', '<div>', ['<div>', '<span>', '<table>']],
       ],
     ),
-    arrange(['<table>', '<caption>Class Test</caption>', '<tr><th>Name</th><th>Marks</th></tr>', '<tr><td>Aman</td><td>92</td></tr>', '<tr><td>Riya</td><td>88</td></tr>', '</table>'], 'the caption on top, the header row, then the two students', BORDER),
+    arrange(['<table>', '<caption>Class Test</caption>', '<tr><th>Name</th><th>Marks</th></tr>', '<tr><td>Adam</td><td>92</td></tr>', '<tr><td>Rosa</td><td>88</td></tr>', '</table>'], 'the caption on top, the header row, then the two students', BORDER),
   ]),
 ];

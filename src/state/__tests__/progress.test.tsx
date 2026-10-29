@@ -12,7 +12,7 @@ const KEY = 'codeyatra/progress/v1';
 const wrapper = ({ children }: { children: ReactNode }) => <ProgressProvider>{children}</ProgressProvider>;
 
 async function mount(saved?: Partial<Progress>) {
-  if (saved) await AsyncStorage.setItem(KEY, JSON.stringify({ ...INITIAL, onboarded: true, name: 'Asha', ...saved }));
+  if (saved) await AsyncStorage.setItem(KEY, JSON.stringify({ ...INITIAL, onboarded: true, name: 'Ava', ...saved }));
   const hook = await renderHook(() => useProgress(), { wrapper });
   await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
   return hook;
@@ -47,10 +47,10 @@ describe('lessonReward', () => {
 
 describe('ProgressProvider', () => {
   it('restores saved progress on launch', async () => {
-    const { result } = await mount({ xp: 340, coins: 55, name: 'Asha' });
+    const { result } = await mount({ xp: 340, coins: 55, name: 'Ava' });
     expect(result.current.state.xp).toBe(340);
     expect(result.current.state.coins).toBe(55);
-    expect(result.current.state.name).toBe('Asha');
+    expect(result.current.state.name).toBe('Ava');
   });
 
   it('awards a lesson once even if Continue is tapped twice', async () => {
@@ -110,7 +110,7 @@ describe('ProgressProvider', () => {
     await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
     await act(async () => {
       hook.result.current.finishOnboarding({
-        name: '  Ananya ',
+        name: '  Angela ',
         level: 'college',
         stageId: 'sql',
         pathId: 'data-analyst',
@@ -121,7 +121,7 @@ describe('ProgressProvider', () => {
     });
     expect(hook.result.current.state).toMatchObject({
       onboarded: true,
-      name: 'Ananya',
+      name: 'Angela',
       stageId: 'sql',
       pathId: 'data-analyst',
       dailyGoal: 40,
@@ -135,7 +135,7 @@ describe('ProgressProvider', () => {
     const hook = await renderHook(() => useProgress(), { wrapper });
     await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
     await act(async () => {
-      hook.result.current.finishOnboarding({ name: 'Ravi', level: 'school' });
+      hook.result.current.finishOnboarding({ name: 'Reed', level: 'school' });
     });
     expect(hook.result.current.state).toMatchObject({ onboarded: true, stageId: 'foundations', dailyGoal: 20, pathId: null, about: null });
   });
@@ -143,12 +143,12 @@ describe('ProgressProvider', () => {
     const hook = await renderHook(() => useProgress(), { wrapper });
     await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
     await act(async () => {
-      hook.result.current.finishOnboarding({ name: 'Ravi', level: 'school', dailyGoal: 20, about: { who: 'senior', why: 'exams', interest: 'data' } });
+      hook.result.current.finishOnboarding({ name: 'Reed', level: 'school', dailyGoal: 20, about: { who: 'senior', why: 'exams', interest: 'data' } });
     });
     await act(async () => {
       hook.result.current.updatePlan({ about: { who: 'college', why: 'job', interest: 'web' }, dailyGoal: 60, level: 'college' });
     });
-    expect(hook.result.current.state).toMatchObject({ dailyGoal: 60, level: 'college', about: { who: 'college', why: 'job', interest: 'web' }, name: 'Ravi' });
+    expect(hook.result.current.state).toMatchObject({ dailyGoal: 60, level: 'college', about: { who: 'college', why: 'job', interest: 'web' }, name: 'Reed' });
     await waitFor(async () => expect((await stored()).dailyGoal).toBe(60));
   });
 });

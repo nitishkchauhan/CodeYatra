@@ -6,7 +6,7 @@ const ORDER = ['class Order {', '  constructor(dish, price) {', '    this.dish =
 
 export const JS_M10: Lesson[] = [
   lesson('j-class-1', 'Classes', 6, [
-    chat(['Every order at Riya’s Café has the same shape: a dish, a price, a number of cups, and a way to add one more and work out the total.', 'A class is a blueprint. Each order made from it is an object with its own values.']),
+    chat(['Every order at Rosa’s Café has the same shape: a dish, a price, a number of cups, and a way to add one more and work out the total.', 'A class is a blueprint. Each order made from it is an object with its own values.']),
     explore('Reading a class', ORDER, [
       [1, 'class Order: the blueprint’s name, with a capital letter by habit.'],
       [2, 'constructor runs once for every new Order. dish and price come from new Order("Tea", 40).'],

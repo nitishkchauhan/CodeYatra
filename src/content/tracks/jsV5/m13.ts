@@ -1,5 +1,5 @@
 // JavaScript track · Module 13 · Browser, Data and Async, and the final challenge. Lesson 13.4 keeps the old async
-// module id (j-async-1); the final challenge keeps the project id (j-project): Sharma Classes, now working.
+// module id (j-async-1); the final challenge keeps the project id (j-project): Sutton Classes, now working.
 // Loading data uses the practice server inside the app (offline, the same answer every time; see lib/web/page.ts).
 import type { Lesson, WebStep } from '../../types';
 import { UI } from './cafe';
@@ -7,9 +7,9 @@ import { bugTask, challenge, chat, check, explore, lesson, matchUp, mcq, pairs, 
 
 const LOAD_MENU = 'async function loadMenu(url) {\n  const out = document.querySelector("#out");\n  out.textContent = "Loading…";\n  try {\n    const res = await fetch(url);\n    if (!res.ok) throw new Error("Server said " + res.status);\n    const menu = await res.json();\n    if (!menu.length) {\n      out.textContent = "No dishes today";\n      console.log("Empty menu");\n      return;\n    }\n    out.textContent = menu.map((d) => d.name + " ₹" + d.price).join(" · ");\n    console.log("Loaded " + menu.length + " dishes");\n  } catch (err) {\n    out.textContent = "Couldn’t load the menu. " + err.message;\n    console.log("Error: " + err.message);\n  }\n}\ndocument.querySelector("#ok").addEventListener("click", () => loadMenu("/api/menu"));\ndocument.querySelector("#empty").addEventListener("click", () => loadMenu("/api/menu/empty"));\ndocument.querySelector("#broken").addEventListener("click", () => loadMenu("/api/menu/broken"));';
 
-// ── The final project: Sharma Classes (built in HTML, styled in CSS), now made to work ─────────────
-const SHARMA = `<header class="top">
-  <strong>Sharma Classes</strong>
+// ── The final project: Sutton Classes (built in HTML, styled in CSS), now made to work ─────────────
+const SUTTON = `<header class="top">
+  <strong>Sutton Classes</strong>
   <button id="theme">Dark mode</button>
 </header>
 <main class="page">
@@ -34,7 +34,7 @@ const SHARMA = `<header class="top">
   </form>
   <p id="msg"></p>
 </main>`;
-const SHARMA_CSS = `:root { --blue: #1E3A8A; --gold: #F59E0B; --text: #1F2937; --bg: #FFFFFF; }
+const SUTTON_CSS = `:root { --blue: #1E3A8A; --gold: #F59E0B; --text: #1F2937; --bg: #FFFFFF; }
 body { margin: 0; font-family: system-ui, sans-serif; color: var(--text); background: var(--bg); }
 body.dark { --text: #F9FAFB; --bg: #0F172A; }
 .top { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--blue); color: white; }
@@ -98,8 +98,8 @@ const project = (n: number, title: string, instructions: string, starterJs: stri
   kicker: `FINAL PROJECT · STEP ${n} OF 4`,
   title,
   instructions,
-  starter: { html: SHARMA, css: SHARMA_CSS, js: starterJs },
-  solution: { html: SHARMA, css: SHARMA_CSS, js: solutionJs },
+  starter: { html: SUTTON, css: SUTTON_CSS, js: starterJs },
+  solution: { html: SUTTON, css: SUTTON_CSS, js: solutionJs },
   checks,
   hint,
 });
@@ -126,7 +126,7 @@ export const JS_M13: Lesson[] = [
   ]),
 
   lesson('js-13-2', 'Saving on the phone', 5, [
-    chat(['Riya’s customers build a cart, close the app, come back later… and the cart is gone.', 'localStorage keeps small bits of data on the phone, even after the page is closed.']),
+    chat(['Rosa’s customers build a cart, close the app, come back later… and the cart is gone.', 'localStorage keeps small bits of data on the phone, even after the page is closed.']),
     tapPage('A cart that remembers', 'Add a couple of teas. The count is saved each time.', { html: '<button id="add">Add tea</button>\n<button id="clear">Clear</button>\n<p id="cart"></p>', css: UI, js: 'let teas = Number(localStorage.getItem("teas") ?? 0);\nconst show = () => (document.querySelector("#cart").textContent = "Teas in cart: " + teas);\nshow();\ndocument.querySelector("#add").addEventListener("click", () => {\n  teas++;\n  localStorage.setItem("teas", String(teas));\n  show();\n  console.log("Saved: " + teas);\n});\ndocument.querySelector("#clear").addEventListener("click", () => {\n  teas = 0;\n  localStorage.removeItem("teas");\n  show();\n  console.log("Cleared");\n});' }, 'Saved: 2', [{ click: '#add' }, { click: '#add' }], 'On a real website the count is still there after a reload. (This lesson preview may forget it, as it is a fresh page each time.)'),
     reveal('Storage on the phone', [
       ['localStorage', 'Stays until it’s cleared. setItem, getItem, removeItem.'],
@@ -214,7 +214,7 @@ export const JS_M13: Lesson[] = [
   ]),
 
   lesson('js-13-6', 'fetch', 6, [
-    chat(['Riya’s menu lives on her café’s server, so it can change without updating the app.', 'fetch asks a server for data. Real servers are slow sometimes, empty sometimes and broken sometimes, so good code handles all three.']),
+    chat(['Rosa’s menu lives on her café’s server, so it can change without updating the app.', 'fetch asks a server for data. Real servers are slow sometimes, empty sometimes and broken sometimes, so good code handles all three.']),
     tapPage('Load today’s menu', 'Try all three: a working server, an empty menu and a broken server.', { html: '<button id="ok">Load menu</button>\n<button id="empty">Empty day</button>\n<button id="broken">Broken server</button>\n<p id="out" class="muted">Tap a button</p>', css: UI, js: LOAD_MENU }, 'Loaded 4 dishes', [{ click: '#ok' }], 'This is the practice server inside the app: it works offline and gives the same answers every time.'),
     explore('The fetch recipe', ['const res = await fetch(url);', 'if (!res.ok) throw new Error("Server said " + res.status);', 'const menu = await res.json();', '} catch (err) {', '  out.textContent = "Couldn’t load the menu.";'], [
       [1, 'Ask the server and wait for its reply.'],
@@ -264,7 +264,7 @@ export const JS_M13: Lesson[] = [
       ['Web Workers', 'Run heavy work in the background so the page stays smooth.', '⚙️'],
       ['Old tools', 'You may see jQuery ($("#menu")) and AJAX (XMLHttpRequest) in older code. fetch and the DOM do the same today.', '🕰'],
     ]),
-    tapPage('Draw on a canvas', 'Tap Draw to paint Riya’s sales chart.', { html: '<canvas id="c" width="260" height="120"></canvas>\n<button id="draw">Draw</button>', css: `${UI} canvas { border: 1px solid #E5D3B3; border-radius: 8px; display: block; margin-bottom: 8px; }`, js: 'document.querySelector("#draw").addEventListener("click", () => {\n  const ctx = document.querySelector("#c").getContext?.("2d");\n  const sales = [30, 55, 40, 80];\n  if (ctx) {\n    sales.forEach((s, i) => {\n      ctx.fillStyle = "#C2410C";\n      ctx.fillRect(20 + i * 60, 110 - s, 40, s);\n    });\n  }\n  console.log("Drew " + sales.length + " bars");\n});' }, 'Drew 4 bars', [{ click: '#draw' }], 'fillRect(x, y, width, height) paints a rectangle. Charts are rectangles worked out from data.'),
+    tapPage('Draw on a canvas', 'Tap Draw to paint Rosa’s sales chart.', { html: '<canvas id="c" width="260" height="120"></canvas>\n<button id="draw">Draw</button>', css: `${UI} canvas { border: 1px solid #E5D3B3; border-radius: 8px; display: block; margin-bottom: 8px; }`, js: 'document.querySelector("#draw").addEventListener("click", () => {\n  const ctx = document.querySelector("#c").getContext?.("2d");\n  const sales = [30, 55, 40, 80];\n  if (ctx) {\n    sales.forEach((s, i) => {\n      ctx.fillStyle = "#C2410C";\n      ctx.fillRect(20 + i * 60, 110 - s, 40, s);\n    });\n  }\n  console.log("Drew " + sales.length + " bars");\n});' }, 'Drew 4 bars', [{ click: '#draw' }], 'fillRect(x, y, width, height) paints a rectangle. Charts are rectangles worked out from data.'),
     truth([
       ['A site can get your location without asking', false, 'The browser always asks first.'],
       ['Canvas draws with JavaScript', true, 'Shapes, charts and games.'],
@@ -279,7 +279,7 @@ export const JS_M13: Lesson[] = [
     ]),
   ]),
 
-  challenge('j-project', 'Final: Make Sharma Classes work', { icon: '🌐', name: 'Web Wizard' }, ['Make a real page respond with events and the DOM', 'Load data from a server with fetch, async and await', 'Save choices on the phone and check forms'], [
+  challenge('j-project', 'Final: Make Sutton Classes work', { icon: '🌐', name: 'Web Wizard' }, ['Make a real page respond with events and the DOM', 'Load data from a server with fetch, async and await', 'Save choices on the phone and check forms'], [
     mcq(1, 'What does localStorage keep?', ['Text, even after the page is closed', 'Only numbers', 'Data for one minute', 'Passwords, safely'], 'Text only, until cleared. Never passwords.'),
     mcq(2, 'What does JSON.parse do?', ['Turns JSON text into an object', 'Turns an object into text', 'Sends data to a server', 'Saves to the phone'], 'parse: text → object.'),
     mcq(3, 'The server replies 404. What should your code check?', ['res.ok', 'res.text', 'typeof res', 'Nothing; fetch throws'], 'fetch only throws when there is no reply at all.', { mono: true }),
@@ -295,7 +295,7 @@ export const JS_M13: Lesson[] = [
     pickCode('Which loads and reads the menu?', ['const menu = await (await fetch("/api/menu")).json();', 'const menu = fetch("/api/menu").json;', 'const menu = JSON.parse(fetch("/api/menu"));', 'const menu = await fetch.json("/api/menu");'], 'Await the reply, then await the JSON.'),
     bugTask(['function load() {', '  const res = await fetch("/api/menu");', '  const menu = res.json();', '  localStorage.setItem("menu", menu);', '}'], [[1, 'function load()', 'async function load()'], [3, 'res.json()', 'await res.json()'], [4, 'menu);', 'JSON.stringify(menu));']], 'await needs async, json() is a Promise too, and storage keeps text.'),
     predictTask(['const saved = JSON.stringify({ theme: "dark", visits: 2 });', 'const back = JSON.parse(saved);', 'back.visits++;', 'console.log(typeof saved, back.visits);'], 'What does it print?', ['string 3', 'object 3', 'string 2', 'object 2'], 'stringify makes text; parse makes a new object whose visits goes up to 3.'),
-    project(1, 'Step 1 · Filter the courses', 'Mr Sharma (Jaipur): “Parents want to see only their child’s class.” Make each filter button show only the matching courses (All shows everything). Use the data-cls attribute and toggle the hidden class.', '// Sharma Classes, made to work\n', J1, [
+    project(1, 'Step 1 · Filter the courses', 'Mr Sutton (Jersey): “Parents want to see only their child’s class.” Make each filter button show only the matching courses (All shows everything). Use the data-cls attribute and toggle the hidden class.', '// Sutton Classes, made to work\n', J1, [
       { label: 'A click listener on each filter button', file: 'js', pattern: /\.filters button[\s\S]*addEventListener\("click"/ },
       { label: 'Reads the class from data-cls', file: 'js', pattern: /dataset\.cls/ },
       { label: 'Hides courses with the hidden class', file: 'js', pattern: /classList\.toggle\("hidden"/ },

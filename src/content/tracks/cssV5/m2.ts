@@ -8,7 +8,7 @@ const LINKS = '<p><a href="https://maps.example.com">Find us</a> · <a href="men
 
 export const CSS_M2: Lesson[] = [
   lesson('c-sel-1', 'Element, class and id', 5, [
-    chat(['A selector is how you point at things on a page.', 'Riya wants every price green, only the special card highlighted, and one heading bigger than the rest. Each needs a different kind of pointing.']),
+    chat(['A selector is how you point at things on a page.', 'Rosa wants every price green, only the special card highlighted, and one heading bigger than the rest. Each needs a different kind of pointing.']),
     explore('Four ways to point', ['h2 { color: #7C2D12; }', '.price { color: green; }', '#special { border: 3px solid gold; }', '* { box-sizing: border-box; }'], [
       [1, 'A type selector: every <h2> on the page.', 'h2'],
       [2, 'A class selector starts with a dot: every element with class="price".', '.price'],

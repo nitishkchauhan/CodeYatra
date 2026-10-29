@@ -14,7 +14,7 @@ Agreed with the owner one part at a time, starting 28 Oct 2026. This is the plan
 
 **Kept as decided:** the name stays **CodeYatra** (Forge was considered and dropped on 28 Oct 2026: the name is crowded in tech, and CodeYatra fits Indian learners). The logo stays “cy, leaving footprints” (16 Oct 2026).
 
-**Language rule (28 Oct 2026):** no Hindi words anywhere in the app: plain, simple English only. No Hindi greetings or phrases (“Namaste”, “chalo”, “arre”…), no Devanagari text, no Hindi language switch. Exceptions still to confirm with the owner: the brand names CodeYatra and Yatri, people’s and place names, and Indian dish names in lesson stories.
+**Language rule (28 Oct 2026):** no Hindi words anywhere in the app: plain, simple English only. No Hindi greetings or phrases (“Namaste”, “chalo”, “arre”…), no Devanagari text, no Hindi language switch. Decided 29 Oct 2026: Indian dish names are out too, and example people, places and trains use neutral, professional names (Rosa’s Café, Sutton Classes, Paris, Dublin…). Kept: the brand names CodeYatra and Yatri, real resources (YouTube channels), ₹ and Indian phone and number formats.
 
 ---
 

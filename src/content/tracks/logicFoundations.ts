@@ -525,7 +525,7 @@ export const LOGIC_FOUNDATIONS: Lesson[] = [
       story: 'Yatri does “move, pick” so often that it deserves its own block. Functions let you name a group of steps and use it whenever you like, just like move() and pick() themselves.',
       goal: 'Define functions with parameters and return values.',
       lang: 'python',
-      code: ['def greet(name):', '    print("Hello,", name)', '', 'greet("Asha")'],
+      code: ['def greet(name):', '    print("Hello,", name)', '', 'greet("Ava")'],
     }),
     read({
       kicker: LEARN(1),
@@ -537,9 +537,9 @@ export const LOGIC_FOUNDATIONS: Lesson[] = [
     read({
       kicker: LEARN(2),
       title: 'Parameters',
-      body: 'Parameters are inputs, written in the brackets. greet(name) can greet anyone: greet("Asha"), greet("Ravi"). A function can take several parameters, separated by commas.',
+      body: 'Parameters are inputs, written in the brackets. greet(name) can greet anyone: greet("Ava"), greet("Reed"). A function can take several parameters, separated by commas.',
       lang: 'python',
-      code: ['def greet(name, times):', '    for i in range(times):', '        print("Hello", name)', '', 'greet("Ravi", 2)'],
+      code: ['def greet(name, times):', '    for i in range(times):', '        print("Hello", name)', '', 'greet("Reed", 2)'],
     }),
     read({
       kicker: LEARN(3),

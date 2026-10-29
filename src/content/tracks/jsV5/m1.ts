@@ -12,7 +12,7 @@ document.querySelector("#add").addEventListener("click", () => {
 
 export const JS_M1: Lesson[] = [
   lesson('js-1-1', 'What is JavaScript?', 4, [
-    chat(['HTML builds Riya’s order page. CSS makes it look good. But tap “Add tea” and… nothing happens.', 'JavaScript is the part that does things: it reacts, counts, checks and changes the page while you use it.']),
+    chat(['HTML builds Rosa’s order page. CSS makes it look good. But tap “Add tea” and… nothing happens.', 'JavaScript is the part that does things: it reacts, counts, checks and changes the page while you use it.']),
     tapPage('A button that works', 'Tap “Add tea” three times.', { html: '<p>Teas ordered: <b id="n">0</b></p>\n<button id="add">Add tea</button>', css: UI, js: COUNTER_JS }, 'Teas: 3', [{ click: '#add' }, { click: '#add' }, { click: '#add' }], 'Six lines of JavaScript: remember a number, listen for taps, add one, show it.'),
     reveal('Three languages, three jobs', [
       ['HTML', 'The content: a heading, a price, a button.', '🧱'],
@@ -38,14 +38,14 @@ export const JS_M1: Lesson[] = [
       ['In its own file', '<script src="app.js"></script>: one file shared by many pages.', '🗂'],
       ['defer', '<script src="app.js" defer> in the <head>: downloads early, runs once the page is built.', '⏱'],
     ]),
-    explore('A page with a script', ['<body>', '  <h1 id="title">Riya’s Café</h1>', '  <script>', '    document.querySelector("#title").textContent = "Riya’s Café is open!";', '  </script>', '</body>'], [
-      [2, 'The heading is written as “Riya’s Café”.', 'h1'],
+    explore('A page with a script', ['<body>', '  <h1 id="title">Rosa’s Café</h1>', '  <script>', '    document.querySelector("#title").textContent = "Rosa’s Café is open!";', '  </script>', '</body>'], [
+      [2, 'The heading is written as “Rosa’s Café”.', 'h1'],
       [3, 'The browser reads top to bottom. When it reaches the script, it runs it.'],
       [4, 'The script finds the heading and changes its text. It works because the heading is above it, already built.', 'h1'],
-    ], { page: { html: '<h1 id="title">Riya’s Café</h1>', js: 'document.querySelector("#title").textContent = "Riya’s Café is open!";' }, minTaps: 3 }),
+    ], { page: { html: '<h1 id="title">Rosa’s Café</h1>', js: 'document.querySelector("#title").textContent = "Rosa’s Café is open!";' }, minTaps: 3 }),
     toggle('Script after or before?', [
-      ['After the heading', ['<h1 id="title">Riya’s Café</h1>', '<script> …textContent = "Open!" </script>'], 'The heading exists, so the script finds it and changes it.', { html: '<h1 id="title">Riya’s Café</h1><script>document.querySelector("#title").textContent = "Open!";</script>' }],
-      ['Before the heading', ['<script> …textContent = "Open!" </script>', '<h1 id="title">Riya’s Café</h1>'], 'The script runs before the heading exists, finds nothing and stops with an error. The heading never changes. That’s why scripts go at the end, or use defer.', { html: '<script>document.querySelector("#title").textContent = "Open!";</script><h1 id="title">Riya’s Café</h1>' }],
+      ['After the heading', ['<h1 id="title">Rosa’s Café</h1>', '<script> …textContent = "Open!" </script>'], 'The heading exists, so the script finds it and changes it.', { html: '<h1 id="title">Rosa’s Café</h1><script>document.querySelector("#title").textContent = "Open!";</script>' }],
+      ['Before the heading', ['<script> …textContent = "Open!" </script>', '<h1 id="title">Rosa’s Café</h1>'], 'The script runs before the heading exists, finds nothing and stops with an error. The heading never changes. That’s why scripts go at the end, or use defer.', { html: '<script>document.querySelector("#title").textContent = "Open!";</script><h1 id="title">Rosa’s Café</h1>' }],
     ]),
     matchUp('Which is which?', [['<script> … </script>', 'Code inside the page'], ['<script src="app.js">', 'Code in its own file'], ['defer', 'Run once the page is built']], 'Inline scripts, external files, and defer to wait for the page.'),
     tapbug('The script never loads', ['<script href="app.js"></script>'], [[1, 'href', 'src']], 'Scripts load with src, like images. href is for links and stylesheets.'),
@@ -57,7 +57,7 @@ export const JS_M1: Lesson[] = [
   ]),
 
   lesson('js-1-3', 'Showing output', 5, [
-    run('console.log', 'Pick what to log. The console shows the result.', ['console.log({{v}});'], ['"Hello from Riya’s Café"', '2 + 3', '"2" + "3"', '40 * 3'], { caption: 'Text in quotes prints as it is. Maths without quotes is worked out first. "2" + "3" joins two pieces of text.' }),
+    run('console.log', 'Pick what to log. The console shows the result.', ['console.log({{v}});'], ['"Hello from Rosa’s Café"', '2 + 3', '"2" + "3"', '40 * 3'], { caption: 'Text in quotes prints as it is. Maths without quotes is worked out first. "2" + "3" joins two pieces of text.' }),
     toggle('Three ways to show something', [
       ['console.log', ['console.log("Order ready");'], 'For developers: it shows in the console, not on the page. Your best friend for finding bugs.', { html: '<p>The page doesn’t change.</p>', js: 'console.log("Order ready");' }],
       ['textContent', ['document.querySelector("#msg")', '  .textContent = "Order ready";'], 'Changes the text on the page itself, for visitors to see.', { html: '<p id="msg">Waiting…</p>', js: 'document.querySelector("#msg").textContent = "Order ready";' }],
@@ -74,7 +74,7 @@ export const JS_M1: Lesson[] = [
   ]),
 
   lesson('js-1-4', 'Statements and syntax', 5, [
-    explore('A tiny program', ['// Riya’s order counter', 'let teas = 2;', 'teas = teas + 1;', 'console.log("Teas:", teas);'], [
+    explore('A tiny program', ['// Rosa’s order counter', 'let teas = 2;', 'teas = teas + 1;', 'console.log("Teas:", teas);'], [
       [1, 'A comment: a note for people. The computer skips it.'],
       [2, 'A statement: one instruction. This one makes a box called teas holding 2. It ends with a semicolon.'],
       [3, 'Take what is in teas, add 1, and put it back.'],

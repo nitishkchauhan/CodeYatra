@@ -35,7 +35,7 @@ export const HTML_M2: Lesson[] = [
       [2, 'A second <p> starts a new block of text.', 'p:last-of-type'],
     ], { minTaps: 2 }),
     beforeAfter('Extra spaces disappear', [['<p>Hello      world,', '      how   are   you?</p>'], 'This is how it looks in the code: lots of spaces and a new line.'], [['<p>Hello      world,', '      how   are   you?</p>'], 'The browser squeezes every run of spaces and new lines into one space.'], undefined, ['The code', 'The page']),
-    place('Write an address on three lines', 'Tap a line break into each gap.', [['<p>Yatri House', { gap: 0 }, 'Coding Street', { gap: 1 }, 'Punjab</p>']], ['<br>', '<br>', '</br>', '<hr>'], ['<br>', '<br>'], '<br> breaks the line without starting a new paragraph. It has no closing tag.'),
+    place('Write an address on three lines', 'Tap a line break into each gap.', [['<p>Yatri House', { gap: 0 }, 'Coding Street', { gap: 1 }, 'Dublin</p>']], ['<br>', '<br>', '</br>', '<hr>'], ['<br>', '<br>'], '<br> breaks the line without starting a new paragraph. It has no closing tag.'),
     toggle('A line between topics', [
       ['Without <hr>', ['<h2>Breakfast</h2>', '<p>Toast and tea</p>', '<h2>Lunch</h2>'], 'The two sections run together.'],
       ['With <hr>', ['<h2>Breakfast</h2>', '<p>Toast and tea</p>', '<hr>', '<h2>Lunch</h2>'], '<hr> draws a line to mark a change of topic. It has no closing tag.'],

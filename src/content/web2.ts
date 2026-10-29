@@ -9,7 +9,7 @@ export const linkAndImage: CodeStep = {
   file: 'index.html',
   lines: [
     ['<', { gap: 0 }, ' href="timetable.html">See timetable</a>'],
-    ['<', { gap: 1 }, ' src="train.png" alt="Rajdhani Express">'],
+    ['<', { gap: 1 }, ' src="train.png" alt="Royal">'],
   ],
   tokens: ['a', 'img', 'p', 'link'],
   solution: ['a', 'img'],

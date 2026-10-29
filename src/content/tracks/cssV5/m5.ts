@@ -61,7 +61,7 @@ export const CSS_M5: Lesson[] = [
   ]),
 
   lesson('css-5-3', 'Width, height and box-sizing', 6, [
-    chat(['Riya set her card to width: 200px, added padding and a border… and the card got wider than 200px.', 'That surprise has a one-line fix that almost every site uses.']),
+    chat(['Rosa set her card to width: 200px, added padding and a border… and the card got wider than 200px.', 'That surprise has a one-line fix that almost every site uses.']),
     toggle('content-box or border-box?', [
       ['content-box', ['.card {', '  width: 200px;', '  padding: 20px;', '  border: 5px solid;', '}'], 'The default: width is only the content. Real width = 200 + 40 + 10 = 250px.', { html: '<div class="ruler">200px</div><div class="card">Card</div>', css: `${BASE} .ruler { width: 200px; background: #4B3FD8; color: #fff; font-size: 12px; text-align: center; margin-bottom: 6px; } .card { width: 200px; padding: 20px; border: 5px solid #C2410C; box-sizing: content-box; }` }],
       ['border-box', ['.card {', '  box-sizing: border-box;', '  width: 200px;', '  padding: 20px;', '  border: 5px solid;', '}'], 'width now includes padding and border. The card is exactly 200px.', { html: '<div class="ruler">200px</div><div class="card">Card</div>', css: `${BASE} .ruler { width: 200px; background: #4B3FD8; color: #fff; font-size: 12px; text-align: center; margin-bottom: 6px; } .card { width: 200px; padding: 20px; border: 5px solid #C2410C; box-sizing: border-box; }` }],
@@ -70,7 +70,7 @@ export const CSS_M5: Lesson[] = [
       [1, 'Every element (and its ::before and ::after parts, Module 10).'],
       [2, 'Widths include padding and border. Most stylesheets start with this.'],
     ], { page: { html: '<p>One rule, no more width surprises.</p>', css: BASE }, minTaps: 2 }),
-    live('Never too wide', 'max-width sets an upper limit. Tap a value.', ['.card { max-width: {{v}}; }'], ['none', '300px', '60%', '150px'], { html: '<div class="card">A long paragraph about Riya’s café, her fresh lemon tea and the toast she bakes to order every morning.</div>', css: `${BASE} .card { background: #FFF1D6; padding: 10px; border-radius: 10px; }`, caption: 'min-width and min-height set a lower limit the same way. max-width is great for readable line lengths.' }),
+    live('Never too wide', 'max-width sets an upper limit. Tap a value.', ['.card { max-width: {{v}}; }'], ['none', '300px', '60%', '150px'], { html: '<div class="card">A long paragraph about Rosa’s café, her fresh lemon tea and the toast she bakes to order every morning.</div>', css: `${BASE} .card { background: #FFF1D6; padding: 10px; border-radius: 10px; }`, caption: 'min-width and min-height set a lower limit the same way. max-width is great for readable line lengths.' }),
     check('With box-sizing: border-box, width 300px, padding 20px. How wide is the box?', ['300px', '340px', '320px', '260px'], 'border-box counts padding and border inside the width.', 'What does border-box include?'),
     tapbug('The card is wider than the screen', ['.card {', '  width: 100%;', '  padding: 20px;', '  box-sizing: content-box;', '}'], [[4, 'content-box', 'border-box']], 'With content-box, 100% plus 40px of padding is wider than the parent. border-box keeps it inside.'),
     recap([

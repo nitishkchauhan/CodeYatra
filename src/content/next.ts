@@ -76,7 +76,7 @@ export const routeHandler = fill({
   file: 'app/api/trains/route.js',
   lines: [
     ['export async function ', { gap: 0 }, '(request) {'],
-    ['  const trains = [{ id: 12951, name: "Rajdhani" }];'],
+    ['  const trains = [{ id: 12951, name: "Royal" }];'],
     ['  return Response.', { gap: 1 }, '(trains);'],
     ['}'],
   ],
@@ -85,5 +85,5 @@ export const routeHandler = fill({
     { value: 'GET', check: 'The exported name is the HTTP method' },
     { value: 'json', check: 'Response.json sends JSON' },
   ],
-  output: ['GET /api/trains → 200', '[{"id":12951,"name":"Rajdhani"}]'],
+  output: ['GET /api/trains → 200', '[{"id":12951,"name":"Royal"}]'],
 });

@@ -8,12 +8,12 @@ import { haptic } from '@/lib/haptics';
 import { colors, fonts } from '@/theme';
 
 const STAGES = [
-  { clause: 'FROM trains', rows: ['Rajdhani · Delhi · 2900', 'Shatabdi · Bhopal · 1200', 'Vande Bharat · Varanasi · 1750', 'Karnataka Express · Delhi · 2100', 'Howrah Rajdhani · Delhi · 3100', 'Coimbatore Express · Coimbatore · 850'], note: 'Start with every row of the table: 6 trains.' },
-  { clause: 'WHERE fare > 1000', rows: ['Rajdhani · Delhi · 2900', 'Shatabdi · Bhopal · 1200', 'Vande Bharat · Varanasi · 1750', 'Karnataka Express · Delhi · 2100', 'Howrah Rajdhani · Delhi · 3100'], note: 'Rows that fail the condition are dropped. Coimbatore Express (850) is gone.' },
-  { clause: 'GROUP BY to_city', rows: ['Delhi: 3 trains', 'Bhopal: 1 train', 'Varanasi: 1 train'], note: 'Rows with the same destination are put together: 3 groups.' },
-  { clause: 'HAVING COUNT(*) > 1', rows: ['Delhi: 3 trains'], note: 'Groups that fail the condition are dropped. Only Delhi has more than one.' },
-  { clause: 'SELECT to_city, COUNT(*)', rows: ['Delhi | 3'], note: 'Now the columns are picked and the counts worked out.' },
-  { clause: 'ORDER BY … LIMIT …', rows: ['Delhi | 3'], note: 'Finally the result is sorted and cut to size.' },
+  { clause: 'FROM trains', rows: ['Royal · Dublin · 2900', 'Silver Arrow · Boston · 1200', 'Valley Express · Vienna · 1750', 'Keystone Express · Dublin · 2100', 'Harbour Royal · Dublin · 3100', 'Coastal Express · Copenhagen · 850'], note: 'Start with every row of the table: 6 trains.' },
+  { clause: 'WHERE fare > 1000', rows: ['Royal · Dublin · 2900', 'Silver Arrow · Boston · 1200', 'Valley Express · Vienna · 1750', 'Keystone Express · Dublin · 2100', 'Harbour Royal · Dublin · 3100'], note: 'Rows that fail the condition are dropped. Coastal Express (850) is gone.' },
+  { clause: 'GROUP BY to_city', rows: ['Dublin: 3 trains', 'Boston: 1 train', 'Vienna: 1 train'], note: 'Rows with the same destination are put together: 3 groups.' },
+  { clause: 'HAVING COUNT(*) > 1', rows: ['Dublin: 3 trains'], note: 'Groups that fail the condition are dropped. Only Dublin has more than one.' },
+  { clause: 'SELECT to_city, COUNT(*)', rows: ['Dublin | 3'], note: 'Now the columns are picked and the counts worked out.' },
+  { clause: 'ORDER BY … LIMIT …', rows: ['Dublin | 3'], note: 'Finally the result is sorted and cut to size.' },
 ];
 
 /** Steps a query through the order the database really runs it in, showing the rows at each stage. */
@@ -68,19 +68,19 @@ export function SqlOrder() {
 }
 
 const BOOKINGS = [
-  { id: 1, train: 12951, who: 'Asha', seats: 2 },
-  { id: 2, train: 22436, who: 'Ravi', seats: 1 },
-  { id: 3, train: 12951, who: 'Kabir', seats: 3 },
-  { id: 4, train: 12627, who: 'Meera', seats: 1 },
-  { id: 5, train: 22436, who: 'Asha', seats: 2 },
+  { id: 1, train: 12951, who: 'Ava', seats: 2 },
+  { id: 2, train: 22436, who: 'Reed', seats: 1 },
+  { id: 3, train: 12951, who: 'Kaden', seats: 3 },
+  { id: 4, train: 12627, who: 'Megan', seats: 1 },
+  { id: 5, train: 22436, who: 'Ava', seats: 2 },
 ];
 const TRAINS = [
-  { id: 12951, name: 'Rajdhani' },
-  { id: 12002, name: 'Shatabdi' },
-  { id: 22436, name: 'Vande Bharat' },
-  { id: 12627, name: 'Karnataka Express' },
-  { id: 12301, name: 'Howrah Rajdhani' },
-  { id: 11013, name: 'Coimbatore Express' },
+  { id: 12951, name: 'Royal' },
+  { id: 12002, name: 'Silver Arrow' },
+  { id: 22436, name: 'Valley Express' },
+  { id: 12627, name: 'Keystone Express' },
+  { id: 12301, name: 'Harbour Royal' },
+  { id: 11013, name: 'Coastal Express' },
 ];
 
 /** Tap a booking to see which train row it joins to, through bookings.train_id = trains.id. */
@@ -129,7 +129,7 @@ export function JoinMatch() {
       <T variant="bodySm" color={colors.inkBody} accessibilityLiveRegion="polite">
         {b
           ? `train_id ${b.train} = trains.id ${b.train}, so this booking joins to ${TRAINS.find((t) => t.id === b.train)!.name}. Result row: ${b.who} | ${TRAINS.find((t) => t.id === b.train)!.name} | ${b.seats}`
-          : 'Tap a booking. Shatabdi, Howrah Rajdhani and Coimbatore Express match no booking, so an inner JOIN leaves them out.'}
+          : 'Tap a booking. Silver Arrow, Harbour Royal and Coastal Express match no booking, so an inner JOIN leaves them out.'}
       </T>
     </View>
   );

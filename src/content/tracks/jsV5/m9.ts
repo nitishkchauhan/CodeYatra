@@ -37,8 +37,8 @@ export const JS_M9: Lesson[] = [
       [9, 'add() was called twice. What will it print?', ['2', '0', '1'], 'this is cart, so each call adds one to cart.items.', { out: true }],
     ]),
     toggleRun('Arrows and this', [
-      ['Method', ['const shop = {', '  title: "Riya’s Café",', '  sign() { return this.title; },', '};', 'console.log(`Sign: ${shop.sign()}`);'], 'A normal method: this is shop.', ['Sign: Riya’s Café']],
-      ['Arrow', ['const shop = {', '  title: "Riya’s Café",', '  sign: () => this.title,', '};', 'console.log(`Sign: ${shop.sign()}`);'], 'An arrow function has no this of its own, so this isn’t the shop and the title is lost. Use normal methods in objects.', ['Sign: undefined']],
+      ['Method', ['const shop = {', '  title: "Rosa’s Café",', '  sign() { return this.title; },', '};', 'console.log(`Sign: ${shop.sign()}`);'], 'A normal method: this is shop.', ['Sign: Rosa’s Café']],
+      ['Arrow', ['const shop = {', '  title: "Rosa’s Café",', '  sign: () => this.title,', '};', 'console.log(`Sign: ${shop.sign()}`);'], 'An arrow function has no this of its own, so this isn’t the shop and the title is lost. Use normal methods in objects.', ['Sign: undefined']],
     ]),
     tapbug('NaN instead of the total', ['const order = {', '  price: 60, cups: 2,', '  total() { return price * cups; },', '};'], [[3, 'price * cups', 'this.price * this.cups']], 'Inside a method, reach the object’s own keys with this.'),
     recap([
@@ -66,7 +66,7 @@ export const JS_M9: Lesson[] = [
   ]),
 
   lesson('js-9-4', 'Sets', 4, [
-    chat(['Riya wants to know how many different tables ordered today, not how many orders.', 'A Set keeps each value only once.']),
+    chat(['Rosa wants to know how many different tables ordered today, not how many orders.', 'A Set keeps each value only once.']),
     run('Unique tables', 'Pick what to print.', ['const tables = [4, 2, 4, 7, 2, 4];', 'const unique = new Set(tables);', 'console.log({{v}});'], ['unique.size', 'unique.has(7)', 'unique.has(9)', '[...unique]', 'tables.length'], { caption: 'Spread a Set into an array to see it: [...unique].' }),
     reveal('Set methods', [
       ['new Set([…])', 'Make one from a list; duplicates vanish.'],

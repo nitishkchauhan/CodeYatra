@@ -6,7 +6,7 @@ export const stationList = fill({
   instructions: 'Make a bulleted list of the stations on the route: the list wrapper, then one item per stop.',
   lang: 'html',
   file: 'route.html',
-  lines: [['<h1>Delhi → Agra</h1>'], ['<', { gap: 0 }, '>'], ['  <', { gap: 1 }, '>New Delhi</li>'], ['  <li>Mathura</li>'], ['  <li>Agra Cantt</li>'], ['</ul>']],
+  lines: [['<h1>Dublin → Athens</h1>'], ['<', { gap: 0 }, '>'], ['  <', { gap: 1 }, '>New Dublin</li>'], ['  <li>Milan</li>'], ['  <li>Athens Cantt</li>'], ['</ul>']],
   tokens: ['ul', 'li', 'ol', 'p'],
   answers: [
     { value: 'ul', check: 'The list is wrapped in <ul>' },
@@ -15,10 +15,10 @@ export const stationList = fill({
   preview: ([wrap, item]) => ({
     kind: 'html',
     nodes: [
-      { tag: 'h1', text: 'Delhi → Agra' },
-      { tag: wrap === 'ul' && item === 'li' ? 'li' : 'p', text: 'New Delhi' },
-      { tag: wrap === 'ul' ? 'li' : 'p', text: 'Mathura' },
-      { tag: wrap === 'ul' ? 'li' : 'p', text: 'Agra Cantt' },
+      { tag: 'h1', text: 'Dublin → Athens' },
+      { tag: wrap === 'ul' && item === 'li' ? 'li' : 'p', text: 'New Dublin' },
+      { tag: wrap === 'ul' ? 'li' : 'p', text: 'Milan' },
+      { tag: wrap === 'ul' ? 'li' : 'p', text: 'Athens Cantt' },
     ],
   }),
 });

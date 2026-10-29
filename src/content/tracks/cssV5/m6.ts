@@ -7,7 +7,7 @@ const ITEMS = '<p>Our menu: <span class="item">Lemon Tea</span> <span class="ite
 const ITEM_CSS = `${BASE} .item { background: #FFE08A; padding: 6px 10px; margin: 4px; border: 2px solid #C2410C; width: 110px; }`;
 const STICKER = '<div class="card"><span class="new">NEW</span><h2>Cold Coffee</h2><p class="price">₹70</p></div>';
 const STICKER_CSS = `${BASE} .card { background: #FFF1D6; padding: 14px; border-radius: 12px; margin: 26px 10px; } .card h2 { margin: 0; font-size: 18px; } .price { margin: 4px 0 0; color: #15803D; font-weight: bold; } .new { background: #C2410C; color: white; font-size: 12px; font-weight: bold; padding: 3px 8px; border-radius: 10px; }`;
-const LONG = '<header class="top">Riya’s Café · Menu</header><p>Lemon Tea ₹40</p><p>Ginger Tea ₹45</p><p>Coffee ₹60</p><p>Cold Coffee ₹70</p><p>Cheese Toast ₹80</p><p>Veg Sandwich ₹90</p><p>Banana Cake ₹50</p><p>Cookies ₹20</p><p>Hot Chocolate ₹75</p>';
+const LONG = '<header class="top">Rosa’s Café · Menu</header><p>Lemon Tea ₹40</p><p>Ginger Tea ₹45</p><p>Coffee ₹60</p><p>Cold Coffee ₹70</p><p>Cheese Toast ₹80</p><p>Veg Sandwich ₹90</p><p>Banana Cake ₹50</p><p>Cookies ₹20</p><p>Hot Chocolate ₹75</p>';
 const LONG_CSS = `${BASE} body { margin: 0; } p { margin: 0; padding: 12px 14px; border-bottom: 1px solid #EEE; } .top { background: #C2410C; color: white; padding: 12px 14px; font-weight: bold; }`;
 
 export const CSS_M6: Lesson[] = [
@@ -34,7 +34,7 @@ export const CSS_M6: Lesson[] = [
   ]),
 
   lesson('c-pos-1', 'Position: relative and absolute', 6, [
-    chat(['Riya wants a small “NEW” sticker pinned to the corner of the Cold Coffee card.', 'Normal flow puts it in line with the text. position lets you lift it out and place it exactly.']),
+    chat(['Rosa wants a small “NEW” sticker pinned to the corner of the Cold Coffee card.', 'Normal flow puts it in line with the text. position lets you lift it out and place it exactly.']),
     toggle('Four positions', [
       ['static', ['.new { position: static; }'], 'The default: normal flow. top/left do nothing.', { html: STICKER, css: STICKER_CSS }],
       ['relative', ['.new { position: relative;', '  top: -8px; left: 20px; }'], 'Nudged from where it would be. Its old space is kept.', { html: STICKER, css: `${STICKER_CSS} .new { position: relative; top: -8px; left: 20px; }` }],
@@ -124,7 +124,7 @@ export const CSS_M6: Lesson[] = [
   lesson('css-6-6', 'Centring anything', 6, [
     chat(['“How do I centre this?” is the most asked CSS question there is.', 'The answer depends on what you’re centring. Here are the four you’ll need.']),
     toggle('Pick what to centre', [
-      ['Text', ['h2 { text-align: center; }'], 'Text and inline things inside a block.', { html: '<h2>Riya’s Café</h2>', css: `${BASE} h2 { text-align: center; background: #FFF1D6; }` }],
+      ['Text', ['h2 { text-align: center; }'], 'Text and inline things inside a block.', { html: '<h2>Rosa’s Café</h2>', css: `${BASE} h2 { text-align: center; background: #FFF1D6; }` }],
       ['A block', ['.card { width: 200px;', '  margin: 0 auto; }'], 'A box with a width: auto margins left and right.', { html: CARD, css: `${BASE} .card { width: 200px; margin: 0 auto; background: #FFF1D6; padding: 8px; }` }],
       ['Both ways', ['.box { display: grid;', '  place-items: center; }'], 'Grid’s place-items centres across and down in one line.', { html: '<div class="box"><span class="dot">☕</span></div>', css: `${BASE} .box { display: grid; place-items: center; height: 130px; background: #FFF1D6; border-radius: 12px; } .dot { font-size: 34px; }` }],
       ['With flex', ['.box { display: flex;', '  justify-content: center;', '  align-items: center; }'], 'Flexbox does the same in two lines (Module 7).', { html: '<div class="box"><span class="dot">☕</span></div>', css: `${BASE} .box { display: flex; justify-content: center; align-items: center; height: 130px; background: #FFF1D6; border-radius: 12px; } .dot { font-size: 34px; }` }],
@@ -162,7 +162,7 @@ export const CSS_M6: Lesson[] = [
     pickCode('Which pins a “Call us” button to the bottom-right of the screen?', ['position: fixed; bottom: 16px; right: 16px;', 'position: sticky; right: 16px;', 'float: right; bottom: 16px;', 'position: absolute; z-index: right;'], 'fixed with bottom and right offsets.'),
     bugTask(['.card {', '  position: relativ;', '}', '.tag {', '  position: absolute;', '  top: 0;', '  z-index: high;', '}'], [[2, 'relativ', 'relative'], [7, 'high', '5']], 'A misspelt value is skipped, and z-index takes a whole number.'),
     xray(
-      { html: '<header class="top">Riya’s Café</header><div class="card"><span class="new">NEW</span><h2>Cold Coffee</h2></div><p><span class="tag">Tea</span><span class="tag">Coffee</span></p>', css: 'body{font-family:system-ui,sans-serif;margin:0} .top{position:sticky;top:0;background:#C2410C;color:white;padding:10px} .card{position:relative;margin:24px 14px;padding:14px;background:#FFF1D6;border-radius:12px} .card h2{margin:0} .new{position:absolute;top:-10px;right:-10px;background:#0F766E;color:white;padding:3px 8px;border-radius:10px;font-size:12px} p{margin:14px} .tag{display:inline-block;width:80px;padding:6px;margin-right:6px;background:#FFE08A;text-align:center}' },
+      { html: '<header class="top">Rosa’s Café</header><div class="card"><span class="new">NEW</span><h2>Cold Coffee</h2></div><p><span class="tag">Tea</span><span class="tag">Coffee</span></p>', css: 'body{font-family:system-ui,sans-serif;margin:0} .top{position:sticky;top:0;background:#C2410C;color:white;padding:10px} .card{position:relative;margin:24px 14px;padding:14px;background:#FFF1D6;border-radius:12px} .card h2{margin:0} .new{position:absolute;top:-10px;right:-10px;background:#0F766E;color:white;padding:3px 8px;border-radius:10px;font-size:12px} p{margin:14px} .tag{display:inline-block;width:80px;padding:6px;margin-right:6px;background:#FFE08A;text-align:center}' },
       [
         ['.top', 'The header that stays at the top', 'position: sticky', ['position: sticky', 'position: static', 'float: top']],
         ['.new', 'The sticker on the corner', 'position: absolute', ['position: absolute', 'position: static', 'display: none']],

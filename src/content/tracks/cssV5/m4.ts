@@ -3,7 +3,7 @@ import type { Lesson } from '../../types';
 import { BASE } from './cafe';
 import { arrange, bugTask, challenge, chat, check, copy, explore, lesson, live, matchUp, mcq, pairs, pickCode, place, recap, reveal, swipe, tapbug, toggle, xray } from './kit';
 
-const ABOUT = '<h1>Riya’s Café</h1>\n<p>We brew fresh lemon tea and filter coffee every morning, and bake cheese toast to order. Come in, sit down, stay a while.</p>';
+const ABOUT = '<h1>Rosa’s Café</h1>\n<p>We brew fresh lemon tea and filter coffee every morning, and bake cheese toast to order. Come in, sit down, stay a while.</p>';
 const T = 'body { margin: 14px; color: #2B2118; }';
 const ICON = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h14v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM17 11h2a3 3 0 0 1 0 6h-2" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
 
@@ -54,13 +54,13 @@ export const CSS_M4: Lesson[] = [
   ]),
 
   lesson('css-4-3', 'Your own fonts', 5, [
-    chat(['Riya found a rounded font that matches her café’s sign.', 'Her visitors don’t have it installed, so the site has to bring the font file with it.']),
+    chat(['Rosa found a rounded font that matches her café’s sign.', 'Her visitors don’t have it installed, so the site has to bring the font file with it.']),
     explore('@font-face', ['@font-face {', '  font-family: "Cafe Round";', '  src: url(fonts/cafe-round.woff2) format("woff2");', '  font-display: swap;', '}', 'h1 { font-family: "Cafe Round", system-ui, sans-serif; }'], [
       [2, 'The name you choose. You use this name in font-family later.'],
       [3, 'Where the font file is. woff2 is the small, modern web font format.'],
       [4, 'swap shows the fallback straight away, then swaps when the font arrives. No invisible text while it loads.'],
       [6, 'Use it like any font, with fallbacks. This preview can’t load the file, so you see the fallback: exactly why fallbacks matter.', 'h1'],
-    ], { page: { html: '<h1>Riya’s Café</h1>', css: `${BASE} h1 { font-family: "Cafe Round", system-ui, sans-serif; color: #C2410C; }` }, minTaps: 3 }),
+    ], { page: { html: '<h1>Rosa’s Café</h1>', css: `${BASE} h1 { font-family: "Cafe Round", system-ui, sans-serif; color: #C2410C; }` }, minTaps: 3 }),
     reveal('Font services and pairing', [
       ['Font libraries', 'Free font libraries give you a <link> or @import line to paste in. It loads the font from their server.', '📚'],
       ['Pairing', 'Two fonts at most: one with character for headings, one plain one for body text.', '👯'],
@@ -97,8 +97,8 @@ export const CSS_M4: Lesson[] = [
   ]),
 
   lesson('css-4-5', 'Text effects', 5, [
-    live('Text shadow', 'x offset, y offset, blur, colour.', ['h1 { text-shadow: {{v}}; }'], ['2px 2px 0 #FDBA74', '0 0 8px #FB923C', '3px 3px 4px rgb(0 0 0 / 0.4)', 'none'], { html: '<h1>Riya’s Café</h1>', css: `${BASE} h1 { color: #C2410C; font-size: 40px; }` }),
-    live('Too long for the card', 'A long dish name in a narrow card. Tap a fix.', ['.name { {{v}} }'], ['white-space: normal;', 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;', 'overflow-wrap: anywhere;'], { html: '<div class="card"><p class="name">Extra-large cheese and corn toast with mint mayo</p></div><div class="card"><p class="name">https://riyas-cafe.example/menu/specials/today</p></div>', css: `${BASE} .card { width: 170px; border: 2px solid #E5D3B3; border-radius: 10px; padding: 6px 10px; margin: 6px 0; } .name { margin: 0; }`, caption: 'The ellipsis (…) needs all three: nowrap, overflow: hidden and text-overflow: ellipsis. overflow-wrap breaks long links.' }),
+    live('Text shadow', 'x offset, y offset, blur, colour.', ['h1 { text-shadow: {{v}}; }'], ['2px 2px 0 #FDBA74', '0 0 8px #FB923C', '3px 3px 4px rgb(0 0 0 / 0.4)', 'none'], { html: '<h1>Rosa’s Café</h1>', css: `${BASE} h1 { color: #C2410C; font-size: 40px; }` }),
+    live('Too long for the card', 'A long dish name in a narrow card. Tap a fix.', ['.name { {{v}} }'], ['white-space: normal;', 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;', 'overflow-wrap: anywhere;'], { html: '<div class="card"><p class="name">Extra-large cheese and corn toast with mint mayo</p></div><div class="card"><p class="name">https://rosas-cafe.example/menu/specials/today</p></div>', css: `${BASE} .card { width: 170px; border: 2px solid #E5D3B3; border-radius: 10px; padding: 6px 10px; margin: 6px 0; } .name { margin: 0; }`, caption: 'The ellipsis (…) needs all three: nowrap, overflow: hidden and text-overflow: ellipsis. overflow-wrap breaks long links.' }),
     reveal('When to use each', [
       ['text-overflow: ellipsis', 'One-line titles in cards and lists.'],
       ['overflow-wrap: anywhere', 'Long links and codes that would burst out of the box.'],
@@ -153,7 +153,7 @@ export const CSS_M4: Lesson[] = [
     pickCode('Which gives a bold, italic, 20px Georgia heading?', ['font: italic 700 20px Georgia, serif;', 'font: Georgia 20px bold italic;', 'font-style: bold italic 20px;', 'text: italic bold 20px Georgia;'], 'The shorthand order: style, weight, size, family.'),
     bugTask(['h1 {', '  font-family: Courier New, monospace;', '  text-decoration: line;', '}'], [[2, 'Courier New', '"Courier New"'], [3, 'line', 'underline']], 'Quote names with spaces; text-decoration takes underline, line-through, overline or none.'),
     xray(
-      { html: '<h1>Riya’s Café</h1><p class="tagline">open till nine</p><p class="old">₹50</p><p class="title">Extra-large cheese and corn toast with mint mayo</p>', css: 'body{font-family:system-ui,sans-serif;margin:14px} h1{font-family:Georgia,serif;text-shadow:2px 2px 0 #FDBA74;color:#C2410C} .tagline{text-transform:uppercase;letter-spacing:5px} .old{text-decoration:line-through} .title{width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' },
+      { html: '<h1>Rosa’s Café</h1><p class="tagline">open till nine</p><p class="old">₹50</p><p class="title">Extra-large cheese and corn toast with mint mayo</p>', css: 'body{font-family:system-ui,sans-serif;margin:14px} h1{font-family:Georgia,serif;text-shadow:2px 2px 0 #FDBA74;color:#C2410C} .tagline{text-transform:uppercase;letter-spacing:5px} .old{text-decoration:line-through} .title{width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' },
       [
         ['h1', 'The glow behind the name', 'text-shadow', ['text-shadow', 'box-shadow', 'opacity']],
         ['.tagline', 'The spaced-out capitals', 'letter-spacing', ['letter-spacing', 'word-spacing', 'font-size']],
@@ -161,6 +161,6 @@ export const CSS_M4: Lesson[] = [
         ['.title', 'The title ending in …', 'text-overflow', ['text-overflow', 'overflow-wrap', 'font-style']],
       ],
     ),
-    arrange(['body {\n  font-family: system-ui, sans-serif;\n  line-height: 1.5;\n}', 'h1 {\n  font-family: Georgia, serif;\n}', '.tagline {\n  text-transform: uppercase;\n}'], 'body text settings first, then the serif heading, then the capital tagline', 'body { margin: 14px; }', '<h1>Riya’s Café</h1><p class="tagline">open till nine</p><p>Fresh lemon tea and coffee every morning.</p>'),
+    arrange(['body {\n  font-family: system-ui, sans-serif;\n  line-height: 1.5;\n}', 'h1 {\n  font-family: Georgia, serif;\n}', '.tagline {\n  text-transform: uppercase;\n}'], 'body text settings first, then the serif heading, then the capital tagline', 'body { margin: 14px; }', '<h1>Rosa’s Café</h1><p class="tagline">open till nine</p><p>Fresh lemon tea and coffee every morning.</p>'),
   ]),
 ];

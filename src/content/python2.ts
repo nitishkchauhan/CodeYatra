@@ -45,8 +45,8 @@ export const cheapestTrain: EditorStep = {
   file: 'cheapest.py',
   starter: 'def cheapest(trains):\n    pass\n',
   tests: [
-    { call: 'cheapest([("Rajdhani", 2100), ("Garib Rath", 900), ("Shatabdi", 1400)])', expect: '"Garib Rath"' },
-    { call: 'cheapest([("Duronto", 1800)])', expect: '"Duronto"' },
+    { call: 'cheapest([("Royal", 2100), ("Golden Line", 900), ("Silver Arrow", 1400)])', expect: '"Golden Line"' },
+    { call: 'cheapest([("Delta Express", 1800)])', expect: '"Delta Express"' },
     { call: 'cheapest([])', expect: 'None' },
   ],
   hint: 'Keep the best pair so far. Start with best = None, then for name, price in trains: compare price with best[1].',

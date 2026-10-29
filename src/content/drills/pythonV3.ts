@@ -7,13 +7,13 @@ const K = 'PRACTICE · PYTHON';
 export const PYTHON_V3_DRILLS: Record<string, Step[]> = {
   'py-comprehensions': [
     predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['prices = [10, 25, 40]', 'cheap = [p for p in prices if p < 30]', 'print(cheap, sum(cheap))'], answer: '[10, 25] 35', explain: 'Only the prices under 30 are kept, then added.' }),
-    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['names = ["asha", "ravi"]', 'print({n: n.upper() for n in names})'], answer: "{'asha': 'ASHA', 'ravi': 'RAVI'}", explain: 'Each name becomes a key, with its upper-case version as the value.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['names = ["ava", "reed"]', 'print({n: n.upper() for n in names})'], answer: "{'ava': 'AVA', 'reed': 'REED'}", explain: 'Each name becomes a key, with its upper-case version as the value.' }),
     predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['marks = [35, 72]', 'print(["pass" if m >= 40 else "fail" for m in marks])'], answer: "['fail', 'pass']", explain: 'if/else before for changes each value instead of filtering.' }),
     quiz({ prompt: 'When is a plain for loop better than a comprehension?', options: ['When each step does several things, like printing and saving', 'Never', 'When the list is short', 'When you need a list'], right: 'Right. Comprehensions are for building a collection simply.', wrong: 'Keep comprehensions for one clear transform or filter; use a loop for anything more.' }),
   ],
   'py-tuples-sets': [
     predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['a = {1, 2, 3}', 'b = {3, 4}', 'print(sorted(a - b), sorted(a | b))'], answer: '[1, 2] [1, 2, 3, 4]', explain: 'a - b keeps what is only in a; a | b combines both.' }),
-    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['trip = ("Delhi", "Agra", 233)', 'start, end, km = trip', 'print(end, km)'], answer: 'Agra 233', explain: 'Unpacking gives each value in the tuple a name, in order.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['trip = ("Dublin", "Athens", 233)', 'start, end, km = trip', 'print(end, km)'], answer: 'Athens 233', explain: 'Unpacking gives each value in the tuple a name, in order.' }),
     quiz({ prompt: 'Which is fastest for checking “has this user already voted?” among a million users?', options: ['A set', 'A list', 'A tuple', 'A string'], right: 'Right. Set membership is near-instant.', wrong: 'A list checks one by one; a set looks it up directly.' }),
     quiz({ prompt: 'What does set([3, 3, 1]) give?', options: ['{1, 3}', '[3, 1]', '{3, 3, 1}', '(1, 3)'], right: 'Right.', wrong: 'A set keeps each value once.', mono: true }),
   ],
@@ -30,8 +30,8 @@ export const PYTHON_V3_DRILLS: Record<string, Step[]> = {
     match({ kicker: K, title: 'JSON to Python', instructions: 'Match each JSON value to what Python gives.', pairs: [['true', 'True'], ['null', 'None'], ['[1, 2]', 'a list'], ['{"a": 1}', 'a dict']], mono: true, explain: 'JSON objects become dictionaries and arrays become lists.' }),
   ],
   'py-functions-2': [
-    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def greet(name, msg="Hello"):', '    return f"{msg}, {name}"', '', 'print(greet("Asha"), "|", greet("Ravi", msg="Hi"))'], answer: 'Hello, Asha | Hi, Ravi', explain: 'The default is used unless you pass msg.' }),
-    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def info(**details):', '    return sorted(details)', '', 'print(info(city="Pune", age=19))'], answer: "['age', 'city']", explain: '**details collects the named values into a dictionary; sorted gives its keys.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def greet(name, msg="Hello"):', '    return f"{msg}, {name}"', '', 'print(greet("Ava"), "|", greet("Reed", msg="Hi"))'], answer: 'Hello, Ava | Hi, Reed', explain: 'The default is used unless you pass msg.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def info(**details):', '    return sorted(details)', '', 'print(info(city="Paris", age=19))'], answer: "['age', 'city']", explain: '**details collects the named values into a dictionary; sorted gives its keys.' }),
     predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['count = 0', 'def bump():', '    count = 5', '    return count', '', 'print(bump(), count)'], answer: '5 0', explain: 'count inside bump is a separate, local variable.' }),
     quiz({ prompt: 'Why is def add(item, basket=[]) a bug?', options: ['The same list is shared by every call', 'Lists can’t be parameters', 'It is too slow', 'basket must come first'], right: 'Right. Use basket=None and make a new list inside.', wrong: 'Defaults are made once, so a list default is shared by every call.' }),
   ],
@@ -67,7 +67,7 @@ export const PYTHON_V3_DRILLS: Record<string, Step[]> = {
   ],
   'py-decorators': [
     predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['def twice(func):', '    def wrapper(x):', '        return func(func(x))', '    return wrapper', '', '@twice', 'def add3(x):', '    return x + 3', '', 'print(add3(1))'], answer: '7', explain: 'The wrapper calls add3 twice: 1 + 3 + 3.' }),
-    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['names = ["Zoya", "Asha", "Kabir"]', 'print(sorted(names, key=len))'], answer: "['Zoya', 'Asha', 'Kabir']", explain: 'key=len sorts by length; equal lengths keep their order.' }),
+    predict({ kicker: K, title: 'What does this print?', lang: 'python', lines: ['names = ["Zoey", "Alex", "Kaden"]', 'print(sorted(names, key=len))'], answer: "['Zoey', 'Alex', 'Kaden']", explain: 'key=len sorts by length; equal lengths keep their order.' }),
     quiz({ prompt: 'When is @cache a bad idea?', options: ['When the answer changes over time, like the current seat count', 'When the function is slow', 'When the inputs repeat', 'Never'], right: 'Right. A cache would show stale data.', wrong: 'Only cache functions that always give the same answer for the same input.' }),
     quiz({ prompt: '@logged above def pay(…) is the same as…', options: ['pay = logged(pay)', 'logged = pay(logged)', 'pay(logged)', 'logged.pay()'], right: 'Right.', wrong: 'The decorator receives the function and its result replaces it.', mono: true }),
   ],

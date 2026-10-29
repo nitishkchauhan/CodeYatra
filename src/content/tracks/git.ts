@@ -94,14 +94,14 @@ export const GIT_LESSONS: Lesson[] = [
       story: 'You have a folder with your school website. Two commands and it becomes a Git repository that remembers its history. First, Git needs to know your name, so every commit says who made it.',
       goal: 'Configure Git and create a repository.',
       lang: 'bash',
-      code: ['git config --global user.name "Asha Patil"', 'git config --global user.email "asha@example.com"', 'git init'],
+      code: ['git config --global user.name "Ava Patil"', 'git config --global user.email "ava@example.com"', 'git init'],
     }),
     read({
       kicker: LEARN(1),
       title: 'Who are you?',
       body: 'Every commit stores an author name and email. Set them once per computer with git config --global. Use the same email as your GitHub account so your commits are linked to your profile.',
       lang: 'bash',
-      code: ['git config --global user.name "Asha Patil"', 'git config --global user.email "asha@example.com"', 'git config --global init.defaultBranch main'],
+      code: ['git config --global user.name "Ava Patil"', 'git config --global user.email "ava@example.com"', 'git config --global init.defaultBranch main'],
     }),
     read({
       kicker: LEARN(2),
@@ -117,7 +117,7 @@ export const GIT_LESSONS: Lesson[] = [
       lang: 'bash',
       code: ['git status', '# On branch main', '# No commits yet', '# nothing to commit (create/copy files and use "git add" to track)'],
     }),
-    play('Finding the repository', 'Git looks for a .git folder in the current folder, then each parent. Run this model of that search.', 'def find_repo(path, repos):\n    parts = path.split("/")\n    while parts:\n        folder = "/".join(parts)\n        if folder in repos:\n            return folder\n        parts.pop()\n    return None\n\nrepos = {"home/asha/school-site"}\nprint(find_repo("home/asha/school-site/css", repos))\nprint(find_repo("home/asha/downloads", repos))\n', ['Add "home/asha" as a repository too', 'Search from "home/asha/school-site"', 'What happens for an empty path?']),
+    play('Finding the repository', 'Git looks for a .git folder in the current folder, then each parent. Run this model of that search.', 'def find_repo(path, repos):\n    parts = path.split("/")\n    while parts:\n        folder = "/".join(parts)\n        if folder in repos:\n            return folder\n        parts.pop()\n    return None\n\nrepos = {"home/ava/school-site"}\nprint(find_repo("home/ava/school-site/css", repos))\nprint(find_repo("home/ava/downloads", repos))\n', ['Add "home/ava" as a repository too', 'Search from "home/ava/school-site"', 'What happens for an empty path?']),
     mistake({
       kicker: OOPS,
       title: 'Running Git outside a repository',
@@ -144,12 +144,12 @@ export const GIT_LESSONS: Lesson[] = [
     }),
     py({
       title: 'Find the repository',
-      instructions: 'Write find_repo(path, repos): path is like "home/asha/site/css" and repos is a set of folders that contain .git. Return the nearest folder (the path itself, or the closest parent) that is a repository, or None.',
+      instructions: 'Write find_repo(path, repos): path is like "home/ava/site/css" and repos is a set of folders that contain .git. Return the nearest folder (the path itself, or the closest parent) that is a repository, or None.',
       starter: 'def find_repo(path, repos):\n    if path in repos:\n        return path\n    return None\n',
       tests: [
-        { call: 'find_repo("home/asha/site/css", {"home/asha/site"})', expect: '"home/asha/site"' },
-        { call: 'find_repo("home/asha/site", {"home/asha/site"})', expect: '"home/asha/site"' },
-        { call: 'find_repo("home/asha/notes", {"home/asha/site"})', expect: 'None' },
+        { call: 'find_repo("home/ava/site/css", {"home/ava/site"})', expect: '"home/ava/site"' },
+        { call: 'find_repo("home/ava/site", {"home/ava/site"})', expect: '"home/ava/site"' },
+        { call: 'find_repo("home/ava/notes", {"home/ava/site"})', expect: 'None' },
         { call: 'find_repo("a/b/c", {"a", "a/b"})', expect: '"a/b"' },
       ],
       hint: 'Split on "/", and keep removing the last part until the joined path is in repos.',

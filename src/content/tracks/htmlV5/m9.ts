@@ -8,7 +8,7 @@ const PORTFOLIO = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riya Sharma · Portfolio</title>
+  <title>Rosa Sutton · Portfolio</title>
   <link rel="icon" href="favicon.png">
   <style>
     body { font-family: Verdana, sans-serif; color: #16142B; }
@@ -17,14 +17,14 @@ const PORTFOLIO = `<!DOCTYPE html>
 </head>
 <body>
   <header>
-    <h1>Riya Sharma</h1>
+    <h1>Rosa Sutton</h1>
     <nav>
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
-  <img src="${pic(120, 120, 'Riya')}" alt="Riya smiling" width="120" height="120">
+  <img src="${pic(120, 120, 'Rosa')}" alt="Rosa smiling" width="120" height="120">
   <section id="about">
     <p>I am a <strong>Class 11</strong> student who <em>loves</em> building web pages.</p>
   </section>
@@ -51,7 +51,7 @@ const PORTFOLIO = `<!DOCTYPE html>
       <button type="submit">Send</button>
     </form>
   </section>
-  <footer>&copy; 2026 Riya Sharma</footer>
+  <footer>&copy; 2026 Rosa Sutton</footer>
 </body>
 </html>`;
 
@@ -118,8 +118,8 @@ export const HTML_M9: Lesson[] = [
       ['ondragstart, ondrop', 'JavaScript events that handle the move.'],
     ], { mono: true }),
     toggle('📦 Saving in the browser', [
-      ['localStorage', ['localStorage.setItem("name", "Riya");', 'localStorage.getItem("name");  // "Riya"'], 'Close the tab and come back: the data is still there. It has no expiry.'],
-      ['sessionStorage', ['sessionStorage.setItem("name", "Riya");'], 'Close the tab and it’s gone: it is cleared when the tab closes.'],
+      ['localStorage', ['localStorage.setItem("name", "Rosa");', 'localStorage.getItem("name");  // "Rosa"'], 'Close the tab and come back: the data is still there. It has no expiry.'],
+      ['sessionStorage', ['sessionStorage.setItem("name", "Rosa");'], 'Close the tab and it’s gone: it is cleared when the tab closes.'],
     ]),
     reveal('Two more', [
       ['⚙️ Web Workers', 'Run heavy JavaScript in the background, so the page doesn’t freeze.'],
@@ -173,9 +173,9 @@ export const HTML_M9: Lesson[] = [
     ]),
     pairs([['%26', '& in an address'], ['Geolocation', 'Finds the user’s position'], ['Web Worker', 'Runs JavaScript in the background'], ['lang="en"', 'States the page language']], 'Clean code and browser superpowers.'),
     pickCode('Which is the best start of a page?', ['<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">', '<html><body>', '<HTML><HEAD><META CHARSET=UTF-8>'], 'DOCTYPE first, a language, and UTF-8 early in the head.'),
-    bugTask(['<!DOCTYPE html>', '<html lang="en">', '<head>', '  <meta charset="UTF-8">', '  <title>My Portfolio</title>', '</head>', '<body>', '  <img src="Profile Photo.JPG" alt="Riya smiling">', '</body>', '</html>'], [[8, '"Profile Photo.JPG"', '"profile-photo.jpg"']], 'File names: lowercase, with hyphens instead of spaces.'),
+    bugTask(['<!DOCTYPE html>', '<html lang="en">', '<head>', '  <meta charset="UTF-8">', '  <title>My Portfolio</title>', '</head>', '<body>', '  <img src="Profile Photo.JPG" alt="Rosa smiling">', '</body>', '</html>'], [[8, '"Profile Photo.JPG"', '"profile-photo.jpg"']], 'File names: lowercase, with hyphens instead of spaces.'),
     xray(
-      { html: `<header><h1>Riya Sharma</h1><nav><a href="#">About</a> · <a href="#">Skills</a></nav></header><img src="${pic(90, 90, 'Riya')}" alt="Riya" width="90"><ul class="skills"><li>HTML</li><li>CSS</li></ul><table><tr><th>Project</th><th>Year</th></tr><tr><td>Menu</td><td>2026</td></tr></table><form onsubmit="return false"><input placeholder="Email"> <button>Send</button></form><footer>© 2026 Riya</footer>`, css: 'table,th,td{border:1px solid #999;border-collapse:collapse} header{background:#4B3FD8;color:#fff;padding:6px} footer{background:#16142B;color:#fff;padding:6px;margin-top:6px}' },
+      { html: `<header><h1>Rosa Sutton</h1><nav><a href="#">About</a> · <a href="#">Skills</a></nav></header><img src="${pic(90, 90, 'Rosa')}" alt="Rosa" width="90"><ul class="skills"><li>HTML</li><li>CSS</li></ul><table><tr><th>Project</th><th>Year</th></tr><tr><td>Menu</td><td>2026</td></tr></table><form onsubmit="return false"><input placeholder="Email"> <button>Send</button></form><footer>© 2026 Rosa</footer>`, css: 'table,th,td{border:1px solid #999;border-collapse:collapse} header{background:#4B3FD8;color:#fff;padding:6px} footer{background:#16142B;color:#fff;padding:6px;margin-top:6px}' },
       [
         ['header', 'The top bar', '<header>', ['<header>', '<head>', '<nav>']],
         ['nav', 'The links row', '<nav>', ['<nav>', '<ul>', '<aside>']],

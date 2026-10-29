@@ -111,7 +111,7 @@ export function ServerClient() {
 }
 
 const FLOW = [
-  { at: 'Phone', text: 'The teacher’s app sends POST /api/students with { "name": "Ravi", "grade": 8 }.' },
+  { at: 'Phone', text: 'The teacher’s app sends POST /api/students with { "name": "Reed", "grade": 8 }.' },
   { at: 'proxy.js', text: 'Optional quick check: is there a session cookie? If not, redirect early.' },
   { at: 'route.js', text: 'Next.js calls your exported POST(request). You read the body with await request.json().' },
   { at: 'Validate', text: 'Name present? Grade 1 to 12? If not, reply 400 with an error message and stop.' },

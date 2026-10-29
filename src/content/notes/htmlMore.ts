@@ -41,7 +41,7 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     lang: 'html',
     sections: [
       { heading: 'Two kinds of list', body: 'Use <ol> when the order matters, like steps, rankings or train stops: the browser numbers the items for you. Use <ul> when it doesn’t, like ingredients or features: the items get bullets. Either way, every item is an <li>, and nothing else goes straight inside the list.', code: ['<ol>', '  <li>Toast the bread</li>', '  <li>Add the cheese</li>', '</ol>'], anim: 'outline' },
-      { heading: 'Lists inside lists', body: 'For a sub-point, put a whole new <ul> or <ol> inside an <li>, after its text and before its closing tag. The browser indents it. <ol start="5"> starts numbering at 5, and <ol reversed> counts down, handy for a “top 10” countdown.', code: ['<li>New Delhi', '  <ul><li>Platform 16</li></ul>', '</li>'], anim: 'outline' },
+      { heading: 'Lists inside lists', body: 'For a sub-point, put a whole new <ul> or <ol> inside an <li>, after its text and before its closing tag. The browser indents it. <ol start="5"> starts numbering at 5, and <ol reversed> counts down, handy for a “top 10” countdown.', code: ['<li>New Dublin', '  <ul><li>Platform 16</li></ul>', '</li>'], anim: 'outline' },
       { heading: 'Lists are everywhere', body: 'Most website menus are a <ul> of links, styled with CSS into a row. Search results, comment threads, product features and breadcrumb trails are lists too. Screen readers announce “list, 5 items”, so users know how much is coming.', anim: 'outline' },
     ],
     example: {
@@ -72,19 +72,19 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     minutes: 5,
     lang: 'html',
     sections: [
-      { heading: 'Rows of cells', body: 'A <table> is built row by row. Each <tr> is a row, and inside it each cell is a <td> for data or a <th> for a header. Every row should have the same number of cells. <thead> wraps the header row and <tbody> the data rows, which helps screen readers and lets long tables repeat headers when printed.', code: ['<tr><th>Name</th><th>Maths</th></tr>', '<tr><td>Asha</td><td>91</td></tr>'], anim: 'outline' },
+      { heading: 'Rows of cells', body: 'A <table> is built row by row. Each <tr> is a row, and inside it each cell is a <td> for data or a <th> for a header. Every row should have the same number of cells. <thead> wraps the header row and <tbody> the data rows, which helps screen readers and lets long tables repeat headers when printed.', code: ['<tr><th>Name</th><th>Maths</th></tr>', '<tr><td>Ava</td><td>91</td></tr>'], anim: 'outline' },
       { heading: 'Make it readable', body: '<caption> gives the table a title, read first by screen readers. Header cells let a screen reader say “Maths, 91” instead of just “91”. colspan="2" stretches a cell across two columns, and rowspan="2" down two rows. Keep it simple: one header row, clear labels, no empty layout cells.', code: ['<caption>Class 10 marks</caption>', '<td colspan="2">Absent</td>'], anim: 'htmlTags' },
       { heading: 'Data, not layout', body: 'Years ago people built whole pages with tables. Don’t: on a phone the columns squash, and screen readers treat the page as a data grid. Use tables only when the information really has rows and columns, like fees, marks or timetables. CSS handles page layout.', anim: 'outline' },
     ],
     example: {
       title: 'A mark sheet',
-      code: ['<table>', '  <caption>Class 10 marks</caption>', '  <tr><th>Name</th><th>Maths</th></tr>', '  <tr><td>Asha</td><td>91</td></tr>', '</table>'],
+      code: ['<table>', '  <caption>Class 10 marks</caption>', '  <tr><th>Name</th><th>Maths</th></tr>', '  <tr><td>Ava</td><td>91</td></tr>', '</table>'],
       walk: [
         { line: 2, text: 'The caption names the table.' },
         { line: 3, text: 'The header row labels each column.' },
         { line: 4, text: 'A data row: one cell per column.' },
       ],
-      output: ['Class 10 marks', 'Name', 'Maths', 'Asha', '91'],
+      output: ['Class 10 marks', 'Name', 'Maths', 'Ava', '91'],
     },
     industry: 'Admin dashboards, banking apps and reporting tools show most of their data in tables, often with sorting and filtering added by JavaScript. Good header markup is what lets those tables be read aloud correctly.',
     interview: [
@@ -110,7 +110,7 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
       { heading: 'The right type', body: 'type="email" shows an @ keyboard and checks the format. tel shows a number pad, number adds arrows and limits, password hides the text, and date shows a date picker. Choosing the right type makes forms faster to fill on phones, with no extra code.', code: ['<input type="email" name="email">', '<input type="date" name="dob">'], anim: 'api' },
     ],
     example: {
-      title: 'Riya’s order form',
+      title: 'Rosa’s order form',
       code: ['<form action="/order" method="post">', '  <p><label for="name">Your name</label></p>', '  <p><input id="name" name="name" type="text"></p>', '  <p><button type="submit">Place order</button></p>', '</form>'],
       walk: [
         { line: 1, text: 'Pressing submit sends the data to /order.' },
@@ -176,15 +176,15 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
       { heading: 'Why it matters', body: 'Screen-reader users can jump straight to “main” or “navigation”, skipping the rest. Search engines learn which part is the real content. Browser reader modes and smart assistants pick out the article. And your own code is easier to read than a page of divs.', anim: 'outline' },
     ],
     example: {
-      title: 'Riya’s page outline',
-      code: ['<header><h1>Riya’s Café</h1></header>', '<nav><a href="#menu">Our menu</a></nav>', '<main>', '  <section id="menu"><h2>Menu</h2><p>Cheese Toast ₹80</p></section>', '</main>', '<footer>© 2026 Riya’s Café</footer>'],
+      title: 'Rosa’s page outline',
+      code: ['<header><h1>Rosa’s Café</h1></header>', '<nav><a href="#menu">Our menu</a></nav>', '<main>', '  <section id="menu"><h2>Menu</h2><p>Cheese Toast ₹80</p></section>', '</main>', '<footer>© 2026 Rosa’s Café</footer>'],
       walk: [
         { line: 1, text: 'The header holds the page title.' },
         { line: 2, text: 'The nav holds the main links.' },
         { line: 4, text: 'The page’s own content sits in main, grouped in a section.' },
         { line: 6, text: 'The footer closes the page.' },
       ],
-      output: ['Riya’s Café', 'Our menu', 'Menu', 'Cheese Toast ₹80', '© 2026 Riya’s Café'],
+      output: ['Rosa’s Café', 'Our menu', 'Menu', 'Cheese Toast ₹80', '© 2026 Rosa’s Café'],
     },
     industry: 'Accessibility audits check for landmarks first: a page without <main> or <nav> fails basic checks. Component libraries ship semantic tags by default, and code reviewers question long chains of divs.',
     interview: [
@@ -243,14 +243,14 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'An accessible order section',
-      code: ['<h1>Riya’s Café</h1>', '<img src="toast.jpg" alt="A cheese toast cut into two triangles">', '<p><label for="name">Name</label> <input id="name" name="name"></p>', '<p><button type="button">Order now</button></p>', '<p><a href="menu.pdf">Download the menu (PDF)</a></p>'],
+      code: ['<h1>Rosa’s Café</h1>', '<img src="toast.jpg" alt="A cheese toast cut into two triangles">', '<p><label for="name">Name</label> <input id="name" name="name"></p>', '<p><button type="button">Order now</button></p>', '<p><a href="menu.pdf">Download the menu (PDF)</a></p>'],
       walk: [
         { line: 2, text: 'The alt text is read aloud in place of the picture.' },
         { line: 3, text: 'The label names the field for screen readers.' },
         { line: 4, text: 'A real button works with Tab and Enter.' },
         { line: 5, text: 'Link text that makes sense on its own.' },
       ],
-      output: ['Riya’s Café', 'Name', 'Order now', 'Download the menu (PDF)'],
+      output: ['Rosa’s Café', 'Name', 'Order now', 'Download the menu (PDF)'],
     },
     industry: 'Teams run automated checks like Lighthouse and axe on every release and test key flows with a screen reader. Many governments and large companies require their sites to meet the WCAG guidelines, so accessibility skills are valued in interviews.',
     interview: [
@@ -272,19 +272,19 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     lang: 'html',
     sections: [
       { heading: 'Two lines every page needs', body: '<meta charset="utf-8"> makes ₹, Hindi, Tamil and emoji display correctly. <meta name="viewport" content="width=device-width, initial-scale=1"> tells phones to use their real width instead of pretending to be a desktop and shrinking the page. Without it, text is tiny and people have to pinch to zoom.', code: ['<meta charset="utf-8">', '<meta name="viewport" content="width=device-width, initial-scale=1">'], anim: 'webRequest' },
-      { heading: 'Being found', body: 'The <title> is the tab name and the blue link in Google, so make it specific: “Riya’s Café · Tea and snacks in Pune” beats “Home”. The description is often shown as the grey snippet. SEO is mostly this plus good headings, real text and a fast page; there are no tricks.', code: ['<title>Riya’s Café · Tea and snacks in Pune</title>', '<meta name="description" content="Fresh tea, coffee and snacks all day.">'], anim: 'webRequest' },
+      { heading: 'Being found', body: 'The <title> is the tab name and the blue link in Google, so make it specific: “Rosa’s Café · Tea and snacks in Paris” beats “Home”. The description is often shown as the grey snippet. SEO is mostly this plus good headings, real text and a fast page; there are no tricks.', code: ['<title>Rosa’s Café · Tea and snacks in Paris</title>', '<meta name="description" content="Fresh tea, coffee and snacks all day.">'], anim: 'webRequest' },
       { heading: 'Looking good when shared', body: 'Open Graph tags (og:title, og:description, og:image) control the preview card when a link is shared on WhatsApp, LinkedIn or Instagram. <link rel="icon"> sets the small icon in the tab. None of these show on the page itself.', code: ['<meta property="og:image" content="https://example.com/toast.jpg">', '<link rel="icon" href="icon.png">'], anim: 'htmlTags' },
     ],
     example: {
       title: 'A complete head',
-      code: ['<!DOCTYPE html>', '<html lang="en">', '<head>', '  <meta charset="utf-8">', '  <meta name="viewport" content="width=device-width, initial-scale=1">', '  <title>Riya’s Café · Tea and snacks in Pune</title>', '  <meta name="description" content="Fresh tea, coffee and snacks all day.">', '</head>', '<body>', '  <h1>Riya’s Café</h1>', '  <p>Open 9 am to 1 pm.</p>', '</body>', '</html>'],
+      code: ['<!DOCTYPE html>', '<html lang="en">', '<head>', '  <meta charset="utf-8">', '  <meta name="viewport" content="width=device-width, initial-scale=1">', '  <title>Rosa’s Café · Tea and snacks in Paris</title>', '  <meta name="description" content="Fresh tea, coffee and snacks all day.">', '</head>', '<body>', '  <h1>Rosa’s Café</h1>', '  <p>Open 9 am to 1 pm.</p>', '</body>', '</html>'],
       walk: [
         { line: 4, text: 'Every character shows correctly.' },
         { line: 5, text: 'The page fits the phone screen.' },
         { line: 6, text: 'Tab and search-result title.' },
         { line: 7, text: 'The search snippet. Nothing in the head shows on the page.' },
       ],
-      output: ['Riya’s Café', 'Open 9 am to 1 pm.'],
+      output: ['Rosa’s Café', 'Open 9 am to 1 pm.'],
     },
     industry: 'Marketing teams track search traffic and share previews closely, so developers set titles, descriptions and Open Graph tags for every page, usually from a template. Frameworks like Next.js have built-in tools just for the head.',
     interview: [

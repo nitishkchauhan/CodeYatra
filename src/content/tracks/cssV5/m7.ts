@@ -3,7 +3,7 @@ import type { Lesson } from '../../types';
 import { BASE } from './cafe';
 import { arrange, beforeAfter, bugTask, challenge, chat, check, copy, explore, lesson, live, matchUp, mcq, pairs, pickCode, recap, resize, reveal, swipe, tapbug, xray } from './kit';
 
-const HEADER = '<header class="top">\n  <strong>Riya’s Café</strong>\n  <nav>Menu · Visit</nav>\n  <a class="btn">Order</a>\n</header>';
+const HEADER = '<header class="top">\n  <strong>Rosa’s Café</strong>\n  <nav>Menu · Visit</nav>\n  <a class="btn">Order</a>\n</header>';
 const HEAD_CSS = `${BASE} .top { background: #FFF1D6; border-radius: 12px; padding: 10px; gap: 10px; } .top > * { background: white; border: 2px solid #E5D3B3; border-radius: 8px; padding: 6px 10px; } .btn { color: white; background: #C2410C !important; }`;
 const ROW = '<div class="row"><div class="i">Tea</div><div class="i tall">Coffee<br>and cake</div><div class="i">Toast</div></div>';
 const ROW_CSS = `${BASE} .row { display: flex; height: 150px; background: #FFF1D6; border-radius: 12px; padding: 6px; gap: 6px; } .i { background: #C2410C; color: white; padding: 8px; border-radius: 8px; }`;
@@ -12,7 +12,7 @@ const CARDS_CSS = 'body { font-family: system-ui, sans-serif; margin: 12px; }\n.
 
 export const CSS_M7: Lesson[] = [
   lesson('c-flex-1', 'Lining things up', 5, [
-    chat(['Riya’s header has three things: the café name, the links and an Order button. Right now they sit on top of each other.', 'One line of flexbox puts them in a row.']),
+    chat(['Rosa’s header has three things: the café name, the links and an Order button. Right now they sit on top of each other.', 'One line of flexbox puts them in a row.']),
     beforeAfter(
       'One line of CSS',
       [['.top { }'], 'Block children stack up.', { html: HEADER, css: `${HEAD_CSS} .top > * { display: block; margin-bottom: 6px; }` }],
@@ -37,7 +37,7 @@ export const CSS_M7: Lesson[] = [
   lesson('css-7-2', 'Along the line', 5, [
     live('justify-content', 'It spreads items along the main axis.', ['.top { display: flex; justify-content: {{v}}; }'], ['flex-start', 'center', 'flex-end', 'space-between', 'space-around', 'space-evenly'], { html: HEADER, css: HEAD_CSS }),
     matchUp('Match the spacing', [['space-between', 'Ends touch the edges'], ['space-around', 'Half-size gaps at the ends'], ['space-evenly', 'Every gap the same'], ['center', 'Bunched in the middle']], 'All the space values share the leftover room differently.'),
-    copy('Match Riya’s header', 'Name on the left, button on the right, links in between.', HEADER, `${HEAD_CSS}\n.top {\n  display: {{0}};\n  justify-content: {{1}};\n}`, [
+    copy('Match Rosa’s header', 'Name on the left, button on the right, links in between.', HEADER, `${HEAD_CSS}\n.top {\n  display: {{0}};\n  justify-content: {{1}};\n}`, [
       ['display', ['block', 'flex'], 'flex'],
       ['justify-content', ['flex-start', 'center', 'space-between'], 'space-between'],
     ]),
@@ -119,7 +119,7 @@ export const CSS_M7: Lesson[] = [
     pickCode('Which puts the logo left and the button right in a header?', ['.top { display: flex; justify-content: space-between; }', '.top { display: flex; align-items: space-between; }', '.top { justify-content: space-between; }', '.top { display: flex; flex-wrap: between; }'], 'flex, then space-between along the row.'),
     bugTask(['.menu {', '  display: flexbox;', '  justify-content: centre;', '}'], [[2, 'flexbox', 'flex'], [3, 'centre', 'center']], 'The value is flex, not flexbox, and CSS spells center the American way.'),
     xray(
-      { html: '<header class="top"><strong>Riya’s Café</strong><a class="btn">Order</a></header><div class="row"><div class="i">Tea</div><div class="i">Coffee</div></div><div class="bar"><input class="search" placeholder="Search"><a class="go">Go</a></div>', css: 'body{font-family:system-ui,sans-serif;margin:12px} .top{display:flex;justify-content:space-between;align-items:center;background:#FFF1D6;padding:10px;border-radius:12px} .btn{background:#C2410C;color:white;padding:6px 12px;border-radius:8px} .row{display:flex;gap:24px;margin:12px 0} .i{background:#FFE08A;padding:10px;border-radius:8px} .bar{display:flex;gap:6px} .search{flex-grow:1;padding:8px} .go{background:#15803D;color:white;padding:8px 12px;border-radius:8px}' },
+      { html: '<header class="top"><strong>Rosa’s Café</strong><a class="btn">Order</a></header><div class="row"><div class="i">Tea</div><div class="i">Coffee</div></div><div class="bar"><input class="search" placeholder="Search"><a class="go">Go</a></div>', css: 'body{font-family:system-ui,sans-serif;margin:12px} .top{display:flex;justify-content:space-between;align-items:center;background:#FFF1D6;padding:10px;border-radius:12px} .btn{background:#C2410C;color:white;padding:6px 12px;border-radius:8px} .row{display:flex;gap:24px;margin:12px 0} .i{background:#FFE08A;padding:10px;border-radius:8px} .bar{display:flex;gap:6px} .search{flex-grow:1;padding:8px} .go{background:#15803D;color:white;padding:8px 12px;border-radius:8px}' },
       [
         ['.top', 'Name and button pushed to the ends', 'justify-content: space-between', ['justify-content: space-between', 'align-items: center', 'flex-wrap: wrap']],
         ['.row', 'The wide space between Tea and Coffee', 'gap', ['gap', 'margin: auto', 'flex-grow']],

@@ -488,7 +488,7 @@ export const REACT_FOUNDATIONS: Lesson[] = [
       lang: 'jsx',
       code: ['const errors = validate({ name, phone });', '<button disabled={Object.keys(errors).length > 0}>Send</button>', '{errors.phone && <p className="error">{errors.phone}</p>}'],
     }),
-    play('Validation as a function', 'Run it and try different values.', 'validate.js', 'function validate({ name, phone }) {\n  const errors = {};\n  if (name.trim() === "") errors.name = "Enter your name";\n  if (!/^\\d{10}$/.test(phone)) errors.phone = "Enter a 10-digit number";\n  return errors;\n}\n\nconsole.log(validate({ name: "", phone: "98200" }));\nconsole.log(validate({ name: "Asha", phone: "9820000000" }));\n', ['Add an age rule: at least 13', 'Allow a +91 prefix', 'Count the errors with Object.keys']),
+    play('Validation as a function', 'Run it and try different values.', 'validate.js', 'function validate({ name, phone }) {\n  const errors = {};\n  if (name.trim() === "") errors.name = "Enter your name";\n  if (!/^\\d{10}$/.test(phone)) errors.phone = "Enter a 10-digit number";\n  return errors;\n}\n\nconsole.log(validate({ name: "", phone: "98200" }));\nconsole.log(validate({ name: "Ava", phone: "9820000000" }));\n', ['Add an age rule: at least 13', 'Allow a +91 prefix', 'Count the errors with Object.keys']),
     mistake({
       kicker: OOPS,
       title: 'value without onChange',
@@ -521,8 +521,8 @@ export const REACT_FOUNDATIONS: Lesson[] = [
       tests: [
         { call: 'validate({ name: "", phone: "123" })', expect: '({ name: "Enter your name", phone: "Enter a 10-digit number" })' },
         { call: 'validate({ name: "   ", phone: "9820000000" })', expect: '({ name: "Enter your name" })' },
-        { call: 'validate({ name: "Asha", phone: "98200 00000" })', expect: '({ phone: "Enter a 10-digit number" })' },
-        { call: 'validate({ name: "Asha", phone: "9820000000" })', expect: '({})' },
+        { call: 'validate({ name: "Ava", phone: "98200 00000" })', expect: '({ phone: "Enter a 10-digit number" })' },
+        { call: 'validate({ name: "Ava", phone: "9820000000" })', expect: '({})' },
       ],
       hint: 'Start with const errors = {}; use name.trim() === "" and /^\\d{10}$/.test(phone).',
       solution: 'function validate(form) {\n  const errors = {};\n  if (form.name.trim() === "") errors.name = "Enter your name";\n  if (!/^\\d{10}$/.test(form.phone)) errors.phone = "Enter a 10-digit number";\n  return errors;\n}\n',
@@ -549,9 +549,9 @@ export const REACT_FOUNDATIONS: Lesson[] = [
     read({
       kicker: LEARN(2),
       title: 'Objects',
-      body: 'Copy with spread and override what changes: { ...form, phone: value }. For nested objects, copy each level you change: { ...user, address: { ...user.address, city: "Pune" } }.',
+      body: 'Copy with spread and override what changes: { ...form, phone: value }. For nested objects, copy each level you change: { ...user, address: { ...user.address, city: "Paris" } }.',
       lang: 'jsx',
-      code: ['setForm({ ...form, phone: "9820000000" });', 'setUser({ ...user, address: { ...user.address, city: "Pune" } });'],
+      code: ['setForm({ ...form, phone: "9820000000" });', 'setUser({ ...user, address: { ...user.address, city: "Paris" } });'],
     }),
     read({
       kicker: LEARN(3),

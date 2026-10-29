@@ -4,7 +4,7 @@ import { arrange, bugTask, challenge, chat, check, lesson, matchUp, mcq, pairs, 
 
 export const JS_M3: Lesson[] = [
   lesson('j-ops-1', 'Arithmetic', 5, [
-    chat(['Riya’s bill needs maths: price times cups, plus tax, split between friends.', 'JavaScript does maths with the symbols you know, plus a few new ones.']),
+    chat(['Rosa’s bill needs maths: price times cups, plus tax, split between friends.', 'JavaScript does maths with the symbols you know, plus a few new ones.']),
     reveal('The maths operators', [
       ['+ - * /', 'Add, subtract, multiply, divide. 40 * 3 is 120.'],
       ['%', 'Remainder: 7 % 2 is 1. Handy for “is this even?”'],

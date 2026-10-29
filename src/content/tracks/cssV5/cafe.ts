@@ -1,8 +1,8 @@
-// Riya’s Café (Pune): the page the CSS track styles, a little more in every module. Same café as the Python project.
+// Rosa’s Café (Paris): the page the CSS track styles, a little more in every module. Same café as the Python project.
 
 /** The menu page, plain HTML. */
-export const MENU = `<h1>Riya’s Café</h1>
-<p class="tag">Fresh tea and snacks in Pune</p>
+export const MENU = `<h1>Rosa’s Café</h1>
+<p class="tag">Fresh tea and snacks in Paris</p>
 <div class="menu">
   <div class="card"><h2>Lemon Tea</h2><p class="price">₹40</p></div>
   <div class="card"><h2>Coffee</h2><p class="price">₹60</p></div>

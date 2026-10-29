@@ -23,7 +23,7 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
       { heading: 'A box keeps only its latest value', body: 'Storing a new value replaces the old one completely. You can use the old value to work out the new one: total = total + 25 reads total, adds 25 and stores the result back. Python works out the right side first, then stores it on the left. This pattern, updating a value from itself, is how counters and running totals work in every program.', code: ['total = 100', 'total = total + 25'], anim: 'variable' },
     ],
     example: {
-      title: 'Riya’s daily takings',
+      title: 'Rosa’s daily takings',
       code: ['price = 12', 'cups = 40', 'takings = price * cups', 'price = 15', 'print("Today:", takings)', 'print("New price:", price)'],
       walk: [
         { line: 1, text: 'A box called price gets 12.' },
@@ -97,8 +97,8 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     summary: ['Text in quotes is a string: + joins, * repeats, len() counts.', 'f"…{value}…" puts any value or maths inside text.', 'Methods like strip() and title() give back new text; store it to keep it.'],
     mistakes: [
       { title: 'Forgetting the f', bad: ['total = 24', 'print("Total: {total}")'], error: 'Total: {total}', fix: ['total = 24', 'print(f"Total: {total}")'], why: 'Without the f, { } is just text. With it, Python fills in the value: Total: 24.' },
-      { title: 'A quote inside the same kind of quotes', bad: ["print('Riya's tea')"], error: 'SyntaxError: unterminated string literal (detected at line 1)', fix: ["print(\"Riya's tea\")"], why: 'The second quote mark ends the string early. Use double quotes outside when the text has an apostrophe.' },
-      { title: 'Expecting upper() to change the variable', bad: ['name = "riya"', 'name.upper()', 'print(name)'], error: 'riya', fix: ['name = "riya"', 'name = name.upper()', 'print(name)'], why: 'upper() gives back new text. Store it back in name to keep it.' },
+      { title: 'A quote inside the same kind of quotes', bad: ["print('Rosa's tea')"], error: 'SyntaxError: unterminated string literal (detected at line 1)', fix: ["print(\"Rosa's tea\")"], why: 'The second quote mark ends the string early. Use double quotes outside when the text has an apostrophe.' },
+      { title: 'Expecting upper() to change the variable', bad: ['name = "rosa"', 'name.upper()', 'print(name)'], error: 'rosa', fix: ['name = "rosa"', 'name = name.upper()', 'print(name)'], why: 'upper() gives back new text. Store it back in name to keep it.' },
     ],
     check: [
       { q: 'What does print("ab" * 3) show?', options: ['ababab', 'ab ab ab', 'ab3', 'An error'], answer: 0, why: '* repeats the text with nothing in between.' },
@@ -106,20 +106,20 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
       { q: 'What is "  tea ".strip()?', options: ['"tea"', '"  tea "', '"tea "', '"TEA"'], answer: 0, why: 'strip() removes the spaces at both ends.' },
     ],
     sections: [
-      { heading: 'Strings are text', body: 'A string is text inside quotes: "Pune" or \'Pune\'. + joins two strings and * repeats one: "ab" * 3 is "ababab". len(s) counts the characters. Each character has a position starting at 0, so city[0] is the first letter and city[-1] the last. Slices like city[0:3] take a piece, stopping before the second number.', code: ['city = "Pune"', 'print(city[0], city[-1], len(city))   # P e 4'], anim: 'string' },
-      { heading: 'f-strings put values inside text', body: 'Write f before the quotes and put values in curly brackets: f"Hello {name}, you have {n} seats". Python fills them in. Inside the brackets you can do maths, call functions and format numbers, like {price:.2f} for two decimal places. f-strings are the clearest way to build messages, and they avoid mixing up + and commas.', code: ['name, n = "Asha", 2', 'print(f"Hello {name}, {n} seats")'], anim: 'print' },
-      { heading: 'Methods give back new strings', body: 'Strings have methods: .upper(), .lower(), .title(), .strip() to remove spaces at the ends, .replace(a, b) and .split() to cut text into a list of words. Strings never change: every method returns a new string, so store the result, for example name = name.strip().', code: ['raw = "  asha patil "', 'print(raw.strip().title())   # Asha Patil'], anim: 'string' },
+      { heading: 'Strings are text', body: 'A string is text inside quotes: "Paris" or \'Paris\'. + joins two strings and * repeats one: "ab" * 3 is "ababab". len(s) counts the characters. Each character has a position starting at 0, so city[0] is the first letter and city[-1] the last. Slices like city[0:3] take a piece, stopping before the second number.', code: ['city = "Paris"', 'print(city[0], city[-1], len(city))   # P e 4'], anim: 'string' },
+      { heading: 'f-strings put values inside text', body: 'Write f before the quotes and put values in curly brackets: f"Hello {name}, you have {n} seats". Python fills them in. Inside the brackets you can do maths, call functions and format numbers, like {price:.2f} for two decimal places. f-strings are the clearest way to build messages, and they avoid mixing up + and commas.', code: ['name, n = "Ava", 2', 'print(f"Hello {name}, {n} seats")'], anim: 'print' },
+      { heading: 'Methods give back new strings', body: 'Strings have methods: .upper(), .lower(), .title(), .strip() to remove spaces at the ends, .replace(a, b) and .split() to cut text into a list of words. Strings never change: every method returns a new string, so store the result, for example name = name.strip().', code: ['raw = "  ava patil "', 'print(raw.strip().title())   # Ava Patil'], anim: 'string' },
     ],
     example: {
       title: 'Tidy a booking name',
-      code: ['raw = "  ravi KUMAR "', 'name = raw.strip().title()', 'first = name.split()[0]', 'print(f"Welcome, {first}!")', 'print(len(name), name.upper())'],
+      code: ['raw = "  reed KURT "', 'name = raw.strip().title()', 'first = name.split()[0]', 'print(f"Welcome, {first}!")', 'print(len(name), name.upper())'],
       walk: [
         { line: 2, text: 'strip() removes the outside spaces, then title() makes each word start with a capital.' },
-        { line: 3, text: 'split() cuts "Ravi Kumar" into ["Ravi", "Kumar"]; [0] takes the first word.' },
+        { line: 3, text: 'split() cuts "Reed Kurt" into ["Reed", "Kurt"]; [0] takes the first word.' },
         { line: 4, text: 'The f-string puts first inside the message.' },
-        { line: 5, text: '"Ravi Kumar" has 10 characters, including the space.' },
+        { line: 5, text: '"Reed Kurt" has 9 characters, including the space.' },
       ],
-      output: ['Welcome, Ravi!', '10 RAVI KUMAR'],
+      output: ['Welcome, Reed!', '9 REED KURT'],
     },
     industry: 'Most real data arrives as messy text: names with extra spaces, emails in mixed case, phone numbers with dashes. Cleaning it with strip, lower and replace is a daily task for developers and data analysts, and f-strings are how logs, emails and receipts are written.',
     interview: [
@@ -171,7 +171,7 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
   'p-loop-1': {
     minutes: 5,
     sections: [
-      { heading: 'for repeats for each value', body: 'for item in something: runs the indented lines once for every value, with item taking each value in turn. It works on lists, strings (letter by letter) and ranges. The loop variable is just a name you choose; pick one that says what it holds, like for price in prices.', code: ['for city in ["Delhi", "Pune"]:', '    print(city)'], anim: 'loop' },
+      { heading: 'for repeats for each value', body: 'for item in something: runs the indented lines once for every value, with item taking each value in turn. It works on lists, strings (letter by letter) and ranges. The loop variable is just a name you choose; pick one that says what it holds, like for price in prices.', code: ['for city in ["Dublin", "Paris"]:', '    print(city)'], anim: 'loop' },
       { heading: 'range() counts for you', body: 'range(5) gives 0, 1, 2, 3, 4. range(1, 6) gives 1 to 5: it starts at the first number and stops before the second. A third number is the step: range(0, 10, 2) gives 0, 2, 4, 6, 8, and range(5, 0, -1) counts down. Use range when you need to repeat a number of times or need the numbers themselves.', code: ['for i in range(1, 4):', '    print(i)   # 1 2 3'], anim: 'loop' },
       { heading: 'Totals and counts', body: 'To add things up, start a total at 0 before the loop and add to it inside. To count, start at 0 and add 1 when something matches. The print of the final answer goes after the loop, not inside it, or you will see a line for every round. This accumulator pattern is in almost every program.', code: ['total = 0', 'for p in [12, 15, 10]:', '    total += p', 'print(total)   # 37'], anim: 'loop' },
     ],
@@ -266,9 +266,9 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
   'p-dict-1': {
     minutes: 5,
     sections: [
-      { heading: 'Keys and values', body: 'A dictionary maps keys to values: marks = {"Asha": 91, "Ravi": 72}. You look up a value by its key, marks["Asha"], instead of by position. Keys are unique; storing under an existing key replaces its value. Keys are usually strings or numbers, and values can be anything, including lists and other dictionaries.', code: ['marks = {"Asha": 91, "Ravi": 72}', 'print(marks["Asha"])   # 91'], anim: 'dict' },
-      { heading: 'Adding, changing, checking', body: 'd[key] = value adds a new entry or replaces an old one. key in d checks if a key exists, and d.get(key, default) returns the value or the default when the key is missing, instead of crashing with a KeyError. del d[key] removes an entry. len(d) counts the keys.', code: ['marks = {"Asha": 91, "Ravi": 72}', 'marks["Zoya"] = 85', 'print(marks.get("Kabir", 0))   # 0'], anim: 'dict' },
-      { heading: 'Looping and counting', body: 'for key in d loops over the keys; d.items() gives key and value together: for name, m in marks.items(). A dictionary is the natural way to count things: counts[word] = counts.get(word, 0) + 1 adds one for each word. Dictionaries keep the order keys were added.', code: ['marks = {"Asha": 91, "Ravi": 72}', 'for name, m in marks.items():', '    print(name, m)'], anim: 'dict' },
+      { heading: 'Keys and values', body: 'A dictionary maps keys to values: marks = {"Ava": 91, "Reed": 72}. You look up a value by its key, marks["Ava"], instead of by position. Keys are unique; storing under an existing key replaces its value. Keys are usually strings or numbers, and values can be anything, including lists and other dictionaries.', code: ['marks = {"Ava": 91, "Reed": 72}', 'print(marks["Ava"])   # 91'], anim: 'dict' },
+      { heading: 'Adding, changing, checking', body: 'd[key] = value adds a new entry or replaces an old one. key in d checks if a key exists, and d.get(key, default) returns the value or the default when the key is missing, instead of crashing with a KeyError. del d[key] removes an entry. len(d) counts the keys.', code: ['marks = {"Ava": 91, "Reed": 72}', 'marks["Zoey"] = 85', 'print(marks.get("Kaden", 0))   # 0'], anim: 'dict' },
+      { heading: 'Looping and counting', body: 'for key in d loops over the keys; d.items() gives key and value together: for name, m in marks.items(). A dictionary is the natural way to count things: counts[word] = counts.get(word, 0) + 1 adds one for each word. Dictionaries keep the order keys were added.', code: ['marks = {"Ava": 91, "Reed": 72}', 'for name, m in marks.items():', '    print(name, m)'], anim: 'dict' },
     ],
     example: {
       title: 'Count the votes',
@@ -298,7 +298,7 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
   'p-fn-1': {
     minutes: 5,
     sections: [
-      { heading: 'Define once, use many times', body: 'def fare(km): creates a function named fare. The indented lines below are its body, and they run only when the function is called: fare(10). Functions give a name to a piece of work, so you can reuse it, test it on its own and read the main program like a list of steps.', code: ['def greet(name):', '    print("Hello,", name)', '', 'greet("Asha")'], anim: 'function' },
+      { heading: 'Define once, use many times', body: 'def fare(km): creates a function named fare. The indented lines below are its body, and they run only when the function is called: fare(10). Functions give a name to a piece of work, so you can reuse it, test it on its own and read the main program like a list of steps.', code: ['def greet(name):', '    print("Hello,", name)', '', 'greet("Ava")'], anim: 'function' },
       { heading: 'Parameters and arguments', body: 'In def fare(km), km is a parameter: a name for the input. In fare(10), 10 is the argument: the actual value. When the function runs, km holds 10. A function can take several parameters, separated by commas, and they are matched in order.', code: ['def fare(km, rate):', '    return km * rate', 'print(fare(10, 2))   # 20'], anim: 'function' },
       { heading: 'return sends the answer back', body: 'return value ends the function and hands the value back to whoever called it, so you can store it or use it in another calculation. print only shows a value; it does not give it back. A function without return gives back None. Prefer functions that return results and let the caller decide what to print.', code: ['def fare(km, rate):', '    return km * rate', 'total = fare(10, 2) + fare(5, 2)', 'print(total)   # 30'], anim: 'function' },
     ],
@@ -367,7 +367,7 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'A tiny marks file',
-      code: ['with open("marks.txt", "w") as f:', '    f.write("Asha,91\\n")', '    f.write("Ravi,72\\n")', '', 'total = 0', 'with open("marks.txt") as f:', '    for line in f:', '        name, mark = line.strip().split(",")', '        total += int(mark)', 'print("Total:", total)'],
+      code: ['with open("marks.txt", "w") as f:', '    f.write("Ava,91\\n")', '    f.write("Reed,72\\n")', '', 'total = 0', 'with open("marks.txt") as f:', '    for line in f:', '        name, mark = line.strip().split(",")', '        total += int(mark)', 'print("Total:", total)'],
       walk: [
         { line: 1, text: '"w" creates the file (or empties an old one).' },
         { line: 2, text: 'Each line ends with \\n so the next one starts on a new line.' },
@@ -394,18 +394,18 @@ export const PYTHON_NOTES: Record<string, ModuleNotes> = {
     minutes: 6,
     sections: [
       { heading: 'A class describes a kind of object', body: 'class Ticket: describes what every ticket has and can do. Each ticket made from it is an object (an instance) with its own values. Classes keep related data and actions together, so a program about tickets reads like it is about tickets.', code: ['class Ticket:', '    pass', '', 't = Ticket()', 'print(type(t).__name__)   # Ticket'], anim: 'classObject' },
-      { heading: '__init__ and self', body: '__init__ runs automatically when an object is made, and sets up its starting values. self is the object itself: self.name = name stores name on that particular ticket. Every method takes self as its first parameter; Python passes it in for you when you call t.add(1).', code: ['class Ticket:', '    def __init__(self, name, seats):', '        self.name = name', '        self.seats = seats', '', 't = Ticket("Asha", 2)', 'print(t.name, t.seats)   # Asha 2'], anim: 'classObject' },
+      { heading: '__init__ and self', body: '__init__ runs automatically when an object is made, and sets up its starting values. self is the object itself: self.name = name stores name on that particular ticket. Every method takes self as its first parameter; Python passes it in for you when you call t.add(1).', code: ['class Ticket:', '    def __init__(self, name, seats):', '        self.name = name', '        self.seats = seats', '', 't = Ticket("Ava", 2)', 'print(t.name, t.seats)   # Ava 2'], anim: 'classObject' },
       { heading: 'Methods change and use the object', body: 'A method is a function inside a class. It can read and change the object’s attributes through self, so the rules for changing a ticket live in one place. Two objects never share attributes: changing one ticket’s seats leaves the others alone.', code: ['class Ticket:', '    def __init__(self, seats):', '        self.seats = seats', '    def add(self, n):', '        self.seats += n', '', 't = Ticket(2)', 't.add(1)', 'print(t.seats)   # 3'], anim: 'classObject' },
     ],
     example: {
       title: 'Two tickets',
-      code: ['class Ticket:', '    def __init__(self, name, seats):', '        self.name = name', '        self.seats = seats', '', '    def add(self, n):', '        self.seats += n', '', 'a = Ticket("Asha", 2)', 'b = Ticket("Ravi", 1)', 'a.add(3)', 'print(a.name, a.seats)', 'print(b.name, b.seats)'],
+      code: ['class Ticket:', '    def __init__(self, name, seats):', '        self.name = name', '        self.seats = seats', '', '    def add(self, n):', '        self.seats += n', '', 'a = Ticket("Ava", 2)', 'b = Ticket("Reed", 1)', 'a.add(3)', 'print(a.name, a.seats)', 'print(b.name, b.seats)'],
       walk: [
-        { line: 9, text: 'Ticket("Asha", 2) runs __init__ with self as the new object.' },
+        { line: 9, text: 'Ticket("Ava", 2) runs __init__ with self as the new object.' },
         { line: 11, text: 'a.add(3) passes a as self, so only a’s seats change.' },
         { line: 13, text: 'b keeps its own value: objects don’t share attributes.' },
       ],
-      output: ['Asha 5', 'Ravi 1'],
+      output: ['Ava 5', 'Reed 1'],
     },
     industry: 'Most large Python programs, and frameworks like Django, are organised around classes: a User, an Order, a Payment. In teams, a class gives one obvious home for each rule, which makes code easier to find, test and change. Data-only classes are usually written as dataclasses (covered in Advanced).',
     interview: [

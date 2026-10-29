@@ -22,7 +22,7 @@ export const trainList = fill({
     { value: 'map', check: 'map() returns one <li> per train' },
     { value: 'key', check: 'Each item has a unique key' },
   ],
-  output: ['• Rajdhani', '• Shatabdi', '• Vande Bharat'],
+  output: ['• Royal', '• Silver Arrow', '• Valley Express'],
 });
 
 export const nameInput = fill({
@@ -46,7 +46,7 @@ export const nameInput = fill({
     { value: 'setName', check: 'setName stores the text in state' },
     { value: 'value', check: 'e.target.value is what was typed' },
   ],
-  output: ['(type "Asha") Hello Asha'],
+  output: ['(type "Ava") Hello Ava'],
 });
 
 export const loadTrains = fill({

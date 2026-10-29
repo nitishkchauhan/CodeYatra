@@ -1,4 +1,4 @@
-// Riya’s Café (Pune) tools that the JavaScript track builds, and a plain look for its live pages.
+// Rosa’s Café (Paris) tools that the JavaScript track builds, and a plain look for its live pages.
 
 /** A clean look for small pages with buttons, inputs and lists. */
 export const UI = `body { font-family: system-ui, sans-serif; margin: 14px; color: #2B2118; }

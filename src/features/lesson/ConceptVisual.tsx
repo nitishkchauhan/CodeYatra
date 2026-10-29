@@ -111,8 +111,8 @@ export function ConceptVisual({ kind }: { kind: NonNullable<ConceptStep['visual'
         ONE COMPONENT, MANY CARDS
       </T>
       {[
-        ['Delhi', 'Agra'],
-        ['Pune', 'Goa'],
+        ['Dublin', 'Athens'],
+        ['Paris', 'Geneva'],
       ].map(([from, to]) => (
         <View key={from} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <View style={styles.props}>

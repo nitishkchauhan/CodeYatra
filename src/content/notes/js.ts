@@ -8,12 +8,12 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     lang: 'javascript',
     sections: [
       { heading: 'Three languages, three jobs', body: 'A web page is built from three languages. HTML says what each part is: a heading, a button, a list. CSS says how it looks. JavaScript says what it does: what happens on a tap, what to work out, what to load. JavaScript runs in every browser, on servers with Node.js, and inside many apps. It has nothing to do with Java, despite the name.', anim: 'htmlTags' },
-      { heading: 'const, let, and why not var', body: 'const makes a name for a value that will never be given a new value; let makes one you can change. Use const by default: when you read const, you know the value stays put. Older code uses var, which has confusing rules about where a name can be seen, so modern code avoids it. Names are written in camelCase: totalPrice, not total_price.', code: ['const shop = "Riya’s Café";', 'let orders = 0;', 'orders = orders + 1;'], anim: 'variable' },
+      { heading: 'const, let, and why not var', body: 'const makes a name for a value that will never be given a new value; let makes one you can change. Use const by default: when you read const, you know the value stays put. Older code uses var, which has confusing rules about where a name can be seen, so modern code avoids it. Names are written in camelCase: totalPrice, not total_price.', code: ['const shop = "Rosa’s Café";', 'let orders = 0;', 'orders = orders + 1;'], anim: 'variable' },
       { heading: 'Types and template literals', body: 'Every value has a type: number (80 or 3.5), string ("Coffee"), boolean (true or false), undefined (no value yet), null (empty on purpose) and object (arrays and objects). typeof tells you which. Text in backticks is a template literal: ${…} puts any value or sum inside the text, which is clearer than joining with +.', code: ['console.log(typeof 80, typeof "80");', 'console.log(`Total: ₹${2 * 80}`);'], anim: 'types' },
     ],
     example: {
-      title: 'Riya’s order line',
-      code: ['const shop = "Riya’s Café";', 'const dish = "Cheese Toast";', 'let plates = 2;', 'plates = plates + 1;', 'console.log(`${shop}: ${plates} × ${dish} = ₹${plates * 80}`);', 'console.log(typeof plates, typeof dish);'],
+      title: 'Rosa’s order line',
+      code: ['const shop = "Rosa’s Café";', 'const dish = "Cheese Toast";', 'let plates = 2;', 'plates = plates + 1;', 'console.log(`${shop}: ${plates} × ${dish} = ₹${plates * 80}`);', 'console.log(typeof plates, typeof dish);'],
       walk: [
         { line: 1, text: 'const: the shop’s name never changes.' },
         { line: 3, text: 'let: the number of plates will change.' },
@@ -21,7 +21,7 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
         { line: 5, text: 'The template literal fills in the values and works out 3 × 80.' },
         { line: 6, text: 'typeof shows the types: a number and a string.' },
       ],
-      output: ['Riya’s Café: 3 × Cheese Toast = ₹240', 'number string'],
+      output: ['Rosa’s Café: 3 × Cheese Toast = ₹240', 'number string'],
     },
     industry: 'Every front-end developer writes JavaScript daily, and most teams now write TypeScript, which is JavaScript with types checked before it runs. Code reviews often ask for const over let, clear camelCase names, and template literals over joined strings.',
     interview: [
@@ -181,7 +181,7 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
       { heading: 'reduce and sort', body: 'reduce((acc, item) => …, start) walks the list carrying one value along, like a running total. Always give the start value. sort changes the list in place and, with nothing inside, compares items as text, so numbers need (a, b) => a - b. Copy first with [...list] if you need the original.', code: ['prices.reduce((sum, p) => sum + p, 0);', '[...prices].sort((a, b) => a - b);'], anim: 'list' },
     ],
     example: {
-      title: 'Riya’s cart',
+      title: 'Rosa’s cart',
       code: ['const cart = [', '  { dish: "Cheese Toast", price: 80, veg: true },', '  { dish: "Chicken Sandwich", price: 150, veg: false },', '  { dish: "Cookies", price: 20, veg: true },', '];', 'const veg = cart.filter((d) => d.veg);', 'console.log(veg.map((d) => d.dish));', 'console.log(cart.reduce((sum, d) => sum + d.price, 0));', 'console.log(cart.find((d) => d.price > 100).dish);'],
       walk: [
         { line: 1, text: 'An array of objects: the shape of most real data.' },
@@ -278,20 +278,20 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     lang: 'javascript',
     sections: [
       { heading: 'Blueprints', body: 'A class describes a kind of object: the data each one holds and the methods that work on it. new runs the constructor, which sets up the new object’s data on this. Every object made from the class gets its own data but shares the same methods. Class names start with a capital letter.', code: ['class Cart {', '  constructor(owner) {', '    this.owner = owner;', '    this.items = [];', '  }', '}'], anim: 'classObject' },
-      { heading: 'Methods, getters and this', body: 'Methods are functions inside the class. Inside them, this is the object the method was called on, so aman.add("Coffee") changes Aman’s cart only. A getter, written get count(), is read like a property, without brackets. Fields starting with # are private: only the class’s own methods can see them.', code: ['add(dish) {', '  this.items.push(dish);', '}', 'get count() {', '  return this.items.length;', '}'], anim: 'classObject' },
+      { heading: 'Methods, getters and this', body: 'Methods are functions inside the class. Inside them, this is the object the method was called on, so adam.add("Coffee") changes Adam’s cart only. A getter, written get count(), is read like a property, without brackets. Fields starting with # are private: only the class’s own methods can see them.', code: ['add(dish) {', '  this.items.push(dish);', '}', 'get count() {', '  return this.items.length;', '}'], anim: 'classObject' },
       { heading: 'extends and super', body: 'class DeliveryCart extends Cart makes a new class that has everything Cart has, plus more. Its constructor must call super(…) first, which runs Cart’s constructor. Methods can be replaced. Use this sparingly: often plain objects and functions are simpler than a family of classes.', code: ['class DeliveryCart extends Cart {', '  constructor(owner, address) {', '    super(owner);', '    this.address = address;', '  }', '}'], anim: 'classObject' },
     ],
     example: {
       title: 'Carts for two customers',
-      code: ['class Cart {', '  constructor(owner) {', '    this.owner = owner;', '    this.items = [];', '  }', '  add(dish) {', '    this.items.push(dish);', '  }', '  get count() {', '    return this.items.length;', '  }', '}', 'const aman = new Cart("Aman");', 'const priya = new Cart("Priya");', 'aman.add("Coffee");', 'aman.add("Cheese Toast");', 'priya.add("Lemon Tea");', 'console.log(aman.owner, aman.count);', 'console.log(priya.owner, priya.count);'],
+      code: ['class Cart {', '  constructor(owner) {', '    this.owner = owner;', '    this.items = [];', '  }', '  add(dish) {', '    this.items.push(dish);', '  }', '  get count() {', '    return this.items.length;', '  }', '}', 'const adam = new Cart("Adam");', 'const paula = new Cart("Paula");', 'adam.add("Coffee");', 'adam.add("Cheese Toast");', 'paula.add("Lemon Tea");', 'console.log(adam.owner, adam.count);', 'console.log(paula.owner, paula.count);'],
       walk: [
         { line: 2, text: 'The constructor gives each new cart its own items.' },
         { line: 6, text: 'add works on whichever cart it is called on: this.' },
-        { line: 9, text: 'A getter: read as aman.count, no brackets.' },
+        { line: 9, text: 'A getter: read as adam.count, no brackets.' },
         { line: 13, text: 'new makes a cart from the blueprint.' },
         { line: 18, text: 'Each cart kept its own dishes.' },
       ],
-      output: ['Aman 2', 'Priya 1'],
+      output: ['Adam 2', 'Paula 1'],
     },
     industry: 'Classes are common in libraries, games and back-end code. Many modern front-end codebases, including React apps, use plain functions and objects instead, so it’s useful to read both styles.',
     interview: [

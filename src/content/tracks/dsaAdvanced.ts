@@ -204,7 +204,7 @@ export const DSA_ADVANCED: Lesson[] = [
     hook({
       kicker: 'MODULE 4 · DSA ADVANCED',
       title: 'Stations and lines',
-      story: 'A metro map, friends on a social app, web pages linking to each other: all graphs. The question “what is the fewest changes from Rajiv Chowk to Noida?” is answered by breadth-first search, one of the most asked algorithms in interviews.',
+      story: 'A metro map, friends on a social app, web pages linking to each other: all graphs. The question “what is the fewest changes from Rajiv Chowk to Nice?” is answered by breadth-first search, one of the most asked algorithms in interviews.',
       goal: 'Store graphs and use BFS for levels and shortest hop counts.',
       lang: 'python',
       code: ['metro = {', '    "A": ["B", "C"],', '    "B": ["D"],', '    "C": ["D"],', '    "D": [],', '}'],
@@ -214,7 +214,7 @@ export const DSA_ADVANCED: Lesson[] = [
       title: 'Storing a graph',
       body: 'Nodes (vertices) are joined by edges. An adjacency list maps each node to its neighbours: a dict of lists. In an undirected graph add each edge both ways. A grid is a graph too: each cell’s neighbours are up, down, left and right.',
       lang: 'python',
-      code: ['graph = {}', 'for a, b in [("Delhi", "Agra"), ("Agra", "Jaipur")]:', '    graph.setdefault(a, []).append(b)', '    graph.setdefault(b, []).append(a)'],
+      code: ['graph = {}', 'for a, b in [("Dublin", "Athens"), ("Athens", "Jersey")]:', '    graph.setdefault(a, []).append(b)', '    graph.setdefault(b, []).append(a)'],
     }),
     read({
       kicker: LEARN(2),
@@ -394,17 +394,17 @@ export const DSA_ADVANCED: Lesson[] = [
     hook({
       kicker: 'MODULE 7 · DSA ADVANCED',
       title: 'Cheapest, not shortest',
-      story: 'The direct bus from Delhi to Jaipur costs ₹900, but going via Gurugram costs ₹250 + ₹300. Maps, flight search and network routing all need the cheapest route when each link has its own cost. Dijkstra’s algorithm finds it.',
+      story: 'The direct bus from Dublin to Jersey costs ₹900, but going via Glasgow costs ₹250 + ₹300. Maps, flight search and network routing all need the cheapest route when each link has its own cost. Dijkstra’s algorithm finds it.',
       goal: 'Find cheapest paths in weighted graphs with Dijkstra’s algorithm.',
       lang: 'python',
-      code: ['graph = {', '    "Delhi": [("Jaipur", 900), ("Gurugram", 250)],', '    "Gurugram": [("Jaipur", 300)],', '    "Jaipur": [],', '}'],
+      code: ['graph = {', '    "Dublin": [("Jersey", 900), ("Glasgow", 250)],', '    "Glasgow": [("Jersey", 300)],', '    "Jersey": [],', '}'],
     }),
     read({
       kicker: LEARN(1),
       title: 'Weighted graphs',
       body: 'In a weighted graph each edge has a cost: rupees, minutes or kilometres. Store neighbours as (node, cost) pairs. BFS counts edges, so it would pick the ₹900 direct bus. We need the path with the smallest total cost.',
       lang: 'python',
-      code: ['for nxt, cost in graph["Delhi"]:', '    print(nxt, cost)'],
+      code: ['for nxt, cost in graph["Dublin"]:', '    print(nxt, cost)'],
     }),
     read({
       kicker: LEARN(2),
@@ -420,7 +420,7 @@ export const DSA_ADVANCED: Lesson[] = [
       lang: 'python',
       code: ['# every w in the graph must be >= 0'],
     }),
-    play('Cheapest fares', 'Run Dijkstra from Delhi and see the best price to every city.', 'fares.py', 'import heapq\n\ngraph = {\n    "Delhi": [("Jaipur", 900), ("Gurugram", 250), ("Agra", 400)],\n    "Gurugram": [("Jaipur", 300)],\n    "Agra": [("Jaipur", 350)],\n    "Jaipur": [],\n}\n\nbest = {"Delhi": 0}\nh = [(0, "Delhi")]\nwhile h:\n    d, node = heapq.heappop(h)\n    if d > best[node]:\n        continue\n    for nxt, w in graph[node]:\n        if d + w < best.get(nxt, float("inf")):\n            best[nxt] = d + w\n            heapq.heappush(h, (d + w, nxt))\nprint(best)\n', ['Make the Gurugram–Jaipur bus ₹700', 'Add a city reachable only from Agra', 'Keep a parent dict to print the route']),
+    play('Cheapest fares', 'Run Dijkstra from Dublin and see the best price to every city.', 'fares.py', 'import heapq\n\ngraph = {\n    "Dublin": [("Jersey", 900), ("Glasgow", 250), ("Athens", 400)],\n    "Glasgow": [("Jersey", 300)],\n    "Athens": [("Jersey", 350)],\n    "Jersey": [],\n}\n\nbest = {"Dublin": 0}\nh = [(0, "Dublin")]\nwhile h:\n    d, node = heapq.heappop(h)\n    if d > best[node]:\n        continue\n    for nxt, w in graph[node]:\n        if d + w < best.get(nxt, float("inf")):\n            best[nxt] = d + w\n            heapq.heappush(h, (d + w, nxt))\nprint(best)\n', ['Make the Glasgow–Jersey bus ₹700', 'Add a city reachable only from Athens', 'Keep a parent dict to print the route']),
     mistake({
       kicker: OOPS,
       title: 'Using BFS on costs',
@@ -451,7 +451,7 @@ export const DSA_ADVANCED: Lesson[] = [
       file: 'journey.py',
       starter: 'import heapq\n\ndef cheapest(graph, start, goal):\n    return -1\n',
       tests: [
-        { call: 'cheapest({"Delhi": [("Jaipur", 900), ("Gurugram", 250)], "Gurugram": [("Jaipur", 300)], "Jaipur": []}, "Delhi", "Jaipur")', expect: '550' },
+        { call: 'cheapest({"Dublin": [("Jersey", 900), ("Glasgow", 250)], "Glasgow": [("Jersey", 300)], "Jersey": []}, "Dublin", "Jersey")', expect: '550' },
         { call: 'cheapest({"A": [("B", 1)], "B": []}, "A", "A")', expect: '0' },
         { call: 'cheapest({"A": [], "B": []}, "A", "B")', expect: '-1' },
         { call: 'cheapest({"S": [("A", 4), ("B", 1)], "B": [("A", 2), ("C", 5)], "A": [("C", 1)], "C": []}, "S", "C")', expect: '4' },

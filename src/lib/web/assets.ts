@@ -10,7 +10,7 @@ const SVG: Record<string, string> = {
     '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="240" viewBox="0 0 600 240"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDBA74"/><stop offset="1" stop-color="#FEF3C7"/></linearGradient></defs><rect width="600" height="240" fill="url(#s)"/><circle cx="470" cy="90" r="38" fill="#FB923C"/><path d="M0 190q150-60 300 0t300 0v50H0z" fill="#A3D9A5"/><rect x="120" y="120" width="120" height="80" rx="6" fill="#7C2D12"/><path d="M110 125l70-40 70 40z" fill="#C2410C"/><rect x="165" y="160" width="30" height="40" fill="#FDE68A"/></svg>',
   'dish.svg':
     '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260"><rect width="400" height="260" fill="#FDE7C7"/><ellipse cx="200" cy="140" rx="150" ry="90" fill="#FFFFFF"/><ellipse cx="200" cy="140" rx="110" ry="62" fill="#F1F5F9"/><rect x="140" y="100" width="120" height="80" rx="14" fill="#E9A84C"/><rect x="152" y="110" width="96" height="60" rx="10" fill="#F6CD7A"/><circle cx="330" cy="60" r="20" fill="#86C99A"/></svg>',
-  'riya.svg':
+  'portrait.svg':
     '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#E0E7FF"/><circle cx="100" cy="80" r="38" fill="#B45309"/><path d="M30 200c6-50 40-74 70-74s64 24 70 74z" fill="#4B3FD8"/></svg>',
 };
 

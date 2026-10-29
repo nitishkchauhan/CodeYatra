@@ -11,9 +11,9 @@ export const GIT_DRILLS: Record<string, Step[]> = {
     quiz({ prompt: 'What does a good commit message describe?', options: ['What the change does, like “Add fees table”', 'Your mood', 'The date', 'Nothing: leave it empty'], right: 'Right.', wrong: 'Messages should tell the reader what the change does.' }),
   ],
   'git-init': [
-    order({ kicker: K, title: 'Set up Git', instructions: 'Arrange the one-time setup, then start a repository.', lang: 'bash', lines: ['git config --global user.name "Asha Patil"', 'git config --global user.email "asha@example.com"', 'git init'], explain: 'Identity first (once per computer), then git init in each project.' }),
+    order({ kicker: K, title: 'Set up Git', instructions: 'Arrange the one-time setup, then start a repository.', lang: 'bash', lines: ['git config --global user.name "Ava Patil"', 'git config --global user.email "ava@example.com"', 'git init'], explain: 'Identity first (once per computer), then git init in each project.' }),
     quiz({ prompt: 'What does git init create?', options: ['A hidden .git folder that stores the history', 'A website', 'A copy of every file', 'A GitHub account'], right: 'Right.', wrong: 'git init creates .git, the repository itself.' }),
-    quiz({ prompt: 'What does --global do in git config --global user.name "Asha"?', options: ['Saves the setting for every repository on this computer', 'Uploads it to GitHub', 'Applies only to this folder', 'Deletes the old name'], right: 'Right.', wrong: '--global stores it for your user account, so every repository uses it.' }),
+    quiz({ prompt: 'What does --global do in git config --global user.name "Ava"?', options: ['Saves the setting for every repository on this computer', 'Uploads it to GitHub', 'Applies only to this folder', 'Deletes the old name'], right: 'Right.', wrong: '--global stores it for your user account, so every repository uses it.' }),
   ],
   'git-commit': [
     quiz({ prompt: 'git status --short shows "?? notes.txt". What does ?? mean?', options: ['Untracked: Git isn’t tracking it yet', 'Deleted', 'Staged', 'Conflicted'], right: 'Right.', wrong: '?? marks untracked files. git add starts tracking them.', mono: true }),

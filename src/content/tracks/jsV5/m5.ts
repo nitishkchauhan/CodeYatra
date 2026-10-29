@@ -4,7 +4,7 @@ import { arrange, bugTask, challenge, chat, check, lesson, matchUp, mcq, pairs, 
 
 export const JS_M5: Lesson[] = [
   lesson('w-js-1', 'for loops', 5, [
-    chat(['Riya needs token numbers 1 to 5 for the morning queue.', 'Writing console.log five times is boring. A loop repeats code for you.']),
+    chat(['Rosa needs token numbers 1 to 5 for the morning queue.', 'Writing console.log five times is boring. A loop repeats code for you.']),
     run('Count the tokens', 'Pick how many tokens to print.', ['for (let i = 1; i <= {{v}}; i++) {', '  console.log("Token " + i);', '}'], ['3', '5', '1', '0'], { caption: 'With 0, the condition is false straight away, so the loop never runs.' }),
     reveal('The three parts of a for', [
       ['let i = 1', 'Start: make a counter. Runs once.'],

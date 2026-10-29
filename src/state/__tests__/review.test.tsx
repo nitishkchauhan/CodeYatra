@@ -52,7 +52,7 @@ describe('review schedule', () => {
 
 describe('progress keeps the schedule', () => {
   it('schedules a module once when it is first finished, and saves review answers', async () => {
-    await AsyncStorage.setItem(KEY, JSON.stringify({ ...INITIAL, onboarded: true, name: 'Asha' }));
+    await AsyncStorage.setItem(KEY, JSON.stringify({ ...INITIAL, onboarded: true, name: 'Ava' }));
     const hook = await renderHook(() => useProgress(), { wrapper });
     await waitFor(() => expect(hook.result.current.hydrated).toBe(true));
     await act(async () => {

@@ -206,7 +206,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
   v4('p-if-1', 'Making decisions', ['Compare with == (and store with =)', 'Run one branch with if, elif and else', 'Combine checks with and / or'], [
     quiz({
       kicker: 'GUESS FIRST',
-      prompt: 'Riya sold 120 cups today. What do you think this prints?',
+      prompt: 'Rosa sold 120 cups today. What do you think this prints?',
       lang: 'python',
       code: ['cups = 120', 'if cups > 100:', '    print("Busy day!")', 'else:', '    print("Quiet day")'],
       options: ['Busy day!', 'Quiet day', 'Busy day! and Quiet day', 'Nothing'],
@@ -391,7 +391,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
     bug({
       kicker: 'SPOT THE BUG',
       title: 'Day 5 is missing',
-      instructions: 'Riya wants a line for each day, 1 to 5. Read what it printed, then tap the line that caused it.',
+      instructions: 'Rosa wants a line for each day, 1 to 5. Read what it printed, then tap the line that caused it.',
       lang: 'python',
       lines: ['for day in range(1, 5):', '    print("Day", day)'],
       error: 'Day 1\nDay 2\nDay 3\nDay 4',
@@ -455,7 +455,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
   v4('p-while-1', 'while loops', ['Repeat while a condition is True', 'Change something inside so the loop can end', 'Leave a loop early with break'], [
     quiz({
       kicker: 'GUESS FIRST',
-      prompt: 'Riya has 3 cups left. What do you think this prints?',
+      prompt: 'Rosa has 3 cups left. What do you think this prints?',
       lang: 'python',
       code: ['cups = 3', 'while cups > 0:', '    print(cups)', '    cups = cups - 1'],
       options: ['3, 2 and 1', '3', '3, 2, 1 and 0', 'It never stops'],
@@ -580,7 +580,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
   v4('p-loop-2', 'Lists', ['Keep values in order; positions start at 0', 'Add with append() and replace with list[i] = x', 'Visit every item with for item in list'], [
     quiz({
       kicker: 'GUESS FIRST',
-      prompt: 'Riya keeps her menu in a list. What do you think this prints?',
+      prompt: 'Rosa keeps her menu in a list. What do you think this prints?',
       lang: 'python',
       code: ['menu = ["tea", "coffee", "milk"]', 'print(menu[1])'],
       options: ['coffee', 'tea', 'milk', 'An error'],
@@ -640,7 +640,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
     bug({
       kicker: 'SPOT THE BUG',
       title: 'The last item crashed',
-      instructions: 'Riya wanted the last item on the menu. Read the error, then tap the line that caused it.',
+      instructions: 'Rosa wanted the last item on the menu. Read the error, then tap the line that caused it.',
       lang: 'python',
       lines: ['menu = ["tea", "coffee", "milk"]', 'print(menu[3])'],
       error: 'IndexError: list index out of range',
@@ -705,7 +705,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
   v4('p-dict-1', 'Dictionaries', ['Look up a value by its key', 'Add or change with d[key] = value', 'Use in or get() for keys that might be missing'], [
     quiz({
       kicker: 'GUESS FIRST',
-      prompt: 'Riya keeps prices by name. What do you think this prints?',
+      prompt: 'Rosa keeps prices by name. What do you think this prints?',
       lang: 'python',
       code: ['price = {"tea": 12, "coffee": 20}', 'print(price["coffee"])'],
       options: ['20', '12', 'coffee', 'An error'],
@@ -828,12 +828,12 @@ export const PYTHON_V4_MORE: Lesson[] = [
   v4('p-fn-1', 'Functions', ['Define a function with def', 'Call it with your values', 'Give back an answer with return'], [
     quiz({
       kicker: 'GUESS FIRST',
-      prompt: 'Riya’s app greets each customer with a function. What do you think this prints?',
+      prompt: 'Rosa’s app greets each customer with a function. What do you think this prints?',
       lang: 'python',
-      code: ['def greet(name):', '    return "Hi " + name', 'print(greet("Riya"))'],
-      options: ['Hi Riya', 'Hi name', 'greet', 'Nothing'],
-      right: 'greet("Riya") runs the function with name = "Riya" and gives back "Hi Riya". Today you learn functions.',
-      wrong: 'Just a guess is fine. Hint: name becomes "Riya" when greet is called.',
+      code: ['def greet(name):', '    return "Hi " + name', 'print(greet("Rosa"))'],
+      options: ['Hi Rosa', 'Hi name', 'greet', 'Nothing'],
+      right: 'greet("Rosa") runs the function with name = "Rosa" and gives back "Hi Rosa". Today you learn functions.',
+      wrong: 'Just a guess is fine. Hint: name becomes "Rosa" when greet is called.',
     }),
     read({
       kicker: LEARN(1),
@@ -1075,7 +1075,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
   v4('p-file-1', 'Files', ['Write with "w", add with "a", read with "r"', 'Let with close the file for you', 'Read a file line by line'], [
     quiz({
       kicker: 'GUESS FIRST',
-      prompt: 'Riya saves her menu to a file, then reads it back. What do you think it prints?',
+      prompt: 'Rosa saves her menu to a file, then reads it back. What do you think it prints?',
       lang: 'python',
       code: ['with open("menu.txt", "w") as f:', '    f.write("tea\\n")', 'print(open("menu.txt").read().strip())'],
       options: ['tea', 'menu.txt', 'Nothing', 'An error'],
@@ -1135,7 +1135,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
     bug({
       kicker: 'SPOT THE BUG',
       title: 'Where did tea go?',
-      instructions: 'Riya wanted both drinks in the log. Read what it printed, then tap the line that caused it.',
+      instructions: 'Rosa wanted both drinks in the log. Read what it printed, then tap the line that caused it.',
       lang: 'python',
       lines: ['with open("log.txt", "w") as f:', '    f.write("tea\\n")', 'with open("log.txt", "w") as f:', '    f.write("coffee\\n")', 'print(open("log.txt").read().strip())'],
       error: 'coffee',
@@ -1198,7 +1198,7 @@ export const PYTHON_V4_MORE: Lesson[] = [
   v4('p-class-1', 'Classes and objects', ['Describe a new type of thing with class', 'Set up each object in __init__', 'Write methods that use self'], [
     quiz({
       kicker: 'GUESS FIRST',
-      prompt: 'Riya describes a cup in code. What do you think this prints?',
+      prompt: 'Rosa describes a cup in code. What do you think this prints?',
       lang: 'python',
       code: ['class Cup:', '    def __init__(self, size):', '        self.size = size', 'c = Cup("large")', 'print(c.size)'],
       options: ['large', 'size', 'Cup', 'An error'],
