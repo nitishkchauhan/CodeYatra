@@ -71,6 +71,18 @@ export const HTML_M2: Lesson[] = [
     place('Fix the chemistry note', 'Put the 2 in H2O below the line, and the 2 in mc2 above it.', [['<p>H', { gap: 0 }, '2', { gap: 1 }, 'O and E = mc', { gap: 2 }, '2', { gap: 3 }, '</p>']], ['<sub>', '</sub>', '<sup>', '</sup>'], ['<sub>', '</sub>', '<sup>', '</sup>'], 'sub sits below the line (H₂O); sup sits above it (mc²).'),
     place('Show a sale price', 'Cross out the old price and mark the new one.', [['<p>', { gap: 0 }, '₹999', { gap: 1 }, ' ', { gap: 2 }, '₹499', { gap: 3 }, '</p>']], ['<del>', '</del>', '<ins>', '</ins>'], ['<del>', '</del>', '<ins>', '</ins>'], '<del> crosses out what was removed; <ins> marks what was added.'),
     check('Which tag highlights text like a marker pen?', ['<mark>', '<small>', '<em>'], '<mark> gives text a highlighter background.', 'Think of a highlighter.'),
+    reveal('Tags for computer code', [
+      ['<code>', 'A piece of code inside a sentence: shown in a monospace font.'],
+      ['<kbd>', 'Keys to press, like Ctrl + S.'],
+      ['<samp>', 'What a program prints back.'],
+      ['<var>', 'A variable name in maths or code.'],
+      ['<pre>', 'Pre-formatted text: keeps every space and line break, for code blocks.'],
+    ], { mono: true }),
+    explore('Code on a page', ['<p>Press <kbd>Ctrl</kbd> + <kbd>S</kbd> to save.</p>', '<p>Type <code>print("Hi")</code> and you see <samp>Hi</samp>.</p>', '<pre><code>for i in range(3):', '    print(i)</code></pre>'], [
+      [1, '<kbd> shows keys on the keyboard.', 'kbd'],
+      [2, '<code> is code inside a sentence; <samp> is what the program shows.', 'code'],
+      [3, '<pre> keeps the line break and the four spaces exactly as typed. Wrap code blocks in <pre><code>.', 'pre'],
+    ], { page: { html: '<p>Press <kbd>Ctrl</kbd> + <kbd>S</kbd> to save.</p><p>Type <code>print("Hi")</code> and you see <samp>Hi</samp>.</p><pre><code>for i in range(3):\n    print(i)</code></pre>', css: 'body{font-family:sans-serif;margin:12px} kbd{border:1px solid #999;border-bottom-width:3px;border-radius:4px;padding:1px 5px} pre{background:#F3F0FF;padding:8px;border-radius:8px}' }, minTaps: 3 }),
     tapbug('The 2 is in the wrong place', ['<p>Water is H<sup>2</sup>O</p>'], [[1, '<sup>2</sup>', '<sub>2</sub>']], 'The 2 in H₂O sits below the line, so it needs <sub>.'),
     recap([
       ['🅱️', 'b and strong for bold (strong means important)'],

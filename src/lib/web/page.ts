@@ -1,5 +1,6 @@
 // Builds a self-contained HTML page from the learner's HTML, CSS and JS, with
 // console.log and errors forwarded to the app so they can be shown below the preview.
+import { withAssets } from './assets';
 
 export type WebFiles = { html: string; css?: string; js?: string };
 export type PageLog = { level: 'log' | 'error'; text: string };
@@ -84,11 +85,17 @@ const PRACTICE = `<script>
 const BASE_CSS = 'body{font-family:system-ui,-apple-system,Roboto,sans-serif;margin:12px;line-height:1.45;color:#16142B;}';
 
 /** A full document. `</script>` in learner JS is escaped so it can't break out of its tag. */
-export function buildPage({ html, css = '', js = '' }: WebFiles): string {
+export function buildPage({ html: rawHtml, css: rawCss = '', js = '' }: WebFiles): string {
+  // Built-in pictures (cup.svg, banner.svg…) work offline.
+  const html = withAssets(rawHtml);
+  const css = withAssets(rawCss);
   const safeJs = js.replace(/<\/script/gi, '<\/script');
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 ${BRIDGE}${PRACTICE}<style>${BASE_CSS}${css}</style></head><body>${html}<script>try{${safeJs}\n}catch(e){window.onerror && window.onerror(e.message)}</script></body></html>`;
 }
+
+/** Puts a value in each `{{n}}` slot ("copy the look" lessons). */
+export const fillSlots = (css: string, values: string[]) => values.reduce((c, v, i) => c.split(`{{${i}}}`).join(v), css);
 
 /** Parses a bridge message; anything else is ignored. */
 export function readPageMessage(data: unknown): PageLog | null {

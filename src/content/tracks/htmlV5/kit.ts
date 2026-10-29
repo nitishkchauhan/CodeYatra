@@ -63,7 +63,7 @@ export const explore = (title: string, code: string[], notes: [number, string, s
   minTaps: o.minTaps,
 });
 
-export const place = (title: string, instructions: string, lines: Seg[][], pieces: string[], answer: string[], revealText: string, o: { css?: string; preview?: boolean } = {}): PlaceStep => ({
+export const place = (title: string, instructions: string, lines: Seg[][], pieces: string[], answer: string[], revealText: string, o: { css?: string; preview?: boolean; html?: string } = {}): PlaceStep => ({
   type: 'place',
   kicker: 'TRY IT',
   title,
@@ -86,7 +86,7 @@ export const toggle = (title: string, views: [string, string[], string, PagePrev
 export const beforeAfter = (title: string, before: [string[], string, PagePreview?], after: [string[], string, PagePreview?], intro?: string, labels: [string, string] = ['Before', 'After']): ToggleStep =>
   toggle(title, [[labels[0], ...before], [labels[1], ...after]], intro, 'BEFORE / AFTER');
 
-export const live = (title: string, instructions: string, code: string[], choices: string[], o: { css?: string; free?: boolean; caption?: string } = {}): LiveStep => ({
+export const live = (title: string, instructions: string, code: string[], choices: string[], o: { css?: string; free?: boolean; caption?: string; html?: string } = {}): LiveStep => ({
   type: 'live',
   kicker: 'LIVE EDIT',
   title,
@@ -141,7 +141,7 @@ export const xray = (page: PagePreview, parts: [string, string, string, string[]
   need,
 });
 
-export const arrange = (blocks: string[], goal: string, css?: string): ArrangeStep => ({ type: 'arrange', kicker: 'TASK 6 OF 6 · ARRANGE THE BLOCKS', title: 'Build it', instructions: 'Tap the blocks in the right order. The page updates as you go.', blocks, goal, css });
+export const arrange = (blocks: string[], goal: string, css?: string, html?: string): ArrangeStep => ({ type: 'arrange', kicker: 'TASK 6 OF 6 · ARRANGE THE BLOCKS', title: 'Build it', instructions: 'Tap the blocks in the right order. The page updates as you go.', blocks, goal, css, html });
 
 export const finalProject = (o: Omit<WebStep, 'type' | 'kicker'>): WebStep => ({ type: 'web', kicker: 'FINAL PROJECT', ...o });
 

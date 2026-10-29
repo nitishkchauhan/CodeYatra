@@ -13,9 +13,10 @@ import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
-import type { ArrangeStep, ChatStep, ExploreStep, LiveStep, PagePreview, PlaceStep, RecapStep, RevealStep, Seg, SwipeStep, TapBugStep, ToggleStep, XrayStep } from '@/content';
+import type { ArrangeStep, ChatStep, CopyStep, ExploreStep, LiveStep, PagePreview, PlaceStep, RecapStep, ResizeStep, RevealStep, Seg, SwipeStep, TapBugStep, ToggleStep, XrayStep } from '@/content';
 import { haptic } from '@/lib/haptics';
-import { buildPage } from '@/lib/web/page';
+import { pageAtWidth } from '@/lib/web/media';
+import { buildPage, fillSlots } from '@/lib/web/page';
 import { colors, fonts } from '@/theme';
 
 type Done = { onDone: () => void };
@@ -23,6 +24,8 @@ type Checked = Done & { onMistake: () => void };
 
 const HIGHLIGHT = 'outline: 3px solid #FF9F1C !important; outline-offset: 2px; background-color: rgba(255,159,28,.15) !important;';
 const page = (p: PagePreview, extraCss = '') => buildPage({ html: p.html, css: (p.css ?? '') + extraCss });
+/** The code is the page, or (when `html` is given) the code is the stylesheet for that page. */
+const codePage = (code: string, css?: string, html?: string) => (html === undefined ? buildPage({ html: code, css }) : buildPage({ html, css: (css ?? '') + '\n' + code }));
 
 /** A fixed-order shuffle, so a lesson looks the same every time it is opened. */
 function shuffled<T>(items: T[], seed: string): T[] {
@@ -245,7 +248,7 @@ export function LiveScreen({ step, onDone }: { step: LiveStep } & Done) {
   const [value, setValue] = useState(step.choices[0]);
   const [tried, setTried] = useState<string[]>([step.choices[0]]);
   const code = step.code.map((l) => l.replace('{{v}}', value));
-  const doc = useMemo(() => buildPage({ html: code.join('\n'), css: step.css }), [code, step.css]);
+  const doc = useMemo(() => codePage(code.join('\n'), step.css, step.html), [code, step.css, step.html]);
   const pick = (v: string) => {
     setValue(v);
     if (!tried.includes(v)) setTried([...tried, v]);
@@ -301,7 +304,7 @@ export function PlaceScreen({ step, onDone, onMistake }: { step: PlaceStep } & C
   const pieces = useMemo(() => shuffled(step.pieces, step.title), [step.pieces, step.title]);
   const value = (g: number) => (fill[g] === null ? '' : pieces[fill[g]!]);
   const assembled = step.lines.map((segs) => segs.map((s: Seg) => (typeof s === 'string' ? s : value(s.gap))).join(''));
-  const doc = useMemo(() => (step.preview === false ? '' : buildPage({ html: assembled.join('\n'), css: step.css })), [assembled, step.css, step.preview]);
+  const doc = useMemo(() => (step.preview === false ? '' : codePage(assembled.join('\n'), step.css, step.html)), [assembled, step.css, step.html, step.preview]);
   const { style: shakeStyle, shake } = useShake();
   useAutoNext(phase === 'right', onDone, AUTO_NEXT_MS + 500);
 
@@ -644,7 +647,8 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
   const [placed, setPlaced] = useState<number[]>([]);
   const [phase, setPhase] = useState<'ask' | 'right' | 'hint' | 'shown'>('ask');
   const { style: shakeStyle, shake } = useShake();
-  const doc = useMemo(() => buildPage({ html: placed.map((i) => step.blocks[i]).join('\n'), css: step.css }), [placed, step]);
+  const built = placed.map((i) => step.blocks[i]).join('\n');
+  const doc = useMemo(() => codePage(built, step.css, step.html), [built, step]);
   useAutoNext(phase === 'right', onDone, AUTO_NEXT_MS + 600);
   const add = (i: number) => {
     if (phase === 'right' || phase === 'shown') return;
@@ -696,7 +700,120 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
       </T>
       <WebPreview doc={doc} height={190} />
       {phase !== 'ask' ? (
-        <Feedback phase={phase} text={phase === 'right' ? 'Built! The page matches the goal.' : phase === 'hint' ? 'Not in the right order yet. Think about which tag has to open first and close last.' : 'Here is the right order. Read it top to bottom.'} onContinue={onDone} />
+        <Feedback phase={phase} text={phase === 'right' ? 'Built! The page matches the goal.' : phase === 'hint' ? (step.html === undefined ? 'Not in the right order yet. Think about which tag has to open first and close last.' : 'Not in the right order yet. A rule opens with its selector and {, and closes with }. Follow the goal from top to bottom.') : 'Here is the right order. Read it top to bottom.'} onContinue={onDone} />
+      ) : null}
+    </Screen>
+  );
+}
+
+// ── Copy the look ────────────────────────────────────────────────────────────
+
+export function CopyScreen({ step, onDone }: { step: CopyStep } & Done) {
+  const [values, setValues] = useState(() => step.controls.map((c) => c.choices[0]));
+  const target = useMemo(() => buildPage({ html: step.html, css: fillSlots(step.css, step.controls.map((c) => c.answer)) }), [step]);
+  const mine = useMemo(() => buildPage({ html: step.html, css: fillSlots(step.css, values) }), [step, values]);
+  const matched = step.controls.every((c, i) => values[i] === c.answer);
+  // Show the code from the rule that holds the first slot, not the setup rules above it.
+  const lines = fillSlots(step.css, values).split('\n');
+  let from = Math.max(0, step.css.split('\n').findIndex((l) => l.includes('{{')));
+  while (from > 0 && !lines[from].trimEnd().endsWith('{')) from--;
+  useAutoNext(matched, onDone, AUTO_NEXT_MS + 400);
+  return (
+    <Screen>
+      <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
+      <View style={{ flexDirection: 'row', gap: 10 }}>
+        <View style={{ flex: 1, gap: 4 }}>
+          <T variant="labelSm" color={colors.ink2}>
+            TARGET
+          </T>
+          <WebPreview doc={target} height={180} />
+        </View>
+        <View style={{ flex: 1, gap: 4 }}>
+          <T variant="labelSm" color={matched ? colors.success : colors.ink2}>
+            {matched ? 'YOURS ✓' : 'YOURS'}
+          </T>
+          <WebPreview doc={mine} height={180} />
+        </View>
+      </View>
+      {step.controls.map((c, i) => (
+        <View key={c.label} style={{ gap: 6 }}>
+          <T variant="labelSm" color={colors.ink}>
+            {c.label}
+            {values[i] === c.answer ? '  ✓' : ''}
+          </T>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+            {c.choices.map((v) => (
+              <Pressable
+                key={v}
+                accessibilityRole="button"
+                accessibilityLabel={`${c.label}: ${v}`}
+                accessibilityState={{ selected: v === values[i], disabled: matched }}
+                onPress={() => {
+                  if (matched) return;
+                  haptic.tap();
+                  setValues(values.map((x, k) => (k === i ? v : x)));
+                }}
+                style={[styles.chip, v === values[i] && styles.chipOn]}>
+                <T style={{ fontFamily: fonts.mono, fontSize: 13.5, color: v === values[i] ? '#FFFFFF' : colors.ink }}>{v}</T>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      ))}
+      <View style={styles.code}>
+        <CodeBlock lines={lines.slice(from)} lang="css" />
+      </View>
+      {matched ? <Feedback phase="right" text="It matches! Same values, same look." onContinue={onDone} /> : null}
+    </Screen>
+  );
+}
+
+// ── Resize the screen ────────────────────────────────────────────────────────
+
+export function ResizeScreen({ step, onDone }: { step: ResizeStep } & Done) {
+  const [w, setW] = useState(step.widths[0]);
+  const [seen, setSeen] = useState<number[]>([step.widths[0]]);
+  const doc = useMemo(() => pageAtWidth(step.page, w), [step, w]);
+  const device = (x: number) => (x < 600 ? '📱' : x < 1000 ? '📟' : '💻');
+  return (
+    <Screen bar={<Continue ready={seen.length >= step.widths.length} hint="Try every width" onDone={onDone} />}>
+      <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
+      <View style={{ flexDirection: 'row', gap: 6 }} accessibilityRole="tablist">
+        {step.widths.map((x) => (
+          <Pressable
+            key={x}
+            accessibilityRole="tab"
+            accessibilityLabel={`${x} pixels wide`}
+            accessibilityState={{ selected: x === w }}
+            onPress={() => {
+              haptic.tap();
+              setW(x);
+              if (!seen.includes(x)) setSeen([...seen, x]);
+            }}
+            style={[styles.widthStop, x === w && styles.chipOn]}>
+            <T style={{ fontSize: 16 }}>{device(x)}</T>
+            <T style={{ fontFamily: fonts.mono, fontSize: 12, color: x === w ? '#FFFFFF' : colors.ink }}>{x}</T>
+          </Pressable>
+        ))}
+      </View>
+      <View style={styles.ruler}>
+        <View style={[styles.rulerFill, { width: `${Math.round((w / step.widths.at(-1)!) * 100)}%` }]} />
+        <T variant="labelSm" color={colors.ink} style={{ position: 'absolute', alignSelf: 'center' }}>
+          Screen width: {w}px
+        </T>
+      </View>
+      <WebPreview key={w} doc={doc} height={260} />
+      {step.page.css ? (
+        <View style={styles.code}>
+          <CodeBlock lines={step.page.css.trim().split('\n')} lang="css" />
+        </View>
+      ) : null}
+      {step.caption ? (
+        <View style={styles.note}>
+          <T variant="bodySm" color={colors.ink} style={{ fontSize: 14, lineHeight: 21 }}>
+            {step.caption}
+          </T>
+        </View>
       ) : null}
     </Screen>
   );
@@ -732,5 +849,8 @@ const styles = StyleSheet.create({
   swipeGood: { borderColor: colors.success, backgroundColor: colors.successSoft },
   swipeBad: { borderColor: colors.danger, backgroundColor: colors.dangerSoft },
   block: { borderRadius: 8, backgroundColor: '#2A2660', paddingHorizontal: 10, paddingVertical: 6 },
+  widthStop: { flex: 1, minHeight: 52, borderRadius: 12, borderWidth: 1.5, borderColor: colors.line, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', gap: 2 },
+  ruler: { height: 26, borderRadius: 13, backgroundColor: colors.primarySoft, overflow: 'hidden', justifyContent: 'center' },
+  rulerFill: { position: 'absolute', left: 0, top: 0, bottom: 0, backgroundColor: '#C9C3FF' },
   blockPick: { borderRadius: 10, borderWidth: 1.5, borderColor: colors.line, backgroundColor: colors.surface, paddingHorizontal: 12, paddingVertical: 10 },
 });

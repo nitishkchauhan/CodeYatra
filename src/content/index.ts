@@ -10,7 +10,7 @@ import { drillBase, drillLesson, DRILL_PREFIX } from './drills';
 import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
 import { ticketHtml } from './web';
 import { flexRow } from './styling';
-import { CSS_BASIC, CSS_PROJECT_V3 as CSS_PROJECT } from './tracks/cssV3';
+import { CSS_UNITS, CSS_V5 } from './tracks/cssV5';
 import { searchForm } from './html';
 import { HTML_UNITS, HTML_V5 } from './tracks/htmlV5';
 import { cheapTickets } from './js';
@@ -235,8 +235,7 @@ const ALL: Lesson[] = [
   PYTHON_PROJECT,
   ...PYTHON_MORE,
   ...HTML_V5,
-  ...CSS_BASIC,
-  CSS_PROJECT,
+  ...CSS_V5,
   ...JS_BASIC,
   JS_PROJECT,
   ...REACT_FOUNDATIONS,
@@ -410,25 +409,13 @@ export const STAGES: Stage[] = [
     short: 'CSS',
     sub: 'Colours, spacing and layout',
     audience: 'Class 9+',
-    blurb: '12 modules and a project with a live preview: selectors, units, type, box model, flexbox, grid, positioning, states, responsive design, motion and variables.',
+    blurb: '12 modules of short, hands-on lessons with a live preview, each ending in a Challenge: selectors, colours, fonts, the box model, position, flexbox, grid, page parts, states, motion and responsive design.',
     color: '#1572B6',
     soft: '#E3EFF9',
     accent: '#93C5FD',
     icon: 'M4 4h16l-1.5 15L12 21l-6.5-2z M8 8h8l-.5 6-3.5 1-3.5-1',
     units: [
-      unit('c-u1', 'First styles', ref('w-css-1', 'What CSS is and how it works', 'Lesson + live page · 7 min')),
-      unit('c-u2', 'Selectors', ref('c-sel-1', 'Selectors and specificity', 'Lesson + live page · 7 min')),
-      unit('c-u11', 'Units', ref('c-units', 'Colours, units and sizes', 'Lesson + live page · 7 min')),
-      unit('c-u6', 'Typography', ref('c-text-1', 'Typography', 'Lesson + live page · 7 min')),
-      unit('c-u3', 'Box model', ref('c-box-1', 'The box model', 'Lesson + live page · 7 min')),
-      unit('c-u4', 'Flexbox', ref('c-flex-1', 'Flexbox', 'Lesson + live page · 7 min')),
-      unit('c-u7', 'Grid', ref('c-grid-1', 'CSS Grid', 'Lesson + live page · 7 min')),
-      unit('c-u8', 'Positioning', ref('c-pos-1', 'Positioning and stacking', 'Lesson + live page · 7 min')),
-      unit('c-u12', 'States', ref('c-pseudo', 'Pseudo-classes and pseudo-elements', 'Lesson + live page · 7 min')),
-      unit('c-u5', 'Responsive', ref('c-resp-1', 'Responsive design', 'Lesson + live page · 7 min')),
-      unit('c-u9', 'Motion', ref('c-motion-1', 'Transitions and animations', 'Lesson + live page · 7 min')),
-      unit('c-u10', 'Variables', ref('c-vars-1', 'CSS variables and maintainable CSS', 'Lesson + live page · 7 min')),
-      unit('c-u13', 'Project', ref('c-project', 'Project: style the landing page', 'Project · 3 steps · 25 min')),
+      ...CSS_UNITS,
     ],
     practice: [
       { id: 'x-style', title: 'Style the ticket', kind: 'CSS', difficulty: 'Easy', xp: 15 },

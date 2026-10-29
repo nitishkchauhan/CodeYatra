@@ -1,6 +1,6 @@
 # CSS track: Lesson v5 · content draft (v2: full topic coverage)
 
-**Status:** draft for owner review, 29 Oct 2026. Nothing here is in the app yet. Replaces `css-basic.md` (v3 draft); its examples and project are reused.
+**Status:** approved by the owner (“go as suggested”) and built, 29 Oct 2026: `src/content/tracks/cssV5/`. Replaces `css-basic.md` (v3 draft); its examples and project are reused.
 
 **Coverage:** the owner asked for every concept W3Schools teaches in CSS. Their CSS tutorial (basic, advanced, flexbox, grid, responsive) was used as a **topic checklist only**: every topic on it is in a lesson below (see the coverage table at the end). Wording, examples and pictures are our own, so nothing is copied.
 

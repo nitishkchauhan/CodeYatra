@@ -63,6 +63,11 @@ export const HTML_M5: Lesson[] = [
       ['<tbody>', 'The main data rows.'],
       ['<tfoot>', 'Footer rows, like totals.'],
     ], { mono: true, intro: 'Sections help screen readers and make styling easier.' }),
+    explore('Style whole columns', ['<table>', '  <colgroup>', '    <col>', '    <col class="price">', '  </colgroup>', '  <tr><th>Item</th><th>Price</th></tr>', '  <tr><td>Pen</td><td>10</td></tr>', '</table>'], [
+      [2, '<colgroup> goes right after <table> (and any <caption>) and describes the columns.'],
+      [4, 'Each <col> is one column. Styling it colours the whole column at once.', 'col.price'],
+      [3, 'span="2" on a <col> would cover two columns.'],
+    ], { page: { html: '<table><colgroup><col><col class="price"></colgroup><tr><th>Item</th><th>Price</th></tr><tr><td>Pen</td><td>10</td></tr><tr><td>Book</td><td>50</td></tr></table>', css: `${BORDER} col.price{background:#FFF3CD}` }, minTaps: 2 }),
     tapbug('A row that never ends', ['<table>', '  <tr><td>Pen</td><td>10</td>', '  <tr><td>Book</td><td>50</td></tr>', '</table>'], [[2, '<td>10</td>', '<td>10</td></tr>']], 'The first row is missing its </tr>.'),
     recap([
       ['📊', 'table holds tr rows, which hold th and td cells'],

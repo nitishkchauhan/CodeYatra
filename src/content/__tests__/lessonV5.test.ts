@@ -2,25 +2,33 @@ import { describe, expect, it } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 
 import { allLessons, getLesson, isTeaching, STAGES, type Lesson, type Step } from '..';
+import { withAssets } from '@/lib/web/assets';
+import { bodyToScreen, cssAtWidth, vwAt, widthQueryMatches } from '@/lib/web/media';
+import { fillSlots } from '@/lib/web/page';
 
-// Lesson v5 (the HTML track): every screen gives the learner something to do, and every answer is checked here.
+// Lesson v5 (the HTML and CSS tracks): every screen gives the learner something to do, and every answer is checked here.
 const v5: Lesson[] = allLessons().filter((l) => l.format === 'v5');
 const all = v5.flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
 const of = <T extends Step['type']>(type: T) => all.filter(([, s]) => s.type === type) as unknown as [string, Extract<Step, { type: T }>][];
 const rows = <R,>(r: R[]): R[] => (r.length ? r : ([['(none)', null]] as unknown as R[]));
 const dom = (html: string) => new JSDOM(`<!doctype html><body>${html}</body>`).window.document;
 
-describe('the HTML track (Lesson v5)', () => {
-  const track = STAGES.find((s) => s.id === 'html')!;
-  it('has 9 modules, each ending with its Challenge', () => {
-    expect(track.units).toHaveLength(9);
+describe.each([
+  ['html', 9],
+  ['css', 12],
+])('the %s track (Lesson v5)', (id, modules) => {
+  const track = STAGES.find((s) => s.id === id)!;
+  it(`has ${modules} modules, each ending with its Challenge`, () => {
+    expect(track.units).toHaveLength(modules);
     for (const u of track.units) {
       const last = getLesson(u.lessons.at(-1)!.id)!;
       expect(last.badge).toBeDefined();
       for (const r of u.lessons) expect(getLesson(r.id)?.format).toBe('v5');
     }
   });
+});
 
+describe('every Lesson v5 lesson', () => {
   it.each(v5.filter((l) => !l.badge).map((l) => [l.id, l] as const))('%s: short screens, something to do, a recap at the end', (_, l) => {
     expect(l.steps.length).toBeGreaterThanOrEqual(6);
     expect(l.steps.length).toBeLessThanOrEqual(11);
@@ -40,7 +48,7 @@ describe('the HTML track (Lesson v5)', () => {
   });
 
   it('uses no Hindi words', () => {
-    expect(JSON.stringify(v5)).not.toMatch(/\b(namaste|chai|chalo|arre|accha|thali|poha|samosa|roti|sabzi|rajma|chawal|dal|bhai|didi)\b/i);
+    expect(JSON.stringify(v5)).not.toMatch(/\b(namaste|chai|chalo|arre|accha|thali|poha|samosa|roti|sabzi|rajma|chawal|dal|bhai|didi|masala|tiffin|chutney|paneer|ji)\b/i);
   });
 });
 
@@ -102,6 +110,32 @@ describe('Lesson v5 screens', () => {
     expect(new Set(s.blocks).size).toBe(s.blocks.length);
   });
 
+  it.each(rows(of('copy')))('%s: copy the look has a reachable target that isn’t shown at the start', (_, s) => {
+    if (!s) return;
+    s.controls.forEach((c, i) => {
+      expect(s.css.split(`{{${i}}}`).length - 1).toBeGreaterThanOrEqual(1);
+      expect(c.choices).toContain(c.answer);
+      expect(new Set(c.choices).size).toBe(c.choices.length);
+    });
+    expect(s.controls.some((c) => c.choices[0] !== c.answer)).toBe(true);
+    expect(fillSlots(s.css, s.controls.map((c) => c.answer))).not.toMatch(/\{\{\d+\}\}/);
+  });
+
+  it.each(rows(of('resize')))('%s: the layout really changes between the narrowest and widest screen', (_, s) => {
+    if (!s) return;
+    const css = s.page.css ?? '';
+    const [narrow, wide] = [s.widths[0], s.widths.at(-1)!];
+    expect(s.widths).toEqual([...s.widths].sort((x, y) => x - y));
+    // Either a width query switches, or the layout is fluid (vw, clamp, auto-fill, wrap).
+    const switches = cssAtWidth(css, narrow) !== cssAtWidth(css, wide);
+    expect(switches || /vw|clamp\(|auto-fill|auto-fit|flex-wrap:\s*wrap/.test(css)).toBe(true);
+  });
+
+  it.each(rows(of('arrange').filter(([, s]) => s.html !== undefined)))('%s: CSS blocks are whole rules', (_, s) => {
+    if (!s) return;
+    for (const b of s.blocks) expect(b.split('{').length).toBe(b.split('}').length);
+  });
+
   it.each(rows(of('swipe')))('%s: a mix of true and false', (_, s) => {
     if (!s) return;
     expect(s.cards.some((c) => c.answer)).toBe(true);
@@ -111,5 +145,35 @@ describe('Lesson v5 screens', () => {
   it.each(rows(all.filter(([, s]) => s.type === 'quiz')))('%s: distinct options', (_, s) => {
     if (!s || s.type !== 'quiz') return;
     expect(new Set(s.options).size).toBe(s.options.length);
+  });
+});
+
+describe('resize helpers', () => {
+  it('works out width queries', () => {
+    expect(widthQueryMatches(' (min-width: 700px)', 360)).toBe(false);
+    expect(widthQueryMatches('(min-width: 700px)', 900)).toBe(true);
+    expect(widthQueryMatches('screen and (max-width: 40rem)', 600)).toBe(true);
+    expect(widthQueryMatches('(min-width: 600px) and (max-width: 899px)', 900)).toBe(false);
+    expect(widthQueryMatches('(prefers-color-scheme: dark)', 900)).toBeNull();
+  });
+
+  it('unwraps matching queries, drops the rest and leaves other queries alone', () => {
+    const css = 'a{color:red}@media (min-width: 700px){.w{display:grid}}@media (prefers-color-scheme: dark){a{color:white}}';
+    expect(cssAtWidth(css, 360)).toBe('a{color:red}@media (prefers-color-scheme: dark){a{color:white}}');
+    expect(cssAtWidth(css, 900)).toBe('a{color:red}.w{display:grid}@media (prefers-color-scheme: dark){a{color:white}}');
+  });
+
+  it('moves body rules onto the pretend screen, and nothing else', () => {
+    expect(bodyToScreen('body { margin: 12px; }\n.tbody, body > p { color: red; }')).toBe('#cy-vp { margin: 12px; }\n.tbody, #cy-vp > p { color: red; }');
+  });
+
+  it('turns vw into pixels of the chosen width', () => {
+    expect(vwAt('font-size: clamp(1rem, 6vw, 3rem)', 600)).toBe('font-size: clamp(1rem, 36px, 3rem)');
+  });
+
+  it('swaps built-in picture names for the pictures', () => {
+    expect(withAssets('background: url(cup.svg)')).toMatch(/^background: url\(data:image\/svg\+xml,/);
+    expect(withAssets('<img src="dish.svg">')).toMatch(/src="data:image\/svg\+xml,/);
+    expect(withAssets('<img src="photo.svg">')).toBe('<img src="photo.svg">');
   });
 });

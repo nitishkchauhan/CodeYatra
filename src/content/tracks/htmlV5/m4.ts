@@ -83,6 +83,12 @@ export const HTML_M4: Lesson[] = [
       ['loading="lazy"', 'The image loads only when you scroll near it, saving mobile data.', '🐢'],
       ['<picture>', 'Shows a different image on different screen sizes.', '📱'],
     ], { mono: true, code: ['<picture>', '  <source media="(min-width: 650px)" srcset="big.jpg">', '  <img src="small.jpg" alt="Mountain view">', '</picture>'] }),
+    reveal('Image maps', [
+      ['usemap="#menu"', 'Links the picture to a map with that name.'],
+      ['<map name="menu">', 'Holds the clickable areas.'],
+      ['<area shape="rect" coords="0,0,100,80" href="tea.html" alt="Tea">', 'One clickable part: a rectangle from the top-left corner (0,0) to (100,80). Shapes can be rect, circle or poly.'],
+      ['When to use', 'A floor plan or a map with clickable rooms. For normal buttons, use links instead.'],
+    ], { mono: true, code: ['<img src="menu-board.png" alt="Menu board" usemap="#menu">', '<map name="menu">', '  <area shape="rect" coords="0,0,100,80" href="tea.html" alt="Tea">', '</map>'] }),
     tapbug('One tag too many', ['<img src="logo.png" alt="Company logo"></img>'], [[1, '</img>', '']], '<img> is an empty element: it has no closing tag.'),
     recap([
       ['🖼', '<img src alt> adds an image'],

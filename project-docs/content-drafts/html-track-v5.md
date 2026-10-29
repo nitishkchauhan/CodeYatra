@@ -31,6 +31,12 @@ chat → Chat · tapReveal → Tap to reveal · explore → Explore (tap a line,
 - Media previews work offline (built-in pictures instead of web links).
 - Old lesson ids reused so learners keep progress, notes and practice sets (see CHANGELOG, 29 Oct).
 
+## Added after the W3Schools check (29 Oct 2026)
+
+- Computer-code tags (`<code>`, `<kbd>`, `<samp>`, `<var>`, `<pre>`) in 2.3 Text formatting.
+- Image maps (`usemap`, `<map>`, `<area>`) in 4.3 Images (background images were already there).
+- `<colgroup>` and `<col>` in the Tables lesson.
+
 ## Known limits (for later)
 
 - Arrange the blocks accepts only the exact order.

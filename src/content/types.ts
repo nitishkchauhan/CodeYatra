@@ -406,6 +406,8 @@ export type PlaceStep = {
   /** The right piece for each gap. */
   answer: string[];
   css?: string;
+  /** A CSS step: the lines are the stylesheet and this is the page they style. */
+  html?: string;
   /** Shown after it is right. */
   reveal: string;
   /** false: no live page (for code that isn't a page, like file names). */
@@ -429,6 +431,8 @@ export type LiveStep = {
   instructions: string;
   code: string[];
   css?: string;
+  /** A CSS step: the code is the stylesheet and this is the page it styles. */
+  html?: string;
   choices: string[];
   /** Let the learner type their own value too (short text, like their name). */
   free?: boolean;
@@ -474,11 +478,39 @@ export type ArrangeStep = {
   /** In the right order. */
   blocks: string[];
   css?: string;
+  /** A CSS arrange: the blocks are the stylesheet and this is the page they style. */
+  html?: string;
   goal: string;
 };
 
+/**
+ * Copy the look: a target picture at the top, the learner's page below. `css` has one `{{0}}`, `{{1}}`… per control;
+ * the learner picks a value for each until the page matches the target (built from every `answer`).
+ */
+export type CopyStep = {
+  type: 'copy';
+  kicker: string;
+  title: string;
+  instructions: string;
+  html: string;
+  css: string;
+  controls: { label: string; choices: string[]; answer: string }[];
+};
+
+/** Resize the screen: pick a width and the page re-lays out, with `@media (min-/max-width)` applied for that width. */
+export type ResizeStep = {
+  type: 'resize';
+  kicker: string;
+  title: string;
+  instructions: string;
+  page: PagePreview;
+  /** In CSS pixels, narrowest first. */
+  widths: number[];
+  caption?: string;
+};
+
 /** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
-export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild', 'recall', 'chat', 'reveal', 'explore', 'toggle', 'live', 'recap'] as const;
+export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild', 'recall', 'chat', 'reveal', 'explore', 'toggle', 'live', 'recap', 'resize'] as const;
 /** A step that only teaches. Watching a program run is teaching too, unless it ends with a question. */
 export const isTeaching = (s: Step) => (TEACHING_STEPS as readonly string[]).includes(s.type) || (s.type === 'trace' && !s.ask);
 
@@ -512,7 +544,9 @@ export type Step =
   | RecapStep
   | SwipeStep
   | XrayStep
-  | ArrangeStep;
+  | ArrangeStep
+  | CopyStep
+  | ResizeStep;
 
 /**
  * "Read more": a module's notes, a short article read after (or instead of) the lesson.

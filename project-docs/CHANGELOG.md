@@ -2,6 +2,15 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 29 Oct 2026 (branch `lesson-v3`): the CSS track in Lesson v5
+- **CSS rebuilt in full** (`tracks/cssV5/`, approved draft `content-drafts/css-track-v5.md`): 12 modules, 68 short lessons and 12 Module Challenges with badges and stars, covering every topic on the W3Schools CSS list (used as a checklist only; all wording and examples are our own, set in Riya’s Café, Pune). The final challenge styles Sharma Classes with the old project’s four checked steps.
+- **Two new screens** (`features/lesson/V5.tsx`): **Copy the look** (match a target picture by picking values) and **Resize the screen** (see the page at 360–1200px; width media queries and `vw` are worked out for the chosen width in `lib/web/media.ts`).
+- Live edit, tap to place and arrange can now edit a **stylesheet for a fixed page** (`html` on the step). CSS arrange blocks are whole rules.
+- **Built-in pictures** (`lib/web/assets.ts`): lessons write `url(cup.svg)` or `src="dish.svg"` and the page builder swaps in a drawing, so previews work offline.
+- Old CSS ids kept (`w-css-1`, `c-sel-1`, `c-units`, `c-text-1`, `c-box-1`, `c-pos-1`, `c-flex-1`, `c-grid-1`, `c-pseudo`, `c-motion-1`, `c-resp-1`, `c-vars-1`, `c-project`), so progress, notes and practice carry over.
+- **HTML gaps filled** (W3Schools check): computer-code tags in 2.3, image maps in 4.3, `<colgroup>` in the Tables lesson.
+- Tests: the v5 tests now cover both tracks plus copy, resize and the helpers. 4934 tests pass. `supabase/track-lessons.sql` regenerated: run it when `lesson-v3` is merged.
+
 ## 29 Oct 2026 (branch `lesson-v3`): the HTML track in Lesson v5
 - **The owner's HTML track spec, built in full** (`tracks/htmlV5/`, `format: 'v5'`): 9 modules, 39 short lessons (the spec's 38 plus 9.3 "Pages for everyone" on accessibility) and a Module Challenge per module (5 quick questions and 6 tasks, a badge and 1–3 stars). The record of the spec and what changed is in `content-drafts/html-track-v5.md`.
 - **New screen types** (`features/lesson/V5.tsx`): chat, tap to reveal, explore (tap a line, the live page highlights it), tap to place (instead of drag), toggle and before/after, live edit with a slider or choices, tap the bug, recap, swipe true/false, X-ray (tap the live page to name its parts) and arrange the blocks.
