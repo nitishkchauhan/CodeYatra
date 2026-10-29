@@ -14,7 +14,7 @@ Every program answer is run in tests (real JavaScript), so no answer can be wron
 
 **Story thread:** the lessons build **Riya’s Café** tools in Pune: an order counter, a bill with GST, a menu filter, a cart saved on the phone, today’s menu loaded from the café’s server (the practice server inside the app, offline and the same every time). The **final challenge** makes **Sharma Classes** work: the page learners built in HTML and styled in CSS, so the three tracks end in one complete site.
 
-**Size:** 13 modules, 66 lessons, 13 challenges (about 5 hours). The 13 old JavaScript ids are reused (⟵), so learners keep progress, notes and practice sets.
+**Size:** 13 modules, 71 lessons, 13 challenges (about 5 to 6 hours). The 13 old JavaScript ids are reused (⟵), so learners keep progress, notes and practice sets.
 
 ---
 
@@ -160,7 +160,7 @@ The practice server’s menu still uses Hindi dish names (Dal rice, Poha, Rajma 
 
 ## Decisions for you
 
-1. **Size:** 66 lessons in 13 modules (every W3Schools topic). About 3 working sessions to build. OK?
+1. **Size:** 71 lessons in 13 modules (every W3Schools topic). About 3 working sessions to build. OK?
 2. **The final challenge:** **Make Sharma Classes work** (HTML → CSS → JS end on one site), replacing the expense tracker. Same id, so progress is kept. OK?
 3. **Three new screens** (Run and tweak, Predict-then-run for JavaScript, Tap the page): OK?
 4. **Practice server menu** renamed to the café dishes: OK?
