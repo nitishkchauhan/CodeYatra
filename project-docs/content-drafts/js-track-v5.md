@@ -1,6 +1,6 @@
 # JavaScript track: Lesson v5 · content draft
 
-**Status:** draft for owner review, 29 Oct 2026. Nothing here is in the app yet. Replaces `js-basic.md` (v3 draft); its examples and project idea are reused.
+**Status:** approved by the owner and built, 29 Oct 2026: `src/content/tracks/jsV5/`. Replaces `js-basic.md` (v3 draft); its examples and project idea are reused.
 
 **Coverage:** every concept on the W3Schools JavaScript tutorial (basics, HTML DOM, events, web APIs, JSON, async, classes, modules) is in a lesson below; the coverage table is at the end. W3Schools is a **topic checklist only**: all wording, examples and pictures are our own.
 

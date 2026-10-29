@@ -365,7 +365,7 @@ export type RecallStep = {
 // ── Lesson v5 (the HTML track): short phone screens, each with one thing to do. ─────────────────────────
 
 /** A web page shown in a live preview: body HTML, with optional CSS. */
-export type PagePreview = { html: string; css?: string };
+export type PagePreview = { html: string; css?: string; js?: string };
 
 /** Yatri talks: a few short speech bubbles, then a button. */
 export type ChatStep = { type: 'chat'; kicker?: string; lines: string[]; button?: string; code?: string[]; page?: PagePreview };
@@ -408,6 +408,8 @@ export type PlaceStep = {
   css?: string;
   /** A CSS step: the lines are the stylesheet and this is the page they style. */
   html?: string;
+  /** A JavaScript step: the lines are a program; it runs once the gaps are full and its console is shown. */
+  run?: boolean;
   /** Shown after it is right. */
   reveal: string;
   /** false: no live page (for code that isn't a page, like file names). */
@@ -420,7 +422,8 @@ export type ToggleStep = {
   kicker: string;
   title: string;
   intro?: string;
-  views: { label: string; code: string[]; page?: PagePreview; caption: string }[];
+  /** `out`: a JavaScript view shows this console output (checked against a real run) instead of a page. */
+  views: { label: string; code: string[]; page?: PagePreview; out?: string[]; caption: string }[];
 };
 
 /** Change one value in the code and watch the page update. `{{v}}` in `code` marks the value. */
@@ -480,7 +483,39 @@ export type ArrangeStep = {
   css?: string;
   /** A CSS arrange: the blocks are the stylesheet and this is the page they style. */
   html?: string;
+  /** A JavaScript arrange: the blocks are a program; its console is shown, and `expect` is what the right order prints. */
+  run?: boolean;
+  expect?: string[];
   goal: string;
+};
+
+/** Run and tweak: a short program with one value to change (`{{v}}`); every change runs it and shows the console. */
+export type RunStep = {
+  type: 'run';
+  kicker: string;
+  title: string;
+  instructions: string;
+  code: string[];
+  choices: string[];
+  /** A console line to reach by picking values. Continue waits for it. */
+  goal?: string;
+  caption?: string;
+};
+
+/** Something the learner does inside the page in tests: tap an element, type into a field, or send a form. */
+export type TapAction = { click: string } | { type: [string, string] } | { submit: string };
+
+/** Tap the page: a live page with JavaScript and an event log. Continue unlocks when the page logs `goal`. */
+export type TapPageStep = {
+  type: 'tappage';
+  kicker: string;
+  title: string;
+  instructions: string;
+  page: PagePreview;
+  goal: string;
+  /** The taps that reach the goal, run in tests so the goal is always reachable. */
+  demo: TapAction[];
+  caption?: string;
 };
 
 /**
@@ -510,7 +545,7 @@ export type ResizeStep = {
 };
 
 /** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
-export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild', 'recall', 'chat', 'reveal', 'explore', 'toggle', 'live', 'recap', 'resize'] as const;
+export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild', 'recall', 'chat', 'reveal', 'explore', 'toggle', 'live', 'recap', 'resize', 'run', 'tappage'] as const;
 /** A step that only teaches. Watching a program run is teaching too, unless it ends with a question. */
 export const isTeaching = (s: Step) => (TEACHING_STEPS as readonly string[]).includes(s.type) || (s.type === 'trace' && !s.ask);
 
@@ -546,7 +581,9 @@ export type Step =
   | XrayStep
   | ArrangeStep
   | CopyStep
-  | ResizeStep;
+  | ResizeStep
+  | RunStep
+  | TapPageStep;
 
 /**
  * "Read more": a module's notes, a short article read after (or instead of) the lesson.

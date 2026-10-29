@@ -504,7 +504,7 @@ function HtmlTags() {
         </Row>
         <Row gap={4}>
           {b >= 2 ? <Chip tone="warm" k="po">{'<p>'}</Chip> : null}
-          <T style={styles.pageLine}>Dal rice ₹80</T>
+          <T style={styles.pageLine}>Cheese Toast ₹80</T>
           {b >= 2 ? <Chip tone="warm" k="pc">{'</p>'}</Chip> : null}
         </Row>
       </View>
@@ -558,7 +558,7 @@ function LinkJump() {
           <T style={styles.pageTitle}>menu.html</T>
           {b >= 2 ? (
             <Animated.View entering={FadeIn}>
-              <T style={styles.pageLine}>Poha ₹30</T>
+              <T style={styles.pageLine}>Lemon Tea ₹40</T>
             </Animated.View>
           ) : null}
         </View>
@@ -572,7 +572,7 @@ function ImageLoad() {
   return (
     <>
       <View style={[styles.page, { alignSelf: 'center', width: 220, height: 90, alignItems: 'center', justifyContent: 'center' }, b === 1 && { backgroundColor: colors.saffronSoft }]}>
-        {b === 0 ? <T style={styles.pageTitle}>loading thali.jpg…</T> : b === 1 ? <T style={[styles.pageLine, { fontSize: 22 }]}>🍛</T> : <T style={[styles.pageLine, { textAlign: 'center' }]}>“A thali with dal, rice, roti and sabzi”</T>}
+        {b === 0 ? <T style={styles.pageTitle}>loading toast.jpg…</T> : b === 1 ? <T style={[styles.pageLine, { fontSize: 22 }]}>🥪</T> : <T style={[styles.pageLine, { textAlign: 'center' }]}>“Cheese toast on a white plate”</T>}
       </View>
       <Caption>{b < 2 ? 'src is the picture file the browser downloads.' : 'If it can’t load, or the reader can’t see, the alt text says what it shows.'}</Caption>
     </>
@@ -611,7 +611,7 @@ function Specificity() {
         ))}
       </View>
       <View style={[styles.page, { alignSelf: 'center' }]}>
-        <T style={[styles.pageLine, { color: win >= 0 ? rules[win][2] : colors.ink }]}>Dal rice ₹80</T>
+        <T style={[styles.pageLine, { color: win >= 0 ? rules[win][2] : colors.ink }]}>Cheese Toast ₹80</T>
       </View>
       <Caption>The higher score wins: id beats class, class beats tag.</Caption>
     </>
@@ -626,7 +626,7 @@ function BoxModel() {
         <View style={{ borderWidth: b >= 2 ? 3 : 0, borderColor: colors.primary, borderRadius: 8 }}>
           <View style={{ padding: b >= 1 ? 14 : 2, backgroundColor: b >= 1 ? colors.successSoft : 'transparent', borderRadius: 6 }}>
             <View style={{ backgroundColor: colors.primarySoft, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 4 }}>
-              <T style={styles.pageLine}>Dal rice ₹80</T>
+              <T style={styles.pageLine}>Cheese Toast ₹80</T>
             </View>
           </View>
         </View>
@@ -698,7 +698,7 @@ function StrictEqual() {
 }
 function Callback() {
   const b = useBeat(4);
-  const calls = ['byPrice(Poha, Dal rice)', 'byPrice(Thali, Poha)', 'byPrice(Thali, Dal rice)'];
+  const calls = ['byPrice(Tea, Toast)', 'byPrice(Sandwich, Tea)', 'byPrice(Sandwich, Toast)'];
   return (
     <>
       <Row>

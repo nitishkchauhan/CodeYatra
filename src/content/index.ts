@@ -14,7 +14,7 @@ import { CSS_UNITS, CSS_V5 } from './tracks/cssV5';
 import { searchForm } from './html';
 import { HTML_UNITS, HTML_V5 } from './tracks/htmlV5';
 import { cheapTickets } from './js';
-import { JS_BASIC, JS_PROJECT_V3 as JS_PROJECT } from './tracks/jsV3';
+import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
@@ -236,8 +236,7 @@ const ALL: Lesson[] = [
   ...PYTHON_MORE,
   ...HTML_V5,
   ...CSS_V5,
-  ...JS_BASIC,
-  JS_PROJECT,
+  ...JS_V5,
   ...REACT_FOUNDATIONS,
   REACT_PROJECT,
   ...NODE_LESSONS,
@@ -432,25 +431,13 @@ export const STAGES: Stage[] = [
     short: 'JavaScript',
     sub: 'The language of the web',
     audience: 'Class 10+',
-    blurb: '12 modules and a project: values, operators, functions and closures, array methods, objects, classes, errors, the DOM and async, all run and tested on your phone.',
+    blurb: '13 modules of short, hands-on lessons that run real code on your phone, each ending in a Challenge: values, decisions, loops, functions, arrays, objects, classes, errors, the DOM, events, storage and fetch.',
     color: '#A16207',
     soft: '#FEF7D6',
     accent: '#FDE047',
     icon: 'M4 4h16v16H4z M10 9v6.5a1.5 1.5 0 01-3 0 M17 10a2 2 0 00-3.5 0c0 2.5 3.5 1.5 3.5 4a2 2 0 01-3.5 0',
     units: [
-      unit('j-u1', 'Variables', ref('j-var-1', 'Variables, values and console.log', 'Lesson + code editor · 8 min')),
-      unit('j-u11', 'Operators', ref('j-ops-1', 'Operators and comparisons', 'Lesson + code editor · 8 min')),
-      unit('j-u6', 'Decisions', ref('j-cond-1', 'Decisions: if, else and switch', 'Lesson + code editor · 8 min')),
-      unit('j-u2', 'Loops', ref('w-js-1', 'Loops: for, while and for…of', 'Lesson + code editor · 8 min')),
-      unit('j-u12', 'Functions', ref('j-fn-1', 'Functions, scope and closures', 'Lesson + code editor · 9 min')),
-      unit('j-u3', 'Arrays', ref('j-arr-1', 'Arrays and array methods', 'Lesson + code editor · 9 min')),
-      unit('j-u7', 'Callbacks', ref('j-arrow-1', 'Arrow functions, callbacks and modules', 'Lesson + code editor · 8 min')),
-      unit('j-u4', 'Objects', ref('j-obj-1', 'Objects, destructuring and spread', 'Lesson + code editor · 9 min')),
-      unit('j-u8', 'Classes', ref('j-class-1', 'Classes', 'Lesson + code editor · 8 min')),
-      unit('j-u9', 'Errors', ref('j-error-1', 'Handling errors', 'Lesson + code editor · 8 min')),
-      unit('j-u5', 'The DOM', ref('j-dom-1', 'The DOM, events and storage', 'Lesson + live page · 10 min')),
-      unit('j-u10', 'Async', ref('j-async-1', 'Promises, async/await and fetch', 'Lesson + code editor · 10 min')),
-      unit('j-u13', 'Project', ref('j-project', 'Project: expense tracker', 'Project · 4 steps · 25 min')),
+      ...JS_UNITS,
     ],
     practice: [
       { id: 'x-seats', title: 'Count the seats', kind: 'Code editor', difficulty: 'Easy', xp: 15 },

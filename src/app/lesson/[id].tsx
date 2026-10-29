@@ -21,7 +21,7 @@ import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/
 import { LessonTopBar } from '@/features/lesson/Shell';
 import { HookStep, MistakeStep, TryStep } from '@/features/lesson/V2Steps';
 import { BugStepV4, RecallStep } from '@/features/lesson/V4';
-import { ArrangeScreen, ChatScreen, CopyScreen, ExploreScreen, LiveScreen, PlaceScreen, RecapScreen, ResizeScreen, RevealScreen, SwipeScreen, TapBugScreen, ToggleScreen, XrayScreen } from '@/features/lesson/V5';
+import { ArrangeScreen, ChatScreen, CopyScreen, ExploreScreen, LiveScreen, PlaceScreen, RecapScreen, ResizeScreen, RevealScreen, RunScreen, SwipeScreen, TapPageScreen, TapBugScreen, ToggleScreen, XrayScreen } from '@/features/lesson/V5';
 import { GroupStep, MatchStep, PageBuildStep, ScenarioStep, TraceStep } from '@/features/lesson/V3Steps';
 import { WebBuildStep } from '@/features/lesson/WebBuildStep';
 import { track } from '@/lib/telemetry';
@@ -209,6 +209,8 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
           {step.type === 'arrange' && <ArrangeScreen step={step} onDone={next} onMistake={onMistake} />}
           {step.type === 'copy' && <CopyScreen step={step} onDone={next} />}
           {step.type === 'resize' && <ResizeScreen step={step} onDone={next} />}
+          {step.type === 'run' && <RunScreen step={step} onDone={next} />}
+          {step.type === 'tappage' && <TapPageScreen step={step} onDone={next} />}
         </View>
       </Animated.View>
     </SafeAreaView>

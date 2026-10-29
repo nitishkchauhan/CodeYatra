@@ -189,7 +189,8 @@ export function TraceStep({ step, onDone, onMistake }: Props<Trace>) {
         {ask && done ? (
           <Animated.View entering={FadeInDown.duration(260)} style={{ gap: 8 }} accessibilityRole="radiogroup">
             <T variant="label">{ask.prompt}</T>
-            {ask.options.map((o, i) => {
+            {optionOrder(ask.prompt, ask.options.length).map((i) => {
+              const o = ask.options[i];
               const selected = pick === i;
               const out = ruledOut.includes(i);
               return (

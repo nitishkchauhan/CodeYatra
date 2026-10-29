@@ -37,11 +37,12 @@ describe('watch it run', () => {
     for (let i = 0; i < 3; i++) await fireEvent.press(screen.getByRole('button', { name: 'Next step' }));
     expect(screen.getByText('Finished')).toBeTruthy();
     expect(screen.getAllByText('6').length).toBeGreaterThan(0);
-    await fireEvent.press(screen.getAllByRole('radio')[1]);
+    // Options are shown shuffled, so pick them by their text.
+    await fireEvent.press(screen.getByRole('radio', { name: '5' }));
     await fireEvent.press(screen.getByRole('button', { name: 'Check' }));
     expect(onMistake).toHaveBeenCalledTimes(1);
     await fireEvent.press(screen.getByRole('button', { name: 'Try again' }));
-    await fireEvent.press(screen.getAllByRole('radio')[0]);
+    await fireEvent.press(screen.getByRole('radio', { name: '6' }));
     await fireEvent.press(screen.getByRole('button', { name: 'Check' }));
     expect(screen.getByText('2 × 3 is 6.')).toBeTruthy();
   }, 30000);

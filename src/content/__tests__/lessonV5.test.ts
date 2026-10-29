@@ -1,12 +1,16 @@
 import { describe, expect, it } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 
-import { allLessons, getLesson, isTeaching, STAGES, type Lesson, type Step } from '..';
+import { allLessons, getLesson, isTeaching, STAGES, type Lesson, type Step, type TapAction } from '..';
+import { runPage } from '../testing/page';
+import { runJs } from '../testing/run';
+import { parseTrace } from '../trace';
+import { traceProgramJs } from '../traceJs';
 import { withAssets } from '@/lib/web/assets';
 import { bodyToScreen, cssAtWidth, vwAt, widthQueryMatches } from '@/lib/web/media';
 import { fillSlots } from '@/lib/web/page';
 
-// Lesson v5 (the HTML and CSS tracks): every screen gives the learner something to do, and every answer is checked here.
+// Lesson v5 (the HTML, CSS and JavaScript tracks): every screen gives the learner something to do, and every answer is checked here.
 const v5: Lesson[] = allLessons().filter((l) => l.format === 'v5');
 const all = v5.flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
 const of = <T extends Step['type']>(type: T) => all.filter(([, s]) => s.type === type) as unknown as [string, Extract<Step, { type: T }>][];
@@ -16,6 +20,7 @@ const dom = (html: string) => new JSDOM(`<!doctype html><body>${html}</body>`).w
 describe.each([
   ['html', 9],
   ['css', 12],
+  ['js', 13],
 ])('the %s track (Lesson v5)', (id, modules) => {
   const track = STAGES.find((s) => s.id === id)!;
   it(`has ${modules} modules, each ending with its Challenge`, () => {
@@ -43,7 +48,10 @@ describe('every Lesson v5 lesson', () => {
   it.each(v5.filter((l) => l.badge).map((l) => [l.id, l] as const))('%s: 5 questions, then the 6 tasks in order', (_, l) => {
     const types = l.steps.map((s) => s.type);
     expect(types.slice(0, 5)).toEqual(['quiz', 'quiz', 'quiz', 'quiz', 'quiz']);
-    expect(types.slice(5, 10)).toEqual(['swipe', 'match', 'quiz', 'tapbug', 'xray']);
+    expect(types.slice(5, 9)).toEqual(['swipe', 'match', 'quiz', 'tapbug']);
+    // Task 5: X-ray on a page, or (JavaScript) predict what a program prints.
+    expect(['xray', 'trace']).toContain(types[9]);
+    if (types[9] === 'trace') expect((l.steps[9] as Extract<Step, { type: 'trace' }>).ask).toBeDefined();
     expect(['arrange', 'web']).toContain(types[10]);
   });
 
@@ -145,6 +153,92 @@ describe('Lesson v5 screens', () => {
   it.each(rows(all.filter(([, s]) => s.type === 'quiz')))('%s: distinct options', (_, s) => {
     if (!s || s.type !== 'quiz') return;
     expect(new Set(s.options).size).toBe(s.options.length);
+  });
+});
+
+/** Runs a program like the app's console does, and keeps a thrown error as the last line. */
+const tryJs = (code: string): { out: string[]; error?: string } => {
+  try {
+    return { out: runJs(code) };
+  } catch (e) {
+    return { out: [], error: String(e) };
+  }
+};
+
+/** Does what a learner would do in the page: tap, type or send a form. */
+const act = (w: Awaited<ReturnType<typeof runPage>>["window"], a: TapAction) => {
+  const d = w.document;
+  if ('click' in a) d.querySelector<HTMLElement>(a.click)!.dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  else if ('type' in a) {
+    const el = d.querySelector<HTMLInputElement>(a.type[0])!;
+    el.value = a.type[1];
+    el.dispatchEvent(new w.Event('input', { bubbles: true }));
+    el.dispatchEvent(new w.Event('change', { bubbles: true }));
+  } else d.querySelector<HTMLFormElement>(a.submit)!.dispatchEvent(new w.Event('submit', { bubbles: true, cancelable: true }));
+};
+
+describe('Lesson v5 JavaScript screens', () => {
+  it.each(rows(of('run')))('%s: every value runs, and the target can be reached', (_, s) => {
+    if (!s) return;
+    expect(s.code.join('\n').split('{{v}}').length - 1).toBe(1);
+    expect(new Set(s.choices).size).toBeGreaterThanOrEqual(2);
+    const runs = s.choices.map((c) => tryJs(s.code.join('\n').replace('{{v}}', c)));
+    // A value may cause an error on purpose, but the first one (shown at the start) always runs.
+    expect(runs[0].error).toBeUndefined();
+    expect(runs[0].out.length).toBeGreaterThan(0);
+    if (s.goal) {
+      expect(runs[0].out).not.toContain(s.goal);
+      expect(runs.some((r) => r.out.includes(s.goal!))).toBe(true);
+    }
+  });
+
+  it.each(rows(of('tappage')))('%s: the page runs, and the demo taps reach the goal', async (_, s) => {
+    if (!s) return;
+    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js });
+    expect(logs.filter((l) => l.level === 'error')).toEqual([]);
+    expect(logs.some((l) => l.text.includes(s.goal))).toBe(false);
+    for (const a of s.demo) act(window, a);
+    await new Promise((r) => setTimeout(r, 1300));
+    expect(logs.filter((l) => l.level === 'error')).toEqual([]);
+    expect(logs.map((l) => l.text).some((t) => t.includes(s.goal))).toBe(true);
+  });
+
+  it.each(rows(of('toggle').filter(([, s]) => s.views.some((v) => v.out))))('%s: each version prints what it says', (_, s) => {
+    if (!s) return;
+    for (const v of s.views) {
+      const r = tryJs(v.code.join('\n'));
+      expect(r.error ? [...r.out, r.error] : r.out).toEqual(v.out);
+    }
+  });
+
+  it.each(rows(of('place').filter(([, s]) => s.run)))('%s: the finished program runs', (_, s) => {
+    if (!s) return;
+    const code = s.lines.map((segs) => segs.map((g) => (typeof g === 'string' ? g : s.answer[g.gap])).join('')).join('\n');
+    const r = tryJs(code);
+    expect(r.error).toBeUndefined();
+    expect(r.out.length).toBeGreaterThan(0);
+  });
+
+  it.each(rows(of('arrange').filter(([, s]) => s.run)))('%s: the right order prints the goal, and the reverse doesn’t', (_, s) => {
+    if (!s) return;
+    expect(tryJs(s.blocks.join('\n'))).toEqual({ out: s.expect });
+    expect(tryJs([...s.blocks].reverse().join('\n'))).not.toEqual({ out: s.expect });
+  });
+
+  it.each(rows(of('trace').filter(([, s]) => s.lang === 'javascript' && s.stops)))('%s: each stop’s answer is what really happens', (_, s) => {
+    if (!s) return;
+    const t = parseTrace(runJs(traceProgramJs(s.code)))!;
+    expect(t.error).toBeUndefined();
+    let from = -1;
+    for (const stop of s.stops!) {
+      const at = t.frames.findIndex((f, i) => f.line === stop.line && i > from);
+      expect(at).toBeGreaterThanOrEqual(0);
+      from = at;
+      const after = t.frames[at + 1];
+      const truth = 'var' in stop.check ? after.vars[stop.check.var] : after.out.replace(/\n$/, '').split('\n').at(-1);
+      expect(stop.options[stop.answer]).toBe(truth);
+      expect(new Set(stop.options).size).toBe(stop.options.length);
+    }
   });
 });
 

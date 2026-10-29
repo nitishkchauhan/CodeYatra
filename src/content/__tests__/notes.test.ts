@@ -75,8 +75,8 @@ describe('see it build (web pages)', () => {
   const steps = STAGES.flatMap((s) => s.units.flatMap((u) => u.lessons.map((r) => getLesson(r.id)!)))
     .flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const))
     .filter(([, s]) => s.type === 'pagebuild');
-  it.each(steps)('%s: steps go forward through real lines and end at the last one', (_, s) => {
-    if (s.type !== 'pagebuild') return;
+  it.each(steps.length ? steps : [['(none)', null] as unknown as (typeof steps)[number]])('%s: steps go forward through real lines and end at the last one', (_, s) => {
+    if (s?.type !== 'pagebuild') return;
     const lines = s.steps.map((x) => x.line);
     expect(lines).toEqual([...lines].sort((a, b) => a - b));
     expect(lines[0]).toBeGreaterThanOrEqual(1);

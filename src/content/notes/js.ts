@@ -394,7 +394,7 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
         { line: 7, text: 'Keep the veg dishes and add one list item each.' },
         { line: 12, text: 'No reply at all lands here.' },
       ],
-      output: ['Veg menu', 'Dal rice ₹80', 'Poha ₹30', 'Rajma chawal ₹90'],
+      output: ['Veg menu', 'Lemon Tea ₹40', 'Cheese Toast ₹80', 'Veg Sandwich ₹90'],
     },
     industry: 'Nearly every screen in a real app loads data, so teams use helpers or libraries that handle loading, errors, retries and caching. Designers draw the loading, empty and error states as carefully as the main one.',
     interview: [

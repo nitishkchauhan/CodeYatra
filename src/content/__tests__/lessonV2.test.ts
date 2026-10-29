@@ -39,8 +39,8 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-// HTML and CSS now follow Lesson v5 (lessonV5.test.ts).
-describe.each(['next', 'sql', 'dsa', 'js', 'react', 'placement', 'cbse', 'foundations', 'git', 'node', 'c', 'java', 'dsa2'])('%s follows Lesson v2', (track) => {
+// HTML, CSS and JavaScript now follow Lesson v5 (lessonV5.test.ts).
+describe.each(['next', 'sql', 'dsa', 'react', 'placement', 'cbse', 'foundations', 'git', 'node', 'c', 'java', 'dsa2'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);

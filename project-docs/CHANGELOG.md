@@ -2,6 +2,18 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 29 Oct 2026 (branch `lesson-v3`): the JavaScript track in Lesson v5
+- **JavaScript rebuilt in full** (`tracks/jsV5/`, approved draft `content-drafts/js-track-v5.md`): 13 modules, 71 short lessons and 13 challenges with badges and stars, covering every topic on the W3Schools JavaScript list (checklist only; our own wording and Riya’s Café examples). The final challenge, **Make Sharma Classes work** (`j-project`), adds a course filter, form checks, batches from the server and a saved dark mode to the page from the HTML and CSS tracks.
+- **Three new screens** (`features/lesson/V5.tsx`):
+  - **Run and tweak** (`run` step): change one value and the code runs again in the app’s sandbox, with the console underneath; optional targets to reach.
+  - **Predict, then run** for JavaScript: the existing trace with pauses, now with JavaScript lessons.
+  - **Tap the page** (`tappage` step): a live page with JavaScript and an event log; Continue unlocks when the goal appears.
+- Tap to place and arrange can now hold a **program** (`run`): it runs and the console shows the result. Toggle views can show **console output** (`out`) instead of a page.
+- The end-of-trace question now shuffles its options, like every other question.
+- **No Hindi words:** the practice server menu (`/api/menu`) is now Lemon Tea, Cheese Toast, Veg Sandwich and Chicken Sandwich; animations updated too. (The older HTML/CSS/JS notes still have some; a separate task is queued.)
+- Old JavaScript ids kept (`j-var-1`, `j-ops-1`, `j-cond-1`, `w-js-1`, `j-fn-1`, `j-arrow-1`, `j-arr-1`, `j-obj-1`, `j-class-1`, `j-error-1`, `j-dom-1`, `j-async-1`, `j-project`), so progress, notes and practice carry over.
+- Tests: every program, toggle output, trace pause, arrange order and live page (run with its demo taps in a test browser) is checked. 5441 tests pass. `supabase/track-lessons.sql` regenerated: run it when `lesson-v3` is merged.
+
 ## 29 Oct 2026 (branch `lesson-v3`): the CSS track in Lesson v5
 - **CSS rebuilt in full** (`tracks/cssV5/`, approved draft `content-drafts/css-track-v5.md`): 12 modules, 68 short lessons and 12 Module Challenges with badges and stars, covering every topic on the W3Schools CSS list (used as a checklist only; all wording and examples are our own, set in Riya’s Café, Pune). The final challenge styles Sharma Classes with the old project’s four checked steps.
 - **Two new screens** (`features/lesson/V5.tsx`): **Copy the look** (match a target picture by picking values) and **Resize the screen** (see the page at 360–1200px; width media queries and `vw` are worked out for the chosen width in `lib/web/media.ts`).

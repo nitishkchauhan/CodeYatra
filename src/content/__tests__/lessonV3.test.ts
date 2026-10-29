@@ -98,24 +98,12 @@ describe('Python, Lesson v3', () => {
   });
 });
 
-describe('JavaScript, Lesson v3', () => {
-  const js = STAGES.find((s) => s.id === 'js')!.units.flatMap((u) => u.lessons.map((r) => getLesson(r.id)!));
-  const modules = js.filter((l) => l.kind === 'lesson');
-  it('has 12 Basic modules and the project', () => {
-    expect(modules.filter((l) => l.level === 'basic')).toHaveLength(12);
-    expect(js.at(-1)!.id).toBe('j-project');
-  });
-  it.each(modules.map((l) => [l.id, l] as const))('%s: a moving card for every idea, see it run (or build), and a match or sort', (_, l) => {
-    for (const s of l.steps) if (s.type === 'concept') expect(s.anim).toBeDefined();
-    expect(l.steps.some((s) => (s.type === 'trace' && s.lang === 'javascript') || (s.type === 'pagebuild' && !!s.js))).toBe(true);
-    expect(l.steps.some((s) => s.type === 'match' || s.type === 'group')).toBe(true);
-  });
-});
+// JavaScript lessons now follow Lesson v5 (lessonV5.test.ts).
 
 describe('JavaScript pages', () => {
   const pageBuilds = all.filter(([, s]) => s.type === 'pagebuild' && !!s.js).map(([k, s]) => [k, s] as const);
-  it.each(pageBuilds)('%s: the script up to every step runs on the page without an error', async (_, s) => {
-    if (s.type !== 'pagebuild' || !s.js) return;
+  it.each(pageBuilds.length ? pageBuilds : [['(none)', null] as unknown as (typeof pageBuilds)[number]])('%s: the script up to every step runs on the page without an error', async (_, s) => {
+    if (s?.type !== 'pagebuild' || !s.js) return;
     for (const { line } of s.steps) {
       const page = await runPage({ html: s.html.join('\n'), css: s.css?.join('\n'), js: s.js.slice(0, line).join('\n') }, 700);
       expect(page.logs.filter((l) => l.level === 'error')).toEqual([]);

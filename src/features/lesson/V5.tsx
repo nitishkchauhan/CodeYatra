@@ -13,8 +13,9 @@ import { Yatri } from '@/components/Yatri';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
-import type { ArrangeStep, ChatStep, CopyStep, ExploreStep, LiveStep, PagePreview, PlaceStep, RecapStep, ResizeStep, RevealStep, Seg, SwipeStep, TapBugStep, ToggleStep, XrayStep } from '@/content';
+import type { ArrangeStep, ChatStep, CopyStep, ExploreStep, LiveStep, PagePreview, PlaceStep, RecapStep, ResizeStep, RevealStep, RunStep, Seg, SwipeStep, TapPageStep, TapBugStep, ToggleStep, XrayStep } from '@/content';
 import { haptic } from '@/lib/haptics';
+import { useCodeRunner, type RunOutcome } from '@/lib/runner';
 import { pageAtWidth } from '@/lib/web/media';
 import { buildPage, fillSlots } from '@/lib/web/page';
 import { colors, fonts } from '@/theme';
@@ -23,7 +24,7 @@ type Done = { onDone: () => void };
 type Checked = Done & { onMistake: () => void };
 
 const HIGHLIGHT = 'outline: 3px solid #FF9F1C !important; outline-offset: 2px; background-color: rgba(255,159,28,.15) !important;';
-const page = (p: PagePreview, extraCss = '') => buildPage({ html: p.html, css: (p.css ?? '') + extraCss });
+const page = (p: PagePreview, extraCss = '') => buildPage({ html: p.html, css: (p.css ?? '') + extraCss, js: p.js });
 /** The code is the page, or (when `html` is given) the code is the stylesheet for that page. */
 const codePage = (code: string, css?: string, html?: string) => (html === undefined ? buildPage({ html: code, css }) : buildPage({ html, css: (css ?? '') + '\n' + code }));
 
@@ -207,7 +208,7 @@ export function ToggleScreen({ step, onDone }: { step: ToggleStep } & Done) {
   const [i, setI] = useState(0);
   const [seen, setSeen] = useState<number[]>([0]);
   const v = step.views[i];
-  const doc = useMemo(() => page(v.page ?? { html: v.code.join('\n') }), [v]);
+  const doc = useMemo(() => (v.out ? '' : page(v.page ?? { html: v.code.join('\n') })), [v]);
   return (
     <Screen bar={<Continue ready={seen.length >= step.views.length} hint="Try every switch" onDone={onDone} />}>
       <StepHeader kicker={step.kicker} title={step.title} instructions={step.intro} color={colors.primary} />
@@ -230,9 +231,9 @@ export function ToggleScreen({ step, onDone }: { step: ToggleStep } & Done) {
         ))}
       </View>
       <View style={styles.code}>
-        <CodeBlock lines={v.code} lang="html" />
+        <CodeBlock lines={v.code} lang={v.out ? 'javascript' : 'html'} />
       </View>
-      <WebPreview key={i} doc={doc} height={180} />
+      {v.out ? <ConsoleBox key={i} out={{ ok: true, output: v.out.filter((l) => !/^\w*Error: /.test(l)), error: v.out.find((l) => /^\w*Error: /.test(l)) }} /> : <WebPreview key={i} doc={doc} height={180} />}
       <Animated.View key={`c${i}`} entering={FadeIn.duration(200)} style={styles.note}>
         <T variant="bodySm" color={colors.ink} style={{ fontSize: 14, lineHeight: 21 }}>
           {v.caption}
@@ -304,7 +305,8 @@ export function PlaceScreen({ step, onDone, onMistake }: { step: PlaceStep } & C
   const pieces = useMemo(() => shuffled(step.pieces, step.title), [step.pieces, step.title]);
   const value = (g: number) => (fill[g] === null ? '' : pieces[fill[g]!]);
   const assembled = step.lines.map((segs) => segs.map((s: Seg) => (typeof s === 'string' ? s : value(s.gap))).join(''));
-  const doc = useMemo(() => (step.preview === false ? '' : codePage(assembled.join('\n'), step.css, step.html)), [assembled, step.css, step.html, step.preview]);
+  const doc = useMemo(() => (step.preview === false || step.run ? '' : codePage(assembled.join('\n'), step.css, step.html)), [assembled, step.css, step.html, step.preview, step.run]);
+  const ran = useJsRun(step.run && fill.every((x) => x !== null) ? assembled.join('\n') : null);
   const { style: shakeStyle, shake } = useShake();
   useAutoNext(phase === 'right', onDone, AUTO_NEXT_MS + 500);
 
@@ -376,7 +378,7 @@ export function PlaceScreen({ step, onDone, onMistake }: { step: PlaceStep } & C
           );
         })}
       </View>
-      {step.preview === false ? null : <WebPreview doc={doc} height={160} />}
+      {step.run ? <ConsoleBox out={ran} waiting="Fill every gap to run it" /> : step.preview === false ? null : <WebPreview doc={doc} height={160} />}
       {phase !== 'ask' ? (
         <Feedback
           phase={phase}
@@ -648,7 +650,8 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
   const [phase, setPhase] = useState<'ask' | 'right' | 'hint' | 'shown'>('ask');
   const { style: shakeStyle, shake } = useShake();
   const built = placed.map((i) => step.blocks[i]).join('\n');
-  const doc = useMemo(() => codePage(built, step.css, step.html), [built, step]);
+  const doc = useMemo(() => (step.run ? '' : codePage(built, step.css, step.html)), [built, step]);
+  const ran = useJsRun(step.run && placed.length ? built : null);
   useAutoNext(phase === 'right', onDone, AUTO_NEXT_MS + 600);
   const add = (i: number) => {
     if (phase === 'right' || phase === 'shown') return;
@@ -698,9 +701,9 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
       <T variant="labelSm" color={colors.ink2}>
         GOAL · {step.goal}
       </T>
-      <WebPreview doc={doc} height={190} />
+      {step.run ? <ConsoleBox out={ran} waiting="Tap a block to start" /> : <WebPreview doc={doc} height={190} />}
       {phase !== 'ask' ? (
-        <Feedback phase={phase} text={phase === 'right' ? 'Built! The page matches the goal.' : phase === 'hint' ? (step.html === undefined ? 'Not in the right order yet. Think about which tag has to open first and close last.' : 'Not in the right order yet. A rule opens with its selector and {, and closes with }. Follow the goal from top to bottom.') : 'Here is the right order. Read it top to bottom.'} onContinue={onDone} />
+        <Feedback phase={phase} text={phase === 'right' ? (step.run ? 'It runs! The output matches the goal.' : 'Built! The page matches the goal.') : phase === 'hint' ? (step.html === undefined ? 'Not in the right order yet. Think about which tag has to open first and close last.' : 'Not in the right order yet. A rule opens with its selector and {, and closes with }. Follow the goal from top to bottom.') : 'Here is the right order. Read it top to bottom.'} onContinue={onDone} />
       ) : null}
     </Screen>
   );
@@ -819,6 +822,148 @@ export function ResizeScreen({ step, onDone }: { step: ResizeStep } & Done) {
   );
 }
 
+// ── JavaScript: the console ──────────────────────────────────────────────────
+
+/** Runs `code` (when not null) in the app's JavaScript sandbox; reruns whenever the code changes. */
+function useJsRun(code: string | null) {
+  const run = useCodeRunner();
+  const [res, setRes] = useState<{ code: string; out: RunOutcome } | null>(null);
+  useEffect(() => {
+    if (code === null) return;
+    let live = true;
+    run('javascript', code).then((out) => live && setRes({ code, out }));
+    return () => {
+      live = false;
+    };
+  }, [code, run]);
+  return code !== null && res?.code === code ? res.out : null;
+}
+
+function ConsoleBox({ out, label = 'CONSOLE', waiting = 'Running…' }: { out: RunOutcome | null; label?: string; waiting?: string }) {
+  return (
+    <View style={styles.console} accessibilityLiveRegion="polite">
+      <T style={styles.consoleLabel}>{label}</T>
+      {!out ? (
+        <T style={[styles.mono, { color: '#8E89C4' }]}>{waiting}</T>
+      ) : (
+        <>
+          {out.output.map((l, i) => (
+            <Animated.View key={`${i}${l}`} entering={FadeInDown.duration(160).delay(i * 50)}>
+              <T style={styles.mono}>{l === '' ? ' ' : l}</T>
+            </Animated.View>
+          ))}
+          {out.error ? <T style={[styles.mono, { color: '#FF8A9B' }]}>{out.error}</T> : null}
+          {!out.output.length && !out.error ? <T style={[styles.mono, { color: '#8E89C4' }]}>(nothing printed)</T> : null}
+        </>
+      )}
+    </View>
+  );
+}
+
+// ── Run and tweak ────────────────────────────────────────────────────────────
+
+export function RunScreen({ step, onDone }: { step: RunStep } & Done) {
+  const [value, setValue] = useState(step.choices[0]);
+  const [tried, setTried] = useState<string[]>([step.choices[0]]);
+  const code = step.code.map((l) => l.replace('{{v}}', value));
+  const out = useJsRun(code.join('\n'));
+  const hit = !!step.goal && !!out?.output.includes(step.goal);
+  const [reached, setReached] = useState(false);
+  if (hit && !reached) setReached(true);
+  const ready = step.goal ? reached : tried.length >= 2;
+  return (
+    <Screen bar={<Continue ready={ready} hint={step.goal ? 'Reach the target' : 'Try another value'} onDone={onDone} />}>
+      <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
+      <View style={styles.code}>
+        <CodeBlock lines={code} lang="javascript" highlight={step.code.findIndex((l) => l.includes('{{v}}'))} />
+      </View>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+        {step.choices.map((c) => (
+          <Pressable
+            key={c}
+            accessibilityRole="button"
+            accessibilityState={{ selected: c === value }}
+            onPress={() => {
+              haptic.tap();
+              setValue(c);
+              if (!tried.includes(c)) setTried([...tried, c]);
+            }}
+            style={[styles.chip, c === value && styles.chipOn]}>
+            <T style={{ fontFamily: fonts.mono, fontSize: 14, color: c === value ? '#FFFFFF' : colors.ink }}>{c}</T>
+          </Pressable>
+        ))}
+      </View>
+      {step.goal ? (
+        <View style={[styles.goal, reached && styles.goalDone]}>
+          <T variant="labelSm" color={reached ? colors.success : colors.ink2}>
+            {reached ? '✓ TARGET REACHED' : 'TARGET · make it print'}
+          </T>
+          <T style={{ fontFamily: fonts.mono, fontSize: 14, color: colors.ink }}>{step.goal}</T>
+        </View>
+      ) : null}
+      <ConsoleBox out={out} />
+      {step.caption ? (
+        <T variant="bodySm" color={colors.ink2}>
+          {step.caption}
+        </T>
+      ) : null}
+    </Screen>
+  );
+}
+
+// ── Tap the page ─────────────────────────────────────────────────────────────
+
+export function TapPageScreen({ step, onDone }: { step: TapPageStep } & Done) {
+  const [logs, setLogs] = useState<string[]>([]);
+  const [round, setRound] = useState(0);
+  const doc = useMemo(() => page(step.page), [step.page]);
+  const reached = logs.some((l) => l.includes(step.goal));
+  return (
+    <Screen bar={<Continue ready={reached} hint="Use the page to reach the goal" onDone={onDone} />}>
+      <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
+      <WebPreview key={round} doc={doc} height={230} onLog={(l) => setLogs((x) => [...x, l.level === 'error' ? `⚠ ${l.text}` : l.text].slice(-30))} />
+      <View style={[styles.goal, reached && styles.goalDone]}>
+        <T variant="labelSm" color={reached ? colors.success : colors.ink2}>
+          {reached ? '✓ GOAL REACHED' : 'GOAL · the log shows'}
+        </T>
+        <T style={{ fontFamily: fonts.mono, fontSize: 14, color: colors.ink }}>{step.goal}</T>
+      </View>
+      <View style={styles.console}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <T style={styles.consoleLabel}>EVENT LOG</T>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Reload the page"
+            hitSlop={10}
+            onPress={() => {
+              haptic.tap();
+              setLogs([]);
+              setRound(round + 1);
+            }}>
+            <T style={[styles.consoleLabel, { color: '#C9C3FF' }]}>↻ RELOAD</T>
+          </Pressable>
+        </View>
+        {logs.length ? (
+          logs.map((l, i) => (
+            <Animated.View key={i} entering={FadeInDown.duration(160)}>
+              <T style={[styles.mono, l.startsWith('⚠') && { color: '#FF8A9B' }]}>{l}</T>
+            </Animated.View>
+          ))
+        ) : (
+          <T style={[styles.mono, { color: '#8E89C4' }]}>Tap, type or press in the page above…</T>
+        )}
+      </View>
+      {step.caption ? (
+        <View style={styles.note}>
+          <T variant="bodySm" color={colors.ink} style={{ fontSize: 14, lineHeight: 21 }}>
+            {step.caption}
+          </T>
+        </View>
+      ) : null}
+    </Screen>
+  );
+}
+
 const styles = StyleSheet.create({
   content: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 28, gap: 14 },
   bubble: { alignSelf: 'flex-start', maxWidth: '100%', backgroundColor: colors.surface, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: colors.line, paddingHorizontal: 14, paddingVertical: 10 },
@@ -852,5 +997,9 @@ const styles = StyleSheet.create({
   widthStop: { flex: 1, minHeight: 52, borderRadius: 12, borderWidth: 1.5, borderColor: colors.line, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', gap: 2 },
   ruler: { height: 26, borderRadius: 13, backgroundColor: colors.primarySoft, overflow: 'hidden', justifyContent: 'center' },
   rulerFill: { position: 'absolute', left: 0, top: 0, bottom: 0, backgroundColor: '#C9C3FF' },
+  console: { borderRadius: 14, backgroundColor: '#14112B', padding: 12, gap: 3, minHeight: 64 },
+  consoleLabel: { fontFamily: fonts.mono, fontSize: 11, letterSpacing: 1, color: '#8E89C4', marginBottom: 4 },
+  goal: { borderRadius: 12, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.line, backgroundColor: colors.surface, padding: 10, gap: 2 },
+  goalDone: { borderStyle: 'solid', borderColor: colors.success, backgroundColor: colors.successSoft },
   blockPick: { borderRadius: 10, borderWidth: 1.5, borderColor: colors.line, backgroundColor: colors.surface, paddingHorizontal: 12, paddingVertical: 10 },
 });
