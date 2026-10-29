@@ -2,6 +2,9 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 29 Oct 2026 (branch `lesson-v3`): no Hindi words in the module notes
+- **HTML, more HTML, CSS and JavaScript notes** (`content/notes/html.ts`, `htmlMore.ts`, `css.ts`, `js.ts`) now use Riya’s Café (Lemon Tea, Coffee, Cheese Toast, Veg Sandwich, Chicken Sandwich, Cookies; `toast.jpg`) instead of tiffin and thali examples. Every worked-example output updated to match, including the sort example (now Iced Tea and Lemon Tea at ₹40 to show the tie-break by name). 5441 tests pass.
+
 ## 29 Oct 2026 (branch `lesson-v3`): the JavaScript track in Lesson v5
 - **JavaScript rebuilt in full** (`tracks/jsV5/`, approved draft `content-drafts/js-track-v5.md`): 13 modules, 71 short lessons and 13 challenges with badges and stars, covering every topic on the W3Schools JavaScript list (checklist only; our own wording and Riya’s Café examples). The final challenge, **Make Sharma Classes work** (`j-project`), adds a course filter, form checks, batches from the server and a saved dark mode to the page from the HTML and CSS tracks.
 - **Three new screens** (`features/lesson/V5.tsx`):

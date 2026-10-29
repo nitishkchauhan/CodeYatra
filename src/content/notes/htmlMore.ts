@@ -6,7 +6,7 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     minutes: 5,
     lang: 'html',
     sections: [
-      { heading: 'Details inside the tag', body: 'An attribute adds information to an element and always sits in the opening tag as name="value". Some change what an element does (href, src, type), some describe it (alt, lang), and some just name it so CSS and JavaScript can find it (id, class). An element can have many attributes, in any order, separated by spaces.', code: ['<img src="thali.jpg" alt="A thali" width="300">'], anim: 'htmlTags' },
+      { heading: 'Details inside the tag', body: 'An attribute adds information to an element and always sits in the opening tag as name="value". Some change what an element does (href, src, type), some describe it (alt, lang), and some just name it so CSS and JavaScript can find it (id, class). An element can have many attributes, in any order, separated by spaces.', code: ['<img src="toast.jpg" alt="A cheese toast" width="300">'], anim: 'htmlTags' },
       { heading: 'id versus class', body: 'An id is like a roll number: unique on the page. Use it for one special element, such as a section that a “Jump to” link targets (href="#fees") or a form field a label points to. A class is like a house colour: many elements share it, and one element can have several classes. CSS finds ids with # and classes with a dot.', code: ['<section id="fees">…</section>', '<p class="price highlight">₹5,500</p>'], anim: 'linkJump' },
       { heading: 'Your own data', body: 'Attributes starting with data- are yours to invent: data-price="80" or data-product-id="A12". The browser ignores them, but JavaScript can read them, which is how a “Add to cart” button knows which product it belongs to without showing the ID on the page.', code: ['<button data-product-id="A12">Add to cart</button>'], anim: 'htmlTags' },
     ],
@@ -40,19 +40,19 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     minutes: 4,
     lang: 'html',
     sections: [
-      { heading: 'Two kinds of list', body: 'Use <ol> when the order matters, like steps, rankings or train stops: the browser numbers the items for you. Use <ul> when it doesn’t, like ingredients or features: the items get bullets. Either way, every item is an <li>, and nothing else goes straight inside the list.', code: ['<ol>', '  <li>Wash the poha</li>', '  <li>Fry the onion</li>', '</ol>'], anim: 'outline' },
+      { heading: 'Two kinds of list', body: 'Use <ol> when the order matters, like steps, rankings or train stops: the browser numbers the items for you. Use <ul> when it doesn’t, like ingredients or features: the items get bullets. Either way, every item is an <li>, and nothing else goes straight inside the list.', code: ['<ol>', '  <li>Toast the bread</li>', '  <li>Add the cheese</li>', '</ol>'], anim: 'outline' },
       { heading: 'Lists inside lists', body: 'For a sub-point, put a whole new <ul> or <ol> inside an <li>, after its text and before its closing tag. The browser indents it. <ol start="5"> starts numbering at 5, and <ol reversed> counts down, handy for a “top 10” countdown.', code: ['<li>New Delhi', '  <ul><li>Platform 16</li></ul>', '</li>'], anim: 'outline' },
       { heading: 'Lists are everywhere', body: 'Most website menus are a <ul> of links, styled with CSS into a row. Search results, comment threads, product features and breadcrumb trails are lists too. Screen readers announce “list, 5 items”, so users know how much is coming.', anim: 'outline' },
     ],
     example: {
       title: 'A recipe card',
-      code: ['<h2>Poha</h2>', '<ul>', '  <li>2 cups poha</li>', '  <li>1 onion</li>', '</ul>', '<ol>', '  <li>Wash the poha</li>', '  <li>Fry the onion</li>', '</ol>'],
+      code: ['<h2>Cheese Toast</h2>', '<ul>', '  <li>2 slices of bread</li>', '  <li>1 slice of cheese</li>', '</ul>', '<ol>', '  <li>Toast the bread</li>', '  <li>Add the cheese</li>', '</ol>'],
       walk: [
         { line: 2, text: 'Ingredients: any order, so bullets.' },
         { line: 3, text: 'Each item is its own <li>.' },
         { line: 6, text: 'Steps: the order matters, so the browser numbers them 1, 2.' },
       ],
-      output: ['Poha', '2 cups poha', '1 onion', 'Wash the poha', 'Fry the onion'],
+      output: ['Cheese Toast', '2 slices of bread', '1 slice of cheese', 'Toast the bread', 'Add the cheese'],
     },
     industry: 'Navigation menus on nearly every professional site are built as lists of links. Accessibility checks flag “fake lists” made with line breaks or dashes, because screen readers can’t count or skip them.',
     interview: [
@@ -177,14 +177,14 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'Riya’s page outline',
-      code: ['<header><h1>Riya’s Tiffins</h1></header>', '<nav><a href="#menu">Our menu</a></nav>', '<main>', '  <section id="menu"><h2>Menu</h2><p>Dal rice ₹80</p></section>', '</main>', '<footer>© 2026 Riya’s Tiffins</footer>'],
+      code: ['<header><h1>Riya’s Café</h1></header>', '<nav><a href="#menu">Our menu</a></nav>', '<main>', '  <section id="menu"><h2>Menu</h2><p>Cheese Toast ₹80</p></section>', '</main>', '<footer>© 2026 Riya’s Café</footer>'],
       walk: [
         { line: 1, text: 'The header holds the page title.' },
         { line: 2, text: 'The nav holds the main links.' },
         { line: 4, text: 'The page’s own content sits in main, grouped in a section.' },
         { line: 6, text: 'The footer closes the page.' },
       ],
-      output: ['Riya’s Tiffins', 'Our menu', 'Menu', 'Dal rice ₹80', '© 2026 Riya’s Tiffins'],
+      output: ['Riya’s Café', 'Our menu', 'Menu', 'Cheese Toast ₹80', '© 2026 Riya’s Café'],
     },
     industry: 'Accessibility audits check for landmarks first: a page without <main> or <nav> fails basic checks. Component libraries ship semantic tags by default, and code reviewers question long chains of divs.',
     interview: [
@@ -238,19 +238,19 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     lang: 'html',
     sections: [
       { heading: 'Who it is for', body: 'Accessibility (a11y) means everyone can use your page: people using screen readers, people who zoom text very large, people who use only a keyboard or a switch, people with colour blindness, and anyone in bright sun on a cracked screen. The good news: correct HTML does most of the work for free.', anim: 'outline' },
-      { heading: 'The core checks', body: 'Meaningful images have alt text; decorative ones have alt="". Every input has a label. Headings go in order with one h1. Link text says where it goes, never just “click here”. Text has strong contrast with its background. <html lang="en"> is set so screen readers use the right voice.', code: ['<img src="thali.jpg" alt="A thali with dal and rice">', '<a href="menu.pdf">Download the menu (PDF)</a>'], anim: 'imageLoad' },
+      { heading: 'The core checks', body: 'Meaningful images have alt text; decorative ones have alt="". Every input has a label. Headings go in order with one h1. Link text says where it goes, never just “click here”. Text has strong contrast with its background. <html lang="en"> is set so screen readers use the right voice.', code: ['<img src="toast.jpg" alt="A cheese toast on a plate">', '<a href="menu.pdf">Download the menu (PDF)</a>'], anim: 'imageLoad' },
       { heading: 'Real buttons, real links', body: 'A <div> styled like a button can’t be reached with the Tab key or pressed with Enter, and screen readers don’t call it a button. Use <button> for actions and <a href> for going somewhere. ARIA attributes can add meaning, but the first rule is: use the right HTML element instead.', code: ['<button type="button">Order now</button>'], anim: 'htmlTags' },
     ],
     example: {
       title: 'An accessible order section',
-      code: ['<h1>Riya’s Tiffins</h1>', '<img src="thali.jpg" alt="A thali with dal, rice, roti and sabzi">', '<p><label for="name">Name</label> <input id="name" name="name"></p>', '<p><button type="button">Order now</button></p>', '<p><a href="menu.pdf">Download the menu (PDF)</a></p>'],
+      code: ['<h1>Riya’s Café</h1>', '<img src="toast.jpg" alt="A cheese toast cut into two triangles">', '<p><label for="name">Name</label> <input id="name" name="name"></p>', '<p><button type="button">Order now</button></p>', '<p><a href="menu.pdf">Download the menu (PDF)</a></p>'],
       walk: [
         { line: 2, text: 'The alt text is read aloud in place of the picture.' },
         { line: 3, text: 'The label names the field for screen readers.' },
         { line: 4, text: 'A real button works with Tab and Enter.' },
         { line: 5, text: 'Link text that makes sense on its own.' },
       ],
-      output: ['Riya’s Tiffins', 'Name', 'Order now', 'Download the menu (PDF)'],
+      output: ['Riya’s Café', 'Name', 'Order now', 'Download the menu (PDF)'],
     },
     industry: 'Teams run automated checks like Lighthouse and axe on every release and test key flows with a screen reader. Many governments and large companies require their sites to meet the WCAG guidelines, so accessibility skills are valued in interviews.',
     interview: [
@@ -272,19 +272,19 @@ export const HTML_MORE_NOTES: Record<string, ModuleNotes> = {
     lang: 'html',
     sections: [
       { heading: 'Two lines every page needs', body: '<meta charset="utf-8"> makes ₹, Hindi, Tamil and emoji display correctly. <meta name="viewport" content="width=device-width, initial-scale=1"> tells phones to use their real width instead of pretending to be a desktop and shrinking the page. Without it, text is tiny and people have to pinch to zoom.', code: ['<meta charset="utf-8">', '<meta name="viewport" content="width=device-width, initial-scale=1">'], anim: 'webRequest' },
-      { heading: 'Being found', body: 'The <title> is the tab name and the blue link in Google, so make it specific: “Riya’s Tiffins · Home food in Kothrud, Pune” beats “Home”. The description is often shown as the grey snippet. SEO is mostly this plus good headings, real text and a fast page; there are no tricks.', code: ['<title>Riya’s Tiffins · Home food in Kothrud, Pune</title>', '<meta name="description" content="Fresh veg tiffins delivered by 1 pm.">'], anim: 'webRequest' },
-      { heading: 'Looking good when shared', body: 'Open Graph tags (og:title, og:description, og:image) control the preview card when a link is shared on WhatsApp, LinkedIn or Instagram. <link rel="icon"> sets the small icon in the tab. None of these show on the page itself.', code: ['<meta property="og:image" content="https://example.com/thali.jpg">', '<link rel="icon" href="icon.png">'], anim: 'htmlTags' },
+      { heading: 'Being found', body: 'The <title> is the tab name and the blue link in Google, so make it specific: “Riya’s Café · Tea and snacks in Pune” beats “Home”. The description is often shown as the grey snippet. SEO is mostly this plus good headings, real text and a fast page; there are no tricks.', code: ['<title>Riya’s Café · Tea and snacks in Pune</title>', '<meta name="description" content="Fresh tea, coffee and snacks all day.">'], anim: 'webRequest' },
+      { heading: 'Looking good when shared', body: 'Open Graph tags (og:title, og:description, og:image) control the preview card when a link is shared on WhatsApp, LinkedIn or Instagram. <link rel="icon"> sets the small icon in the tab. None of these show on the page itself.', code: ['<meta property="og:image" content="https://example.com/toast.jpg">', '<link rel="icon" href="icon.png">'], anim: 'htmlTags' },
     ],
     example: {
       title: 'A complete head',
-      code: ['<!DOCTYPE html>', '<html lang="en">', '<head>', '  <meta charset="utf-8">', '  <meta name="viewport" content="width=device-width, initial-scale=1">', '  <title>Riya’s Tiffins · Home food in Kothrud, Pune</title>', '  <meta name="description" content="Fresh veg tiffins delivered by 1 pm.">', '</head>', '<body>', '  <h1>Riya’s Tiffins</h1>', '  <p>Open 9 am to 1 pm.</p>', '</body>', '</html>'],
+      code: ['<!DOCTYPE html>', '<html lang="en">', '<head>', '  <meta charset="utf-8">', '  <meta name="viewport" content="width=device-width, initial-scale=1">', '  <title>Riya’s Café · Tea and snacks in Pune</title>', '  <meta name="description" content="Fresh tea, coffee and snacks all day.">', '</head>', '<body>', '  <h1>Riya’s Café</h1>', '  <p>Open 9 am to 1 pm.</p>', '</body>', '</html>'],
       walk: [
         { line: 4, text: 'Every character shows correctly.' },
         { line: 5, text: 'The page fits the phone screen.' },
         { line: 6, text: 'Tab and search-result title.' },
         { line: 7, text: 'The search snippet. Nothing in the head shows on the page.' },
       ],
-      output: ['Riya’s Tiffins', 'Open 9 am to 1 pm.'],
+      output: ['Riya’s Café', 'Open 9 am to 1 pm.'],
     },
     industry: 'Marketing teams track search traffic and share previews closely, so developers set titles, descriptions and Open Graph tags for every page, usually from a template. Frameworks like Next.js have built-in tools just for the head.',
     interview: [

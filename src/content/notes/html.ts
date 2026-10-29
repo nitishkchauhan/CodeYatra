@@ -6,20 +6,20 @@ export const HTML_NOTES: Record<string, ModuleNotes> = {
     minutes: 5,
     lang: 'html',
     sections: [
-      { heading: 'Markup, not programming', body: 'HTML labels content: a heading, a paragraph, a list, a link. It doesn’t add numbers or make decisions; that is JavaScript’s job. CSS decides how things look. Think of a web page as a house: HTML is the walls and rooms, CSS is the paint and furniture, and JavaScript is the electricity that makes things work.', code: ['<h1>Riya’s Tiffins</h1>', '<p>Fresh home food, delivered by 1 pm.</p>'], anim: 'htmlTags' },
+      { heading: 'Markup, not programming', body: 'HTML labels content: a heading, a paragraph, a list, a link. It doesn’t add numbers or make decisions; that is JavaScript’s job. CSS decides how things look. Think of a web page as a house: HTML is the walls and rooms, CSS is the paint and furniture, and JavaScript is the electricity that makes things work.', code: ['<h1>Riya’s Café</h1>', '<p>Fresh tea and snacks all day.</p>'], anim: 'htmlTags' },
       { heading: 'What happens when you open a site', body: 'You type an address (a URL) or tap a link. Your browser finds the server for that address and sends a request. The server sends back an HTML file. The browser reads it from top to bottom, fetches any images, styles and scripts it mentions, and draws the page. All of this usually takes less than a second.', anim: 'webRequest' },
       { heading: 'The skeleton of every page', body: '<!DOCTYPE html> comes first and says “modern HTML”. <html lang="en"> wraps everything. <head> holds information about the page that isn’t shown on it, like the <title> in the browser tab. <body> holds everything visitors see. Elements sit inside each other like boxes inside boxes, and must close in the reverse order they opened.', code: ['<!DOCTYPE html>', '<html lang="en">', '  <head><title>…</title></head>', '  <body>…</body>', '</html>'], anim: 'outline' },
     ],
     example: {
       title: 'Riya’s menu page',
-      code: ['<!DOCTYPE html>', '<html lang="en">', '  <head>', '    <title>Riya’s Tiffins</title>', '  </head>', '  <body>', '    <h1>Riya’s Tiffins</h1>', '    <p>Dal rice ₹80</p>', '    <p>Order on WhatsApp</p>', '  </body>', '</html>'],
+      code: ['<!DOCTYPE html>', '<html lang="en">', '  <head>', '    <title>Riya’s Café</title>', '  </head>', '  <body>', '    <h1>Riya’s Café</h1>', '    <p>Cheese Toast ₹80</p>', '    <p>Order on WhatsApp</p>', '  </body>', '</html>'],
       walk: [
         { line: 1, text: 'The doctype tells the browser to use modern HTML rules.' },
         { line: 4, text: 'The title appears in the browser tab and in search results, not on the page.' },
         { line: 7, text: 'One main heading: the name of the page.' },
         { line: 8, text: 'Each paragraph starts on a new line.' },
       ],
-      output: ['Riya’s Tiffins', 'Dal rice ₹80', 'Order on WhatsApp'],
+      output: ['Riya’s Café', 'Cheese Toast ₹80', 'Order on WhatsApp'],
     },
     industry: 'Front-end developers write HTML in every project, often inside frameworks like React. Search engines, screen readers and browser features such as reader mode all depend on correct HTML, so teams check it in code reviews and automated tests.',
     interview: [
@@ -74,13 +74,13 @@ export const HTML_NOTES: Record<string, ModuleNotes> = {
     minutes: 6,
     lang: 'html',
     sections: [
-      { heading: 'How addresses work', body: 'A full address (a URL) such as https://www.irctc.co.in/ names the site and the page. A relative address like menu.html or images/thali.jpg is found starting from the current page’s folder, and ../ goes up one folder. Relative links keep working when the whole site moves to a new domain, which is why sites use them for their own pages.', code: ['<a href="https://www.irctc.co.in/">Book a train</a>', '<a href="menu.html">Menu</a>'], anim: 'linkJump' },
+      { heading: 'How addresses work', body: 'A full address (a URL) such as https://www.irctc.co.in/ names the site and the page. A relative address like menu.html or images/toast.jpg is found starting from the current page’s folder, and ../ goes up one folder. Relative links keep working when the whole site moves to a new domain, which is why sites use them for their own pages.', code: ['<a href="https://www.irctc.co.in/">Book a train</a>', '<a href="menu.html">Menu</a>'], anim: 'linkJump' },
       { heading: 'Links that do more', body: 'href="#fees" jumps to the element with id="fees" on the same page. tel:+91… opens the phone’s dialler and mailto:… the email app, very handy on mobile. Link text should say where it goes, like “See the fee list”, so it makes sense on its own when a screen reader lists all the links.', code: ['<a href="#fees">Jump to fees</a>', '<a href="tel:+919800000000">Call us</a>'], anim: 'linkJump' },
-      { heading: 'Images people can understand', body: '<img src="…" alt="…"> shows a picture. alt is read aloud to blind users and shown when the image can’t load, so describe what matters: “A thali with dal, rice, roti and sabzi”. Purely decorative images get alt="". Giving width and height lets the browser keep space for the image, so the page doesn’t jump as it loads.', code: ['<img src="thali.jpg" alt="A thali with dal, rice, roti and sabzi" width="300" height="200">'], anim: 'imageLoad' },
+      { heading: 'Images people can understand', body: '<img src="…" alt="…"> shows a picture. alt is read aloud to blind users and shown when the image can’t load, so describe what matters: “A cheese toast cut into two triangles”. Purely decorative images get alt="". Giving width and height lets the browser keep space for the image, so the page doesn’t jump as it loads.', code: ['<img src="toast.jpg" alt="A cheese toast cut into two triangles" width="300" height="200">'], anim: 'imageLoad' },
     ],
     example: {
       title: 'Riya’s contact section',
-      code: ['<h2>Contact</h2>', '<p><a href="menu.html">See today’s menu</a></p>', '<p><a href="tel:+919800000000">Call us</a></p>', '<p><a href="mailto:orders@riyastiffins.in">Email an order</a></p>'],
+      code: ['<h2>Contact</h2>', '<p><a href="menu.html">See today’s menu</a></p>', '<p><a href="tel:+919800000000">Call us</a></p>', '<p><a href="mailto:orders@riyascafe.in">Email an order</a></p>'],
       walk: [
         { line: 2, text: 'A relative link to another page of the same site.' },
         { line: 3, text: 'tel: opens the dialler on a phone.' },

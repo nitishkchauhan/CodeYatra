@@ -2,8 +2,8 @@
 // and that `output` is the text the page shows.
 import type { ModuleNotes } from '../types';
 
-const MENU = '<h1>Today’s menu</h1>\n<p class="price">Dal rice ₹80</p>\n<p id="offer">Free delivery above ₹300</p>';
-const MENU_TEXT = ['Today’s menu', 'Dal rice ₹80', 'Free delivery above ₹300'];
+const MENU = '<h1>Today’s menu</h1>\n<p class="price">Cheese Toast ₹80</p>\n<p id="offer">Free delivery above ₹300</p>';
+const MENU_TEXT = ['Today’s menu', 'Cheese Toast ₹80', 'Free delivery above ₹300'];
 
 export const CSS_NOTES: Record<string, ModuleNotes> = {
   'w-css-1': {
@@ -84,13 +84,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'A centred, readable column',
       code: ['body {', '  font-size: 1rem;', '}', '.page {', '  max-width: 40rem;', '  margin: 0 auto;', '}', 'h1 {', '  color: #E8590C;', '}'],
-      page: '<div class="page">\n  <h1>Today’s menu</h1>\n  <p>Dal rice ₹80</p>\n</div>',
+      page: '<div class="page">\n  <h1>Today’s menu</h1>\n  <p>Cheese Toast ₹80</p>\n</div>',
       walk: [
         { line: 2, text: '1rem follows the user’s text-size setting.' },
         { line: 5, text: 'Never wider than 40rem.' },
         { line: 6, text: 'Equal auto margins centre the column.' },
       ],
-      output: ['Today’s menu', 'Dal rice ₹80'],
+      output: ['Today’s menu', 'Cheese Toast ₹80'],
     },
     industry: 'Design systems define a fixed set of colours and a spacing scale in rem, and accessibility checks test colour contrast automatically. Brand colours are given to developers as exact hex values.',
     interview: [
@@ -152,13 +152,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'Menu cards with room',
       code: ['* {', '  box-sizing: border-box;', '}', '.card {', '  padding: 16px;', '  border: 2px solid #E8590C;', '  margin-bottom: 24px;', '}'],
-      page: '<div class="card">\n  <h2>Dal rice</h2>\n  <p>₹80 · serves one</p>\n</div>',
+      page: '<div class="card">\n  <h2>Cheese Toast</h2>\n  <p>₹80 · serves one</p>\n</div>',
       walk: [
         { line: 2, text: 'Widths now include padding and border.' },
         { line: 5, text: 'Space inside, around the text.' },
         { line: 7, text: 'Space outside, before the next card.' },
       ],
-      output: ['Dal rice', '₹80 · serves one'],
+      output: ['Cheese Toast', '₹80 · serves one'],
     },
     industry: 'CSS resets used in most projects start with box-sizing: border-box. Developers debug spacing bugs in DevTools by hovering an element and reading its box diagram.',
     interview: [
@@ -186,13 +186,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'Riya’s header',
       code: ['.top {', '  display: flex;', '  justify-content: space-between;', '  align-items: center;', '  gap: 1rem;', '}'],
-      page: '<header class="top">\n  <strong>Riya’s Tiffins</strong>\n  <a href="#order">Order</a>\n</header>',
+      page: '<header class="top">\n  <strong>Riya’s Café</strong>\n  <a href="#order">Order</a>\n</header>',
       walk: [
         { line: 2, text: 'The name and the link sit in a row.' },
         { line: 3, text: 'Name left, link right.' },
         { line: 4, text: 'Both lined up in the middle.' },
       ],
-      output: ['Riya’s Tiffins', 'Order'],
+      output: ['Riya’s Café', 'Order'],
     },
     industry: 'Flexbox is the everyday layout tool for components: nav bars, toolbars, form rows and card footers. React Native, used for many mobile apps, lays out every screen with flexbox.',
     interview: [
@@ -220,13 +220,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'A dish grid that adapts',
       code: ['.menu {', '  display: grid;', '  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));', '  gap: 1rem;', '}'],
-      page: '<div class="menu">\n  <div>Dal rice ₹80</div>\n  <div>Poha ₹30</div>\n  <div>Thali ₹120</div>\n</div>',
+      page: '<div class="menu">\n  <div>Cheese Toast ₹80</div>\n  <div>Cookies ₹20</div>\n  <div>Veg Sandwich ₹90</div>\n</div>',
       walk: [
         { line: 2, text: 'The children become grid items.' },
         { line: 3, text: 'As many 8rem-plus columns as fit.' },
         { line: 4, text: 'Space between the cells.' },
       ],
-      output: ['Dal rice ₹80', 'Poha ₹30', 'Thali ₹120'],
+      output: ['Cheese Toast ₹80', 'Cookies ₹20', 'Veg Sandwich ₹90'],
     },
     industry: 'Product listings, galleries and dashboards are built on grid. Page templates often use grid for the overall layout and flexbox inside each component.',
     interview: [
@@ -254,13 +254,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'A bestseller badge',
       code: ['.card {', '  position: relative;', '}', '.badge {', '  position: absolute;', '  top: 8px;', '  right: 8px;', '}'],
-      page: '<div class="card">\n  <span class="badge">Bestseller</span>\n  <h2>Thali</h2>\n</div>',
+      page: '<div class="card">\n  <span class="badge">Bestseller</span>\n  <h2>Veg Sandwich</h2>\n</div>',
       walk: [
         { line: 2, text: 'The card becomes the anchor.' },
         { line: 5, text: 'The badge leaves the flow.' },
         { line: 6, text: '8px from the card’s top and right edges.' },
       ],
-      output: ['Bestseller', 'Thali'],
+      output: ['Bestseller', 'Veg Sandwich'],
     },
     industry: 'Component libraries use positioning for menus, tooltips and modals, and manage z-index with a small fixed scale so layers never fight. Sticky headers and table headers are common on dashboards.',
     interview: [
@@ -320,13 +320,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'One column, then two',
       code: ['.menu {', '  display: grid;', '  gap: 1rem;', '}', '@media (min-width: 40rem) {', '  .menu {', '    grid-template-columns: 1fr 1fr;', '  }', '}'],
-      page: '<div class="menu">\n  <div>Dal rice ₹80</div>\n  <div>Poha ₹30</div>\n</div>',
+      page: '<div class="menu">\n  <div>Cheese Toast ₹80</div>\n  <div>Cookies ₹20</div>\n</div>',
       walk: [
         { line: 1, text: 'Phone styles: one column with a gap.' },
         { line: 5, text: 'From 40rem wide and up…' },
         { line: 7, text: '…two columns. On a phone this preview stays at one.' },
       ],
-      output: ['Dal rice ₹80', 'Poha ₹30'],
+      output: ['Cheese Toast ₹80', 'Cookies ₹20'],
     },
     industry: 'Teams test every page at phone, tablet and desktop widths before release, often automatically with screenshots. Analytics usually show most visitors on phones, so phone layouts get designed first.',
     interview: [
@@ -386,13 +386,13 @@ export const CSS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'One brand colour',
       code: [':root {', '  --brand: #E8590C;', '  --space: 1rem;', '}', 'h1 {', '  color: var(--brand);', '}', '.card {', '  padding: var(--space);', '  border: 2px solid var(--brand);', '}'],
-      page: '<h1>Riya’s Tiffins</h1>\n<div class="card">Thali ₹120</div>',
+      page: '<h1>Riya’s Café</h1>\n<div class="card">Veg Sandwich ₹90</div>',
       walk: [
         { line: 2, text: 'The brand colour, stored once.' },
         { line: 6, text: 'The heading reads it.' },
         { line: 10, text: 'So does the card border. Change line 2 and both update.' },
       ],
-      output: ['Riya’s Tiffins', 'Thali ₹120'],
+      output: ['Riya’s Café', 'Veg Sandwich ₹90'],
     },
     industry: 'Design systems publish their tokens as CSS variables, and dark mode in most modern sites is a swap of variable values. White-label products set each customer’s colours through variables.',
     interview: [

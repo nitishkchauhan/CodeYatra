@@ -8,12 +8,12 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     lang: 'javascript',
     sections: [
       { heading: 'Three languages, three jobs', body: 'A web page is built from three languages. HTML says what each part is: a heading, a button, a list. CSS says how it looks. JavaScript says what it does: what happens on a tap, what to work out, what to load. JavaScript runs in every browser, on servers with Node.js, and inside many apps. It has nothing to do with Java, despite the name.', anim: 'htmlTags' },
-      { heading: 'const, let, and why not var', body: 'const makes a name for a value that will never be given a new value; let makes one you can change. Use const by default: when you read const, you know the value stays put. Older code uses var, which has confusing rules about where a name can be seen, so modern code avoids it. Names are written in camelCase: totalPrice, not total_price.', code: ['const shop = "Riya’s Tiffins";', 'let orders = 0;', 'orders = orders + 1;'], anim: 'variable' },
-      { heading: 'Types and template literals', body: 'Every value has a type: number (80 or 3.5), string ("Poha"), boolean (true or false), undefined (no value yet), null (empty on purpose) and object (arrays and objects). typeof tells you which. Text in backticks is a template literal: ${…} puts any value or sum inside the text, which is clearer than joining with +.', code: ['console.log(typeof 80, typeof "80");', 'console.log(`Total: ₹${2 * 80}`);'], anim: 'types' },
+      { heading: 'const, let, and why not var', body: 'const makes a name for a value that will never be given a new value; let makes one you can change. Use const by default: when you read const, you know the value stays put. Older code uses var, which has confusing rules about where a name can be seen, so modern code avoids it. Names are written in camelCase: totalPrice, not total_price.', code: ['const shop = "Riya’s Café";', 'let orders = 0;', 'orders = orders + 1;'], anim: 'variable' },
+      { heading: 'Types and template literals', body: 'Every value has a type: number (80 or 3.5), string ("Coffee"), boolean (true or false), undefined (no value yet), null (empty on purpose) and object (arrays and objects). typeof tells you which. Text in backticks is a template literal: ${…} puts any value or sum inside the text, which is clearer than joining with +.', code: ['console.log(typeof 80, typeof "80");', 'console.log(`Total: ₹${2 * 80}`);'], anim: 'types' },
     ],
     example: {
       title: 'Riya’s order line',
-      code: ['const shop = "Riya’s Tiffins";', 'const dish = "Dal rice";', 'let plates = 2;', 'plates = plates + 1;', 'console.log(`${shop}: ${plates} × ${dish} = ₹${plates * 80}`);', 'console.log(typeof plates, typeof dish);'],
+      code: ['const shop = "Riya’s Café";', 'const dish = "Cheese Toast";', 'let plates = 2;', 'plates = plates + 1;', 'console.log(`${shop}: ${plates} × ${dish} = ₹${plates * 80}`);', 'console.log(typeof plates, typeof dish);'],
       walk: [
         { line: 1, text: 'const: the shop’s name never changes.' },
         { line: 3, text: 'let: the number of plates will change.' },
@@ -21,7 +21,7 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
         { line: 5, text: 'The template literal fills in the values and works out 3 × 80.' },
         { line: 6, text: 'typeof shows the types: a number and a string.' },
       ],
-      output: ['Riya’s Tiffins: 3 × Dal rice = ₹240', 'number string'],
+      output: ['Riya’s Café: 3 × Cheese Toast = ₹240', 'number string'],
     },
     industry: 'Every front-end developer writes JavaScript daily, and most teams now write TypeScript, which is JavaScript with types checked before it runs. Code reviews often ask for const over let, clear camelCase names, and template literals over joined strings.',
     interview: [
@@ -77,11 +77,11 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     sections: [
       { heading: 'One branch runs', body: 'An if / else if / else chain is checked from the top. The first condition that is true has its block run, and the rest are skipped, even if they would also be true. So put the most specific checks first. Each condition can combine tests with && and ||.', code: ['if (bill >= 500) fee = 0;', 'else if (km <= 3) fee = 30;', 'else fee = 60;'], anim: 'branch' },
       { heading: 'The ternary', body: 'condition ? a : b gives a when the condition is true and b when it’s false. It is for choosing a value, like a label or a price, in one line. For doing things, or for more than two choices, a normal if is easier to read. Don’t nest ternaries inside each other.', code: ['const label = fee === 0 ? "Free delivery" : `Delivery ₹${fee}`;'], anim: 'branch' },
-      { heading: 'switch and early return', body: 'switch compares one value with fixed cases using ===. Each case should end with break (or return), or the code falls through into the next case. default runs when nothing matches. In functions, returning early for special cases keeps the main code flat and easy to follow.', code: ['switch (day) {', '  case "Sun":', '    return "Thali";', '  default:', '    return "Dal rice";', '}'], anim: 'branch' },
+      { heading: 'switch and early return', body: 'switch compares one value with fixed cases using ===. Each case should end with break (or return), or the code falls through into the next case. default runs when nothing matches. In functions, returning early for special cases keeps the main code flat and easy to follow.', code: ['switch (day) {', '  case "Sun":', '    return "Chicken Sandwich";', '  default:', '    return "Cheese Toast";', '}'], anim: 'branch' },
     ],
     example: {
       title: 'Fee and the day’s special',
-      code: ['function fee(bill, km) {', '  if (bill >= 500) return 0;', '  if (km <= 3) return 30;', '  return 60;', '}', 'function special(day) {', '  switch (day) {', '    case "Sun":', '      return "Thali";', '    case "Wed":', '      return "Rajma chawal";', '    default:', '      return "Dal rice";', '  }', '}', 'console.log(fee(650, 8), fee(420, 2), fee(420, 5));', 'console.log(special("Sun"), special("Mon"));'],
+      code: ['function fee(bill, km) {', '  if (bill >= 500) return 0;', '  if (km <= 3) return 30;', '  return 60;', '}', 'function special(day) {', '  switch (day) {', '    case "Sun":', '      return "Chicken Sandwich";', '    case "Wed":', '      return "Veg Sandwich";', '    default:', '      return "Cheese Toast";', '  }', '}', 'console.log(fee(650, 8), fee(420, 2), fee(420, 5));', 'console.log(special("Sun"), special("Mon"));'],
       walk: [
         { line: 2, text: 'Early return: a big bill is free, and we stop.' },
         { line: 3, text: 'Only reached when the bill is under 500.' },
@@ -89,7 +89,7 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
         { line: 12, text: 'default: any other day.' },
         { line: 16, text: 'Three bills, three fees.' },
       ],
-      output: ['0 30 60', 'Thali Dal rice'],
+      output: ['0 30 60', 'Chicken Sandwich Cheese Toast'],
     },
     industry: 'Business rules like fees, discounts and permissions are mostly conditions, so teams keep them in small, well-named functions with tests for every branch, including the edges like exactly 500.',
     interview: [
@@ -182,7 +182,7 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'Riya’s cart',
-      code: ['const cart = [', '  { dish: "Dal rice", price: 80, veg: true },', '  { dish: "Chicken thali", price: 150, veg: false },', '  { dish: "Poha", price: 30, veg: true },', '];', 'const veg = cart.filter((d) => d.veg);', 'console.log(veg.map((d) => d.dish));', 'console.log(cart.reduce((sum, d) => sum + d.price, 0));', 'console.log(cart.find((d) => d.price > 100).dish);'],
+      code: ['const cart = [', '  { dish: "Cheese Toast", price: 80, veg: true },', '  { dish: "Chicken Sandwich", price: 150, veg: false },', '  { dish: "Cookies", price: 20, veg: true },', '];', 'const veg = cart.filter((d) => d.veg);', 'console.log(veg.map((d) => d.dish));', 'console.log(cart.reduce((sum, d) => sum + d.price, 0));', 'console.log(cart.find((d) => d.price > 100).dish);'],
       walk: [
         { line: 1, text: 'An array of objects: the shape of most real data.' },
         { line: 6, text: 'filter keeps the veg dishes.' },
@@ -190,7 +190,7 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
         { line: 8, text: 'reduce adds every price, from 0.' },
         { line: 9, text: 'find gets the first dish over ₹100.' },
       ],
-      output: ['["Dal rice","Poha"]', '260', 'Chicken thali'],
+      output: ['["Cheese Toast","Cookies"]', '250', 'Chicken Sandwich'],
     },
     industry: 'Most front-end work is shaping lists of data from a server into what the screen needs, so map, filter and reduce are used constantly. Teams prefer them to hand-written loops because they say what they do.',
     interview: [
@@ -216,14 +216,14 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     ],
     example: {
       title: 'Sort by price, then name',
-      code: ['const menu = [', '  { dish: "Thali", price: 120 },', '  { dish: "Poha", price: 30 },', '  { dish: "Idli", price: 30 },', '];', 'const byPriceThenName = (a, b) => a.price - b.price || a.dish.localeCompare(b.dish);', 'const sorted = [...menu].sort(byPriceThenName);', 'console.log(sorted.map((d) => d.dish));', 'console.log(menu[0].dish);'],
+      code: ['const menu = [', '  { dish: "Cheese Toast", price: 80 },', '  { dish: "Lemon Tea", price: 40 },', '  { dish: "Iced Tea", price: 40 },', '];', 'const byPriceThenName = (a, b) => a.price - b.price || a.dish.localeCompare(b.dish);', 'const sorted = [...menu].sort(byPriceThenName);', 'console.log(sorted.map((d) => d.dish));', 'console.log(menu[0].dish);'],
       walk: [
         { line: 6, text: 'A negative answer puts a first. Equal prices give 0, so || compares names.' },
         { line: 7, text: 'Copy, then sort the copy, passing the callback without brackets.' },
-        { line: 8, text: 'Cheapest first; Idli before Poha by name.' },
+        { line: 8, text: 'Cheapest first; Iced Tea before Lemon Tea by name.' },
         { line: 9, text: 'The original list is unchanged.' },
       ],
-      output: ['["Idli","Poha","Thali"]', 'Thali'],
+      output: ['["Iced Tea","Lemon Tea","Cheese Toast"]', 'Cheese Toast'],
     },
     industry: 'Callbacks and arrow functions appear on nearly every line of modern JavaScript and React. Every project is organised into modules, with imports at the top of each file.',
     interview: [
@@ -243,13 +243,13 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     minutes: 5,
     lang: 'javascript',
     sections: [
-      { heading: 'Keys and values', body: 'An object groups related values under names called keys. Read and change them with a dot, dish.price, or with brackets when the key is in a variable, dish[key]. Add a property just by setting it. Object.keys(dish) lists the keys. Objects inside arrays are the most common shape of real data.', code: ['const dish = { name: "Poha", price: 40 };', 'dish.veg = true;', 'console.log(Object.keys(dish));'], anim: 'dict' },
+      { heading: 'Keys and values', body: 'An object groups related values under names called keys. Read and change them with a dot, dish.price, or with brackets when the key is in a variable, dish[key]. Add a property just by setting it. Object.keys(dish) lists the keys. Objects inside arrays are the most common shape of real data.', code: ['const dish = { name: "Lemon Tea", price: 40 };', 'dish.veg = true;', 'console.log(Object.keys(dish));'], anim: 'dict' },
       { heading: 'Pull out, copy, change', body: 'Destructuring pulls properties into variables: const { price } = dish. Spread copies all properties into a new object, and later ones win, so { ...dish, price: 35 } is a copy with a new price. The original is untouched. This is how apps update data safely.', code: ['const { price } = dish;', 'const offer = { ...dish, price: 35 };'], anim: 'dict' },
       { heading: 'Same object, or a copy?', body: 'An object variable holds a reference: an arrow pointing to the object. const b = a copies the arrow, not the object, so changing b.price changes a.price too. Spread makes a new object, but only one level deep: objects inside are still shared. ?. reads safely when something might be missing.', code: ['order.address?.city ?? "No address yet";'], anim: 'json' },
     ],
     example: {
       title: 'Copy or the same?',
-      code: ['const order = { dish: "Poha", plates: 1 };', 'const same = order;', 'const copy = { ...order, plates: 3 };', 'same.plates = 2;', 'const { dish, plates } = order;', 'console.log(dish, plates, copy.plates);', 'console.log(order.address?.city ?? "No address yet");'],
+      code: ['const order = { dish: "Coffee", plates: 1 };', 'const same = order;', 'const copy = { ...order, plates: 3 };', 'same.plates = 2;', 'const { dish, plates } = order;', 'console.log(dish, plates, copy.plates);', 'console.log(order.address?.city ?? "No address yet");'],
       walk: [
         { line: 2, text: 'same points to the same object as order.' },
         { line: 3, text: 'copy is a new object with plates 3.' },
@@ -257,7 +257,7 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
         { line: 5, text: 'Destructuring pulls two values out.' },
         { line: 7, text: '?. stops safely and ?? gives a fallback.' },
       ],
-      output: ['Poha 2 3', 'No address yet'],
+      output: ['Coffee 2 3', 'No address yet'],
     },
     industry: 'Server data arrives as JSON: arrays of objects. Front-end frameworks like React depend on making new objects with spread instead of changing old ones, so the screen knows what changed.',
     interview: [
@@ -278,12 +278,12 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     lang: 'javascript',
     sections: [
       { heading: 'Blueprints', body: 'A class describes a kind of object: the data each one holds and the methods that work on it. new runs the constructor, which sets up the new object’s data on this. Every object made from the class gets its own data but shares the same methods. Class names start with a capital letter.', code: ['class Cart {', '  constructor(owner) {', '    this.owner = owner;', '    this.items = [];', '  }', '}'], anim: 'classObject' },
-      { heading: 'Methods, getters and this', body: 'Methods are functions inside the class. Inside them, this is the object the method was called on, so aman.add("Poha") changes Aman’s cart only. A getter, written get count(), is read like a property, without brackets. Fields starting with # are private: only the class’s own methods can see them.', code: ['add(dish) {', '  this.items.push(dish);', '}', 'get count() {', '  return this.items.length;', '}'], anim: 'classObject' },
-      { heading: 'extends and super', body: 'class TiffinCart extends Cart makes a new class that has everything Cart has, plus more. Its constructor must call super(…) first, which runs Cart’s constructor. Methods can be replaced. Use this sparingly: often plain objects and functions are simpler than a family of classes.', code: ['class TiffinCart extends Cart {', '  constructor(owner, address) {', '    super(owner);', '    this.address = address;', '  }', '}'], anim: 'classObject' },
+      { heading: 'Methods, getters and this', body: 'Methods are functions inside the class. Inside them, this is the object the method was called on, so aman.add("Coffee") changes Aman’s cart only. A getter, written get count(), is read like a property, without brackets. Fields starting with # are private: only the class’s own methods can see them.', code: ['add(dish) {', '  this.items.push(dish);', '}', 'get count() {', '  return this.items.length;', '}'], anim: 'classObject' },
+      { heading: 'extends and super', body: 'class DeliveryCart extends Cart makes a new class that has everything Cart has, plus more. Its constructor must call super(…) first, which runs Cart’s constructor. Methods can be replaced. Use this sparingly: often plain objects and functions are simpler than a family of classes.', code: ['class DeliveryCart extends Cart {', '  constructor(owner, address) {', '    super(owner);', '    this.address = address;', '  }', '}'], anim: 'classObject' },
     ],
     example: {
       title: 'Carts for two customers',
-      code: ['class Cart {', '  constructor(owner) {', '    this.owner = owner;', '    this.items = [];', '  }', '  add(dish) {', '    this.items.push(dish);', '  }', '  get count() {', '    return this.items.length;', '  }', '}', 'const aman = new Cart("Aman");', 'const priya = new Cart("Priya");', 'aman.add("Poha");', 'aman.add("Thali");', 'priya.add("Dal rice");', 'console.log(aman.owner, aman.count);', 'console.log(priya.owner, priya.count);'],
+      code: ['class Cart {', '  constructor(owner) {', '    this.owner = owner;', '    this.items = [];', '  }', '  add(dish) {', '    this.items.push(dish);', '  }', '  get count() {', '    return this.items.length;', '  }', '}', 'const aman = new Cart("Aman");', 'const priya = new Cart("Priya");', 'aman.add("Coffee");', 'aman.add("Cheese Toast");', 'priya.add("Lemon Tea");', 'console.log(aman.owner, aman.count);', 'console.log(priya.owner, priya.count);'],
       walk: [
         { line: 2, text: 'The constructor gives each new cart its own items.' },
         { line: 6, text: 'add works on whichever cart it is called on: this.' },
@@ -352,14 +352,14 @@ export const JS_NOTES: Record<string, ModuleNotes> = {
     example: {
       title: 'A counter that remembers',
       code: ['const add = document.querySelector("#add");', 'const count = document.querySelector("#count");', 'let items = Number(localStorage.getItem("items") ?? 0);', 'add.addEventListener("click", () => {', '  items += 1;', '  count.textContent = items;', '  localStorage.setItem("items", items);', '});', 'add.click();', 'add.click();'],
-      page: '<p>Tiffins: <span id="count">0</span></p>\n<button id="add">Add a tiffin</button>',
+      page: '<p>Teas: <span id="count">0</span></p>\n<button id="add">Add a tea</button>',
       walk: [
         { line: 1, text: 'Find the button and the count.' },
         { line: 3, text: 'Read the saved count, or 0 the first time.' },
         { line: 4, text: 'Every click adds 1, shows it and saves it.' },
         { line: 9, text: 'click() acts like a tap, so the page shows 2.' },
       ],
-      output: ['Tiffins: 2', 'Add a tiffin'],
+      output: ['Teas: 2', 'Add a tea'],
     },
     industry: 'Frameworks like React update the DOM for you, but they use the same events and elements underneath, and debugging still means reading the DOM in the browser’s developer tools. Avoiding XSS is checked in every security review.',
     interview: [
