@@ -11,6 +11,7 @@ import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
 import { ticketHtml } from './web';
 import { flexRow } from './styling';
 import { CSS_UNITS, CSS_V5 } from './tracks/cssV5';
+import { CSS_I_UNITS, CSS_I_V5 } from './tracks/cssV5i';
 import { searchForm } from './html';
 import { HTML_UNITS, HTML_V5 } from './tracks/htmlV5';
 import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
@@ -238,6 +239,7 @@ const ALL: Lesson[] = [
   ...HTML_V5,
   ...HTML_I_V5,
   ...CSS_V5,
+  ...CSS_I_V5,
   ...JS_V5,
   ...REACT_FOUNDATIONS,
   REACT_PROJECT,
@@ -418,6 +420,7 @@ export const STAGES: Stage[] = [
     icon: 'M4 4h16l-1.5 15L12 21l-6.5-2z M8 8h8l-.5 6-3.5 1-3.5-1',
     units: [
       ...CSS_UNITS,
+      ...CSS_I_UNITS,
     ],
     practice: [
       { id: 'x-style', title: 'Style the ticket', kind: 'CSS', difficulty: 'Easy', xp: 15 },

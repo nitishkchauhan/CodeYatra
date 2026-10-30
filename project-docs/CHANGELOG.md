@@ -5,6 +5,12 @@ Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/Cod
 ## 29 Oct 2026 (branch `lesson-v3`): no Hindi words in the module notes
 - **HTML, more HTML, CSS and JavaScript notes** (`content/notes/html.ts`, `htmlMore.ts`, `css.ts`, `js.ts`) now use Riya’s Café (Lemon Tea, Coffee, Cheese Toast, Veg Sandwich, Chicken Sandwich, Cookies; `toast.jpg`) instead of tiffin and thali examples. Every worked-example output updated to match, including the sort example (now Iced Tea and Lemon Tea at ₹40 to show the tie-break by name). 5441 tests pass.
 
+## 31 Oct 2026 (branch `lesson-v3`): CSS Intermediate in Lesson v5
+- **CSS Intermediate built** (`tracks/cssV5i/`): 6 modules, 18 lessons and 6 challenges, shown in the CSS track after the Basic modules (marked INTERMEDIATE). Layout patterns (auto-fit grids, grid areas, sticky footers), components that fit anywhere (clamp, container queries, aspect-ratio and object-fit), motion with a purpose (multi-step keyframes, staggers, skeletons, reduced motion), design tokens and themes (data-theme, @layer), forms that look good (accent-color, focus rings, :user-invalid with :has()), and responsive navigation (menu toggle with aria-expanded, sticky header, skip links).
+- **Final project:** your own portfolio site (`c-i-project`), four checked CSS steps.
+- Resize the screen also shows container queries (they work on the real box size in the scaled preview); the screen test accepts `@container` as a layout that changes.
+- 5844 tests pass. `supabase/track-lessons.sql` regenerated: run it when `lesson-v3` is merged.
+
 ## 30 Oct 2026 (branch `lesson-v3`): HTML Intermediate in Lesson v5
 - **HTML Intermediate built** (`tracks/htmlV5i/`, approved draft `content-drafts/web-intermediate-v5.md`): 6 modules, 18 lessons and 6 challenges, shown in the HTML track after the Basic modules (marked INTERMEDIATE). Forms everyone can fill (fieldset, linked errors, autocomplete, inputmode), responsive images (srcset, sizes, picture, no layout shift), sites with many pages (relative paths, shared nav, aria-current), search and share tags (titles, Open Graph, JSON-LD, canonical, robots, sitemaps), fast pages (Core Web Vitals, lazy loading, defer and async), and built-in widgets (details, popover, dialog, progress, meter).
 - **Final project:** the Greenfield School website (`h-i-project`), four checked steps across Home, Admissions and Fees.

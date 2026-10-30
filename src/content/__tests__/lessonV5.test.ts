@@ -19,7 +19,7 @@ const dom = (html: string) => new JSDOM(`<!doctype html><body>${html}</body>`).w
 
 describe.each([
   ['html', 15],
-  ['css', 12],
+  ['css', 18],
   ['js', 13],
 ])('the %s track (Lesson v5)', (id, modules) => {
   const track = STAGES.find((s) => s.id === id)!;
@@ -136,7 +136,7 @@ describe('Lesson v5 screens', () => {
     expect(s.widths).toEqual([...s.widths].sort((x, y) => x - y));
     // Either a width query switches, or the layout is fluid (vw, clamp, auto-fill, wrap).
     const switches = cssAtWidth(css, narrow) !== cssAtWidth(css, wide);
-    expect(switches || /vw|clamp\(|auto-fill|auto-fit|flex-wrap:\s*wrap/.test(css)).toBe(true);
+    expect(switches || /vw|clamp\(|auto-fill|auto-fit|flex-wrap:\s*wrap|@container/.test(css)).toBe(true);
   });
 
   it.each(rows(of('arrange').filter(([, s]) => s.html !== undefined)))('%s: CSS blocks are whole rules', (_, s) => {
