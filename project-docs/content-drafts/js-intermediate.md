@@ -1,6 +1,6 @@
 # JavaScript · Intermediate level · content draft (modules 1–6 and the project)
 
-**Status:** draft for owner review (27 Oct 2026). Nothing is built yet. Once approved, each module is built as a Lesson v3 lesson with tests and module notes, on branch `lesson-v3`.
+**Status:** replaced by `web-intermediate-v5.md` (30 Oct 2026). Kept for its detail; the new draft uses Lesson v5 and neutral names. Nothing is built yet. Once approved, each module is built as a Lesson v3 lesson with tests and module notes, on branch `lesson-v3`.
 
 **Order:** the same as HTML and CSS Intermediate: Hook → 3 learn cards with animations → Try it → **See it run** → Common mistake → Sort or match → Quick check → **At work** → Build it → Recap → Read more. Six modules, about 12 minutes each.
 

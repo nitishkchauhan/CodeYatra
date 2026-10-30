@@ -1,6 +1,6 @@
 # HTML · Intermediate level · content draft (modules 1–6 and the project)
 
-**Status:** draft for owner review (27 Oct 2026). Nothing is built yet. Once approved, each module is built as a Lesson v3 lesson with tests and module notes, on branch `lesson-v3`.
+**Status:** replaced by `web-intermediate-v5.md` (30 Oct 2026). Kept for its detail; the new draft uses Lesson v5 and neutral names. Nothing is built yet. Once approved, each module is built as a Lesson v3 lesson with tests and module notes, on branch `lesson-v3`.
 
 **Order (as in Python Intermediate):** Hook → 3 learn cards (What is it? · Where it’s used · How it works, each with an animation) → Try it → See it build → Common mistake → Sort or match → Quick check → **At work** (a message from a teammate, with a ticket or report) → Build it (the task from that message, live checks) → Recap → Read more.
 
