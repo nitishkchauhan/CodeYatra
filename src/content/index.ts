@@ -13,6 +13,7 @@ import { flexRow } from './styling';
 import { CSS_UNITS, CSS_V5 } from './tracks/cssV5';
 import { searchForm } from './html';
 import { HTML_UNITS, HTML_V5 } from './tracks/htmlV5';
+import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { dynamicRoute, routeHandler } from './next';
@@ -235,6 +236,7 @@ const ALL: Lesson[] = [
   PYTHON_PROJECT,
   ...PYTHON_MORE,
   ...HTML_V5,
+  ...HTML_I_V5,
   ...CSS_V5,
   ...JS_V5,
   ...REACT_FOUNDATIONS,
@@ -392,6 +394,7 @@ export const STAGES: Stage[] = [
     icon: 'M8 8l-4 4 4 4 M16 8l4 4-4 4 M13.5 5l-3 14',
     units: [
       ...HTML_UNITS,
+      ...HTML_I_UNITS,
     ],
     practice: [
       { id: 'x-ticket', title: 'Build a ticket card', kind: 'HTML', difficulty: 'Easy', xp: 15 },

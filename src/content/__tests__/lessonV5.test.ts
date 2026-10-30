@@ -18,7 +18,7 @@ const rows = <R,>(r: R[]): R[] => (r.length ? r : ([['(none)', null]] as unknown
 const dom = (html: string) => new JSDOM(`<!doctype html><body>${html}</body>`).window.document;
 
 describe.each([
-  ['html', 9],
+  ['html', 15],
   ['css', 12],
   ['js', 13],
 ])('the %s track (Lesson v5)', (id, modules) => {
@@ -194,7 +194,7 @@ describe('Lesson v5 JavaScript screens', () => {
 
   it.each(rows(of('tappage')))('%s: the page runs, and the demo taps reach the goal', async (_, s) => {
     if (!s) return;
-    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js });
+    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current });
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.some((l) => l.text.includes(s.goal))).toBe(false);
     for (const a of s.demo) act(window, a);

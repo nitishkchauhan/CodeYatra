@@ -220,6 +220,8 @@ export type WebStep = {
   hint: string;
   /** Other pages of the site, shown read-only in the preview so links between pages work. */
   pages?: Record<string, string>;
+  /** The file name of the page being edited (index.html if not given). */
+  current?: string;
 };
 
 /** Lesson v2: opens a module with a real situation and what the learner will be able to do. */
@@ -367,7 +369,7 @@ export type RecallStep = {
 // ── Lesson v5 (the HTML track): short phone screens, each with one thing to do. ─────────────────────────
 
 /** A web page shown in a live preview: body HTML, with optional CSS. */
-export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string> };
+export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string };
 
 /** Yatri talks: a few short speech bubbles, then a button. */
 export type ChatStep = { type: 'chat'; kicker?: string; lines: string[]; button?: string; code?: string[]; page?: PagePreview };

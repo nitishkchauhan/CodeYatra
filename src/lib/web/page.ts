@@ -3,7 +3,7 @@
 import { withAssets } from './assets';
 
 /** `pages`: other pages of a small site (file name → body HTML), so links between them work in the preview. */
-export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string> };
+export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string };
 export type PageLog = { level: 'log' | 'error'; text: string };
 
 const BRIDGE = `<script>
@@ -86,13 +86,13 @@ const PRACTICE = `<script>
 const BASE_CSS = 'body{font-family:system-ui,-apple-system,Roboto,sans-serif;margin:12px;line-height:1.45;color:#16142B;}';
 
 /** A full document. `</script>` in learner JS is escaped so it can't break out of its tag. */
-export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages }: WebFiles): string {
+export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html' }: WebFiles): string {
   // Built-in pictures (cup.svg, banner.svg…) work offline.
   const html = withAssets(rawHtml);
   const css = withAssets(rawCss);
   const safeJs = js.replace(/<\/script/gi, '<\/script');
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-${BRIDGE}${PRACTICE}<style>${BASE_CSS}${css}</style></head><body>${html}<script>try{${safeJs}\n}catch(e){window.onerror && window.onerror(e.message)}</script>${pages ? siteScript(html, pages) : ''}</body></html>`;
+${BRIDGE}${PRACTICE}<style>${BASE_CSS}${css}</style></head><body>${html}<script>try{${safeJs}\n}catch(e){window.onerror && window.onerror(e.message)}</script>${pages ? siteScript(html, pages, current) : ''}</body></html>`;
 }
 
 /** Puts a value in each `{{n}}` slot ("copy the look" lessons). */
@@ -102,9 +102,9 @@ export const fillSlots = (css: string, values: string[]) => values.reduce((c, v,
  * A small site in one preview: tapping a link to another page (or back to the first) swaps the page body and logs
  * "Page: name.html", and a thin bar shows which file is open. Links to sections (#top) and other sites work as usual.
  */
-function siteScript(first: string, pages: Record<string, string>): string {
-  const all = JSON.stringify({ 'index.html': first, ...Object.fromEntries(Object.entries(pages).map(([k, v]) => [k, withAssets(v)])) }).replace(/<\//g, '<\\/');
-  return `<script>(function(){var pages=${all};var bar=document.createElement('div');bar.id='cy-site-bar';bar.setAttribute('style','position:sticky;top:0;z-index:99;font:12px monospace;padding:4px 8px;background:#EEEBF8;color:#4B3FD8;border-bottom:1px solid #C9C3FF');function show(name){var keep=bar;document.body.innerHTML=pages[name];document.body.prepend(keep);keep.textContent='📄 '+name;}bar.textContent='📄 index.html';document.body.prepend(bar);document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var href=a.getAttribute('href').split('#')[0].replace(/^\\.\\//,'');if(pages[href]===undefined)return;e.preventDefault();show(href);console.log('Page: '+href);});})();</script>`;
+function siteScript(first: string, pages: Record<string, string>, current: string): string {
+  const all = JSON.stringify({ ...Object.fromEntries(Object.entries(pages).map(([k, v]) => [k, withAssets(v)])), [current]: first }).replace(/<\//g, '<\\/');
+  return `<script>(function(){var pages=${all};var bar=document.createElement('div');bar.id='cy-site-bar';bar.setAttribute('style','position:sticky;top:0;z-index:99;font:12px monospace;padding:4px 8px;background:#EEEBF8;color:#4B3FD8;border-bottom:1px solid #C9C3FF');function show(name){var keep=bar;document.body.innerHTML=pages[name];document.body.prepend(keep);keep.textContent='📄 '+name;}bar.textContent='📄 ${current}';document.body.prepend(bar);document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var href=a.getAttribute('href').split('#')[0].replace(/^\\.\\//,'');if(pages[href]===undefined)return;e.preventDefault();show(href);console.log('Page: '+href);});})();</script>`;
 }
 
 /** Parses a bridge message; anything else is ignored. */
