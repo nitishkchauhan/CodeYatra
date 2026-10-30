@@ -218,6 +218,8 @@ export type WebStep = {
   solution: Partial<Record<WebFile, string>> & { html: string };
   checks: WebCheck[];
   hint: string;
+  /** Other pages of the site, shown read-only in the preview so links between pages work. */
+  pages?: Record<string, string>;
 };
 
 /** Lesson v2: opens a module with a real situation and what the learner will be able to do. */
@@ -365,7 +367,7 @@ export type RecallStep = {
 // ── Lesson v5 (the HTML track): short phone screens, each with one thing to do. ─────────────────────────
 
 /** A web page shown in a live preview: body HTML, with optional CSS. */
-export type PagePreview = { html: string; css?: string; js?: string };
+export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string> };
 
 /** Yatri talks: a few short speech bubbles, then a button. */
 export type ChatStep = { type: 'chat'; kicker?: string; lines: string[]; button?: string; code?: string[]; page?: PagePreview };
