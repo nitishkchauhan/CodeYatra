@@ -21,7 +21,7 @@ import { FindBugStep, OrderLinesStep, PredictOutputStep, TapTokenStep } from '@/
 import { LessonTopBar } from '@/features/lesson/Shell';
 import { HookStep, MistakeStep, TryStep } from '@/features/lesson/V2Steps';
 import { BugStepV4, RecallStep } from '@/features/lesson/V4';
-import { ArrangeScreen, ChatScreen, CopyScreen, ExploreScreen, LiveScreen, PlaceScreen, RecapScreen, ResizeScreen, RevealScreen, RunScreen, SwipeScreen, TapPageScreen, TapBugScreen, ToggleScreen, XrayScreen } from '@/features/lesson/V5';
+import { V5CodeLang, ArrangeScreen, ChatScreen, CopyScreen, ExploreScreen, LiveScreen, PlaceScreen, RecapScreen, ResizeScreen, RevealScreen, RunScreen, SwipeScreen, TapPageScreen, TapBugScreen, ToggleScreen, XrayScreen } from '@/features/lesson/V5';
 import { GroupStep, MatchStep, PageBuildStep, ScenarioStep, TraceStep } from '@/features/lesson/V3Steps';
 import { WebBuildStep } from '@/features/lesson/WebBuildStep';
 import { track } from '@/lib/telemetry';
@@ -177,40 +177,42 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
       <LessonTopBar steps={lesson.steps.length} index={index} xp={reward.xp} onClose={() => router.back()} onNotes={notesFor && v4 ? () => router.push({ pathname: '/notes/[id]', params: { id: lesson.id } }) : undefined} />
       <Animated.View key={index} entering={FadeIn.duration(220)} style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          {step.type === 'concept' && <ConceptStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'hook' && <HookStep step={step} onDone={next} />}
-          {step.type === 'try' && <TryStep step={step} onDone={next} />}
-          {step.type === 'mistake' && <MistakeStep step={step} onDone={next} />}
-          {step.type === 'quiz' && <QuizStep step={step} onDone={next} onMistake={onMistake} v4={v4} />}
-          {step.type === 'puzzle' && <PuzzleStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'code' && <CodeStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'editor' && <EditorStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'order' && <OrderLinesStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'bug' && (v4 ? <BugStepV4 step={step} onDone={next} onMistake={onMistake} /> : <FindBugStep step={step} onDone={next} onMistake={onMistake} />)}
-          {step.type === 'predict' && <PredictOutputStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'tap' && <TapTokenStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'web' && <WebBuildStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'trace' && <TraceStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'match' && <MatchStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'group' && <GroupStep step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'scenario' && <ScenarioStep step={step} onDone={next} />}
-          {step.type === 'pagebuild' && <PageBuildStep step={step} onDone={next} />}
-          {step.type === 'recall' && <RecallStep step={step} onDone={next} />}
-          {step.type === 'chat' && <ChatScreen step={step} onDone={next} />}
-          {step.type === 'reveal' && <RevealScreen step={step} onDone={next} />}
-          {step.type === 'explore' && <ExploreScreen step={step} onDone={next} />}
-          {step.type === 'toggle' && <ToggleScreen step={step} onDone={next} />}
-          {step.type === 'live' && <LiveScreen step={step} onDone={next} />}
-          {step.type === 'recap' && <RecapScreen step={step} onDone={next} />}
-          {step.type === 'place' && <PlaceScreen step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'tapbug' && <TapBugScreen step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'swipe' && <SwipeScreen step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'xray' && <XrayScreen step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'arrange' && <ArrangeScreen step={step} onDone={next} onMistake={onMistake} />}
-          {step.type === 'copy' && <CopyScreen step={step} onDone={next} />}
-          {step.type === 'resize' && <ResizeScreen step={step} onDone={next} />}
-          {step.type === 'run' && <RunScreen step={step} onDone={next} />}
-          {step.type === 'tappage' && <TapPageScreen step={step} onDone={next} />}
+          <V5CodeLang.Provider value={lesson.skill === 'python' ? 'python' : null}>
+            {step.type === 'concept' && <ConceptStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'hook' && <HookStep step={step} onDone={next} />}
+            {step.type === 'try' && <TryStep step={step} onDone={next} />}
+            {step.type === 'mistake' && <MistakeStep step={step} onDone={next} />}
+            {step.type === 'quiz' && <QuizStep step={step} onDone={next} onMistake={onMistake} v4={v4} />}
+            {step.type === 'puzzle' && <PuzzleStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'code' && <CodeStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'editor' && <EditorStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'order' && <OrderLinesStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'bug' && (v4 ? <BugStepV4 step={step} onDone={next} onMistake={onMistake} /> : <FindBugStep step={step} onDone={next} onMistake={onMistake} />)}
+            {step.type === 'predict' && <PredictOutputStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'tap' && <TapTokenStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'web' && <WebBuildStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'trace' && <TraceStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'match' && <MatchStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'group' && <GroupStep step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'scenario' && <ScenarioStep step={step} onDone={next} />}
+            {step.type === 'pagebuild' && <PageBuildStep step={step} onDone={next} />}
+            {step.type === 'recall' && <RecallStep step={step} onDone={next} />}
+            {step.type === 'chat' && <ChatScreen step={step} onDone={next} />}
+            {step.type === 'reveal' && <RevealScreen step={step} onDone={next} />}
+            {step.type === 'explore' && <ExploreScreen step={step} onDone={next} />}
+            {step.type === 'toggle' && <ToggleScreen step={step} onDone={next} />}
+            {step.type === 'live' && <LiveScreen step={step} onDone={next} />}
+            {step.type === 'recap' && <RecapScreen step={step} onDone={next} />}
+            {step.type === 'place' && <PlaceScreen step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'tapbug' && <TapBugScreen step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'swipe' && <SwipeScreen step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'xray' && <XrayScreen step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'arrange' && <ArrangeScreen step={step} onDone={next} onMistake={onMistake} />}
+            {step.type === 'copy' && <CopyScreen step={step} onDone={next} />}
+            {step.type === 'resize' && <ResizeScreen step={step} onDone={next} />}
+            {step.type === 'run' && <RunScreen step={step} onDone={next} />}
+            {step.type === 'tappage' && <TapPageScreen step={step} onDone={next} />}
+          </V5CodeLang.Provider>
         </View>
       </Animated.View>
     </SafeAreaView>

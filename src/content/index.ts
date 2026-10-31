@@ -38,7 +38,7 @@ import { JAVA_LESSONS, JAVA_PROJECT } from './tracks/java';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PYTHON_PROJECT_V4 as PYTHON_PROJECT } from './tracks/pythonProjectV4';
 import { PYTHON_BASIC } from './tracks/pythonV3';
-import { PYTHON_INTERMEDIATE, PYTHON_INTERMEDIATE_PROJECT } from './tracks/pythonIntermediate';
+import { PY_I_UNITS, PY_I_V5 } from './tracks/pythonV5i';
 import { PYTHON_ADVANCED, PYTHON_ADVANCED_PROJECT } from './tracks/pythonAdvanced';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
@@ -231,8 +231,7 @@ const ALL: Lesson[] = [
   ...LOGIC_FOUNDATIONS,
   LOGIC_PROJECT,
   ...PYTHON_BASIC,
-  ...PYTHON_INTERMEDIATE,
-  PYTHON_INTERMEDIATE_PROJECT,
+  ...PY_I_V5,
   ...PYTHON_ADVANCED,
   PYTHON_ADVANCED_PROJECT,
   PYTHON_PROJECT,
@@ -482,13 +481,7 @@ export const STAGES: Stage[] = [
       unit('p-u14', 'Files', ref('p-file-1', 'Files', 'Lesson + code editor · 7 min')),
       unit('p-u8', 'Classes', ref('p-class-1', 'Classes and objects', 'Lesson + code editor · 8 min')),
       unit('p-u15', 'Project', ref('p-project', 'Project: canteen billing app', 'Project · 4 tested steps · 15 min')),
-      unit('p-i1', 'Comprehensions', ref('py-comprehensions', 'Comprehensions', 'Lesson + build · 12 min')),
-      unit('p-i2', 'Tuples and sets', ref('py-tuples-sets', 'Tuples and sets', 'Lesson + build · 12 min')),
-      unit('p-i3', 'Modules', ref('py-modules', 'Modules and the standard library', 'Lesson + build · 12 min')),
-      unit('p-i4', 'JSON', ref('py-json', 'JSON and real data', 'Lesson + build · 12 min')),
-      unit('p-i5', 'Functions in depth', ref('py-functions-2', 'Functions in depth', 'Lesson + build · 12 min')),
-      unit('p-i6', 'Classes in depth', ref('py-oop-2', 'Classes in depth', 'Lesson + build · 12 min')),
-      unit('p-i7', 'Project', ref('py-i-project', 'Project: a train booking report', 'Project · 3 tested steps · 20 min')),
+      ...PY_I_UNITS,
       unit('p-a1', 'Testing', ref('py-testing', 'Testing your code', 'Lesson + build · 14 min')),
       unit('p-a2', 'Debugging', ref('py-debugging', 'Debugging and logging', 'Lesson + build · 14 min')),
       unit('p-a3', 'APIs', ref('py-apis', 'APIs and HTTP', 'Lesson + build · 14 min')),

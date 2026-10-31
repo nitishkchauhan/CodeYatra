@@ -1,6 +1,6 @@
 # Python Intermediate in Lesson v5 · content draft
 
-**Status:** draft for the owner’s OK, 31 Oct 2026. Nothing is built yet. Once approved it is built on `lesson-v3` in `src/content/tracks/pythonV5i/`, with tests, like the web Intermediate tracks.
+**Status:** approved by the owner (“GO”, all five decisions) and built on `lesson-v3` in `src/content/tracks/pythonV5i/`, 31 Oct 2026.
 
 **What changes:** today Python Intermediate is 6 long lessons (about 12 minutes each, Lesson v3) plus a project. In v5 it becomes **6 modules of 3 short lessons (3–5 min) and a Module Challenge each**, with the same screens you tested in HTML, CSS and JavaScript: chat, tap to reveal, explore, switch and see, **run and tweak**, **predict, then run**, tap to place, tap the bug, true or false, match, arrange, stars and badges.
 

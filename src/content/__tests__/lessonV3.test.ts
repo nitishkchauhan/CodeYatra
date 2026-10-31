@@ -89,7 +89,8 @@ describe('work scenarios', () => {
 
 describe('Python, Lesson v3', () => {
   const python = STAGES.find((s) => s.id === 'python')!.units.flatMap((u) => u.lessons.map((r) => getLesson(r.id)!));
-  const modules = python.filter((l) => l.kind === 'lesson');
+  // Python Intermediate follows Lesson v5 (lessonV5.test.ts).
+  const modules = python.filter((l) => l.kind === 'lesson' && l.format !== 'v5');
   it.each(modules.map((l) => [l.id, l] as const))('%s: has a level, a moving or interactive card for every idea, watch-it-run and a match or sort', (_, l) => {
     expect(l.level).toBeDefined();
     for (const s of l.steps) if (s.type === 'concept') expect(!!(s.anim || s.visual || s.demo)).toBe(true);

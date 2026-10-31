@@ -3,9 +3,10 @@ import { describe, expect, it } from '@jest/globals';
 import { allLessons, drillId, getLesson, hasDrill, STAGES } from '..';
 import { isReplay, lessonReward } from '@/state/model';
 
-// The final project is built step by step, so it has no separate practice set.
+// The final project is built step by step, so it has no separate practice set. A Lesson v5 module is a unit of
+// short lessons; its practice set belongs to the unit's first lesson.
 const pythonModules = STAGES.find((s) => s.id === 'python')!
-  .units.flatMap((u) => u.lessons.map((l) => l.id))
+  .units.flatMap((u) => u.lessons.filter((l, i) => i === 0 || getLesson(l.id)?.format !== 'v5').map((l) => l.id))
   .filter((id) => getLesson(id)?.kind !== 'project');
 
 describe('module practice', () => {

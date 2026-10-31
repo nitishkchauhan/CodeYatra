@@ -17,8 +17,8 @@ describe('Python Foundations follows Lesson v2', () => {
     expect(pythonModules.at(-1)!.kind).toBe('project');
   });
 
-  // Modules rebuilt in the Lesson v4 format follow their own rules (lessonV4.test.ts).
-  it.each(pythonModules.filter((l) => l.kind === 'lesson' && l.format !== 'v4').map((l) => [l.id, l] as const))('%s: hook, 3 cards, try it, a mistake, checks, practice, 3-point recap', (_, lesson) => {
+  // Modules rebuilt in the Lesson v4 and v5 formats follow their own rules (lessonV4.test.ts, lessonV5.test.ts).
+  it.each(pythonModules.filter((l) => l.kind === 'lesson' && l.format !== 'v4' && l.format !== 'v5').map((l) => [l.id, l] as const))('%s: hook, 3 cards, try it, a mistake, checks, practice, 3-point recap', (_, lesson) => {
     const types = lesson.steps.map((s) => s.type);
     expect(types[0]).toBe('hook');
     expect(types.filter((t) => t === 'concept')).toHaveLength(3);

@@ -1,7 +1,7 @@
 // Lesson v5 screens (the HTML track): short phone screens, each with one thing to do. Teaching screens unlock
 // Continue once the learner has done the thing (flipped every tile, tapped the lines, seen every version);
 // checked screens use the v4 feedback: a hint on the first miss, the answer on the second, no lives.
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ComponentProps } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, FadeInRight, useAnimatedStyle, useSharedValue, withSequence, withTiming, ZoomIn } from 'react-native-reanimated';
 
@@ -19,6 +19,15 @@ import { useCodeRunner, type RunOutcome } from '@/lib/runner';
 import { pageAtWidth } from '@/lib/web/media';
 import { buildPage, fillSlots } from '@/lib/web/page';
 import { colors, fonts } from '@/theme';
+
+/** Set to 'python' for Python lessons: code is shown as Python and programs run in the Python runner. */
+export const V5CodeLang = createContext<'python' | null>(null);
+
+/** A code block in the lesson's language (Python lessons override the web default). */
+function Code(p: ComponentProps<typeof CodeBlock>) {
+  const lang = useContext(V5CodeLang);
+  return <CodeBlock {...p} lang={lang ?? p.lang} />;
+}
 
 type Done = { onDone: () => void };
 type Checked = Done & { onMistake: () => void };
@@ -114,7 +123,7 @@ export function ChatScreen({ step, onDone }: { step: ChatStep } & Done) {
       </View>
       {step.code ? (
         <View style={styles.code}>
-          <CodeBlock lines={step.code} lang="html" />
+          <Code lines={step.code} lang="html" />
         </View>
       ) : null}
       {step.page ? <WebPreview doc={page(step.page)} height={170} /> : null}
@@ -132,7 +141,7 @@ export function RevealScreen({ step, onDone }: { step: RevealStep } & Done) {
       <StepHeader kicker={step.kicker} title={step.title} instructions={step.intro} color={colors.primary} />
       {step.code ? (
         <View style={styles.code}>
-          <CodeBlock lines={step.code} lang="html" />
+          <Code lines={step.code} lang="html" />
         </View>
       ) : null}
       <View style={{ gap: 8 }}>
@@ -243,7 +252,7 @@ export function ToggleScreen({ step, onDone }: { step: ToggleStep } & Done) {
         ))}
       </View>
       <View style={styles.code}>
-        <CodeBlock lines={v.code} lang={v.out ? 'javascript' : 'html'} />
+        <Code lines={v.code} lang={v.out ? 'javascript' : 'html'} />
       </View>
       {v.out ? <ConsoleBox key={i} out={{ ok: true, output: v.out.filter((l) => !/^\w*Error: /.test(l)), error: v.out.find((l) => /^\w*Error: /.test(l)) }} /> : <WebPreview key={i} doc={doc} height={180} />}
       <Animated.View key={`c${i}`} entering={FadeIn.duration(200)} style={styles.note}>
@@ -270,7 +279,7 @@ export function LiveScreen({ step, onDone }: { step: LiveStep } & Done) {
     <Screen bar={<Continue ready={tried.length >= 2} hint="Try another value" onDone={onDone} />}>
       <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
       <View style={styles.code}>
-        <CodeBlock lines={code} lang="html" highlight={step.code.findIndex((l) => l.includes('{{v}}'))} />
+        <Code lines={code} lang="html" highlight={step.code.findIndex((l) => l.includes('{{v}}'))} />
       </View>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
         {step.choices.map((c) => (
@@ -481,7 +490,7 @@ export function TapBugScreen({ step, onDone, onMistake }: { step: TapBugStep } &
             FIXED
           </T>
           <View style={styles.code}>
-            <CodeBlock lines={fixed} lang="html" />
+            <Code lines={fixed} lang="html" />
           </View>
         </Animated.View>
       ) : null}
@@ -690,7 +699,7 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
     }
   };
   return (
-    <Screen feedback={phase !== 'ask' ? <Feedback phase={phase} text={phase === 'right' ? (step.run ? 'It runs! The output matches the goal.' : 'Built! The page matches the goal.') : phase === 'hint' ? (step.html === undefined ? 'Not in the right order yet. Think about which tag has to open first and close last.' : 'Not in the right order yet. A rule opens with its selector and {, and closes with }. Follow the goal from top to bottom.') : 'Here is the right order. Read it top to bottom.'} onContinue={onDone} /> : null}>
+    <Screen feedback={phase !== 'ask' ? <Feedback phase={phase} text={phase === 'right' ? (step.run ? 'It runs! The output matches the goal.' : 'Built! The page matches the goal.') : phase === 'hint' ? (step.run ? 'Not in the right order yet. A value has to exist before it is used. Follow the goal from top to bottom.' : step.html === undefined ? 'Not in the right order yet. Think about which tag has to open first and close last.' : 'Not in the right order yet. A rule opens with its selector and {, and closes with }. Follow the goal from top to bottom.') : 'Here is the right order. Read it top to bottom.'} onContinue={onDone} /> : null}>
       <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
       <Animated.View style={[styles.code, { padding: 8, gap: 4, minHeight: 80 }, shakeStyle]}>
         {placed.length ? (
@@ -775,7 +784,7 @@ export function CopyScreen({ step, onDone }: { step: CopyStep } & Done) {
         </View>
       ))}
       <View style={styles.code}>
-        <CodeBlock lines={lines.slice(from)} lang="css" />
+        <Code lines={lines.slice(from)} lang="css" />
       </View>
     </Screen>
   );
@@ -818,7 +827,7 @@ export function ResizeScreen({ step, onDone }: { step: ResizeStep } & Done) {
       <WebPreview key={w} doc={doc} height={260} />
       {step.page.css ? (
         <View style={styles.code}>
-          <CodeBlock lines={step.page.css.trim().split('\n')} lang="css" />
+          <Code lines={step.page.css.trim().split('\n')} lang="css" />
         </View>
       ) : null}
       {step.caption ? (
@@ -832,20 +841,21 @@ export function ResizeScreen({ step, onDone }: { step: ResizeStep } & Done) {
   );
 }
 
-// ── JavaScript: the console ──────────────────────────────────────────────────
+// ── Programs: the console ────────────────────────────────────────────────────
 
-/** Runs `code` (when not null) in the app's JavaScript sandbox; reruns whenever the code changes. */
+/** Runs `code` (when not null) in the app's sandbox, as JavaScript or (in Python lessons) Python; reruns on change. */
 function useJsRun(code: string | null) {
   const run = useCodeRunner();
+  const lang = useContext(V5CodeLang) === 'python' ? 'python' : 'javascript';
   const [res, setRes] = useState<{ code: string; out: RunOutcome } | null>(null);
   useEffect(() => {
     if (code === null) return;
     let live = true;
-    run('javascript', code).then((out) => live && setRes({ code, out }));
+    run(lang, code).then((out) => live && setRes({ code, out }));
     return () => {
       live = false;
     };
-  }, [code, run]);
+  }, [code, run, lang]);
   return code !== null && res?.code === code ? res.out : null;
 }
 
@@ -885,7 +895,7 @@ export function RunScreen({ step, onDone }: { step: RunStep } & Done) {
     <Screen bar={<Continue ready={ready} hint={step.goal ? 'Reach the target' : 'Try another value'} onDone={onDone} />}>
       <StepHeader kicker={step.kicker} title={step.title} instructions={step.instructions} color={colors.primary} />
       <View style={styles.code}>
-        <CodeBlock lines={code} lang="javascript" highlight={step.code.findIndex((l) => l.includes('{{v}}'))} />
+        <Code lines={code} lang="javascript" highlight={step.code.findIndex((l) => l.includes('{{v}}'))} />
       </View>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
         {step.choices.map((c) => (

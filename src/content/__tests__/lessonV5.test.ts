@@ -3,8 +3,8 @@ import { JSDOM } from 'jsdom';
 
 import { allLessons, getLesson, isTeaching, STAGES, type Lesson, type Step, type TapAction } from '..';
 import { runPage } from '../testing/page';
-import { runJs } from '../testing/run';
-import { parseTrace } from '../trace';
+import { runJs, runPyFull } from '../testing/run';
+import { parseTrace, traceProgram } from '../trace';
 import { traceProgramJs } from '../traceJs';
 import { withAssets } from '@/lib/web/assets';
 import { bodyToScreen, cssAtWidth, vwAt, widthQueryMatches } from '@/lib/web/media';
@@ -15,6 +15,8 @@ const v5: Lesson[] = allLessons().filter((l) => l.format === 'v5');
 const all = v5.flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
 const of = <T extends Step['type']>(type: T) => all.filter(([, s]) => s.type === type) as unknown as [string, Extract<Step, { type: T }>][];
 const rows = <R,>(r: R[]): R[] => (r.length ? r : ([['(none)', null]] as unknown as R[]));
+// Steps of Python lessons run with real Python; the others with JavaScript.
+const pySteps = new Set(v5.filter((l) => l.skill === 'python').flatMap((l) => l.steps.map((_, i) => `${l.id}#${i}`)));
 const dom = (html: string) => new JSDOM(`<!doctype html><body>${html}</body>`).window.document;
 
 describe.each([
@@ -52,7 +54,8 @@ describe('every Lesson v5 lesson', () => {
     // Task 5: X-ray on a page, or (JavaScript) predict what a program prints.
     expect(['xray', 'trace']).toContain(types[9]);
     if (types[9] === 'trace') expect((l.steps[9] as Extract<Step, { type: 'trace' }>).ask).toBeDefined();
-    expect(['arrange', 'web']).toContain(types[10]);
+    // Task 6: arrange, or the final project (web pages, or Python in the code editor).
+    expect(['arrange', 'web', 'editor']).toContain(types[10]);
   });
 
   it('uses no Hindi words', () => {
@@ -165,6 +168,13 @@ const tryJs = (code: string): { out: string[]; error?: string } => {
   }
 };
 
+/** Runs a step's program in its lesson's language (Python lessons with real Python). */
+const tryCode = (key: string, code: string): { out: string[]; error?: string } => {
+  if (!pySteps.has(key)) return tryJs(code);
+  const r = runPyFull(code);
+  return r.error ? { out: r.output, error: r.error } : { out: r.output };
+};
+
 /** Does what a learner would do in the page: tap, type or send a form. */
 const act = (w: Awaited<ReturnType<typeof runPage>>["window"], a: TapAction) => {
   const d = w.document;
@@ -178,11 +188,11 @@ const act = (w: Awaited<ReturnType<typeof runPage>>["window"], a: TapAction) => 
 };
 
 describe('Lesson v5 JavaScript screens', () => {
-  it.each(rows(of('run')))('%s: every value runs, and the target can be reached', (_, s) => {
+  it.each(rows(of('run')))('%s: every value runs, and the target can be reached', (key, s) => {
     if (!s) return;
     expect(s.code.join('\n').split('{{v}}').length - 1).toBe(1);
     expect(new Set(s.choices).size).toBeGreaterThanOrEqual(2);
-    const runs = s.choices.map((c) => tryJs(s.code.join('\n').replace('{{v}}', c)));
+    const runs = s.choices.map((c) => tryCode(key, s.code.join('\n').replace('{{v}}', c)));
     // A value may cause an error on purpose, but the first one (shown at the start) always runs.
     expect(runs[0].error).toBeUndefined();
     expect(runs[0].out.length).toBeGreaterThan(0);
@@ -203,26 +213,45 @@ describe('Lesson v5 JavaScript screens', () => {
     expect(logs.map((l) => l.text).some((t) => t.includes(s.goal))).toBe(true);
   });
 
-  it.each(rows(of('toggle').filter(([, s]) => s.views.some((v) => v.out))))('%s: each version prints what it says', (_, s) => {
+  it.each(rows(of('toggle').filter(([, s]) => s.views.some((v) => v.out))))('%s: each version prints what it says', (key, s) => {
     if (!s) return;
     for (const v of s.views) {
-      const r = tryJs(v.code.join('\n'));
+      const r = tryCode(key, v.code.join('\n'));
       expect(r.error ? [...r.out, r.error] : r.out).toEqual(v.out);
     }
   });
 
-  it.each(rows(of('place').filter(([, s]) => s.run)))('%s: the finished program runs', (_, s) => {
+  it.each(rows(of('place').filter(([, s]) => s.run)))('%s: the finished program runs', (key, s) => {
     if (!s) return;
     const code = s.lines.map((segs) => segs.map((g) => (typeof g === 'string' ? g : s.answer[g.gap])).join('')).join('\n');
-    const r = tryJs(code);
+    const r = tryCode(key, code);
     expect(r.error).toBeUndefined();
     expect(r.out.length).toBeGreaterThan(0);
   });
 
-  it.each(rows(of('arrange').filter(([, s]) => s.run)))('%s: the right order prints the goal, and the reverse doesn’t', (_, s) => {
+  it.each(rows(of('arrange').filter(([, s]) => s.run)))('%s: the right order prints the goal, and the reverse doesn’t', (key, s) => {
     if (!s) return;
-    expect(tryJs(s.blocks.join('\n'))).toEqual({ out: s.expect });
-    expect(tryJs([...s.blocks].reverse().join('\n'))).not.toEqual({ out: s.expect });
+    expect(tryCode(key, s.blocks.join('\n'))).toEqual({ out: s.expect });
+    expect(tryCode(key, [...s.blocks].reverse().join('\n'))).not.toEqual({ out: s.expect });
+  });
+
+  it.each(rows(of('trace').filter(([, s]) => s.lang === 'python' && s.stops)))('%s: each Python stop’s answer is what really happens', (_, s) => {
+    if (!s) return;
+    const r = runPyFull(traceProgram(s.code));
+    expect(r.error).toBe('');
+    const t = parseTrace(r.output)!;
+    expect(t.error).toBeUndefined();
+    let from = -1;
+    for (const stop of s.stops!) {
+      const at = t.frames.findIndex((f, i) => f.line === stop.line && i > from);
+      expect(at).toBeGreaterThanOrEqual(0);
+      from = at;
+      // The state once the line has finished: older Pythons run a comprehension as its own small function first.
+      const after = t.frames.slice(at + 1).find((f) => f.line !== stop.line && !f.stack.length) ?? t.frames.at(-1)!;
+      const truth = 'var' in stop.check ? after.vars[stop.check.var] : after.out.replace(/\n$/, '').split('\n').at(-1);
+      expect(stop.options[stop.answer]).toBe(truth);
+      expect(new Set(stop.options).size).toBe(stop.options.length);
+    }
   });
 
   it.each(rows(of('trace').filter(([, s]) => s.lang === 'javascript' && s.stops)))('%s: each stop’s answer is what really happens', (_, s) => {
