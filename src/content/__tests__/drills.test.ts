@@ -7,7 +7,7 @@ import { isReplay, lessonReward } from '@/state/model';
 // short lessons; its practice set belongs to the unit's first lesson.
 const pythonModules = STAGES.find((s) => s.id === 'python')!
   .units.flatMap((u) => u.lessons.filter((l, i) => i === 0 || getLesson(l.id)?.format !== 'v5').map((l) => l.id))
-  .filter((id) => getLesson(id)?.kind !== 'project');
+  .filter((id) => getLesson(id)?.kind !== 'project' && !getLesson(id)?.exam);
 
 describe('module practice', () => {
   it('every Python module has at least 4 new exercises', () => {

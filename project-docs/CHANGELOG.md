@@ -5,6 +5,11 @@ Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/Cod
 ## 29 Oct 2026 (branch `lesson-v3`): no Hindi words in the module notes
 - **HTML, more HTML, CSS and JavaScript notes** (`content/notes/html.ts`, `htmlMore.ts`, `css.ts`, `js.ts`) now use Riya’s Café (Lemon Tea, Coffee, Cheese Toast, Veg Sandwich, Chicken Sandwich, Cookies; `toast.jpg`) instead of tiffin and thali examples. Every worked-example output updated to match, including the sort example (now Iced Tea and Lemon Tea at ₹40 to show the tie-break by name). 5441 tests pass.
 
+## 31 Oct 2026 (branch `lesson-v3`): a 20-question final test for every level
+- **Final tests** (`tracks/finalTests.ts`): HTML Basic and Intermediate, CSS Basic and Intermediate, JavaScript Basic and Intermediate, and Python Basic, Intermediate and Advanced each end with a final test of 20 quick questions across the whole level (180 questions in all), scored with stars and a 🎓 badge like a Module Challenge. Each is its own step on the module path, after the level’s last module.
+- `Lesson.exam` marks a final test. Checks: every final test has at least 20 different questions, all quick questions; final tests are left out of the per-module notes and practice checks.
+- 6714 tests pass. `supabase/track-lessons.sql` regenerated: run it when `lesson-v3` is merged.
+
 ## 31 Oct 2026 (branch `lesson-v3`): Python Basic in Lesson v5, so all of Python is one format
 - **Python Basic rebuilt** (`tracks/pythonV5/`, approved draft `content-drafts/python-basic-v5.md`): 12 modules, 39 short lessons and 12 challenges, replacing the 12 long Lesson v4 lessons. Every module starts from zero (what it is, where it is used), with Rosa’s Café examples: first program (print, comments and errors, variables, input), numbers, strings, decisions, for loops, while loops, lists, dictionaries, functions, handling errors, files, and classes.
 - **Final project:** Rosa’s billing app (`p-project`), 4 steps in the Python code editor: look up a price, add up an order, discount and tax, print the receipt.

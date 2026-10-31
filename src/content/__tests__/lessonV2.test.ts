@@ -13,9 +13,9 @@ const pythonModules = trackModules('python');
 
 describe('Python Foundations follows Lesson v2', () => {
   it('has 12 Basic modules and ends with a project', () => {
-    const basic = STAGES.find((s) => s.id === 'python')!.units.filter((u) => getLesson(u.lessons[0].id)?.level === 'basic');
+    const basic = STAGES.find((s) => s.id === 'python')!.units.filter((u) => getLesson(u.lessons[0].id)?.level === 'basic' && !getLesson(u.lessons[0].id)?.exam);
     expect(basic).toHaveLength(12);
-    expect(pythonModules.at(-1)!.kind).toBe('project');
+    expect(pythonModules.filter((l) => !l.exam).at(-1)!.kind).toBe('project');
   });
 
   // Every Python module is now in Lesson v4 (Basic) or v5 (Intermediate, Advanced): see lessonV4.test.ts and lessonV5.test.ts.

@@ -20,9 +20,9 @@ const pySteps = new Set(v5.filter((l) => l.skill === 'python').flatMap((l) => l.
 const dom = (html: string) => new JSDOM(`<!doctype html><body>${html}</body>`).window.document;
 
 describe.each([
-  ['html', 15],
-  ['css', 18],
-  ['js', 19],
+  ['html', 17],
+  ['css', 20],
+  ['js', 21],
 ])('the %s track (Lesson v5)', (id, modules) => {
   const track = STAGES.find((s) => s.id === id)!;
   it(`has ${modules} modules, each ending with its Challenge`, () => {
@@ -47,7 +47,7 @@ describe('every Lesson v5 lesson', () => {
     expect(reading.some((r, i) => r && reading[i + 1] && reading[i + 2])).toBe(false);
   });
 
-  it.each(v5.filter((l) => l.badge).map((l) => [l.id, l] as const))('%s: 5 questions, then the 6 tasks in order', (_, l) => {
+  it.each(v5.filter((l) => l.badge && !l.exam).map((l) => [l.id, l] as const))('%s: 5 questions, then the 6 tasks in order', (_, l) => {
     const types = l.steps.map((s) => s.type);
     expect(types.slice(0, 5)).toEqual(['quiz', 'quiz', 'quiz', 'quiz', 'quiz']);
     expect(types.slice(5, 9)).toEqual(['swipe', 'match', 'quiz', 'tapbug']);
@@ -56,6 +56,13 @@ describe('every Lesson v5 lesson', () => {
     if (types[9] === 'trace') expect((l.steps[9] as Extract<Step, { type: 'trace' }>).ask).toBeDefined();
     // Task 6: arrange, or the final project (web pages, or Python in the code editor).
     expect(['arrange', 'web', 'editor']).toContain(types[10]);
+  });
+
+  it.each(v5.filter((l) => l.exam).map((l) => [l.id, l] as const))('%s: a final test of at least 20 different questions', (_, l) => {
+    expect(l.steps.length).toBeGreaterThanOrEqual(20);
+    expect(l.steps.every((s) => s.type === 'quiz')).toBe(true);
+    const prompts = l.steps.map((s) => (s.type === 'quiz' ? s.prompt : ''));
+    expect(new Set(prompts).size).toBe(prompts.length);
   });
 
   it('uses no Hindi words', () => {

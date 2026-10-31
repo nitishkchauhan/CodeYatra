@@ -67,7 +67,7 @@ describe('module notes', () => {
 
   it('every Python module has notes', () => {
     // A Lesson v5 module is a unit of short lessons; its notes belong to the unit's first lesson.
-    const modules = STAGES.find((s) => s.id === 'python')!.units.flatMap((u) => u.lessons.filter((l, i) => i === 0 || getLesson(l.id)?.format !== 'v5').map((l) => getLesson(l.id)!)).filter((l) => l.kind === 'lesson');
+    const modules = STAGES.find((s) => s.id === 'python')!.units.flatMap((u) => u.lessons.filter((l, i) => i === 0 || getLesson(l.id)?.format !== 'v5').map((l) => getLesson(l.id)!)).filter((l) => l.kind === 'lesson' && !l.exam);
     expect(modules.filter((l) => !NOTES[l.id]).map((l) => l.id)).toEqual([]);
   });
 });

@@ -18,6 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
@@ -239,6 +240,7 @@ const ALL: Lesson[] = [
   ...CSS_I_V5,
   ...JS_V5,
   ...JS_I_V5,
+  ...FINAL_TESTS,
   ...REACT_FOUNDATIONS,
   REACT_PROJECT,
   ...NODE_LESSONS,
@@ -394,7 +396,9 @@ export const STAGES: Stage[] = [
     icon: 'M8 8l-4 4 4 4 M16 8l4 4-4 4 M13.5 5l-3 14',
     units: [
       ...HTML_UNITS,
+      testUnit(HTML_B_TEST),
       ...HTML_I_UNITS,
+      testUnit(HTML_I_TEST),
     ],
     practice: [
       { id: 'x-ticket', title: 'Build a ticket card', kind: 'HTML', difficulty: 'Easy', xp: 15 },
@@ -418,7 +422,9 @@ export const STAGES: Stage[] = [
     icon: 'M4 4h16l-1.5 15L12 21l-6.5-2z M8 8h8l-.5 6-3.5 1-3.5-1',
     units: [
       ...CSS_UNITS,
+      testUnit(CSS_B_TEST),
       ...CSS_I_UNITS,
+      testUnit(CSS_I_TEST),
     ],
     practice: [
       { id: 'x-style', title: 'Style the ticket', kind: 'CSS', difficulty: 'Easy', xp: 15 },
@@ -442,7 +448,9 @@ export const STAGES: Stage[] = [
     icon: 'M4 4h16v16H4z M10 9v6.5a1.5 1.5 0 01-3 0 M17 10a2 2 0 00-3.5 0c0 2.5 3.5 1.5 3.5 4a2 2 0 01-3.5 0',
     units: [
       ...JS_UNITS,
+      testUnit(JS_B_TEST),
       ...JS_I_UNITS,
+      testUnit(JS_I_TEST),
     ],
     practice: [
       { id: 'x-seats', title: 'Count the seats', kind: 'Code editor', difficulty: 'Easy', xp: 15 },
@@ -466,8 +474,11 @@ export const STAGES: Stage[] = [
     icon: 'M4 17l6-5-6-5 M12 19h8',
     units: [
       ...PY_B_UNITS,
+      testUnit(PY_B_TEST),
       ...PY_I_UNITS,
+      testUnit(PY_I_TEST),
       ...PY_A_UNITS,
+      testUnit(PY_A_TEST),
     ],
     practice: [
       { id: 'x-times', title: 'Print the 5 times table', kind: 'Python', difficulty: 'Easy', xp: 15 },

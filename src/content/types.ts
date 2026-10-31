@@ -640,6 +640,8 @@ export type Lesson = {
   format?: 'v4' | 'v5';
   /** Lesson v5 challenges: the badge earned for finishing the module. */
   badge?: { icon: string; name: string };
+  /** A level's final test: 20 quick questions across the whole level, scored like a challenge. */
+  exam?: boolean;
   minutes: number;
   skill: SkillKey;
   steps: Step[];
