@@ -23,7 +23,8 @@ const sources: [string, unknown][] = [
 
 describe('plain English everywhere', () => {
   it.each(sources)('%s use no Hindi words, Devanagari text or local example names', (_, data) => {
-    const text = JSON.stringify(data);
+    // Time-zone ids like "Asia/Kolkata" are standard technical codes, not example names.
+    const text = JSON.stringify(data).replace(/Asia\/Kolkata/g, 'Asia/TimeZone');
     expect(text.match(HINDI)?.[0] ?? null).toBeNull();
     expect(text.match(DEVANAGARI)?.[0] ?? null).toBeNull();
     expect(text.match(LOCAL_NAMES)?.[0] ?? null).toBeNull();

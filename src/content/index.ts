@@ -17,6 +17,7 @@ import { HTML_UNITS, HTML_V5 } from './tracks/htmlV5';
 import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
+import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
@@ -241,6 +242,7 @@ const ALL: Lesson[] = [
   ...CSS_V5,
   ...CSS_I_V5,
   ...JS_V5,
+  ...JS_I_V5,
   ...REACT_FOUNDATIONS,
   REACT_PROJECT,
   ...NODE_LESSONS,
@@ -444,6 +446,7 @@ export const STAGES: Stage[] = [
     icon: 'M4 4h16v16H4z M10 9v6.5a1.5 1.5 0 01-3 0 M17 10a2 2 0 00-3.5 0c0 2.5 3.5 1.5 3.5 4a2 2 0 01-3.5 0',
     units: [
       ...JS_UNITS,
+      ...JS_I_UNITS,
     ],
     practice: [
       { id: 'x-seats', title: 'Count the seats', kind: 'Code editor', difficulty: 'Easy', xp: 15 },

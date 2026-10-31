@@ -1,6 +1,6 @@
 # Web Intermediate (HTML, CSS, JavaScript) in Lesson v5 · content draft
 
-**Status:** approved by the owner (“go”), 30 Oct 2026. HTML Intermediate (`src/content/tracks/htmlV5i/`) and CSS Intermediate (`src/content/tracks/cssV5i/`) are built; JavaScript next. It replaces the three 27 Oct drafts (`html-intermediate.md`, `css-intermediate.md`, `js-intermediate.md`): same topics, now in the Lesson v5 format you tested in Basic, with neutral names.
+**Status:** approved by the owner (“go”), 30 Oct 2026. All three are built: HTML Intermediate (`src/content/tracks/htmlV5i/`), CSS Intermediate (`src/content/tracks/cssV5i/`) and JavaScript Intermediate (`src/content/tracks/jsV5i/`, 31 Oct). It replaces the three 27 Oct drafts (`html-intermediate.md`, `css-intermediate.md`, `js-intermediate.md`): same topics, now in the Lesson v5 format you tested in Basic, with neutral names.
 
 **What Intermediate adds:** Basic taught each tool. Intermediate is about using them **well, the way real teams do**: pages everyone can use, that load fast on a cheap phone, look good anywhere, and handle real data and real failures.
 

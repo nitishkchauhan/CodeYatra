@@ -20,7 +20,7 @@ const dom = (html: string) => new JSDOM(`<!doctype html><body>${html}</body>`).w
 describe.each([
   ['html', 15],
   ['css', 18],
-  ['js', 13],
+  ['js', 19],
 ])('the %s track (Lesson v5)', (id, modules) => {
   const track = STAGES.find((s) => s.id === id)!;
   it(`has ${modules} modules, each ending with its Challenge`, () => {

@@ -22,11 +22,24 @@ const BRIDGE = `<script>
 })();
 </script>`;
 
+// City Travel Desk's practice trains (JavaScript Intermediate). Numbers 901xx are made up; times are UTC.
+const train = (no: number, name: string, from: string, to: string, departs: string, delay: number, state: string) => ({ no, name, from, to, departs, delay, state });
+const TRAINS = [
+  train(90101, 'Harbour Express', 'City Central', 'Harbour Point', '2026-11-02T03:45:00Z', 0, 'On time'),
+  train(90102, 'Hillview Local', 'City Central', 'Harbour Point', '2026-11-02T05:30:00Z', 12, 'Late'),
+  train(90103, 'River Line', 'Hillview', 'Riverside', '2026-11-02T07:10:00Z', 0, 'Cancelled'),
+  train(90104, 'Airport Shuttle', 'City Central', 'Airport', '2026-11-02T08:00:00Z', 5, 'Late'),
+  train(90106, 'Coastal Mail', 'Harbour Point', 'Riverside', '2026-11-02T10:20:00Z', 0, 'On time'),
+];
+const trainRoute = (i: number) => ({ status: 200, delay: 300, body: TRAINS[i] });
+
 /**
  * The practice server: fetch('/api/…') on a lesson page is answered here, inside the page, so lessons
- * work offline and give the same answer every time. Other addresses go to the real fetch.
+ * work offline and give the same answer every time. Other addresses go to the real fetch. A route is looked up by
+ * its full address first (with the query, for searches) and then by its path. `flaky` routes fail every other time,
+ * starting with the first (503, busy), so a retry always works; a fetch with an abort signal stops when it is aborted.
  */
-export const PRACTICE_API: Record<string, { status: number; body: unknown; delay: number }> = {
+export const PRACTICE_API: Record<string, { status: number; body: unknown; delay: number; flaky?: boolean }> = {
   '/api/menu': {
     status: 200,
     delay: 600,
@@ -50,6 +63,17 @@ export const PRACTICE_API: Record<string, { status: number; body: unknown; delay
     ],
   },
   '/api/batches/broken': { status: 500, delay: 600, body: { error: 'Server error' } },
+  '/api/trains': { status: 200, delay: 300, body: TRAINS },
+  '/api/trains?from=City+Central&to=Harbour+Point': { status: 200, delay: 300, body: TRAINS.slice(0, 2) },
+  '/api/trains?from=City+Central&to=Airport': { status: 200, delay: 300, body: TRAINS.slice(3, 4) },
+  '/api/trains?from=Hillview&to=Harbour+Point': { status: 200, delay: 300, body: [] },
+  '/api/trains?from=Hillview&to=Airport': { status: 200, delay: 300, body: [] },
+  '/api/trains/90101': trainRoute(0),
+  '/api/trains/90102': trainRoute(1),
+  '/api/trains/90103': trainRoute(2),
+  '/api/trains/90104': { ...trainRoute(3), delay: 2500 },
+  '/api/trains/90105': { status: 500, delay: 300, body: { error: 'The timetable server is down' } },
+  '/api/trains/90106': { ...trainRoute(4), flaky: true },
 };
 
 const PRACTICE = `<script>
@@ -69,15 +93,23 @@ const PRACTICE = `<script>
   }
   var routes = ${JSON.stringify(PRACTICE_API)};
   var real = window.fetch;
+  var tried = {};
   window.fetch = function (url, opts) {
-    var path = String(url).split('?')[0];
+    var full = String(url);
+    var path = full.split('?')[0];
     if (path.indexOf('/api/') !== 0) return real ? real.apply(window, arguments) : Promise.reject(new TypeError('Failed to fetch'));
-    var r = routes[path] || { status: 404, delay: 300, body: { error: 'Not found' } };
-    var text = JSON.stringify(r.body);
-    return new Promise(function (done) {
-      setTimeout(function () {
-        done({ ok: r.status >= 200 && r.status < 300, status: r.status, url: path, json: function () { return Promise.resolve(JSON.parse(text)); }, text: function () { return Promise.resolve(text); } });
+    var r = routes[full] || routes[path] || { status: 404, delay: 300, body: { error: 'Not found' } };
+    tried[full] = (tried[full] || 0) + 1;
+    var code = r.flaky && tried[full] % 2 === 1 ? 503 : r.status;
+    var text = JSON.stringify(code === 503 ? { error: 'Busy, try again' } : r.body);
+    var signal = opts && opts.signal;
+    return new Promise(function (done, fail) {
+      var stop = function () { fail(new DOMException('The request was stopped', 'AbortError')); };
+      if (signal && signal.aborted) return stop();
+      var t = setTimeout(function () {
+        done({ ok: code >= 200 && code < 300, status: code, url: path, json: function () { return Promise.resolve(JSON.parse(text)); }, text: function () { return Promise.resolve(text); } });
       }, r.delay);
+      if (signal) signal.addEventListener('abort', function () { clearTimeout(t); stop(); });
     });
   };
 })();
