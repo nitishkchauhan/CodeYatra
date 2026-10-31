@@ -39,7 +39,7 @@ import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PYTHON_PROJECT_V4 as PYTHON_PROJECT } from './tracks/pythonProjectV4';
 import { PYTHON_BASIC } from './tracks/pythonV3';
 import { PY_I_UNITS, PY_I_V5 } from './tracks/pythonV5i';
-import { PYTHON_ADVANCED, PYTHON_ADVANCED_PROJECT } from './tracks/pythonAdvanced';
+import { PY_A_UNITS, PY_A_V5 } from './tracks/pythonV5a';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
 import { NEXT_FOUNDATIONS, NEXT_PROJECT } from './tracks/nextFoundations';
@@ -232,8 +232,7 @@ const ALL: Lesson[] = [
   LOGIC_PROJECT,
   ...PYTHON_BASIC,
   ...PY_I_V5,
-  ...PYTHON_ADVANCED,
-  PYTHON_ADVANCED_PROJECT,
+  ...PY_A_V5,
   PYTHON_PROJECT,
   ...PYTHON_MORE,
   ...HTML_V5,
@@ -482,13 +481,7 @@ export const STAGES: Stage[] = [
       unit('p-u8', 'Classes', ref('p-class-1', 'Classes and objects', 'Lesson + code editor · 8 min')),
       unit('p-u15', 'Project', ref('p-project', 'Project: canteen billing app', 'Project · 4 tested steps · 15 min')),
       ...PY_I_UNITS,
-      unit('p-a1', 'Testing', ref('py-testing', 'Testing your code', 'Lesson + build · 14 min')),
-      unit('p-a2', 'Debugging', ref('py-debugging', 'Debugging and logging', 'Lesson + build · 14 min')),
-      unit('p-a3', 'APIs', ref('py-apis', 'APIs and HTTP', 'Lesson + build · 14 min')),
-      unit('p-a4', 'Generators', ref('py-generators', 'Generators and big data', 'Lesson + build · 14 min')),
-      unit('p-a5', 'Decorators', ref('py-decorators', 'Decorators and caching', 'Lesson + build · 14 min')),
-      unit('p-a6', 'Clean code', ref('py-clean-code', 'Clean code and code review', 'Lesson + build · 14 min')),
-      unit('p-a7', 'Project', ref('py-a-project', 'Project: a tested booking service', 'Project · 3 tested steps · 25 min')),
+      ...PY_A_UNITS,
     ],
     practice: [
       { id: 'x-times', title: 'Print the 5 times table', kind: 'Python', difficulty: 'Easy', xp: 15 },

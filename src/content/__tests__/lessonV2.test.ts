@@ -17,20 +17,7 @@ describe('Python Foundations follows Lesson v2', () => {
     expect(pythonModules.at(-1)!.kind).toBe('project');
   });
 
-  // Modules rebuilt in the Lesson v4 and v5 formats follow their own rules (lessonV4.test.ts, lessonV5.test.ts).
-  it.each(pythonModules.filter((l) => l.kind === 'lesson' && l.format !== 'v4' && l.format !== 'v5').map((l) => [l.id, l] as const))('%s: hook, 3 cards, try it, a mistake, checks, practice, 3-point recap', (_, lesson) => {
-    const types = lesson.steps.map((s) => s.type);
-    expect(types[0]).toBe('hook');
-    expect(types.filter((t) => t === 'concept')).toHaveLength(3);
-    expect(types).toContain('try');
-    expect(types).toContain('mistake');
-    // Two quick checks, then a coding exercise last.
-    expect(types.filter((t) => ['quiz', 'predict', 'bug', 'tap', 'order', 'match', 'group'].includes(t)).length).toBeGreaterThanOrEqual(2);
-    expect(types.at(-1)).toBe('editor');
-    // Teaching comes before testing.
-    expect(types.indexOf('try')).toBeLessThan(types.findIndex((t) => t === 'quiz' || t === 'predict' || t === 'bug'));
-    expect(lesson.learned).toHaveLength(3);
-  });
+  // Every Python module is now in Lesson v4 (Basic) or v5 (Intermediate, Advanced): see lessonV4.test.ts and lessonV5.test.ts.
 
   it('keeps every reading card short (one idea, under 60 words)', () => {
     for (const lesson of pythonModules) {
