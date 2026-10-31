@@ -34,7 +34,8 @@ describe.each(['next', 'sql', 'dsa', 'react', 'placement', 'cbse', 'foundations'
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
     expect(next.at(-1)!.kind).toBe('project');
   });
-  it.each(next.filter((l) => l.kind === 'lesson').map((l) => [l.id, l] as const))('%s: hook, 3 cards, try it, a mistake, checks, a coding exercise, official reading', (_, lesson) => {
+  // React is being rebuilt in Lesson v5 module by module; those lessons follow lessonV5.test.ts.
+  it.each(next.filter((l) => l.kind === 'lesson' && l.format !== 'v5').map((l) => [l.id, l] as const))('%s: hook, 3 cards, try it, a mistake, checks, a coding exercise, official reading', (_, lesson) => {
     const types = lesson.steps.map((s) => s.type);
     expect(types[0]).toBe('hook');
     expect(types.filter((t) => t === 'concept')).toHaveLength(3);

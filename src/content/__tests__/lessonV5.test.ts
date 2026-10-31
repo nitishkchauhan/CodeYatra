@@ -90,9 +90,10 @@ describe('Lesson v5 screens', () => {
     for (const a of s.answer) expect(count(s.pieces, a)).toBeGreaterThanOrEqual(count(s.answer, a));
   });
 
-  it.each(rows(of('explore')))('%s: notes point at real lines and real parts of the page', (_, s) => {
+  it.each(rows(of('explore')))('%s: notes point at real lines and real parts of the page', async (_, s) => {
     if (!s) return;
-    const doc = dom((s.page ?? { html: s.code.join('\n') }).html);
+    // A React page is checked once React has drawn it.
+    const doc = s.page?.react ? (await runPage(s.page, 800)).window.document : dom((s.page ?? { html: s.code.join('\n') }).html);
     for (const n of s.notes) {
       expect(n.line).toBeGreaterThanOrEqual(1);
       expect(n.line).toBeLessThanOrEqual(s.code.length);
@@ -188,7 +189,8 @@ const act = (w: Awaited<ReturnType<typeof runPage>>["window"], a: TapAction) => 
   if ('click' in a) d.querySelector<HTMLElement>(a.click)!.dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
   else if ('type' in a) {
     const el = d.querySelector<HTMLInputElement>(a.type[0])!;
-    el.value = a.type[1];
+    // The native setter, as real typing does, so React sees the change too.
+    Object.getOwnPropertyDescriptor(Object.getPrototypeOf(el), 'value')!.set!.call(el, a.type[1]);
     el.dispatchEvent(new w.Event('input', { bubbles: true }));
     el.dispatchEvent(new w.Event('change', { bubbles: true }));
   } else d.querySelector<HTMLFormElement>(a.submit)!.dispatchEvent(new w.Event('submit', { bubbles: true, cancelable: true }));
@@ -211,10 +213,14 @@ describe('Lesson v5 JavaScript screens', () => {
 
   it.each(rows(of('tappage')))('%s: the page runs, and the demo taps reach the goal', async (_, s) => {
     if (!s) return;
-    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current });
+    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current, react: s.page.react }, s.page.react ? 800 : 0);
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.some((l) => l.text.includes(s.goal))).toBe(false);
-    for (const a of s.demo) act(window, a);
+    // A short pause between taps, like a real user, so a React page can draw again in between.
+    for (const a of s.demo) {
+      act(window, a);
+      if (s.page.react) await new Promise((r) => setTimeout(r, 40));
+    }
     await new Promise((r) => setTimeout(r, 1300));
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.map((l) => l.text).some((t) => t.includes(s.goal))).toBe(true);
@@ -234,6 +240,13 @@ describe('Lesson v5 JavaScript screens', () => {
     const r = tryCode(key, code);
     expect(r.error).toBeUndefined();
     expect(r.out.length).toBeGreaterThan(0);
+  });
+
+  it.each(rows(of('arrange').filter(([, s]) => s.react)))('%s: the React blocks in order draw the page without an error', async (_, s) => {
+    if (!s) return;
+    const { logs, window } = await runPage({ html: s.html ?? '<div id="root"></div>', css: s.css, js: s.blocks.join('\n'), react: true }, 800);
+    expect(logs.filter((l) => l.level === 'error')).toEqual([]);
+    expect(window.document.querySelector('#root')?.textContent?.trim()).not.toBe('');
   });
 
   it.each(rows(of('arrange').filter(([, s]) => s.run)))('%s: the right order prints the goal, and the reverse doesn’t', (key, s) => {

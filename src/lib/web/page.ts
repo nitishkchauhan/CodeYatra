@@ -1,9 +1,13 @@
 // Builds a self-contained HTML page from the learner's HTML, CSS and JS, with
 // console.log and errors forwarded to the app so they can be shown below the preview.
 import { withAssets } from './assets';
+import { REACT_RUNTIME } from './reactRuntime';
 
-/** `pages`: other pages of a small site (file name → body HTML), so links between them work in the preview. */
-export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string };
+/**
+ * `pages`: other pages of a small site (file name → body HTML), so links between them work in the preview.
+ * `react`: js is a React program, run with the bundled React (see reactProgram).
+ */
+export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean };
 export type PageLog = { level: 'log' | 'error'; text: string };
 
 const BRIDGE = `<script>
@@ -118,13 +122,34 @@ const PRACTICE = `<script>
 const BASE_CSS = 'body{font-family:system-ui,-apple-system,Roboto,sans-serif;margin:12px;line-height:1.45;color:#16142B;}';
 
 /** A full document. `</script>` in learner JS is escaped so it can't break out of its tag. */
-export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html' }: WebFiles): string {
+export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html', react = false }: WebFiles): string {
   // Built-in pictures (cup.svg, banner.svg…) work offline.
   const html = withAssets(rawHtml);
   const css = withAssets(rawCss);
   const safeJs = js.replace(/<\/script/gi, '<\/script');
+  // A React program is compiled from JSX inside the page (by the bundled runtime), then run.
+  const script = react
+    ? `<script>${REACT_RUNTIME.replace(/<\/script/gi, '<\\/script')}</script><script>try{(0,eval)(window.__cyJsx(${JSON.stringify(reactProgram(js)).replace(/<\/script/gi, '<\\/script')}))\n}catch(e){window.onerror && window.onerror(e.message)}</script>`
+    : `<script>try{${safeJs}\n}catch(e){window.onerror && window.onerror(e.message)}</script>`;
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-${BRIDGE}${PRACTICE}<style>${BASE_CSS}${css}</style></head><body>${html}<script>try{${safeJs}\n}catch(e){window.onerror && window.onerror(e.message)}</script>${pages ? siteScript(html, pages, current) : ''}</body></html>`;
+${BRIDGE}${PRACTICE}<style>${BASE_CSS}${css}</style></head><body>${html}${script}${pages ? siteScript(html, pages, current) : ''}</body></html>`;
+}
+
+/**
+ * A React lesson program, ready to run in a page: imports from "react" and "react-dom/client" become the bundled
+ * globals, export keywords go, and if the program doesn’t render anything itself, its App is shown in #root.
+ */
+export function reactProgram(js: string): string {
+  const code = js
+    .replace(/^import\s+\{([^}]*)\}\s+from\s+["']react["'];?[ \t]*$/gm, (_, names: string) => `const {${names.replace(/\bas\b/g, ':')}} = React;`)
+    .replace(/^import\s+\{([^}]*)\}\s+from\s+["']react-dom\/client["'];?[ \t]*$/gm, (_, names: string) => `const {${names}} = ReactDOM;`)
+    .replace(/^import\s+\w+\s+from\s+["']react(-dom\/client)?["'];?[ \t]*$/gm, '')
+    .replace(/^export\s+default\s+/gm, '')
+    .replace(/^export\s+/gm, '');
+  // Errors while React draws are reported like any other page error.
+  return /createRoot\s*\(/.test(code)
+    ? code
+    : `${code}\nReactDOM.createRoot(document.getElementById("root"), { onUncaughtError: (e) => window.onerror && window.onerror(e.message) }).render(React.createElement(App));`;
 }
 
 /** Puts a value in each `{{n}}` slot ("copy the look" lessons). */

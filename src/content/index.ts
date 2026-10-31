@@ -25,6 +25,7 @@ import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
 import { canteenBill } from './python3';
 import { trainList } from './react';
 import { REACT_FOUNDATIONS, REACT_PROJECT } from './tracks/reactFoundations';
+import { REACT_UNITS, REACT_V5 } from './tracks/reactV5';
 import { PROJECTS } from './projects';
 import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
 import { findPath } from './paths';
@@ -241,7 +242,8 @@ const ALL: Lesson[] = [
   ...JS_V5,
   ...JS_I_V5,
   ...FINAL_TESTS,
-  ...REACT_FOUNDATIONS,
+  ...REACT_V5,
+  ...REACT_FOUNDATIONS.filter((l) => !REACT_V5.some((n) => n.id === l.id)),
   REACT_PROJECT,
   ...NODE_LESSONS,
   NODE_PROJECT,
@@ -576,14 +578,7 @@ export const STAGES: Stage[] = [
     accent: '#67E8F9',
     icon: 'M3 12c0-2 4-4 9-4s9 2 9 4-4 4-9 4-9-2-9-4z M12 11v2',
     units: [
-      unit('r-u1', 'Components', ref('r-comp-1', 'Components and JSX', 'Lesson + code · 8 min')),
-      unit('r-u11', 'Props', ref('r-props', 'Props', 'Lesson + code · 8 min')),
-      unit('r-u2', 'State', ref('r-state-1', 'State with useState', 'Lesson + code · 8 min')),
-      unit('r-u4', 'Events', ref('r-event-1', 'Events', 'Lesson + code · 8 min')),
-      unit('r-u6', 'Conditional UI', ref('r-cond-1', 'Conditional rendering', 'Lesson + code · 8 min')),
-      unit('r-u3', 'Lists', ref('r-list-1', 'Lists and keys', 'Lesson + code · 8 min')),
-      unit('r-u12', 'Forms', ref('r-form', 'Forms and controlled inputs', 'Lesson + code · 8 min')),
-      unit('r-u13', 'Updating state', ref('r-immut', 'Updating objects and arrays in state', 'Lesson + code · 8 min')),
+      ...REACT_UNITS,
       unit('r-u7', 'Composition', ref('r-children-1', 'Composition with children', 'Lesson + code · 8 min')),
       unit('r-u8', 'Shared state', ref('r-lift-1', 'Sharing state between components', 'Lesson + code · 8 min')),
       unit('r-u5', 'Effects', ref('r-effect-1', 'Effects', 'Lesson + code · 8 min')),

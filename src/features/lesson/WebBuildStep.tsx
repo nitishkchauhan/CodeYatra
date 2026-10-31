@@ -32,7 +32,7 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
   const [checks, setChecks] = useState<{ label: string; ok: boolean }[] | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [logs, setLogs] = useState<PageLog[]>([]);
-  const doc = useDeferredValue(buildPage({ ...files, pages: step.pages, current: step.current }));
+  const doc = useDeferredValue(buildPage({ ...files, pages: step.pages, current: step.current, react: step.react }));
   const pass = checks?.every((c) => c.ok) ?? false;
   // The React Compiler keeps this function stable, so the preview is not reloaded on every render.
   const onLog = (log: PageLog) => setLogs((l) => [...l.slice(-4), log]);

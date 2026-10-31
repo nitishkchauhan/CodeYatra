@@ -1,6 +1,6 @@
 # React in Lesson v5 · content draft
 
-**Status:** draft for the owner’s OK, 31 Oct 2026. Nothing is built yet. Once approved it is built on `lesson-v3` in `src/content/tracks/reactV5/`, with tests, like the HTML, CSS, JavaScript and Python tracks.
+**Status:** approved by the owner (31 Oct 2026: “as per W3Schools or the official documentation, not copied; step by step; an assessment at the end of each module”). Modules 1–8 and live React pages are built; modules 9–13, the project and the final test are next. Once approved it is built on `lesson-v3` in `src/content/tracks/reactV5/`, with tests, like the HTML, CSS, JavaScript and Python tracks.
 
 **What changes:** today React is 13 long lessons (Lesson v2) and a project, and learners only see code, never a running React page. In v5 it becomes **13 modules of 3 short lessons and a Module Challenge each**, a final project and a **20-question final test**, and every lesson has **live React pages** you can tap and change.
 

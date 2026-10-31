@@ -222,6 +222,8 @@ export type WebStep = {
   pages?: Record<string, string>;
   /** The file name of the page being edited (index.html if not given). */
   current?: string;
+  /** The js file is a React program (see PagePreview). */
+  react?: boolean;
 };
 
 /** Lesson v2: opens a module with a real situation and what the learner will be able to do. */
@@ -369,7 +371,8 @@ export type RecallStep = {
 // ── Lesson v5 (the HTML track): short phone screens, each with one thing to do. ─────────────────────────
 
 /** A web page shown in a live preview: body HTML, with optional CSS. */
-export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string };
+/** `react`: js is a React program (JSX, imports from "react"); it runs with the bundled React, and App is shown in #root. */
+export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean };
 
 /** Yatri talks: a few short speech bubbles, then a button. */
 export type ChatStep = { type: 'chat'; kicker?: string; lines: string[]; button?: string; code?: string[]; page?: PagePreview };
@@ -490,6 +493,8 @@ export type ArrangeStep = {
   /** A JavaScript arrange: the blocks are a program; its console is shown, and `expect` is what the right order prints. */
   run?: boolean;
   expect?: string[];
+  /** A React arrange: the blocks are a React program, shown live in the page (html, or a #root). */
+  react?: boolean;
   goal: string;
 };
 
