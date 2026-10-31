@@ -1,6 +1,6 @@
 # Python Basic in Lesson v5 · content draft
 
-**Status:** draft for the owner’s OK, 31 Oct 2026. Nothing is built yet. Once approved it is built on `lesson-v3` in `src/content/tracks/pythonV5/`, with tests, like Python Intermediate and Advanced.
+**Status:** approved by the owner (“go”) and built on `lesson-v3` in `src/content/tracks/pythonV5/`, 31 Oct 2026.
 
 **What changes:** today Python Basic is 12 long lessons (Lesson v4, about 10 minutes each) plus a project. In v5 it becomes **12 modules of 3–4 short lessons (3–5 min) and a Module Challenge each**, with the same screens as HTML, CSS, JavaScript and the other Python levels. Then all of Python is one format.
 

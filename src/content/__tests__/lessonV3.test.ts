@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { allLessons, isTeaching, STAGES, getLesson, type GroupStep, type MatchStep, type Step, type TraceStep } from '..';
+import { allLessons, isTeaching, getLesson, type GroupStep, type MatchStep, type Step, type TraceStep } from '..';
 import { parseTrace, traceProgram } from '../trace';
 import { declaredNames, traceProgramJs } from '../traceJs';
 import { runPage } from '../testing/page';
@@ -87,17 +87,7 @@ describe('work scenarios', () => {
   });
 });
 
-describe('Python, Lesson v3', () => {
-  const python = STAGES.find((s) => s.id === 'python')!.units.flatMap((u) => u.lessons.map((r) => getLesson(r.id)!));
-  // Python Intermediate follows Lesson v5 (lessonV5.test.ts).
-  const modules = python.filter((l) => l.kind === 'lesson' && l.format !== 'v5');
-  it.each(modules.map((l) => [l.id, l] as const))('%s: has a level, a moving or interactive card for every idea, watch-it-run and a match or sort', (_, l) => {
-    expect(l.level).toBeDefined();
-    for (const s of l.steps) if (s.type === 'concept') expect(!!(s.anim || s.visual || s.demo)).toBe(true);
-    expect(l.steps.some((s) => s.type === 'trace')).toBe(true);
-    expect(l.steps.some((s) => s.type === 'match' || s.type === 'group')).toBe(true);
-  });
-});
+// Every Python lesson now follows Lesson v5 (lessonV5.test.ts).
 
 // JavaScript lessons now follow Lesson v5 (lessonV5.test.ts).
 

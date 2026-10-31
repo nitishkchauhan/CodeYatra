@@ -13,7 +13,8 @@ const pythonModules = trackModules('python');
 
 describe('Python Foundations follows Lesson v2', () => {
   it('has 12 Basic modules and ends with a project', () => {
-    expect(pythonModules.filter((l) => l.kind === 'lesson' && l.level === 'basic')).toHaveLength(12);
+    const basic = STAGES.find((s) => s.id === 'python')!.units.filter((u) => getLesson(u.lessons[0].id)?.level === 'basic');
+    expect(basic).toHaveLength(12);
     expect(pythonModules.at(-1)!.kind).toBe('project');
   });
 

@@ -36,8 +36,7 @@ import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
 import { GIT_LESSONS, GIT_PROJECT } from './tracks/git';
 import { JAVA_LESSONS, JAVA_PROJECT } from './tracks/java';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
-import { PYTHON_PROJECT_V4 as PYTHON_PROJECT } from './tracks/pythonProjectV4';
-import { PYTHON_BASIC } from './tracks/pythonV3';
+import { PY_B_UNITS, PY_B_V5 } from './tracks/pythonV5';
 import { PY_I_UNITS, PY_I_V5 } from './tracks/pythonV5i';
 import { PY_A_UNITS, PY_A_V5 } from './tracks/pythonV5a';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
@@ -230,10 +229,9 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
 const ALL: Lesson[] = [
   ...LOGIC_FOUNDATIONS,
   LOGIC_PROJECT,
-  ...PYTHON_BASIC,
+  ...PY_B_V5,
   ...PY_I_V5,
   ...PY_A_V5,
-  PYTHON_PROJECT,
   ...PYTHON_MORE,
   ...HTML_V5,
   ...HTML_I_V5,
@@ -461,25 +459,13 @@ export const STAGES: Stage[] = [
     short: 'Python',
     sub: 'Your first program to classes, plus a project',
     audience: 'Class 11+ · College',
-    blurb: '12 modules and a project: write and run real Python, from print() to classes.',
+    blurb: '24 modules of short, hands-on lessons that run real Python on your phone, each ending in a Challenge: Basic (print() to classes), Intermediate (shaping data, files, the standard library) and Advanced (testing, APIs, generators, clean code).',
     color: '#1D4ED8',
     soft: '#E7EFFE',
     accent: '#93C5FD',
     icon: 'M4 17l6-5-6-5 M12 19h8',
     units: [
-      unit('p-u0', 'First program', ref('p-var-1', 'Your first program', 'Lesson + code editor · 6 min')),
-      unit('p-u11', 'Numbers', ref('p-num-1', 'Numbers and maths', 'Lesson + code editor · 6 min')),
-      unit('p-u6', 'Strings', ref('p-str-1', 'Text and f-strings', 'Lesson + code editor · 7 min')),
-      unit('p-u12', 'Decisions', ref('p-if-1', 'Making decisions', 'Lesson + code editor · 7 min')),
-      unit('p-u1', 'for loops', ref('p-loop-1', 'Repeat with for and range()', 'Lesson + code editor · 7 min')),
-      unit('p-u13', 'while loops', ref('p-while-1', 'while loops', 'Lesson + code editor · 7 min')),
-      unit('p-u2', 'Lists', ref('p-loop-2', 'Lists', 'Lesson + code editor · 7 min')),
-      unit('p-u4', 'Dictionaries', ref('p-dict-1', 'Dictionaries', 'Lesson + code editor · 7 min')),
-      unit('p-u3', 'Functions', ref('p-fn-1', 'Functions', 'Lesson + code editor · 7 min')),
-      unit('p-u9', 'Errors', ref('p-err-1', 'Handling errors', 'Lesson + code editor · 7 min')),
-      unit('p-u14', 'Files', ref('p-file-1', 'Files', 'Lesson + code editor · 7 min')),
-      unit('p-u8', 'Classes', ref('p-class-1', 'Classes and objects', 'Lesson + code editor · 8 min')),
-      unit('p-u15', 'Project', ref('p-project', 'Project: canteen billing app', 'Project · 4 tested steps · 15 min')),
+      ...PY_B_UNITS,
       ...PY_I_UNITS,
       ...PY_A_UNITS,
     ],

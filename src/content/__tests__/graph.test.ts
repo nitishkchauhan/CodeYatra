@@ -63,14 +63,14 @@ describe('roadmap graph', () => {
 
   it('finds stops by title, reason or lesson title', () => {
     expect(searchStops(demo, 'react').map((s) => s.id)).toEqual(['r']);
-    expect(searchStops(demo, 'first program').map((s) => s.id)).toEqual(['a']); // p-var-1 is "Your first program"
+    expect(searchStops(demo, 'what is python').map((s) => s.id)).toEqual(['a']); // p-var-1 is "What is Python?"
     expect(searchStops(demo, '')).toEqual([]);
   });
 
   it('explains its suggestions, revision first', () => {
     const s = suggestions(demo, ev({ completed: done('p-var-1'), mistakes: { 'p-var-1#7': at } }));
     expect(s[0]).toMatchObject({ stopId: 'a', kind: 'revise' });
-    expect(s[0].reason).toContain('Your first program'); // stop Alpha, lesson Your first program
+    expect(s[0].reason).toContain('What is Python?'); // stop Alpha, lesson What is Python?
     expect(s.some((x) => x.kind === 'next' && x.stopId === 'r')).toBe(true);
   });
 

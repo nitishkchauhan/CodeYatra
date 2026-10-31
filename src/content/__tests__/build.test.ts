@@ -118,6 +118,7 @@ describe('try it: tap to change values', () => {
   it('most try-its have something to tap', () => {
     const withTweaks = tries.filter(([, s]) => tweakables(s.starter, s.lang as 'python', seed(s)).length > 0);
     // The rest are run-and-watch: only values nothing else depends on are offered, so every change still runs.
-    expect(withTweaks.length / tries.length).toBeGreaterThanOrEqual(0.5);
+    // (Python, HTML, CSS and JavaScript moved to Lesson v5, whose Run and tweak screens replace these try-its.)
+    expect(withTweaks.length / tries.length).toBeGreaterThanOrEqual(0.45);
   });
 });
