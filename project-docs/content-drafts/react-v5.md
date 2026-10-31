@@ -1,6 +1,6 @@
 # React in Lesson v5 · content draft
 
-**Status:** approved by the owner (31 Oct 2026: “as per W3Schools or the official documentation, not copied; step by step; an assessment at the end of each module”). Modules 1–8 and live React pages are built; modules 9–13, the project and the final test are next. Once approved it is built on `lesson-v3` in `src/content/tracks/reactV5/`, with tests, like the HTML, CSS, JavaScript and Python tracks.
+**Status:** approved by the owner (31 Oct 2026: “as per W3Schools or the official documentation, not copied; step by step; an assessment at the end of each module”). **All built** on 31 Oct 2026: 13 modules, the final project and two final tests (React Basics after module 7, React Intermediate at the end, like the other tracks’ levels). Once approved it is built on `lesson-v3` in `src/content/tracks/reactV5/`, with tests, like the HTML, CSS, JavaScript and Python tracks.
 
 **What changes:** today React is 13 long lessons (Lesson v2) and a project, and learners only see code, never a running React page. In v5 it becomes **13 modules of 3 short lessons and a Module Challenge each**, a final project and a **20-question final test**, and every lesson has **live React pages** you can tap and change.
 
@@ -40,7 +40,7 @@
 
 ## Decisions for you
 
-1. **Live React pages in lessons (new engineering, about a day).** React is bundled into the app so lesson pages run real React offline (about 200 KB added to the app). The JSX in each lesson is turned into plain JavaScript when the app is built, so phones don’t need extra tools. *Or* keep code only, with no running pages (weaker). **I recommend building it.**
+1. **Live React pages in lessons (new engineering, about a day).** React is bundled into the app so lesson pages run real React offline (about 200 KB added to the app; it came to 389 KB). The JSX in each lesson is turned into plain JavaScript when the app is built, so phones don’t need extra tools. *Or* keep code only, with no running pages (weaker). **I recommend building it.**
 2. **13 modules of 3 lessons**, keeping today’s order and topics, plus the final project and a 20-question final test. **OK?**
 3. **Final project:** the course enquiry app stays (4 checked steps), rebuilt in the new format with a live preview. **OK?**
 4. **Old ids kept** for each module’s first lesson and the project, so progress and notes carry over. **OK?**

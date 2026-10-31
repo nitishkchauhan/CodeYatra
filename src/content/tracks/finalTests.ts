@@ -1,5 +1,5 @@
 // A final test at the end of every level (HTML, CSS and JavaScript Basic and Intermediate; Python Basic, Intermediate
-// and Advanced): 20 quick questions across the whole level, scored with stars and a badge like a Module Challenge.
+// and Advanced; React Basic and Intermediate): 20 quick questions across the whole level, scored with stars and a badge like a Module Challenge.
 // The first option of each question is the right one (the app shuffles them). Checked in lessonV5.test.ts.
 import type { Lesson, Level, SkillKey, Unit } from '../types';
 import { mcq } from './htmlV5/kit';
@@ -230,5 +230,51 @@ export const PY_A_TEST = finalTest('py-a-test', 'Python Advanced', 'python', 'ad
   ['What should a failing test tell you?', ['Exactly which behaviour broke', 'Nothing useful', 'That the computer is broken', 'To delete the test'], 'One behaviour per test.'],
 ]);
 
+export const REACT_B_TEST = finalTest('react-b-test', 'React Basics', 'react', 'basic', ['Build pages from components, JSX and props', 'Keep state and respond to events', 'Show lists, conditions and forms'], [
+  ['What is a React component?', ['A function that returns what to show', 'A CSS file', 'An HTML tag', 'A server'], 'It returns JSX.'],
+  ['How must a component’s name start?', ['With a capital letter', 'With use', 'With a dollar sign', 'With a lower-case letter'], 'MenuCard, not menuCard.'],
+  ['Which attribute sets a CSS class in JSX?', ['className', 'class', 'cssClass', 'style'], 'class is a JavaScript word.', true],
+  ['How do you show a JavaScript value in JSX?', ['Inside { }', 'Inside [ ]', 'Inside " "', 'With print()'], 'Like {dish.name}.', true],
+  ['What must a component return?', ['One parent element (or a fragment)', 'Exactly two elements', 'A string of HTML', 'Nothing'], 'Wrap side-by-side elements in <>…</>.'],
+  ['How does a parent send data to a child component?', ['Through props', 'Through CSS', 'Through a global variable', 'Through the URL'], 'Like <MenuCard name="Lemon Tea" />.'],
+  ['Can a component change its own props?', ['No, props are read-only', 'Yes, any time', 'Only numbers', 'Only once'], 'Use state for values that change.'],
+  ['Which gives a prop a default value?', ['function Card({ price = 40 })', 'function Card(price: 40)', 'Card.default(40)', 'props.price || default'], 'A default in the destructuring.', true],
+  ['What does useState(0) give back?', ['The value and a function to change it', 'Only the value', 'Only a setter', 'A promise'], 'const [count, setCount] = useState(0).'],
+  ['What happens after you call a state setter?', ['React draws the component again with the new value', 'Nothing until the page reloads', 'The page reloads', 'The value changes but the screen doesn’t'], 'That is the point of state.'],
+  ['In one tap, calling setCount(count + 1) twice adds…', ['1, because count is a snapshot', '2', '0', 'An error'], 'Use setCount((c) => c + 1) to add twice.'],
+  ['Which runs order only when the button is tapped?', ['onClick={() => order("Tea")}', 'onClick={order("Tea")}', 'onclick="order()"', 'onClick=order'], 'Give React a function to call later.', true],
+  ['What does e.preventDefault() do in onSubmit?', ['Stops the page reloading', 'Clears the form', 'Sends the form', 'Checks the fields'], 'The app stays where it is.'],
+  ['Which shows a message only when the cart is empty?', ['{cart.length === 0 && <p>Empty</p>}', '{if (cart.length === 0) <p>Empty</p>}', '<p if={cart.length === 0}>Empty</p>', '{cart.length === 0 ? <p>Empty</p>}'], '&& shows the right side only when the left is true.', true],
+  ['What does a component that returns null show?', ['Nothing', 'The word null', 'An error', 'An empty box'], 'A way to hide it.'],
+  ['Why is {count && <p>Items</p>} risky when count is 0?', ['It shows the number 0', 'It crashes', 'It shows Items', 'Nothing is wrong'], 'Use count > 0 && ….'],
+  ['How do you turn an array into a list of elements?', ['With map', 'With a for loop inside JSX', 'With forEach', 'With join'], 'map gives back new elements.'],
+  ['Which is the best key for a list item?', ['A stable id from the data', 'The index', 'Math.random()', 'Nothing: keys are optional'], 'It stays the same when the list changes.'],
+  ['What makes an input controlled?', ['Its value comes from state, and onChange updates it', 'It has an id', 'It has a label', 'It is inside a form'], 'React holds what is typed.'],
+  ['Which updates one field of a form object in state?', ['setForm({ ...form, [e.target.name]: e.target.value })', 'form.name = e.target.value', 'setForm(e.target.value)', 'setForm({ [e.target.name]: e.target.value })'], 'Copy the form, then change one field by name.', true],
+]);
+
+export const REACT_I_TEST = finalTest('react-i-test', 'React Intermediate', 'react', 'intermediate', ['Update state safely and share it between components', 'Use effects, custom hooks and refs', 'Scale up with context and reducers'], [
+  ['Why must state be replaced, not changed in place?', ['React checks for a new value to know it should draw again', 'It is faster', 'JavaScript requires it', 'To save memory'], 'Same object, no redraw.'],
+  ['Which adds an item to a cart in state?', ['setCart([...cart, item])', 'cart.push(item)', 'setCart(cart.push(item))', 'cart[cart.length] = item'], 'A new array.', true],
+  ['How many levels does { ...obj } copy?', ['One', 'All of them', 'None', 'Two'], 'Copy each level you change.'],
+  ['What is the children prop?', ['What you put between a component’s tags', 'The components it draws', 'Its state', 'The elements below it on the page'], 'Wrap any content.'],
+  ['Can a prop hold JSX?', ['Yes, like action={<button>Order</button>}', 'No, only children can', 'Only strings of HTML', 'Only in class components'], 'JSX is a value like any other.'],
+  ['Two siblings need the same state. Where should it go?', ['Their closest shared parent', 'The first sibling', 'Both, as copies', 'A global variable'], 'Lift it up.'],
+  ['The cart total can be worked out from the cart. What should it be?', ['A value worked out while drawing', 'Its own state', 'An effect', 'A ref'], 'One source of truth.'],
+  ['A component does useState(price). What happens when the price prop changes?', ['Nothing: it keeps the first value', 'It updates', 'It throws an error', 'The app restarts'], 'Use the prop directly.'],
+  ['When does useEffect(fn, [url]) run?', ['After the first draw, and when url changes', 'Before every draw', 'Only once', 'Never'], 'The list says when.', true],
+  ['What happens with useEffect(fn) and no list?', ['It runs after every draw', 'It runs once', 'It never runs', 'React throws an error'], 'Often more than you want.', true],
+  ['When does an effect’s clean-up run?', ['Before the effect runs again, and when the component is removed', 'Only when the app closes', 'Before the first draw', 'Never'], 'Stop timers and listeners there.'],
+  ['Which does NOT need an effect?', ['Working out a total from the cart', 'Loading the menu from a server', 'Starting a timer', 'Changing the tab’s title'], 'Calculate it while drawing.'],
+  ['Where can hooks be called?', ['At the top level of components and custom hooks', 'Inside if statements', 'Inside loops', 'In any function'], 'Same order every draw.'],
+  ['What must a custom hook’s name start with?', ['use', 'hook', 'get', 'my'], 'Like useCounter.', true],
+  ['Two components call the same custom hook. Do they share state?', ['No, each gets its own', 'Yes', 'Only siblings do', 'Only the first one has state'], 'They share logic, not state.'],
+  ['What does changing ref.current do?', ['Keeps the value without drawing again', 'Draws again', 'Resets state', 'Nothing is kept'], 'Refs don’t redraw.'],
+  ['Which reads a context value?', ['useContext(ThemeContext)', 'ThemeContext.value', 'useState(ThemeContext)', 'props.context'], 'The closest value above.', true],
+  ['What problem does context solve?', ['Passing props through many layers that don’t use them', 'Slow drawing', 'Loading data', 'Styling'], 'Prop drilling.'],
+  ['What is a reducer?', ['A function (state, action) that gives back the next state', 'A hook that fetches', 'A smaller component', 'A way to shrink arrays'], 'Every change in one place.'],
+  ['What does dispatch({ type: "add", dish }) do?', ['Runs the reducer with that action and draws the result', 'Adds the dish directly', 'Sends it to a server', 'Nothing until the page reloads'], 'The reducer decides.', true],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST];
+export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST];

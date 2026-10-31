@@ -10,6 +10,12 @@ import { R_M5 } from './m5';
 import { R_M6 } from './m6';
 import { R_M7 } from './m7';
 import { R_M8 } from './m8';
+import { R_M9 } from './m9';
+import { R_M10 } from './m10';
+import { R_M11 } from './m11';
+import { R_M12 } from './m12';
+import { R_M13 } from './m13';
+import { R_PROJECT } from './project';
 
 const MODULES: [string, string, Lesson[]][] = [
   ['r-u1', 'Components and JSX', R_M1],
@@ -20,6 +26,11 @@ const MODULES: [string, string, Lesson[]][] = [
   ['r-u3', 'Lists and keys', R_M6],
   ['r-u12', 'Forms', R_M7],
   ['r-u13', 'Updating objects and arrays', R_M8],
+  ['r-u7', 'Composition', R_M9],
+  ['r-u8', 'Sharing state', R_M10],
+  ['r-u5', 'Effects', R_M11],
+  ['r-u9', 'Custom hooks and refs', R_M12],
+  ['r-u10', 'Context and reducers', [...R_M13, R_PROJECT]],
 ];
 
 /** Every lesson and challenge in the React track, in order. */
@@ -29,5 +40,5 @@ export const REACT_V5: Lesson[] = MODULES.flatMap(([, , lessons]) => lessons);
 export const REACT_UNITS: Unit[] = MODULES.map(([id, title, lessons]) => ({
   id,
   title,
-  lessons: lessons.map((l) => ({ id: l.id, title: l.title, meta: l.badge ? `Challenge · ${l.badge.icon} ${l.badge.name}` : `Lesson · ${l.minutes} min` })),
+  lessons: lessons.map((l) => ({ id: l.id, title: l.title, meta: l.kind === 'project' ? `Final project · ${l.badge!.icon} ${l.badge!.name}` : l.badge ? `Challenge · ${l.badge.icon} ${l.badge.name}` : `Lesson · ${l.minutes} min` })),
 }));

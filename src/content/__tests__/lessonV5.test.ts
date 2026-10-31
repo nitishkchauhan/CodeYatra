@@ -23,6 +23,7 @@ describe.each([
   ['html', 17],
   ['css', 20],
   ['js', 21],
+  ['react', 15],
 ])('the %s track (Lesson v5)', (id, modules) => {
   const track = STAGES.find((s) => s.id === id)!;
   it(`has ${modules} modules, each ending with its Challenge`, () => {
@@ -247,6 +248,15 @@ describe('Lesson v5 JavaScript screens', () => {
     const { logs, window } = await runPage({ html: s.html ?? '<div id="root"></div>', css: s.css, js: s.blocks.join('\n'), react: true }, 800);
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(window.document.querySelector('#root')?.textContent?.trim()).not.toBe('');
+  });
+
+  it.each(rows(of('web').filter(([, s]) => s.react)))('%s: the React project draws its starter and its solution without an error', async (_, s) => {
+    if (!s) return;
+    for (const files of [s.starter, s.solution]) {
+      const { logs, window } = await runPage({ html: files.html, css: files.css, js: files.js, react: true }, 1000);
+      expect(logs.filter((l) => l.level === 'error')).toEqual([]);
+      expect(window.document.querySelector('#root')?.textContent?.trim()).not.toBe('');
+    }
   });
 
   it.each(rows(of('arrange').filter(([, s]) => s.run)))('%s: the right order prints the goal, and the reverse doesn’t', (key, s) => {

@@ -18,13 +18,12 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
 import { canteenBill } from './python3';
 import { trainList } from './react';
-import { REACT_FOUNDATIONS, REACT_PROJECT } from './tracks/reactFoundations';
 import { REACT_UNITS, REACT_V5 } from './tracks/reactV5';
 import { PROJECTS } from './projects';
 import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
@@ -243,8 +242,6 @@ const ALL: Lesson[] = [
   ...JS_I_V5,
   ...FINAL_TESTS,
   ...REACT_V5,
-  ...REACT_FOUNDATIONS.filter((l) => !REACT_V5.some((n) => n.id === l.id)),
-  REACT_PROJECT,
   ...NODE_LESSONS,
   NODE_PROJECT,
   ...NEXT_FOUNDATIONS,
@@ -572,19 +569,16 @@ export const STAGES: Stage[] = [
     short: 'React',
     sub: 'Components, state and effects',
     audience: 'B.Tech · BCA',
-    blurb: '13 modules and a project for React 19: components, props, state, events, lists, forms, immutable updates, composition, shared state, effects, custom hooks, context and reducers.',
+    blurb: '13 modules of short lessons with live React 19 pages: components, props, state, events, lists, forms, immutable updates, composition, shared state, effects, custom hooks, context and reducers. A final project and two final tests.',
     color: '#0E7490',
     soft: '#DDF4F9',
     accent: '#67E8F9',
     icon: 'M3 12c0-2 4-4 9-4s9 2 9 4-4 4-9 4-9-2-9-4z M12 11v2',
     units: [
-      ...REACT_UNITS,
-      unit('r-u7', 'Composition', ref('r-children-1', 'Composition with children', 'Lesson + code · 8 min')),
-      unit('r-u8', 'Shared state', ref('r-lift-1', 'Sharing state between components', 'Lesson + code · 8 min')),
-      unit('r-u5', 'Effects', ref('r-effect-1', 'Effects', 'Lesson + code · 8 min')),
-      unit('r-u9', 'Custom hooks', ref('r-hooks-1', 'Custom hooks and the rules of hooks', 'Lesson + code · 8 min')),
-      unit('r-u10', 'Context', ref('r-context-1', 'Context and reducers', 'Lesson + code · 8 min')),
-      unit('r-u14', 'Project', ref('r-project', 'Project: a course enquiry app', 'Project · 3 steps · 25 min')),
+      ...REACT_UNITS.slice(0, 7),
+      testUnit(REACT_B_TEST),
+      ...REACT_UNITS.slice(7),
+      testUnit(REACT_I_TEST),
     ],
     practice: [
       { id: 'x-props', title: 'TrainCard props', kind: 'React', difficulty: 'Easy', xp: 15 },

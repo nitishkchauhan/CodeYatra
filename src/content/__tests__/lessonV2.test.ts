@@ -27,15 +27,14 @@ describe('Python Foundations follows Lesson v2', () => {
   });
 });
 
-// HTML, CSS and JavaScript now follow Lesson v5 (lessonV5.test.ts).
-describe.each(['next', 'sql', 'dsa', 'react', 'placement', 'cbse', 'foundations', 'git', 'node', 'c', 'java', 'dsa2'])('%s follows Lesson v2', (track) => {
+// HTML, CSS, JavaScript and React now follow Lesson v5 (lessonV5.test.ts).
+describe.each(['next', 'sql', 'dsa', 'placement', 'cbse', 'foundations', 'git', 'node', 'c', 'java', 'dsa2'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);
     expect(next.at(-1)!.kind).toBe('project');
   });
-  // React is being rebuilt in Lesson v5 module by module; those lessons follow lessonV5.test.ts.
-  it.each(next.filter((l) => l.kind === 'lesson' && l.format !== 'v5').map((l) => [l.id, l] as const))('%s: hook, 3 cards, try it, a mistake, checks, a coding exercise, official reading', (_, lesson) => {
+  it.each(next.filter((l) => l.kind === 'lesson').map((l) => [l.id, l] as const))('%s: hook, 3 cards, try it, a mistake, checks, a coding exercise, official reading', (_, lesson) => {
     const types = lesson.steps.map((s) => s.type);
     expect(types[0]).toBe('hook');
     expect(types.filter((t) => t === 'concept')).toHaveLength(3);

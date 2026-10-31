@@ -2,6 +2,13 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 31 Oct 2026 (branch `lesson-v3`): React in Lesson v5, part 2 (modules 9–13, final project, final tests)
+- **React modules 9–13 rebuilt** (`tracks/reactV5/m9.ts`–`m13.ts`, Intermediate): composition (`children`, layout components, JSX in props), sharing state (lifting state up, one source of truth, where state lives), effects (`useEffect` and its dependency list, loading data from the practice server with loading and error screens, clean-up, and when you don’t need an effect), custom hooks and refs (rules of hooks, writing a custom hook, `useRef`), and context and reducers (context with React 19’s `<Context value>`, `useReducer`, both together). Every lesson has live React pages to tap; modules 9–12 end with a Module Challenge. Old ids kept (`r-children-1`, `r-lift-1`, `r-effect-1`, `r-hooks-1`, `r-context-1`).
+- **Final project** (`tracks/reactV5/project.ts`, keeps `r-project`): a course enquiry app for Sutton Classes, after 5 questions and 5 tasks: show every course with keys, filter by subject with state, a controlled enquiry form with checks, and batch times loaded from `/api/batches` in an effect. Each step is checked and previews live React.
+- **Two React final tests** (`tracks/finalTests.ts`): React Basics (after module 7) and React Intermediate (after the final project), 20 questions each.
+- The whole React track is now Lesson v5: `tracks/reactFoundations.ts` (the old Lesson v2 React) is deleted. New check: each React project step’s starter and solution draw without an error.
+- 7042 tests pass. `supabase/track-lessons.sql` regenerated: run it when `lesson-v3` is merged.
+
 ## 29 Oct 2026 (branch `lesson-v3`): no Hindi words in the module notes
 - **HTML, more HTML, CSS and JavaScript notes** (`content/notes/html.ts`, `htmlMore.ts`, `css.ts`, `js.ts`) now use Riya’s Café (Lemon Tea, Coffee, Cheese Toast, Veg Sandwich, Chicken Sandwich, Cookies; `toast.jpg`) instead of tiffin and thali examples. Every worked-example output updated to match, including the sort example (now Iced Tea and Lemon Tea at ₹40 to show the tie-break by name). 5441 tests pass.
 
