@@ -136,13 +136,15 @@ ${BRIDGE}${PRACTICE}<style>${BASE_CSS}${css}</style></head><body>${html}${script
 }
 
 /**
- * A React lesson program, ready to run in a page: imports from "react" and "react-dom/client" become the bundled
- * globals, export keywords go, and if the program doesn’t render anything itself, its App is shown in #root.
+ * A React lesson program, ready to run in a page: imports from "react", "react-dom", "react-dom/client" and
+ * "react-router" become the bundled globals, export keywords go, and if the program doesn’t render anything itself,
+ * its App is shown in #root.
  */
 export function reactProgram(js: string): string {
   const code = js
     .replace(/^import\s+\{([^}]*)\}\s+from\s+["']react["'];?[ \t]*$/gm, (_, names: string) => `const {${names.replace(/\bas\b/g, ':')}} = React;`)
-    .replace(/^import\s+\{([^}]*)\}\s+from\s+["']react-dom\/client["'];?[ \t]*$/gm, (_, names: string) => `const {${names}} = ReactDOM;`)
+    .replace(/^import\s+\{([^}]*)\}\s+from\s+["']react-dom(\/client)?["'];?[ \t]*$/gm, (_, names: string) => `const {${names}} = ReactDOM;`)
+    .replace(/^import\s+\{([^}]*)\}\s+from\s+["']react-router(-dom)?["'];?[ \t]*$/gm, (_, names: string) => `const {${names.replace(/\bas\b/g, ':')}} = ReactRouter;`)
     .replace(/^import\s+\w+\s+from\s+["']react(-dom\/client)?["'];?[ \t]*$/gm, '')
     .replace(/^export\s+default\s+/gm, '')
     .replace(/^export\s+/gm, '');

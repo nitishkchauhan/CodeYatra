@@ -251,6 +251,9 @@ export const REACT_B_TEST = finalTest('react-b-test', 'React Basics', 'react', '
   ['Which is the best key for a list item?', ['A stable id from the data', 'The index', 'Math.random()', 'Nothing: keys are optional'], 'It stays the same when the list changes.'],
   ['What makes an input controlled?', ['Its value comes from state, and onChange updates it', 'It has an id', 'It has a label', 'It is inside a form'], 'React holds what is typed.'],
   ['Which updates one field of a form object in state?', ['setForm({ ...form, [e.target.name]: e.target.value })', 'form.name = e.target.value', 'setForm(e.target.value)', 'setForm({ [e.target.name]: e.target.value })'], 'Copy the form, then change one field by name.', true],
+  ['How is a checkbox controlled in React?', ['checked={on} and e.target.checked', 'value={on} and e.target.value', 'selected={on}', 'It can’t be controlled'], 'On or off uses checked.'],
+  ['Which is a correct style prop?', ['style={{ fontSize: 18 }}', 'style="font-size: 18px"', 'style={ fontSize: 18 }', 'style={{ font-size: 18 }}'], 'An object with camelCase names.', true],
+  ['Why use a CSS module?', ['So class names don’t clash between components', 'To make CSS faster', 'To write CSS in JavaScript', 'To avoid className'], 'Names are made unique.'],
 ]);
 
 export const REACT_I_TEST = finalTest('react-i-test', 'React Intermediate', 'react', 'intermediate', ['Update state safely and share it between components', 'Use effects, custom hooks and refs', 'Scale up with context and reducers'], [
@@ -274,6 +277,10 @@ export const REACT_I_TEST = finalTest('react-i-test', 'React Intermediate', 'rea
   ['What problem does context solve?', ['Passing props through many layers that don’t use them', 'Slow drawing', 'Loading data', 'Styling'], 'Prop drilling.'],
   ['What is a reducer?', ['A function (state, action) that gives back the next state', 'A hook that fetches', 'A smaller component', 'A way to shrink arrays'], 'Every change in one place.'],
   ['What does dispatch({ type: "add", dish }) do?', ['Runs the reducer with that action and draws the result', 'Adds the dish directly', 'Sends it to a server', 'Nothing until the page reloads'], 'The reducer decides.', true],
+  ['What does memo(Component) do?', ['Skips drawing it again when its props are the same', 'Saves it for later', 'Runs it once only', 'Lets it change its props'], 'It compares props.'],
+  ['What is the difference between useMemo and useCallback?', ['useMemo keeps a value; useCallback keeps a function', 'They are the same', 'useMemo keeps a function; useCallback keeps a value', 'useCallback runs effects'], 'Both keep work between draws.'],
+  ['Which React Router part changes the address without reloading?', ['<Link to="/menu">', '<a href="/menu">', '<Route to="/menu">', '<Routes href="/menu">'], 'Link, not <a>.', true],
+  ['What does <Suspense fallback={…}> show?', ['The fallback while a lazy part loads', 'An error screen', 'Nothing', 'The previous page'], 'Then the loaded part.'],
 ]);
 
 /** Every final test, for the lesson list. */

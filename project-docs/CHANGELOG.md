@@ -2,6 +2,17 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 1 Nov 2026 (branch `lesson-v3`): React covers every W3Schools React topic, and React notes
+- **Checked against the W3Schools React tutorial** (topic list only, our own words): the missing topics are now taught, each with live pages and an assessment at the end of the module.
+  - **Forms:** new lesson 7.4 `r-b-7-4`, text areas, checkboxes and radio buttons.
+  - **New module · Styling React** (`reactV5/mStyle.ts`, Basic, after Forms): classes and CSS files, the style prop, CSS modules; Styling Challenge.
+  - **New module · Faster React** (`reactV5/mPerf.ts`): `memo`, `useMemo`, `useCallback` (and React Compiler); pages count the skipped work.
+  - **New module · Setting up an app, and routing** (`reactV5/mRouter.ts`): Vite, `createRoot` and `StrictMode`; React Router (routes, links, `useParams`); `lazy` with `Suspense`, and portals.
+  - Module 13 (context and reducers) now has its own Module Challenge; the final project is its own unit (`r-u14`) at the end. The track is 16 modules, the final project and two final tests (19 steps on the path); the final tests gained 7 questions on the new topics.
+- **React Router in lesson pages:** `react-router` 7.18.4 (dev dependency, pinned) is bundled into `lib/web/reactRuntime.ts` with `createPortal`; the runtime is now 431 KB (+42 KB). `BrowserRouter` is a memory router inside lesson pages, since they have no address bar.
+- **React “Read more” notes** (`content/notes/react.ts`): one step-by-step reference per module (16), with sections, a worked example drawn live in the notes, industry use, interview questions and a cheat sheet. Tests draw every example with React and check the page shows exactly what the notes say; every React module must have notes.
+- Test taps are now cancelable clicks, like real taps. 7197 tests pass. `supabase/track-lessons.sql` regenerated.
+
 ## 31 Oct 2026 (branch `lesson-v3`): React in Lesson v5, part 2 (modules 9–13, final project, final tests)
 - **React modules 9–13 rebuilt** (`tracks/reactV5/m9.ts`–`m13.ts`, Intermediate): composition (`children`, layout components, JSX in props), sharing state (lifting state up, one source of truth, where state lives), effects (`useEffect` and its dependency list, loading data from the practice server with loading and error screens, clean-up, and when you don’t need an effect), custom hooks and refs (rules of hooks, writing a custom hook, `useRef`), and context and reducers (context with React 19’s `<Context value>`, `useReducer`, both together). Every lesson has live React pages to tap; modules 9–12 end with a Module Challenge. Old ids kept (`r-children-1`, `r-lift-1`, `r-effect-1`, `r-hooks-1`, `r-context-1`).
 - **Final project** (`tracks/reactV5/project.ts`, keeps `r-project`): a course enquiry app for Sutton Classes, after 5 questions and 5 tasks: show every course with keys, filter by subject with state, a controlled enquiry form with checks, and batch times loaded from `/api/batches` in an effect. Each step is checked and previews live React.

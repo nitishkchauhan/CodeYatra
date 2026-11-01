@@ -53,6 +53,24 @@ function App() {
   );
 }`;
 
+const EXTRAS = `import { useState } from "react";
+
+function App() {
+  const [note, setNote] = useState("");
+  const [sugar, setSugar] = useState(false);
+  const [size, setSize] = useState("Small");
+  console.log("Order: " + size + (sugar ? ", with sugar" : ", no sugar") + (note ? ", note: " + note : ""));
+  return (
+    <form className="card">
+      <label htmlFor="note">Note for the kitchen</label>
+      <textarea id="note" value={note} onChange={(e) => setNote(e.target.value)} />
+      <label><input id="sugar" type="checkbox" checked={sugar} onChange={(e) => setSugar(e.target.checked)} /> Add sugar</label>
+      <label><input id="small" type="radio" name="size" value="Small" checked={size === "Small"} onChange={(e) => setSize(e.target.value)} /> Small</label>
+      <label><input id="large" type="radio" name="size" value="Large" checked={size === "Large"} onChange={(e) => setSize(e.target.value)} /> Large</label>
+    </form>
+  );
+}`;
+
 export const R_M7: Lesson[] = [
   lesson('r-form', 'Controlled inputs', 5, [
     chat(['In React, an input’s value usually lives in state. The input shows the state, and typing updates the state.', 'This is called a controlled input: React is always in charge of what it shows.']),
@@ -111,7 +129,24 @@ export const R_M7: Lesson[] = [
     ]),
   ]),
 
-  challenge('r-b-7-ch', 'Module 7 Challenge', { icon: '📝', name: 'Form Builder' }, ['Control inputs with state', 'Handle many fields with one function', 'Check forms and show errors everyone can hear'], [
+  lesson('r-b-7-4', 'Text areas, checkboxes and radio buttons', 5, [
+    reveal('More form controls', [
+      ['<textarea value={note} />', 'In React a textarea uses value, like an input, not text between the tags.'],
+      ['checked={sugar}', 'A checkbox is on or off. Use checked, and read e.target.checked.'],
+      ['checked={size === "Large"}', 'Radio buttons share a name. The one that matches the state is checked.'],
+    ], { mono: true }),
+    tapPage('Your tea, your way', 'Tick “Add sugar”, then choose Large.', app(EXTRAS), 'Order: Large, with sugar', [{ click: '#sugar' }, { click: '#large' }], 'Each control shows its state, and each change updates it.'),
+    matchUp('Which prop?', [['input, textarea, select', 'value'], ['A checkbox', 'checked'], ['A radio button', 'checked={size === …}'], ['A checkbox’s change', 'e.target.checked']], 'Text uses value; on or off uses checked.'),
+    check('A checkbox has just been ticked. Which gives true?', ['e.target.checked', 'e.target.value', 'e.checked', 'e.target.on'], 'checked is true or false.', 'value is text, even for a checkbox.', { mono: true }),
+    tapbug('Ticking the box does nothing', ['<input', '  type="checkbox"', '  value={sugar}', '  onChange={(e) => setSugar(e.target.value)}', '/>'], [[3, 'value={sugar}', 'checked={sugar}'], [4, 'e.target.value', 'e.target.checked']], 'A checkbox is controlled with checked, and e.target.checked says whether it is ticked.'),
+    recap([
+      ['📝', 'textarea uses value, like an input'],
+      ['☑️', 'Checkboxes use checked and e.target.checked'],
+      ['🔘', 'Radio buttons: checked={state === value}'],
+    ]),
+  ]),
+
+  challenge('r-b-7-ch','Module 7 Challenge', { icon: '📝', name: 'Form Builder' }, ['Control inputs with state', 'Handle many fields with one function', 'Check forms and show errors everyone can hear'], [
     mcq(1, 'What makes an input “controlled”?', ['value comes from state, and onChange updates it', 'It has an id', 'It is inside a form', 'It has a label'], 'React is in charge of its value.'),
     mcq(2, 'Which reads what was typed?', ['e.target.value', 'e.value', 'e.target.text', 'e.input'], 'From the event object.', { mono: true }),
     mcq(3, 'Which updates one field of a form object?', ['setForm({ ...form, cups: "3" })', 'form.cups = "3"', 'setForm({ cups: "3" })', 'setForm(form.cups = "3")'], 'Copy, then replace.', { mono: true }),

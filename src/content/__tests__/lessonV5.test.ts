@@ -23,7 +23,7 @@ describe.each([
   ['html', 17],
   ['css', 20],
   ['js', 21],
-  ['react', 15],
+  ['react', 19],
 ])('the %s track (Lesson v5)', (id, modules) => {
   const track = STAGES.find((s) => s.id === id)!;
   it(`has ${modules} modules, each ending with its Challenge`, () => {
@@ -187,7 +187,7 @@ const tryCode = (key: string, code: string): { out: string[]; error?: string } =
 /** Does what a learner would do in the page: tap, type or send a form. */
 const act = (w: Awaited<ReturnType<typeof runPage>>["window"], a: TapAction) => {
   const d = w.document;
-  if ('click' in a) d.querySelector<HTMLElement>(a.click)!.dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+  if ('click' in a) d.querySelector<HTMLElement>(a.click)!.dispatchEvent(new w.MouseEvent('click', { bubbles: true, cancelable: true }));
   else if ('type' in a) {
     const el = d.querySelector<HTMLInputElement>(a.type[0])!;
     // The native setter, as real typing does, so React sees the change too.

@@ -1,7 +1,6 @@
-// React · Module 13 · Context and reducers. Lesson 13.1 keeps the old module id (r-context-1). The module ends with
-// the final project (project.ts) instead of a Module Challenge.
+// React · Module 13 · Context and reducers. Lesson 13.1 keeps the old module id (r-context-1).
 import type { Lesson } from '../../types';
-import { app, chat, check, explore, lesson, recap, reveal, tapbug, tapPage, truth, UI } from './kit';
+import { app, arrange, bugTask, challenge, chat, check, explore, lesson, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, truth, UI, xray } from './kit';
 
 const THEME = [
   'import { createContext, useContext, useState } from "react";',
@@ -175,4 +174,27 @@ export const R_M13: Lesson[] = [
       ['🌱', 'Start simple; add these as the app grows'],
     ]),
   ], 'intermediate'),
+
+  challenge('r-i-13-ch', 'Module 13 Challenge', { icon: '🏗', name: 'State Architect' }, ['Share values with context', 'Manage changes with a reducer', 'Combine context and a reducer'], [
+    mcq(1, 'What is prop drilling?', ['Passing a prop through layers that don’t use it', 'Changing a prop', 'Deleting a prop', 'Testing a prop'], 'Context avoids it.'),
+    mcq(2, 'Which reads a context?', ['useContext(ThemeContext)', 'ThemeContext.read()', 'useState(ThemeContext)', 'props.ThemeContext'], 'The closest value above.', { mono: true }),
+    mcq(3, 'What does a reducer receive?', ['The current state and an action', 'Only an action', 'The props', 'An element on the page'], '(state, action).'),
+    mcq(4, 'What must a reducer give back?', ['The next state, as a new value', 'Nothing', 'The action', 'A promise'], 'Never the old state changed in place.'),
+    mcq(5, 'In React 19, which gives a context a value for everything inside?', ['<ThemeContext value="dark">', '<ThemeContext set="dark">', 'ThemeContext.value = "dark"', 'useContext("dark")'], 'Older code writes <ThemeContext.Provider value="dark">.', { mono: true }),
+    swipe([
+      ['createContext takes a default value', true, 'Used when nothing above gives one.'],
+      ['A reducer may change the old state and give it back', false, 'Give back a new value.'],
+      ['dispatch sends an action to the reducer', true, 'Then React draws the result.'],
+      ['Context is the best way to pass every prop', false, 'Use props first.'],
+    ]),
+    pairs([['createContext', 'Make a context'], ['<Ctx value>', 'Give it a value'], ['useContext', 'Read it'], ['dispatch', 'Send an action']], 'Context and reducers.'),
+    pickCode('Which reducer case adds a dish correctly?', ['case "add": return [...cart, action.dish];', 'case "add": cart.push(action.dish); return cart;', 'case "add": cart = action.dish;', 'case "add": dispatch(action.dish);'], 'A new array.'),
+    bugTask(['const theme = useContext("ThemeContext");', 'case "add": cart.push(action.dish); return cart;', '<ThemeContext value="dark"><Menu /></ThemeContext>'], [[1, '"ThemeContext"', 'ThemeContext'], [2, 'cart.push(action.dish); return cart;', 'return [...cart, action.dish];']], 'Pass the context itself, and give back a new array.'),
+    xray('<div><p class="ok">🛒 2 in cart</p><div class="card"><button>Add Lemon Tea</button></div><p class="card dark">Lemon Tea</p></div>', [
+      ['.ok', 'The badge', 'useContext(CartContext)', ['useContext(CartContext)', 'dispatch({ type: "add", dish })', 'useContext(ThemeContext)']],
+      ['button', 'The add button', 'dispatch({ type: "add", dish })', ['useContext(CartContext)', 'dispatch({ type: "add", dish })', 'useContext(ThemeContext)']],
+      ['.dark', 'A dark card', 'useContext(ThemeContext)', ['useContext(CartContext)', 'dispatch({ type: "add", dish })', 'useContext(ThemeContext)']],
+    ]),
+    arrange(['import { createContext, useContext } from "react";', 'const Name = createContext("Rosa’s Café");', 'function Sign() {', '  return <h3 className="card">{useContext(Name)}</h3>;', '}', 'const App = () => <Sign />;'], 'import, make the context, start Sign, read the context, close it, then show Sign'),
+  ], { level: 'intermediate' }),
 ];

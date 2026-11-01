@@ -56,7 +56,8 @@ describe('stages', () => {
         const first = l.steps[0];
         // A v4 project opens with the client's brief instead.
         // A level's final test is all questions: it comes after the level has been taught.
-        if (l.exam) expect(first.type).toBe('quiz');
+        // So is a v5 final project in its own unit (React): it opens with the challenge questions.
+        if (l.exam || (l.format === 'v5' && l.kind === 'project')) expect(first.type).toBe('quiz');
         else if (l.format === 'v5') expect(isTeaching(first)).toBe(true);
         else if (l.format === 'v4' && l.kind === 'project') expect(first.type).toBe('scenario');
         else if (l.format === 'v4') expect(first.type === 'quiz' && first.kicker).toBe('GUESS FIRST');

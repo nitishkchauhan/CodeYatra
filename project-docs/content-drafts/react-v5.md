@@ -45,3 +45,22 @@
 3. **Final project:** the course enquiry app stays (4 checked steps), rebuilt in the new format with a live preview. **OK?**
 4. **Old ids kept** for each module’s first lesson and the project, so progress and notes carry over. **OK?**
 5. **Next.js after React**, the same way. **OK?**
+
+---
+
+## Added on 1 Nov 2026 (owner: “yes go ahead, add both”)
+
+Checked against the W3Schools React tutorial’s topic list. Added, in the same format with live pages and an assessment per module:
+
+| Where | What | Challenge badge |
+|---|---|---|
+| Module 7 · Forms | 7.4 Text areas, checkboxes and radio buttons | (in 📝 Form Builder) |
+| **Styling React** (Basic, after Forms) | Classes and CSS files · The style prop · CSS modules and tidy styles | 🎨 Style Maker |
+| Module 13 · Context and reducers | now ends with its own challenge | 🏗 State Architect |
+| **Faster React** | memo · useMemo · useCallback (and React Compiler) | 🚀 Speed Tuner |
+| **Setting up an app, and routing** | Vite, createRoot, StrictMode · React Router · lazy, Suspense and portals | 🧭 App Builder |
+| Final project | its own step at the end | 🏆 React Pro |
+
+Plus **React “Read more” notes**: one step-by-step reference page per module (16).
+
+Left out on purpose (older or niche): class components, higher-order components, forwardRef (React 19 passes ref as a normal prop) and Sass.

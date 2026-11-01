@@ -15,6 +15,7 @@ import { T } from '@/components/ui/Text';
 import { drillId, getLesson, hasDrill } from '@/content';
 import type { CodeLang } from '@/content';
 import { getNotes } from '@/content/notes';
+import { UI as REACT_UI } from '@/content/tracks/reactV5/kit';
 import { Anim } from '@/features/lesson/Anim';
 import { ConsoleView } from '@/features/lesson/EditorStep';
 import { useCodeRunner } from '@/lib/runner';
@@ -169,7 +170,16 @@ export default function NotesScreen() {
             </Pressable>
           ))}
           {notes.example.page ? (
-            <WebPreview doc={buildPage(notes.lang === 'javascript' ? { html: notes.example.page, js: notes.example.code.join('\n') } : { html: notes.example.page, css: notes.example.code.join('\n') })} height={200} />
+            <WebPreview
+              doc={buildPage(
+                notes.lang === 'jsx'
+                  ? { html: notes.example.page, css: REACT_UI, js: notes.example.code.join('\n'), react: true }
+                  : notes.lang === 'javascript'
+                    ? { html: notes.example.page, js: notes.example.code.join('\n') }
+                    : { html: notes.example.page, css: notes.example.code.join('\n') },
+              )}
+              height={200}
+            />
           ) : (
             <ConsoleView output={notes.example.output} />
           )}

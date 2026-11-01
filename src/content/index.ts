@@ -569,15 +569,15 @@ export const STAGES: Stage[] = [
     short: 'React',
     sub: 'Components, state and effects',
     audience: 'B.Tech · BCA',
-    blurb: '13 modules of short lessons with live React 19 pages: components, props, state, events, lists, forms, immutable updates, composition, shared state, effects, custom hooks, context and reducers. A final project and two final tests.',
+    blurb: '16 modules of short lessons with live React 19 pages: components, props, state, events, lists, forms, styling, immutable updates, composition, shared state, effects, custom hooks, context and reducers, memo, and routing with React Router. A final project and two final tests.',
     color: '#0E7490',
     soft: '#DDF4F9',
     accent: '#67E8F9',
     icon: 'M3 12c0-2 4-4 9-4s9 2 9 4-4 4-9 4-9-2-9-4z M12 11v2',
     units: [
-      ...REACT_UNITS.slice(0, 7),
+      ...REACT_UNITS.slice(0, 8),
       testUnit(REACT_B_TEST),
-      ...REACT_UNITS.slice(7),
+      ...REACT_UNITS.slice(8),
       testUnit(REACT_I_TEST),
     ],
     practice: [
