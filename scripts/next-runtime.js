@@ -288,7 +288,7 @@
     ],
     session: [],
     student: [
-      { id: 1, name: 'Asha Patel', course: 'Class 10 Maths', fee: 1200 },
+      { id: 1, name: 'Ava Brooks', course: 'Class 10 Maths', fee: 1200 },
       { id: 2, name: 'Leo Martin', course: 'Class 12 Physics', fee: 1500 },
       { id: 3, name: 'Mia Chen', course: 'Class 10 Maths', fee: 1200 },
     ],

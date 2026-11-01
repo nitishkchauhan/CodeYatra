@@ -15,6 +15,7 @@ import { NX_M9 } from './m9';
 import { NX_M10 } from './m10';
 import { NX_M11 } from './m11';
 import { NX_M12 } from './m12';
+import { NX_PROJECT } from './project';
 
 const MODULES: [string, string, Level, Lesson[]][] = [
   ['nx-u1', 'Fundamentals of Next.js', 'basic', NX_M1],
@@ -29,6 +30,7 @@ const MODULES: [string, string, Level, Lesson[]][] = [
   ['nx-u10', 'Deployment', 'advanced', NX_M10],
   ['nx-u11', 'Advanced Next.js Features', 'advanced', NX_M11],
   ['nx-u12', 'Industry Practices', 'advanced', NX_M12],
+  ['nx-u13', 'Final project', 'advanced', [NX_PROJECT]],
 ];
 
 /** Every lesson and challenge in the Next.js track, in order, each with its module’s level. */

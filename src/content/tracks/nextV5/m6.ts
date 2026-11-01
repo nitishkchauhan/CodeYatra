@@ -178,7 +178,7 @@ export const NX_M6: Lesson[] = [
 
   lesson('nx-i-6-2', 'Form handling and validation', 9, [
     chat(['Forms need checking. Check in the browser for quick hints, but always check again on the server: anyone can send anything to a Server Action.', 'useActionState gives the action’s answer back to the form, so it can show an error or a thank-you.']),
-    tapPage('An enquiry form that checks', 'Send it empty first. Then fill in Asha Patel, 9876543210, and send again.', app(FORM_APP, '/enquiry'), 'Saved enquiry from Asha Patel', [{ submit: '#enquiry' }, { type: ['#name', 'Asha Patel'] }, { type: ['#phone', '9876543210'] }, { submit: '#enquiry' }], 'The server said what was wrong; the form showed it. Then the good data was saved.'),
+    tapPage('An enquiry form that checks', 'Send it empty first. Then fill in Ava Brooks, 9876543210, and send again.', app(FORM_APP, '/enquiry'), 'Saved enquiry from Ava Brooks', [{ submit: '#enquiry' }, { type: ['#name', 'Ava Brooks'] }, { type: ['#phone', '9876543210'] }, { submit: '#enquiry' }], 'The server said what was wrong; the form showed it. Then the good data was saved.'),
     explore('The action checks everything', ACTIONS, [
       [1, 'Every export in this file is a Server Action.'],
       [4, 'With useActionState, it gets the last answer and the form data.'],

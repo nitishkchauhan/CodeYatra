@@ -129,7 +129,7 @@ export const NX_M3: Lesson[] = [
     ], { page: app({ ...CAFE, 'app/menu/[id]/page.js': PARAMS_PAGE }, '/menu/2'), minTaps: 3 }),
     tapPage('Only the built pages', 'Dishes 1 to 3 were built. Open /menu/3, then /menu/9.', app({ ...CAFE, 'app/menu/[id]/page.js': PARAMS_PAGE }), 'GET /menu/9 404', [...go('/menu/3'), ...go('/menu/9')], 'With dynamicParams = false, ids not in the list are 404.'),
     check('What does generateStaticParams do?', ['Lists the dynamic pages to build ahead of time', 'Reads the URL on each visit', 'Makes the page dynamic', 'Fetches data in the browser'], 'They are made at build time.', 'When are those pages made?'),
-    matchUp('Made when?', [['An About page', 'Build time'], ['A page reading cookies()', 'Each request'], ['/menu/[id] with generateStaticParams', 'Build time']], 'Static unless something differs per visit.'),
+    matchUp('Made when?', [['An About page', 'Build time'], ['A page reading cookies()', 'Each request'], ['/menu/[id] with generateStaticParams', 'Build time, one page per listed id']], 'Static unless something differs per visit.'),
     recap([
       ['📦', 'SSG: pages made once, at build time'],
       ['⚡', 'The fastest, and the default for pages with nothing per-visit'],

@@ -55,7 +55,7 @@ export const NX_M7: Lesson[] = [
       [14, 'Start a session (next lesson).'],
       [16, 'Go to the account page.'],
     ]),
-    matchUp('Authentication or authorization?', [['Signing in with a password', 'Authentication'], ['Only owners may change prices', 'Authorization'], ['Checking a one-time code', 'Authentication'], ['Customers can’t see other orders', 'Authorization']], 'Who you are, then what you may do.'),
+    matchUp('Match the idea', [['Signing in with a password', 'Authentication'], ['Only owners may change prices', 'Authorization'], ['A random token in a cookie', 'Session'], ['bcrypt or argon2', 'Password hashing']], 'Who you are, what you may do, and how the server remembers you.'),
     check('Why is “Wrong email or password” better than “No such email”?', ['It doesn’t tell an attacker which emails have accounts', 'It is shorter', 'It is faster', 'It hides the password'], 'Give away as little as possible.', 'What could an attacker learn?'),
     recap([
       ['🪪', 'Authentication: who you are'],

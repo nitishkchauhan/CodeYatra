@@ -18,7 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
@@ -630,13 +630,18 @@ export const STAGES: Stage[] = [
     short: 'Next.js',
     sub: 'Next.js 16 · App Router',
     audience: 'B.Tech · BCA · after React',
-    blurb: '12 modules and a project: routing, Server Components, caching, APIs, Server Actions, security and deployment, checked against the Next.js 16 docs.',
+    blurb: '12 modules of short lessons with live Next.js 16 apps, from fundamentals, routing and rendering to APIs, Server Actions, sign-in, databases, SEO, deployment and advanced routing. A final project and three final tests.',
     color: '#16142B',
     soft: '#ECEBF3',
     accent: '#A3A1B8',
     icon: 'M12 3l10 18H2z',
     units: [
-      ...NEXT_UNITS,
+      ...NEXT_UNITS.slice(0, 4),
+      testUnit(NEXT_B_TEST),
+      ...NEXT_UNITS.slice(4, 8),
+      testUnit(NEXT_I_TEST),
+      ...NEXT_UNITS.slice(8),
+      testUnit(NEXT_A_TEST),
     ],
     practice: [
       { id: 'x-dynamic', title: 'One page per train', kind: 'Next.js', difficulty: 'Medium', xp: 15 },

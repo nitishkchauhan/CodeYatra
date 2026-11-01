@@ -207,7 +207,7 @@ export const NX_M11: Lesson[] = [
       [11, 'Otherwise, carry on as normal.'],
       [14, 'Only run for these paths.'],
     ]),
-    matchUp('Redirect or rewrite?', [['An old address moved for good', 'Redirect'], ['/today always shows today’s dish page', 'Rewrite'], ['Send visitors without a cookie to /login', 'Redirect']], 'Does the address bar change?'),
+    matchUp('Redirect or rewrite?', [['An old address moved for good', 'Redirect'], ['/today always shows today’s dish page', 'Rewrite'], ['Nothing to change', 'NextResponse.next()']], 'Does the address bar change?'),
     tapbug('proxy.js runs for every picture and script, and the site gets slow', ['export const config = { matcher: ["/:path*"] };'], [[1, '["/:path*"]', '["/menu.html", "/today"]']], 'Match only the paths that need it.'),
     check('What does NextResponse.rewrite do?', ['Shows another page while the address stays the same', 'Changes the address in the browser', 'Deletes the page', 'Adds a cookie'], 'The visitor never sees the real path.', 'Does the URL change?'),
     recap([
@@ -227,7 +227,7 @@ export const NX_M11: Lesson[] = [
       ['Node.js (default)', ['export async function GET() {', '  const data = await readFile("menu.json", "utf8");', '  return new Response(data);', '}'], 'Nothing to set. Files and Node.js packages work.'],
       ['Edge', ['export const runtime = "edge";', '', 'export async function GET(request) {', '  const country = request.headers.get("x-country") ?? "unknown";', '  return Response.json({ country });', '}'], 'Only Web APIs like fetch, Request and Response.'],
     ]),
-    matchUp('Which runtime?', [['Reading a file from disk', 'Node.js'], ['A tiny reply that must start instantly worldwide', 'Edge'], ['A database driver that needs Node.js', 'Node.js']], 'Node.js unless the code fits the Edge’s limits.'),
+    matchUp('Which runtime?', [['Reading a file from disk', 'Node.js runtime'], ['A tiny reply that must start instantly worldwide', 'Edge runtime'], ['export const runtime = "edge"', 'Switches one route']], 'Node.js unless the code fits the Edge’s limits.'),
     chat(['In Next.js 16, proxy.js runs on the Node.js runtime by default too.', 'Many teams never change the runtime. It is good to know the Edge exists, and its limits.']),
     check('What is the default runtime for pages and Route Handlers?', ['Node.js', 'Edge', 'The browser', 'Deno'], 'Set runtime = "edge" to change it.', 'Which one supports every package?'),
     truth([
