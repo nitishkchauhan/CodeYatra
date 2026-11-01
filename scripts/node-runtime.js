@@ -469,6 +469,8 @@
       app.locals = {};
       app.settings = {};
       app.set = function (k, v) { app.settings[k] = v; return app; };
+      app.enable = function (k) { return app.set(k, true); };
+      app.disable = function (k) { return app.set(k, false); };
       app.listen = function (port, cb) {
         var s = createServer(function (req, res) { handle(wrapReq(req), wrapRes(res)); });
         return s.listen(port, cb);
@@ -637,6 +639,9 @@
           };
         });
       }
+      // Any other https://…/api/… address is answered by the practice server, offline.
+      var other = /^https?:\/\/[^/]+(\/api\/.*)$/.exec(raw);
+      if (other) return pageFetch(other[1], init);
       return pageFetch.apply(window, arguments);
     };
 
@@ -912,8 +917,9 @@
         .then(function () { if (!crashed) return runTests(); })
         .catch(crash);
     }
-    if (opts.rerun) {
-      var again = el('button', null, '▶ Run again');
+    // manual: nothing runs until ▶ Run is tapped (for lessons where running is the step).
+    if (opts.rerun || opts.manual) {
+      var again = el('button', null, opts.manual ? '▶ Run' : '▶ Run again');
       again.id = 'cy-run';
       again.type = 'button';
       again.addEventListener('click', function () {
@@ -923,6 +929,6 @@
       });
       term.insertBefore(again, lines);
     }
-    start();
+    if (!opts.manual) start();
   };
 })();

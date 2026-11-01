@@ -1,0 +1,455 @@
+// Node.js · Modules 11–14 (Intermediate): REST API design, a CRUD API saved to a file, configuration and security,
+// and testing with node:test.
+import type { Lesson } from '../../types';
+import { arrange, bugTask, challenge, chat, check, explore, lesson, matchUp, mcq, pairs, pickCode, press, prog, recap, req, rerun, reveal, swipe, tapbug, tapPage, term, toggle, truth, xray } from './kit';
+
+const ROUTER = [
+  'import express from "express";',
+  '',
+  'const trains = express.Router();',
+  '',
+  'trains.get("/", (req, res) => res.json([{ id: 90101 }, { id: 90102 }]));',
+  'trains.get("/:id/seats", (req, res) => res.json({ train: Number(req.params.id), free: 12 }));',
+  '',
+  'const app = express();',
+  'app.use("/api/v1/trains", trains);',
+  'app.listen(3000, () => console.log("Listening on port 3000"));',
+];
+
+const STORE = [
+  'import { readFile, writeFile } from "node:fs/promises";',
+  '',
+  'const FILE = "bookings.json";',
+  '',
+  'export async function loadAll() {',
+  '  try {',
+  '    return JSON.parse(await readFile(FILE, "utf8"));',
+  '  } catch (e) {',
+  '    if (e.code === "ENOENT") return [];',
+  '    throw e;',
+  '  }',
+  '}',
+  '',
+  'export async function saveAll(list) {',
+  '  await writeFile(FILE, JSON.stringify(list, null, 2));',
+  '}',
+];
+const CRUD = [
+  'import express from "express";',
+  'import { loadAll, saveAll } from "./store.js";',
+  '',
+  'const app = express();',
+  'app.use(express.json());',
+  '',
+  'app.get("/bookings", async (req, res) => {',
+  '  res.json(await loadAll());',
+  '});',
+  '',
+  'app.post("/bookings", async (req, res) => {',
+  '  const { name, seats } = req.body ?? {};',
+  '  if (!name || !Number.isInteger(seats)) return res.status(400).json({ error: "name and seats are needed" });',
+  '  const list = await loadAll();',
+  '  const booking = { id: list.length ? list.at(-1).id + 1 : 1, name, seats };',
+  '  list.push(booking);',
+  '  await saveAll(list);',
+  '  res.status(201).json(booking);',
+  '});',
+  '',
+  'app.patch("/bookings/:id", async (req, res) => {',
+  '  const list = await loadAll();',
+  '  const booking = list.find((b) => b.id === Number(req.params.id));',
+  '  if (!booking) return res.status(404).json({ error: "No such booking" });',
+  '  if (req.body?.seats !== undefined) booking.seats = req.body.seats;',
+  '  await saveAll(list);',
+  '  res.json(booking);',
+  '});',
+  '',
+  'app.delete("/bookings/:id", async (req, res) => {',
+  '  const list = await loadAll();',
+  '  const left = list.filter((b) => b.id !== Number(req.params.id));',
+  '  if (left.length === list.length) return res.status(404).json({ error: "No such booking" });',
+  '  await saveAll(left);',
+  '  res.sendStatus(204);',
+  '});',
+  '',
+  'app.listen(3000, () => console.log("Bookings API on port 3000"));',
+];
+const CRUD_APP = { 'app.js': CRUD, 'store.js': STORE };
+const CRUD_REQS = [
+  req('POST', '/bookings', { name: 'Sam', seats: 2 }, 'Book 2 for Sam'),
+  req('POST', '/bookings', { name: 'Mia', seats: 1 }, 'Book 1 for Mia'),
+  req('GET', '/bookings', undefined, 'List bookings'),
+  req('PATCH', '/bookings/1', { seats: 3 }, 'Change booking 1'),
+  req('DELETE', '/bookings/2', undefined, 'Cancel booking 2'),
+  req('DELETE', '/bookings/9', undefined, 'Cancel booking 9'),
+];
+
+const ENV_APP = [
+  'const port = Number(process.env.PORT ?? 3000);',
+  'const mode = process.env.NODE_ENV ?? "development";',
+  'const key = process.env.PAYMENT_KEY;',
+  '',
+  'if (!key) {',
+  '  console.error("PAYMENT_KEY is missing: add it to .env");',
+  '  process.exit(1);',
+  '}',
+  'console.log("Starting in " + mode + " on port " + port);',
+  'console.log("Key ends in " + key.slice(-4));',
+];
+const ENV_FILE = ['PORT=4000', 'NODE_ENV=development', 'PAYMENT_KEY=test_key_practice_9f3a'];
+
+const SECURE = [
+  'import express from "express";',
+  '',
+  'const app = express();',
+  'app.disable("x-powered-by");',
+  'app.use(express.json({ limit: "10kb" }));',
+  '',
+  'const hits = new Map();',
+  'app.use((req, res, next) => {',
+  '  const n = (hits.get(req.ip) ?? 0) + 1;',
+  '  hits.set(req.ip, n);',
+  '  if (n > 3) return res.status(429).json({ error: "Too many requests, slow down" });',
+  '  next();',
+  '});',
+  '',
+  'app.get("/menu", (req, res) => res.json(["Lemon Tea"]));',
+  'app.listen(3000, () => console.log("Listening on port 3000"));',
+];
+
+const PRICES = ['export function withTax(price) {', '  if (typeof price !== "number" || price < 0) throw new Error("price must be a positive number");', '  return Math.round(price * 1.05);', '}', '', 'export function total(prices) {', '  return prices.reduce((sum, p) => sum + withTax(p), 0);', '}'];
+const PRICES_TEST = [
+  'import { test } from "node:test";',
+  'import assert from "node:assert/strict";',
+  'import { withTax, total } from "./prices.js";',
+  '',
+  'test("adds 5% tax and rounds", () => {',
+  '  assert.equal(withTax(40), 42);',
+  '});',
+  '',
+  'test("totals a list", () => {',
+  '  assert.equal(total([40, 80]), 126);',
+  '});',
+  '',
+  'test("refuses a negative price", () => {',
+  '  assert.throws(() => withTax(-5), /positive/);',
+  '});',
+];
+const API_TEST = [
+  'import { test } from "node:test";',
+  'import assert from "node:assert/strict";',
+  'import "./app.js";',
+  '',
+  'test("GET /menu lists the dishes", async () => {',
+  '  const res = await fetch("http://localhost:3000/menu");',
+  '  assert.equal(res.status, 200);',
+  '  assert.deepEqual(await res.json(), ["Lemon Tea", "Cheese Toast"]);',
+  '});',
+  '',
+  'test("POST /menu needs a name", async () => {',
+  '  const res = await fetch("http://localhost:3000/menu", { method: "POST", body: "{}" });',
+  '  assert.equal(res.status, 400);',
+  '});',
+];
+const API_APP = ['import express from "express";', '', 'const app = express();', 'app.use(express.json());', 'const menu = ["Lemon Tea", "Cheese Toast"];', 'app.get("/menu", (req, res) => res.json(menu));', 'app.post("/menu", (req, res) => {', '  if (!req.body?.name) return res.status(400).json({ error: "name is needed" });', '  menu.push(req.body.name);', '  res.status(201).json(req.body);', '});', 'app.listen(3000);'];
+
+export const NODE_M11: Lesson[] = [
+  lesson('n-rest-1', 'REST API design', 8, [
+    chat(['REST is a common way to design APIs so they are easy to guess. Things are nouns in the URL; what you do is the HTTP method.', 'A team that follows it can use your API without reading much: GET /trains lists trains, POST /trains adds one.']),
+    reveal('The REST pattern', [
+      ['GET /trains', 'List trains.'],
+      ['GET /trains/90101', 'One train.'],
+      ['POST /trains', 'Add a train (201).'],
+      ['PATCH /trains/90101', 'Change part of it.'],
+      ['DELETE /trains/90101', 'Remove it (204).'],
+      ['GET /trains/90101/seats', 'Things that belong to it.'],
+    ], { mono: true }),
+    matchUp('Good or bad design?', [['POST /trains', 'Good: method says the action'], ['GET /getAllTrains', 'Bad: verb in the URL'], ['GET /trains?from=Hillview', 'Good: filter with a query'], ['POST /deleteTrain/7', 'Bad: should be DELETE /trains/7']], 'Nouns in URLs, verbs as methods.'),
+    tapPage('Routers keep it tidy', 'Try both routes. They live in their own router, under /api/v1/trains.', prog(ROUTER, { requests: [req('GET', '/api/v1/trains'), req('GET', '/api/v1/trains/90101/seats')] }), 'GET /api/v1/trains/90101/seats 200', [press(0), press(1)], 'express.Router groups related routes; app.use mounts them under one path.'),
+    explore('express.Router', ROUTER, [
+      [3, 'A mini app for one resource.'],
+      [6, 'Paths inside are relative: "/" is the list.'],
+      [9, 'Mount it. /api/v1 lets you change the API later as v2.'],
+    ]),
+    check('Which is the REST way to cancel booking 7?', ['DELETE /bookings/7', 'POST /cancelBooking/7', 'GET /bookings/7/delete', 'PUT /bookings/cancel?id=7'], 'The method is the action.', 'Which method removes?', { mono: true }),
+    recap([
+      ['🧩', 'Nouns in URLs, methods for actions'],
+      ['🔢', 'Clear status codes: 200, 201, 204, 400, 404'],
+      ['📂', 'express.Router per resource; version with /v1'],
+    ]),
+  ]),
+
+  lesson('n-b-11-2', 'Status codes and API conventions', 7, [
+    reveal('More status codes', [
+      ['401 Unauthorized', 'Not signed in (no valid key or token).'],
+      ['403 Forbidden', 'Signed in, but not allowed.'],
+      ['409 Conflict', 'Clashes with what exists, like a seat already booked.'],
+      ['422 Unprocessable', 'Understood, but the values don’t make sense.'],
+      ['429 Too Many Requests', 'Slow down.'],
+    ], { mono: true }),
+    toggle('Error replies apps can use', [
+      ['Unclear', ['res.status(500).send("error");'], 'The app can’t tell what went wrong.'],
+      ['Clear', ['res.status(409).json({', '  error: "Seat 12A is already booked",', '  code: "SEAT_TAKEN",', '});'], 'A status, a message for people, and a code for programs.'],
+    ]),
+    reveal('Conventions that help', [
+      ['Plural nouns', '/trains, not /train.'],
+      ['Pagination', 'GET /trains?page=2&limit=20 for long lists.'],
+      ['Same shape', 'Every error looks like { error, code }.'],
+      ['Versions', '/api/v1/… so old apps keep working.'],
+    ]),
+    check('Two people book the last seat. The second gets…', ['409 Conflict', '200 OK', '404 Not Found', '500 Server Error'], 'It clashes with what exists.', 'Was the request wrong, or does it clash?', { mono: false }),
+    truth([
+      ['A 500 means the client made a mistake', false, '5xx: the server’s fault; 4xx: the client’s.'],
+      ['Long lists should be paged', true, 'page and limit.'],
+      ['Every error should have the same shape', true, 'Apps can handle them all one way.'],
+    ]),
+    recap([
+      ['🔢', '4xx: the client’s problem; 5xx: the server’s'],
+      ['🧾', 'Errors: { error, code }'],
+      ['📄', 'Plural nouns, paging, versions'],
+    ]),
+  ]),
+
+  challenge('n-b-11-ch', 'Module 11 Challenge', { icon: '🧩', name: 'API Designer' }, ['Design REST URLs and methods', 'Choose the right status codes', 'Organise routes with routers'], [
+    mcq(1, 'Which lists bookings, REST style?', ['GET /bookings', 'GET /getBookings', 'POST /bookings/list', 'GET /booking-list'], 'A plural noun and GET.', { mono: true }),
+    mcq(2, 'Which changes part of booking 3?', ['PATCH /bookings/3', 'POST /bookings/3/edit', 'GET /bookings/3?edit', 'DELETE /bookings/3'], 'PATCH for part.', { mono: true }),
+    mcq(3, 'Signed in, but not allowed?', ['403', '401', '404', '409'], '401 is not signed in.', { mono: true }),
+    mcq(4, 'What does express.Router help with?', ['Grouping routes for one resource', 'Speed', 'Security only', 'Reading files'], 'Then app.use mounts it.'),
+    mcq(5, 'Why /api/v1 in URLs?', ['So a v2 can change things without breaking old apps', 'Express needs it', 'It is faster', 'For SEO'], 'Versioning.'),
+    swipe([
+      ['Verbs belong in the URL', false, 'The method is the verb.'],
+      ['429 means too many requests', true, 'Rate limiting.'],
+      ['A clear error has a message and a code', true, 'For people and programs.'],
+      ['5xx codes mean the client is wrong', false, 'The server.'],
+    ]),
+    pairs([['201', 'Created'], ['204', 'No content'], ['409', 'Conflict'], ['429', 'Slow down']], 'Status codes.'),
+    pickCode('Which mounts a router at /api/v1/trains?', ['app.use("/api/v1/trains", trains);', 'trains.use(app, "/api/v1/trains");', 'app.get("/api/v1/trains", trains.all);', 'app.router(trains);'], 'app.use with a path.'),
+    bugTask(['app.post("/deleteBooking/:id", remove);', 'res.status(500).send("error"); // seat taken'], [[1, 'app.post("/deleteBooking/:id"', 'app.delete("/bookings/:id"'], [2, 'res.status(500).send("error");', 'res.status(409).json({ error: "Seat taken", code: "SEAT_TAKEN" });']], 'Use DELETE on the resource, and a clear 409 for a clash.'),
+    xray('<div class="c">$ curl -X GET localhost:3000/api/v1/trains/90101/seats</div><div class="r">GET /api/v1/trains/90101/seats 200</div><div class="b">{"train":90101,"free":12}</div>', [
+      ['.c', 'The address', 'app.use("/api/v1/trains", trains)', ['app.use("/api/v1/trains", trains)', 'trains.get("/:id/seats", …)', 'res.json(…)']],
+      ['.b', 'The answer', 'trains.get("/:id/seats", …)', ['app.use("/api/v1/trains", trains)', 'trains.get("/:id/seats", …)', 'res.json(…)']],
+    ]),
+    arrange(['import express from "express";', 'const menu = express.Router();', 'menu.get("/", (req, res) => res.json(["Tea"]));', 'const app = express();', 'app.use("/menu", menu);', 'app.listen(3000);'], 'import, a router, its route, the app, mount it, listen'),
+  ]),
+
+  lesson('n-api-1', 'A CRUD API', 9, [
+    chat(['CRUD is create, read, update and delete: the four things almost every app does with data.', 'Here is a bookings API that does all four and saves to a JSON file, so bookings survive a restart.']),
+    tapPage('Every operation', 'Tap the buttons in order: book twice, list, change, cancel, then cancel one that doesn’t exist.', term(CRUD_APP, { requests: CRUD_REQS }), 'DELETE /bookings/9 404', [press(0), press(1), press(2), press(3), press(4), press(5)], 'Create 201, read 200, update 200, delete 204, and a 404 for a booking that isn’t there.'),
+    explore('Create and read', CRUD.slice(0, 19), [
+      [7, 'Read: the whole list.'],
+      [12, 'Take the fields from the body.'],
+      [13, 'Check them first.'],
+      [15, 'A new id: one more than the last.'],
+      [17, 'Save, then answer 201 with the new item.'],
+    ]),
+    explore('Update and delete', CRUD.slice(20), [
+      [1, 'PATCH changes part of one booking.'],
+      [4, 'Not found? 404.'],
+      [10, 'DELETE removes one booking.'],
+      [12, 'Keep every other booking…'],
+      [13, '…and if nothing was removed, it wasn’t there.'],
+      [15, '204: done, nothing to send.'],
+    ]),
+    explore('store.js: saving to a file', STORE, [
+      [7, 'Read and parse the file.'],
+      [9, 'No file yet? Start with an empty list.'],
+      [15, 'Write the whole list back, readable.'],
+    ]),
+    tapbug('Bookings disappear after a restart', ['list.push(booking);', 'res.status(201).json(booking);'], [[1, 'list.push(booking);', 'list.push(booking); await saveAll(list);']], 'Changes only in memory are lost when the server stops. Save them.'),
+    check('Which method and path cancels booking 2?', ['DELETE /bookings/2', 'POST /bookings/2/cancel', 'GET /bookings/2', 'PATCH /bookings'], 'Delete the resource.', 'REST style.', { mono: true }),
+    recap([
+      ['✍', 'Create: POST, 201'],
+      ['📖', 'Read: GET; update: PATCH; delete: DELETE, 204'],
+      ['💾', 'Save every change (a file here; a database in real apps)'],
+    ]),
+  ]),
+
+  lesson('n-b-12-2', 'From a file to a database', 7, [
+    reveal('Why real APIs use a database', [
+      ['Many requests at once', 'Two writes to one file can overwrite each other. Databases handle this.'],
+      ['Fast searching', 'Indexes find one booking among millions.'],
+      ['Safe changes', 'Transactions: all of a change happens, or none.'],
+      ['Choices', 'PostgreSQL or MySQL (SQL), or MongoDB (documents). SQL has its own track here.'],
+    ]),
+    toggle('The same route, two stores', [
+      ['A JSON file', ['const list = await loadAll();', 'list.push(booking);', 'await saveAll(list);'], 'Fine for learning and tiny tools.'],
+      ['A database', ['const booking = await db.booking.create({', '  data: { name, seats },', '});'], 'With an ORM like Prisma: one line, safe with many users.'],
+    ]),
+    matchUp('Which store?', [['A learning project', 'A JSON file'], ['A busy booking site', 'A database'], ['Settings read once at start', 'A config file'], ['Thousands of searches a minute', 'A database with indexes']], 'Files for small things; databases for real data.'),
+    check('Why is a JSON file risky for a busy API?', ['Two requests can save at the same time and lose data', 'JSON can’t store bookings', 'Files are always slow', 'Node.js can’t write files'], 'No safe sharing.', 'What happens with two writes at once?'),
+    truth([
+      ['MongoDB stores documents that look like JSON', true, 'A document database.'],
+      ['SQL databases can’t be used from Node.js', false, 'PostgreSQL and MySQL are common with Node.js.'],
+      ['A transaction makes a group of changes all-or-nothing', true, 'No half-saved bookings.'],
+    ]),
+    recap([
+      ['🗄', 'Real APIs store data in a database'],
+      ['🔒', 'Transactions and safe concurrent writes'],
+      ['🔍', 'Indexes for fast lookups'],
+    ]),
+  ]),
+
+  challenge('n-b-12-ch', 'Module 12 Challenge', { icon: '🗂', name: 'CRUD Builder' }, ['Build all four CRUD routes', 'Save data so it survives restarts', 'Choose between files and databases'], [
+    mcq(1, 'What does CRUD stand for?', ['Create, read, update, delete', 'Copy, run, undo, deploy', 'Create, return, upload, download', 'Cache, read, use, drop'], 'The four data actions.'),
+    mcq(2, 'Which status after a successful DELETE with no body?', ['204', '200', '201', '404'], 'No content.', { mono: true }),
+    mcq(3, 'What does PATCH do?', ['Changes part of an item', 'Replaces everything', 'Deletes it', 'Lists items'], 'PUT replaces.', { mono: true }),
+    mcq(4, 'If readFile throws ENOENT in loadAll…', ['Start with an empty list', 'Crash the server', 'Return 500', 'Delete the file'], 'No file yet.'),
+    mcq(5, 'Why save after each change?', ['So data survives a restart', 'To make it faster', 'Express requires it', 'To send the response'], 'Memory is lost.'),
+    swipe([
+      ['Two writes to one JSON file can clash', true, 'Databases handle this.'],
+      ['A new booking should get status 200', false, '201 Created.'],
+      ['Check input before saving', true, 'Always.'],
+      ['DELETE of a missing item should give 204', false, '404.'],
+    ]),
+    pairs([['POST /bookings', 'Create'], ['GET /bookings', 'Read'], ['PATCH /bookings/1', 'Update'], ['DELETE /bookings/1', 'Delete']], 'CRUD routes.'),
+    pickCode('Which finds booking :id?', ['list.find((b) => b.id === Number(req.params.id))', 'list[req.params.id]', 'list.find(req.params.id)', 'list.filter(b => b.id == id)[1]'], 'Compare numbers.'),
+    bugTask(['app.delete("/bookings/:id", async (req, res) => {', '  const left = list.filter((b) => b.id !== Number(req.params.id));', '  res.json(left);'], [[2, '  const left', '  const list = await loadAll(); const left'], [3, 'res.json(left);', 'await saveAll(left); res.sendStatus(204);']], 'Load the list, save what is left, and answer 204.'),
+    xray('<div class="c">$ curl -X DELETE localhost:3000/bookings/2</div><div class="r">DELETE /bookings/2 204</div><div class="c2">$ curl -X DELETE localhost:3000/bookings/9</div><div class="n">DELETE /bookings/9 404</div>', [
+      ['.r', 'Cancelled', 'res.sendStatus(204)', ['res.sendStatus(204)', 'res.status(404).json(…)', 'saveAll(list)']],
+      ['.n', 'Not there', 'res.status(404).json(…)', ['res.sendStatus(204)', 'res.status(404).json(…)', 'saveAll(list)']],
+    ]),
+    arrange(['import { loadAll } from "./store.js";', 'const list = await loadAll();', 'console.log(list.length + " bookings");'], 'import the store, load the list, print the count', { files: { 'store.js': STORE, 'bookings.json': '[{ "id": 1, "name": "Sam", "seats": 2 }]' } }),
+  ]),
+
+  lesson('n-env-1', 'Configuration and environment variables', 8, [
+    chat(['Settings that change between your laptop and the server, like the port or a payment key, don’t belong in code.', 'Put them in environment variables. Locally, keep them in a .env file and load it with node --env-file=.env.']),
+    explore('Reading settings', ENV_APP, [
+      [1, 'Values are always text: turn numbers into numbers. Give defaults.'],
+      [3, 'A secret: only ever from the environment.'],
+      [5, 'Missing a required setting? Stop with a clear message.'],
+      [10, 'Never print a whole secret.'],
+    ], { page: term({ 'app.js': ENV_APP, '.env': ENV_FILE }, { envFile: '.env' }), minTaps: 3 }),
+    toggle('With and without the .env file', [
+      ['node --env-file=.env app.js', ENV_FILE, 'The settings are loaded.', term({ 'app.js': ENV_APP, '.env': ENV_FILE }, { envFile: '.env' })],
+      ['node app.js', ENV_FILE, 'No settings: the app stops and says why.', term({ 'app.js': ENV_APP, '.env': ENV_FILE })],
+    ]),
+    reveal('Keeping secrets secret', [
+      ['.gitignore', 'Add .env so it is never committed.'],
+      ['.env.example', 'Commit a copy with the names but no real values.'],
+      ['On the server', 'Set real values in the host’s settings.'],
+      ['Leaked?', 'Change (rotate) the key at once; deleting the commit isn’t enough.'],
+    ]),
+    tapbug('The payment key is on GitHub for everyone', ['const key = "live_key_83jd92kd";'], [[1, '"live_key_83jd92kd"', 'process.env.PAYMENT_KEY']], 'Never write secrets in code. Read them from the environment.'),
+    check('process.env.PORT is "4000". What is process.env.PORT + 1?', ['"40001"', '4001', 'NaN', 'An error'], 'Env values are text.', 'What type are they?', { mono: true }),
+    recap([
+      ['🌱', 'Settings and secrets in environment variables'],
+      ['📄', '.env locally, loaded with --env-file; never committed'],
+      ['🔢', 'Values are text: convert, and give defaults'],
+    ]),
+  ]),
+
+  lesson('n-b-13-2', 'Security basics', 8, [
+    reveal('Protect your API', [
+      ['Validate input', 'Every field, every time (module 10).'],
+      ['Limit body size', 'express.json({ limit: "10kb" }) stops huge requests.'],
+      ['Rate limit', 'Slow down anyone sending too many requests (429).'],
+      ['Hash passwords', 'With bcrypt or argon2; never store them as text.'],
+      ['Hide details', 'No stack traces in replies; remove x-powered-by.'],
+      ['Keep packages updated', 'npm audit, and update.'],
+    ]),
+    tapPage('A simple rate limit', 'Ask for the menu four times.', prog(SECURE, { requests: [req('GET', '/menu')] }), 'GET /menu 429', [press(0), press(0), press(0), press(0)], 'The fourth request in a row was refused with 429. Real apps use a package such as express-rate-limit, with time windows.'),
+    explore('Small settings, big help', SECURE, [
+      [4, 'Don’t tell attackers you use Express.'],
+      [5, 'Refuse bodies over 10 KB.'],
+      [8, 'Count requests per visitor…'],
+      [11, '…and refuse too many with 429.'],
+    ]),
+    tapbug('Anyone can see how the server crashed', ['app.use((err, req, res, next) => {', '  res.status(500).json({ error: err.stack });', '});'], [[2, 'err.stack', '"Something went wrong"']], 'Log the stack for yourself; send users a short message.'),
+    check('Which stops one visitor sending thousands of requests a minute?', ['Rate limiting', 'CORS', 'JSON.parse', 'A longer timeout'], '429 Too Many Requests.', 'Which counts requests?'),
+    recap([
+      ['🛡', 'Validate, limit sizes, rate limit'],
+      ['🔐', 'Hash passwords; secrets in env vars'],
+      ['🤐', 'Short errors; keep packages updated'],
+    ]),
+  ]),
+
+  challenge('n-b-13-ch', 'Module 13 Challenge', { icon: '🔐', name: 'Safe Server' }, ['Configure apps with environment variables', 'Keep secrets out of code', 'Protect an API'], [
+    mcq(1, 'Where should a payment key live?', ['In an environment variable', 'In app.js', 'In package.json', 'In a comment'], 'Never in code.'),
+    mcq(2, 'Which loads a .env file in Node.js 22?', ['node --env-file=.env app.js', 'node app.js .env', 'npm env', 'import ".env"'], 'Built in.', { mono: true }),
+    mcq(3, 'Should .env be committed?', ['No: add it to .gitignore', 'Yes', 'Only on Fridays', 'Only the values'], 'Commit .env.example instead.'),
+    mcq(4, 'Which status says “too many requests”?', ['429', '403', '503', '400'], 'Rate limiting.', { mono: true }),
+    mcq(5, 'A key leaked in a commit. First step?', ['Rotate (change) the key', 'Delete the commit', 'Rename the variable', 'Do nothing'], 'The old one is out there.'),
+    swipe([
+      ['Environment values are always text', true, 'Convert them.'],
+      ['err.stack is safe to send to users', false, 'Log it instead.'],
+      ['express.json can limit body size', true, '{ limit: "10kb" }.'],
+      ['npm audit finds known problems in packages', true, 'Then update.'],
+    ]),
+    pairs([['process.env', 'Settings'], ['.env', 'Local secrets'], ['.env.example', 'Names, no values'], ['429', 'Slow down']], 'Configuration and security.'),
+    pickCode('Which reads PORT as a number with a default?', ['const port = Number(process.env.PORT ?? 3000);', 'const port = process.env.PORT;', 'const port = 3000;', 'const port = env("PORT");'], 'Text to number, with a default.'),
+    bugTask(['const key = "live_key_83jd92kd";', 'res.status(500).json({ error: err.stack });'], [[1, '"live_key_83jd92kd"', 'process.env.PAYMENT_KEY'], [2, 'err.stack', '"Something went wrong"']], 'Read secrets from the environment, and hide error details.'),
+    xray('<div class="c">$ node --env-file=.env app.js</div><div class="s">Starting in development on port 4000</div><div class="k">Key ends in 9f3a</div>', [
+      ['.c', 'The command', '--env-file=.env', ['--env-file=.env', 'process.env.PORT', 'key.slice(-4)']],
+      ['.k', 'Part of the key', 'key.slice(-4)', ['--env-file=.env', 'process.env.PORT', 'key.slice(-4)']],
+    ]),
+    arrange(['const name = process.env.CAFE_NAME ?? "Rosa’s Café";', 'const open = Number(process.env.OPEN_HOUR ?? 8);', 'console.log(name + " opens at " + open);'], 'the name with a default, the hour as a number, then print', { envFile: '.env', files: { '.env': ['CAFE_NAME=Rosa’s Café', 'OPEN_HOUR=9'] } }),
+  ]),
+
+  lesson('n-test', 'Testing with node:test', 8, [
+    chat(['Tests are small programs that check your code does what you meant, every time you change it.', 'Node.js has a test runner built in: node:test with node:assert. Run every *.test.js file with node --test.']),
+    tapPage('Run the tests', 'Tap ▶ Run to run them.', term({ 'prices.js': PRICES, 'prices.test.js': PRICES_TEST }, { test: true, command: 'node --test', manual: true }), 'ℹ pass 3', [rerun], 'Three tests passed. Change a price rule and they tell you at once.'),
+    explore('A test file', PRICES_TEST, [
+      [1, 'test comes from node:test.'],
+      [2, 'assert/strict compares exactly.'],
+      [5, 'Each test has a name and a function.'],
+      [6, 'assert.equal(actual, expected).'],
+      [14, 'assert.throws checks it fails the right way.'],
+    ]),
+    reveal('Useful asserts', [
+      ['assert.equal(a, b)', 'Same value (strictly, with assert/strict).'],
+      ['assert.deepEqual(a, b)', 'Same contents, for arrays and objects.'],
+      ['assert.ok(x)', 'x is truthy.'],
+      ['assert.throws(fn, /msg/)', 'fn throws a matching error.'],
+      ['await assert.rejects(p)', 'A promise rejects.'],
+    ], { mono: true }),
+    tapbug('The test passes even though the code is wrong', ['test("adds tax", () => {', '  withTax(40) === 99;', '});'], [[2, 'withTax(40) === 99;', 'assert.equal(withTax(40), 42);']], 'A comparison on its own checks nothing. Use assert.'),
+    check('Which compares two arrays by their contents?', ['assert.deepEqual', 'assert.equal', 'assert.ok', 'assert.same'], 'equal would compare the arrays themselves.', 'Which goes deep?', { mono: true }),
+    recap([
+      ['🧪', 'node:test and node:assert are built in'],
+      ['▶', 'node --test runs every *.test.js file'],
+      ['✔', 'equal, deepEqual, throws, rejects'],
+    ]),
+  ]),
+
+  lesson('n-b-14-2', 'Testing an API', 8, [
+    chat(['To test an API, start it and send real requests with fetch, then check the status and the body.', 'This catches mistakes in routes, middleware and validation together.']),
+    tapPage('Test the menu API', 'Tap ▶ Run to start the app and run its tests.', term({ 'app.js': API_APP, 'app.test.js': API_TEST }, { test: true, command: 'node --test', manual: true }), 'ℹ pass 2', [rerun], 'Both requests got the expected status and body.'),
+    explore('API tests', API_TEST, [
+      [3, 'Importing app.js starts the server.'],
+      [6, 'Send a real request.'],
+      [7, 'Check the status…'],
+      [8, '…and the body.'],
+      [12, 'Test the failure path too.'],
+    ]),
+    matchUp('Which kind of test?', [['withTax(40) is 42', 'Unit test'], ['POST /menu with no name gives 400', 'API test'], ['Book a seat in the real app, in a browser', 'End-to-end test']], 'Small and fast first; a few big ones.'),
+    tapbug('The test never checks the reply', ['const res = await fetch("http://localhost:3000/menu");', '// done'], [[2, '// done', 'assert.equal(res.status, 200);']], 'A request without an assert tests nothing.'),
+    check('Why test the failure path, like a missing name?', ['Bugs often hide in how errors are handled', 'Failures are faster', 'node:test requires it', 'To make the coverage number bigger'], 'Good code fails well.', 'What do users hit when they make mistakes?'),
+    recap([
+      ['🌐', 'Test APIs with real requests'],
+      ['✔', 'Check status and body'],
+      ['❌', 'Test failures as well as success'],
+    ]),
+  ]),
+
+  challenge('n-b-14-ch', 'Module 14 Challenge', { icon: '🧪', name: 'Test Pilot' }, ['Write tests with node:test', 'Use assert to check results', 'Test an API with fetch'], [
+    mcq(1, 'Which command runs every *.test.js file?', ['node --test', 'npm run tests', 'node test.js --all', 'npx jest'], 'Built in.', { mono: true }),
+    mcq(2, 'Where does test come from?', ['node:test', 'node:assert', 'jest', 'node:check'], 'assert comes from node:assert.', { mono: true }),
+    mcq(3, 'Which checks objects by content?', ['assert.deepEqual', 'assert.equal', 'assert.ok', 'assert.is'], 'Deep.', { mono: true }),
+    mcq(4, 'Which checks a function throws?', ['assert.throws', 'assert.fails', 'assert.error', 'try/catch only'], 'With a message pattern.', { mono: true }),
+    mcq(5, 'What should an API test check?', ['The status and the body', 'Only that fetch didn’t throw', 'The server’s memory', 'Nothing'], 'Both.'),
+    swipe([
+      ['node:test needs npm install', false, 'Built in.'],
+      ['A test without assert can still pass wrongly', true, 'It checks nothing.'],
+      ['Test the failure paths too', true, 'Errors matter.'],
+      ['End-to-end tests should be the most common', false, 'Mostly small unit tests.'],
+    ]),
+    pairs([['test()', 'One check'], ['assert.equal', 'Same value'], ['assert.rejects', 'A promise fails'], ['node --test', 'Run them all']], 'Testing tools.'),
+    pickCode('Which tests that GET /menu answers 200?', ['const res = await fetch(url); assert.equal(res.status, 200);', 'fetch(url) === 200;', 'assert(fetch(url));', 'test(url, 200);'], 'Await, then assert.'),
+    bugTask(['test("total", () => {', '  total([40, 80]) == 126;', '});'], [[2, 'total([40, 80]) == 126;', 'assert.equal(total([40, 80]), 126);']], 'Use assert, or the test can never fail.'),
+    xray('<div class="c">$ node --test</div><div class="p">✔ adds 5% tax and rounds</div><div class="s">ℹ pass 3</div>', [
+      ['.p', 'A passing test', 'test("adds 5% tax and rounds", …)', ['test("adds 5% tax and rounds", …)', 'node --test', 'assert.throws']],
+      ['.c', 'The command', 'node --test', ['test("adds 5% tax and rounds", …)', 'node --test', 'assert.throws']],
+    ]),
+    arrange(['import { test } from "node:test";', 'import assert from "node:assert/strict";', 'test("two plus two", () => {', '  assert.equal(2 + 2, 4);', '});'], 'import test, import assert, start a test, check, close it', { test: true, command: 'node --test' }, 'math.test.js'),
+  ]),
+];

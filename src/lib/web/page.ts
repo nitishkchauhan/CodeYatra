@@ -22,7 +22,8 @@ export type NextApp = { files: Record<string, string>; url?: string; edit?: stri
 /**
  * A Node.js program for a lesson page, run in a terminal by the teaching copy of Node.js: its files by path, the file
  * `node` runs (app.js if not given), arguments, environment, an env file to load, ready-made requests for a server,
- * `test` to run every *.test.js file with node:test, a Run again button, and which file the learner edits.
+ * `test` to run every *.test.js file with node:test, a Run again button (or `manual`: nothing runs until ▶ Run),
+ * and which file the learner edits.
  */
 export type NodeApp = {
   files: Record<string, string>;
@@ -34,6 +35,7 @@ export type NodeApp = {
   test?: boolean;
   command?: string;
   rerun?: boolean;
+  manual?: boolean;
   edit?: string;
 };
 export type PageLog = { level: 'log' | 'error'; text: string };
