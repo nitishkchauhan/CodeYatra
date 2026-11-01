@@ -1,7 +1,7 @@
 // SQL · Modules 1–6 (Basic): SELECT, WHERE, patterns and NULL, sorting, aggregates, and grouping. Queries run on
 // the sample railway database (trains, bookings, passengers). Each module’s first lesson keeps its old id.
 import type { Lesson } from '../../types';
-import { arrange, bugTask, challenge, chat, check, compare, explore, lesson, matchUp, mcq, pairs, pickCode, place, recap, reveal, run, swipe, tables, tapbug, truth, xray } from './kit';
+import { arrange, bugTask, challenge, chat, check, compare, explore, lesson, mcq, pairs, pickCode, place, recap, reveal, run, swipe, tables, tapbug, xray } from './kit';
 
 export const SQL_M1: Lesson[] = [
   lesson('sql-select', 'Databases and SELECT', 7, [

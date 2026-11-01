@@ -18,7 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
@@ -720,13 +720,16 @@ export const STAGES: Stage[] = [
     short: 'SQL',
     sub: 'From SELECT to window functions',
     audience: 'Class 11+ · College · Data Analyst',
-    blurb: '12 modules and a project, all run on a real railway database: filter, group, join, CTEs, window functions, transactions and design.',
+    blurb: '13 modules of short lessons where every query runs on a sample railway database: SELECT, filters, patterns, sorting, aggregates, grouping, joins, unions, subqueries and CTEs, CASE, window functions, transactions and design. A final project and two final tests.',
     color: '#0369A1',
     soft: '#E0F2FE',
     accent: '#7DD3FC',
     icon: 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6 M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
     units: [
-      ...SQL_UNITS,
+      ...SQL_UNITS.slice(0, 6),
+      testUnit(SQL_B_TEST),
+      ...SQL_UNITS.slice(6),
+      testUnit(SQL_I_TEST),
     ],
     practice: [
       { id: 'x-sql-drill', title: 'Query results drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },

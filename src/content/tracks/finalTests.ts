@@ -407,5 +407,54 @@ export const NODE_I_TEST = finalTest('node-i-test', 'Node.js', 'node', 'intermed
   ['Which compares arrays by their contents?', ['assert.deepEqual', 'assert.equal', 'assert.ok', 'assert.same'], 'Deep.', true],
 ]);
 
+export const SQL_B_TEST = finalTest('sql-b-test', 'SQL Basics', 'sql', 'basic', ['Read and filter tables with SELECT and WHERE', 'Sort, limit and match patterns', 'Count, total and group rows'], [
+  ['Which picks the table to read?', ['FROM', 'SELECT', 'WHERE', 'TABLE'], 'SELECT picks columns.', true],
+  ['What does SELECT * mean?', ['Every column', 'Every row', 'Multiply', 'The first column'], 'All columns.', true],
+  ['Which gives a column a new name?', ['AS', 'IS', 'NAME', 'LABEL'], 'An alias.', true],
+  ['What does DISTINCT do?', ['Removes repeated rows', 'Sorts', 'Counts', 'Deletes'], 'Each value once.', true],
+  ['How is text written in SQL?', ["In single quotes: 'Dublin'", 'In double quotes', 'Without quotes', 'In backticks'], 'Double quotes are for names.'],
+  ['What runs first, AND or OR?', ['AND', 'OR', 'Left to right', 'Both together'], 'Use brackets to be clear.', true],
+  ['Which means “not equal”?', ['<>', '=!', '><', '=/='], 'Or != in many databases.', true],
+  ["In LIKE, what does % match?", ['Any text, even none', 'Exactly one character', 'A digit', 'A percent sign only'], '_ is one character.', true],
+  ['Which is the same as city = \'A\' OR city = \'B\'?', ["city IN ('A', 'B')", "city BETWEEN 'A' AND 'B'", "city LIKE 'A,B'", "city = ('A', 'B')"], 'A list.', true],
+  ['Does BETWEEN 10 AND 20 include 20?', ['Yes', 'No', 'Only for text', 'Only in SQLite'], 'Both ends.'],
+  ['How do you find rows where phone is missing?', ['WHERE phone IS NULL', 'WHERE phone = NULL', "WHERE phone = ''", 'WHERE phone = 0'], '= NULL is never true.', true],
+  ['What does COALESCE(city, \'Unknown\') show for a NULL city?', ["'Unknown'", 'NULL', 'An error', 'An empty string'], 'A stand-in.', true],
+  ['Which sorts largest first?', ['ORDER BY fare DESC', 'ORDER BY fare', 'SORT fare DOWN', 'ORDER fare DESC'], 'Descending.', true],
+  ['Without ORDER BY, row order is…', ['Not promised', 'Always by id', 'Alphabetical', 'Newest first'], 'Sort when order matters.'],
+  ['What does LIMIT 3 OFFSET 3 give?', ['Rows 4 to 6', 'Rows 1 to 3', 'Row 3', 'Every third row'], 'Skip 3, take 3.', true],
+  ['Which counts every row?', ['COUNT(*)', 'COUNT(column)', 'SUM(*)', 'TOTAL()'], 'COUNT(column) skips NULLs.', true],
+  ['Which gives the cheapest fare?', ['MIN(fare)', 'MAX(fare)', 'LOW(fare)', 'FIRST(fare)'], 'The smallest.', true],
+  ['Can an aggregate like SUM go in WHERE?', ['No', 'Yes', 'Only with GROUP BY', 'Only in SQLite'], 'Use HAVING.'],
+  ['What does GROUP BY passenger with SUM(seats) give?', ['One row per passenger with their total', 'One row in total', 'Every booking', 'An error'], 'Per group.'],
+  ['Which filters groups?', ['HAVING', 'WHERE', 'LIMIT', 'DISTINCT'], 'After grouping.', true],
+  ['What is the right order of clauses?', ['SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT', 'SELECT, WHERE, FROM, ORDER BY, GROUP BY', 'FROM, SELECT, HAVING, WHERE', 'SELECT, GROUP BY, FROM, WHERE'], 'Learn it once.'],
+]);
+
+export const SQL_I_TEST = finalTest('sql-i-test', 'SQL', 'sql', 'intermediate', ['Combine tables with joins, unions and subqueries', 'Shape results with CASE, functions and windows', 'Change data safely and design tables'], [
+  ['What does JOIN … ON say?', ['Which columns match', 'Which rows to delete', 'How to sort', 'Which table is bigger'], 'The join condition.'],
+  ['Which rows does an INNER JOIN keep?', ['Only rows that match on both sides', 'Every left row', 'Every row from both', 'Rows that don’t match'], 'Matches only.'],
+  ['What happens with JOIN and no ON?', ['Every row pairs with every row', 'Nothing', 'Only matches', 'An outer join'], 'A cross join.'],
+  ['Which keeps every row of the first table?', ['LEFT JOIN', 'INNER JOIN', 'UNION', 'CROSS JOIN'], 'With NULLs for no match.', true],
+  ['How do you find trains with no bookings?', ['LEFT JOIN bookings, then WHERE b.id IS NULL', 'JOIN bookings, then WHERE b.id IS NULL', 'WHERE bookings = 0', 'UNION bookings'], 'Keep, then filter.'],
+  ['What does UNION ALL keep that UNION removes?', ['Repeated rows', 'NULLs', 'Columns', 'Sorting'], 'Repeats.', true],
+  ['A subquery returns a list. Which operator?', ['IN', '=', 'LIKE', 'IS'], '= needs one value.', true],
+  ['What does NOT EXISTS (…) check?', ['That the subquery finds no rows', 'That a column is NULL', 'That a table exists', 'That a value is 0'], 'Any rows?', true],
+  ['What does WITH totals AS (…) make?', ['A named step for this query', 'A permanent table', 'An index', 'A view'], 'A CTE.', true],
+  ['In a CASE, which WHEN wins?', ['The first true one', 'The last one', 'All true ones', 'The ELSE'], 'In order.'],
+  ['What does CASE give when nothing matches and there is no ELSE?', ['NULL', '0', 'An error', 'The first WHEN'], 'Add ELSE.'],
+  ['Which joins text in SQLite and PostgreSQL?', ['||', '+', '&', 'JOIN'], 'CONCAT in MySQL.', true],
+  ['What does a window function keep that GROUP BY doesn’t?', ['Every row', 'Only one row', 'NULLs only', 'Sorting'], 'It calculates across rows.'],
+  ['Which gives 1, 1, 3 for a tie?', ['RANK()', 'ROW_NUMBER()', 'DENSE_RANK()', 'COUNT()'], 'A gap after ties.', true],
+  ['What does PARTITION BY do in a window?', ['Restarts it for each group', 'Removes groups', 'Joins tables', 'Limits rows'], 'Rows stay.', true],
+  ['What does UPDATE without WHERE do?', ['Changes every row', 'Changes nothing', 'Changes the first row', 'Fails'], 'Always check WHERE.'],
+  ['Which undoes changes since BEGIN?', ['ROLLBACK', 'COMMIT', 'UNDO', 'DELETE'], 'All of them.', true],
+  ['What does “atomic” mean for a transaction?', ['All the changes happen, or none', 'It is fast', 'It is small', 'It runs alone'], 'The A in ACID.'],
+  ['What must a PRIMARY KEY be?', ['Unique and not NULL', 'A number', 'Text', 'The first column'], 'One per row.'],
+  ['What does a FOREIGN KEY make sure of?', ['The value matches a row in another table', 'The value is unique', 'The value is a number', 'The table is sorted'], 'It points there.'],
+  ['What does an index speed up?', ['Searching, joining and sorting on its columns', 'Every insert', 'Backups', 'Deleting tables'], 'With a small cost on writes.'],
+  ['How do you stop SQL injection?', ['Pass values as parameters', 'Remove quotes from input', 'Use capitals', 'Use a view'], 'Never glue user text into SQL.'],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST];
+export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST];

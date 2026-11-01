@@ -4,6 +4,7 @@
 import type { Lesson, Level, Unit } from '../../types';
 import { SQL_M1 } from './m1';
 import { SQL_M7 } from './m7';
+import { SQL_PROJECT } from './project';
 
 /** Splits a list of lessons into modules: each module ends with its Challenge. */
 const modules = (lessons: Lesson[]): Lesson[][] =>
@@ -31,6 +32,7 @@ const MODULES: [string, string, Level, Lesson[]][] = [
   ['sq12', 'Window functions', 'intermediate', m11],
   ['sq8', 'Changing data', 'intermediate', m12],
   ['sq9', 'Database design', 'intermediate', m13],
+  ['sq13', 'Final project', 'intermediate', [SQL_PROJECT]],
 ];
 
 /** Every lesson and challenge in the SQL track, in order, each with its module’s level. */

@@ -97,7 +97,7 @@ export const SQL_M7: Lesson[] = [
       ['UNION', ['SELECT from_city AS city FROM trains', 'UNION', 'SELECT to_city FROM trains', 'ORDER BY city;'], 'Every city served, once each.', ['city', 'Barcelona', 'Boston', 'Copenhagen', 'Dublin', 'Kyoto', 'Madrid', 'Vienna']],
       ['UNION ALL', ['SELECT from_city AS city FROM trains', 'UNION ALL', 'SELECT to_city FROM trains;'], 'Every value, repeats and all: 12 rows.', ['city', 'Madrid', 'Dublin', 'Kyoto', 'Barcelona', 'Madrid', 'Dublin', 'Copenhagen', 'Boston', 'Dublin', 'Dublin', 'Dublin', 'Vienna']],
     ]),
-    matchUp('JOIN or UNION?', [['Each booking with its train name', 'JOIN'], ['Every city trains leave from or go to', 'UNION'], ['Passengers next to their ages', 'JOIN'], ['This year’s and last year’s orders in one list', 'UNION ALL']], 'Side by side, or on top.'),
+    matchUp('JOIN or UNION?', [['Each booking with its train name', 'JOIN: side by side'], ['Every city trains leave from or go to, once each', 'UNION'], ['This year’s and last year’s orders, repeats kept', 'UNION ALL']], 'Side by side, or on top.'),
     tapbug('Error: SELECTs to the left and right of UNION do not have the same number of result columns', ['SELECT name, fare FROM trains', 'UNION', 'SELECT name FROM passengers;'], [[1, 'SELECT name, fare FROM trains', 'SELECT name FROM trains']], 'Both sides need the same number of columns.'),
     check('Which keeps repeated rows?', ['UNION ALL', 'UNION', 'JOIN', 'DISTINCT'], 'And it is faster.', 'Which one doesn’t remove repeats?', { mono: true }),
     recap([
