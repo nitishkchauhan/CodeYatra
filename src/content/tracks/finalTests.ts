@@ -551,5 +551,51 @@ export const DSA_I_TEST = finalTest('dsa-i-test', 'DSA', 'dsa', 'intermediate', 
   ['Your first solution is O(n²). What usually helps?', ['A hash table, two pointers or a window', 'More nested loops', 'Sorting twice', 'Nothing can'], 'Aim for O(n).'],
 ]);
 
+export const DSA2_I_TEST = finalTest('dsa2-i-test', 'Trees and Graphs', 'dsa', 'intermediate', ['Build and traverse trees and BSTs', 'Use heaps as priority queues', 'Search graphs with BFS, DFS and topological sort'], [
+  ['What is a leaf in a tree?', ['A node with no children', 'The root', 'A node with two children', 'The deepest edge'], 'At the bottom.'],
+  ['In-order traversal visits…', ['Left, node, right', 'Node, left, right', 'Left, right, node', 'Level by level'], 'Node in the middle.'],
+  ['Which traversal visits a node before its children?', ['Pre-order', 'In-order', 'Post-order', 'None'], 'Pre: before.'],
+  ['What is the height of a tree?', ['The longest path from the root down to a leaf', 'The number of nodes', 'The number of leaves', 'The root’s value'], 'Levels.'],
+  ['In a BST, smaller values go…', ['Left', 'Right', 'Anywhere', 'To the root'], 'The BST rule.'],
+  ['Search in a balanced BST is…', ['O(log n)', 'O(n)', 'O(1)', 'O(n²)'], 'Halving.', true],
+  ['Inserting sorted values into a plain BST makes it…', ['A line: O(n) search', 'Perfectly balanced', 'A heap', 'Empty'], 'Unbalanced.'],
+  ['Which traversal reads a BST in sorted order?', ['In-order', 'Pre-order', 'Post-order', 'Level-order'], 'Left, node, right.'],
+  ['In a min-heap, the root is…', ['The smallest item', 'The largest', 'The newest', 'Random'], 'Parents are smaller.'],
+  ['heappush is…', ['O(log n)', 'O(1)', 'O(n)', 'O(n log n)'], 'Bubbles up.', true],
+  ['How do you make a max-heap with heapq?', ['Push negative values', 'reverse=True', 'Sort the list', 'Use deque'], '-value.'],
+  ['Which finds the 3 biggest values?', ['heapq.nlargest(3, xs)', 'heapq.heappop(xs, 3)', 'xs.max(3)', 'sorted(xs)[:3]'], 'nlargest.', true],
+  ['An adjacency list stores…', ['Each node’s neighbours', 'All distances in a grid', 'A sorted list of nodes', 'Only edges’ weights'], 'A dict of lists.'],
+  ['Which search finds the fewest steps?', ['BFS', 'DFS', 'Topological sort', 'Binary search'], 'Level by level.'],
+  ['BFS uses a…', ['Queue', 'Stack', 'Heap', 'Tree'], 'FIFO.'],
+  ['DFS uses a…', ['Stack (or recursion)', 'Queue', 'Heap', 'Dict only'], 'Go deep, back up.'],
+  ['BFS and DFS run in…', ['O(V + E)', 'O(V²)', 'O(log V)', 'O(E²)'], 'Each node and edge once.', true],
+  ['Why keep a visited set?', ['So no node is processed twice', 'To sort nodes', 'To save memory only', 'It is optional'], 'Or loop forever.'],
+  ['A topological order exists only when the graph has…', ['No cycles', 'Weights', 'One edge per node', 'Undirected edges'], 'A DAG.'],
+  ['In Kahn’s algorithm, what starts in the queue?', ['Tasks that wait for nothing', 'The last task', 'Every task', 'Tasks with most edges'], 'In-degree 0.'],
+]);
+
+export const DSA2_A_TEST = finalTest('dsa2-a-test', 'DSA Advanced', 'dsa', 'advanced', ['Find shortest paths and spanning trees', 'Solve problems with backtracking and dynamic programming', 'Choose greedy or divide and conquer'], [
+  ['Which algorithm finds shortest weighted paths?', ['Dijkstra', 'BFS', 'DFS', 'Kruskal'], 'With a heap.'],
+  ['Dijkstra needs edge weights that are…', ['Not negative', 'All equal', 'Sorted', 'Whole numbers'], 'Or use Bellman–Ford.'],
+  ['What does a minimum spanning tree minimise?', ['Total weight connecting every node', 'One route’s length', 'The number of nodes', 'The biggest edge only'], 'All connected, cheapest.'],
+  ['A spanning tree of n nodes has…', ['n − 1 edges', 'n edges', 'n + 1 edges', 'n² edges'], 'A tree.'],
+  ['Kruskal skips an edge that…', ['Would make a loop', 'Is cheap', 'Is first', 'Has an odd weight'], 'Union-find.'],
+  ['What are backtracking’s steps?', ['Choose, explore, un-choose', 'Divide, solve, combine', 'Push, pop, peek', 'Sort, search, print'], 'Try and undo.'],
+  ['How many subsets does a set of 4 items have?', ['16', '8', '4', '24'], '2⁴.'],
+  ['What does pruning do?', ['Skips branches that can’t work', 'Sorts answers', 'Removes duplicates', 'Adds recursion'], 'Less to explore.'],
+  ['DP helps when a problem has…', ['Overlapping subproblems', 'Sorted input', 'No recursion', 'Only numbers'], 'And optimal substructure.'],
+  ['What does memoization store?', ['Answers to subproblems', 'Every call', 'The input', 'The call stack'], 'Solve once.'],
+  ['Which decorator memoizes a function?', ['@cache', '@property', '@staticmethod', '@dataclass'], 'functools.', true],
+  ['Bottom-up DP fills…', ['A table from the smallest case', 'A stack', 'A heap', 'A graph'], 'No recursion.'],
+  ['Fewest coins for 10 with [1, 5, 7]?', ['2', '4', '3', '10'], '5 + 5.'],
+  ['Which needs a 2-D table?', ['Longest common subsequence', 'Linear search', 'Two sum', 'Binary search'], 'Two strings.'],
+  ['The 0/1 knapsack inner loop over capacity goes…', ['Downwards, so each item is used once', 'Upwards', 'Randomly', 'Twice'], 'Otherwise items repeat.'],
+  ['A greedy algorithm…', ['Takes the best choice now and never backs up', 'Tries every option', 'Remembers subproblems', 'Splits the input'], 'Fast when it’s right.'],
+  ['Activity selection picks next the booking that…', ['Ends earliest', 'Starts earliest', 'Is longest', 'Is cheapest'], 'Leaves most room.'],
+  ['When does greedy coin change fail?', ['With coins like [1, 5, 7]', 'With [1, 5, 10]', 'Never', 'Always'], '7 + 1 + 1 + 1 vs 5 + 5.'],
+  ['Divide and conquer means…', ['Divide, solve the parts, combine', 'Choose and undo', 'Remember answers', 'Sort first'], 'Merge sort.'],
+  ['gcd(84, 36) is…', ['12', '6', '4', '36'], 'Euclid.', true],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST];
+export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST];
