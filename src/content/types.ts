@@ -1,6 +1,6 @@
-import type { NextApp } from '@/lib/web/page';
+import type { NextApp, NodeApp } from '@/lib/web/page';
 
-export type { NextApp };
+export type { NextApp, NodeApp };
 
 export type CodeLang ='python' | 'javascript' | 'html' | 'css' | 'jsx' | 'c' | 'java' | 'sql' | 'bash';
 
@@ -230,6 +230,8 @@ export type WebStep = {
   react?: boolean;
   /** The js file is the `edit` file of this Next.js app (see PagePreview). */
   next?: NextApp;
+  /** The js file is the `edit` file of this Node.js program (see PagePreview). */
+  node?: NodeApp;
 };
 
 /** Lesson v2: opens a module with a real situation and what the learner will be able to do. */
@@ -379,7 +381,7 @@ export type RecallStep = {
 /** A web page shown in a live preview: body HTML, with optional CSS. */
 /** `react`: js is a React program (JSX, imports from "react"); it runs with the bundled React, and App is shown in #root. */
 /** `next`: a Next.js app (see NextApp in lib/web/page), run with the teaching copy of Next.js. */
-export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp };
+export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp; node?: NodeApp };
 
 /** Yatri talks: a few short speech bubbles, then a button. */
 export type ChatStep = { type: 'chat'; kicker?: string; lines: string[]; button?: string; code?: string[]; page?: PagePreview };
@@ -504,6 +506,8 @@ export type ArrangeStep = {
   react?: boolean;
   /** A Next.js arrange: the blocks are the `edit` file of this app, shown live. */
   next?: NextApp;
+  /** A Node.js arrange: the blocks are the `edit` file of this program, run in a terminal. */
+  node?: NodeApp;
   goal: string;
 };
 
@@ -624,6 +628,8 @@ export type ModuleNotes = {
     page?: string;
     /** For Next.js notes: the app `code` belongs to (`code` is its `edit` file); the notes show it live. */
     next?: NextApp;
+    /** For Node.js notes: the program `code` belongs to (`code` is its `edit` file); the notes run it live. */
+    node?: NodeApp;
     /** What it prints (or, for a web page, the text it shows); tests run or render it and compare. */
     output: string[];
   };

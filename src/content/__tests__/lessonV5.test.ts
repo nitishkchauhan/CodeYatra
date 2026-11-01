@@ -95,7 +95,7 @@ describe('Lesson v5 screens', () => {
   it.each(rows(of('explore')))('%s: notes point at real lines and real parts of the page', async (_, s) => {
     if (!s) return;
     // A React page is checked once React has drawn it.
-    const doc = s.page?.react || s.page?.next ? (await runPage(s.page, 900)).window.document : dom((s.page ?? { html: s.code.join('\n') }).html);
+    const doc = s.page?.react || s.page?.next || s.page?.node ? (await runPage(s.page, 900)).window.document : dom((s.page ?? { html: s.code.join('\n') }).html);
     for (const n of s.notes) {
       expect(n.line).toBeGreaterThanOrEqual(1);
       expect(n.line).toBeLessThanOrEqual(s.code.length);
@@ -215,19 +215,21 @@ describe('Lesson v5 JavaScript screens', () => {
 
   it.each(rows(of('tappage')))('%s: the page runs, and the demo taps reach the goal', async (_, s) => {
     if (!s) return;
-    const live = s.page.react || s.page.next;
-    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current, react: s.page.react, next: s.page.next }, live ? 900 : 0);
+    const live = s.page.react || s.page.next || s.page.node;
+    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current, react: s.page.react, next: s.page.next, node: s.page.node }, live ? 900 : 0);
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.some((l) => l.text.includes(s.goal))).toBe(false);
     // A short pause between taps, like a real user, so a React page can draw again in between.
     for (const a of s.demo) {
       act(window, a);
       // A Next.js page moves to another address after a tap, so it gets longer (typing needs no wait).
-      if (live) await new Promise((r) => setTimeout(r, s.page.next && !('type' in a) ? 700 : 40));
+      if (live) await new Promise((r) => setTimeout(r, (s.page.next || s.page.node) && !('type' in a) ? 700 : 40));
     }
     await new Promise((r) => setTimeout(r, 1300));
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.map((l) => l.text).some((t) => t.includes(s.goal))).toBe(true);
+    // A Node.js program that crashed shows Node’s last line; only lessons about errors may crash.
+    if (s.page.node && !/Error/.test(s.goal)) expect(window.document.body.textContent).not.toContain('Node.js v22.11.0 (');
   }, 15000);
 
   it.each(rows(of('toggle').filter(([, s]) => s.views.some((v) => v.out))))('%s: each version prints what it says', (key, s) => {
@@ -244,6 +246,22 @@ describe('Lesson v5 JavaScript screens', () => {
     const r = tryCode(key, code);
     expect(r.error).toBeUndefined();
     expect(r.out.length).toBeGreaterThan(0);
+  });
+
+  it.each(rows(of('arrange').filter(([, s]) => s.node)))('%s: the Node.js blocks in order run without crashing', async (_, s) => {
+    if (!s) return;
+    const { logs, window } = await runPage({ html: '', js: s.blocks.join('\n'), node: s.node }, 1000);
+    expect(logs.filter((l) => l.level === 'error')).toEqual([]);
+    expect(window.document.body.textContent).not.toContain('Node.js v22.11.0 (');
+  });
+
+  it.each(rows(of('web').filter(([, s]) => s.node)))('%s: the Node.js project runs its starter and its solution without crashing', async (_, s) => {
+    if (!s) return;
+    for (const files of [s.starter, s.solution]) {
+      const { logs, window } = await runPage({ html: '', js: files.js, node: s.node }, 1000);
+      expect(logs.filter((l) => l.level === 'error')).toEqual([]);
+      expect(window.document.body.textContent).not.toContain('Node.js v22.11.0 (');
+    }
   });
 
   it.each(rows(of('arrange').filter(([, s]) => s.next)))('%s: the Next.js blocks in order draw the app without an error', async (_, s) => {

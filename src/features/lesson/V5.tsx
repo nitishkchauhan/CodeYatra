@@ -33,7 +33,7 @@ type Done = { onDone: () => void };
 type Checked = Done & { onMistake: () => void };
 
 const HIGHLIGHT = 'outline: 3px solid #FF9F1C !important; outline-offset: 2px; background-color: rgba(255,159,28,.15) !important;';
-const page = (p: PagePreview, extraCss = '') => buildPage({ html: p.html, css: (p.css ?? '') + extraCss, js: p.js, pages: p.pages, current: p.current, react: p.react, next: p.next });
+const page = (p: PagePreview, extraCss = '') => buildPage({ html: p.html, css: (p.css ?? '') + extraCss, js: p.js, pages: p.pages, current: p.current, react: p.react, next: p.next, node: p.node });
 /** The code is the page, or (when `html` is given) the code is the stylesheet for that page. */
 const codePage = (code: string, css?: string, html?: string) => (html === undefined ? buildPage({ html: code, css }) : buildPage({ html, css: (css ?? '') + '\n' + code }));
 
@@ -673,7 +673,7 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
   const [phase, setPhase] = useState<'ask' | 'right' | 'hint' | 'shown'>('ask');
   const { style: shakeStyle, shake } = useShake();
   const built = placed.map((i) => step.blocks[i]).join('\n');
-  const doc = useMemo(() => (step.run ? '' : step.next ? buildPage({ html: '', css: step.css, js: built, next: step.next }) : step.react ? buildPage({ html: step.html ?? '<div id="root"></div>', css: step.css, js: built, react: true }) : codePage(built, step.css, step.html)), [built, step]);
+  const doc = useMemo(() => (step.run ? '' : step.next ? buildPage({ html: '', css: step.css, js: built, next: step.next }) : step.node ? buildPage({ html: '', js: built, node: step.node }) : step.react ? buildPage({ html: step.html ?? '<div id="root"></div>', css: step.css, js: built, react: true }) : codePage(built, step.css, step.html)), [built, step]);
   const ran = useJsRun(step.run && placed.length ? built : null);
   useAutoNext(phase === 'right', onDone, AUTO_NEXT_MS + 600);
   const add = (i: number) => {

@@ -48,6 +48,13 @@ describe('module notes', () => {
       expect(pageText(n.example.code.join('\n'))).toEqual(n.example.output);
       return;
     }
+    if (n.example.node) {
+      // Node.js examples run in the terminal page; its lines (after the command) are `output`.
+      const page = await runPage({ html: '', js: n.example.code.join('\n'), node: n.example.node }, 1200);
+      expect(page.logs.filter((l) => l.level === 'error')).toEqual([]);
+      expect(page.lines.slice(1)).toEqual(n.example.output);
+      return;
+    }
     if (n.example.next) {
       // Next.js examples are one file of a small app, run with the teaching copy of Next.js; the page then shows `output`.
       const page = await runPage({ html: '', js: n.example.code.join('\n'), next: n.example.next }, 1500);

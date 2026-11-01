@@ -2,6 +2,7 @@
 // console.log and errors forwarded to the app so they can be shown below the preview.
 import { withAssets } from './assets';
 import { NEXT_RUNTIME } from './nextRuntime';
+import { NODE_RUNTIME } from './nodeRuntime';
 import { REACT_RUNTIME } from './reactRuntime';
 
 /**
@@ -10,13 +11,31 @@ import { REACT_RUNTIME } from './reactRuntime';
  * `next`: a Next.js app, run with the teaching copy of Next.js (scripts/next-runtime.js); `js`, when given, is the
  * text of its `edit` file.
  */
-export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp };
+export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp; node?: NodeApp };
 
 /**
  * A Next.js app for a lesson page: its files by path (app/page.js, app/menu/[id]/page.js, lib/data.js, .env…), the
  * address it opens at, and which file the learner edits (its text then comes from WebFiles.js).
  */
 export type NextApp = { files: Record<string, string>; url?: string; edit?: string };
+
+/**
+ * A Node.js program for a lesson page, run in a terminal by the teaching copy of Node.js: its files by path, the file
+ * `node` runs (app.js if not given), arguments, environment, an env file to load, ready-made requests for a server,
+ * `test` to run every *.test.js file with node:test, a Run again button, and which file the learner edits.
+ */
+export type NodeApp = {
+  files: Record<string, string>;
+  entry?: string;
+  args?: string[];
+  env?: Record<string, string>;
+  envFile?: string;
+  requests?: { label?: string; method: string; path: string; body?: string }[];
+  test?: boolean;
+  command?: string;
+  rerun?: boolean;
+  edit?: string;
+};
 export type PageLog = { level: 'log' | 'error'; text: string };
 
 const BRIDGE = `<script>
@@ -131,8 +150,9 @@ const PRACTICE = `<script>
 const BASE_CSS = 'body{font-family:system-ui,-apple-system,Roboto,sans-serif;margin:12px;line-height:1.45;color:#16142B;}';
 
 /** A full document. `</script>` in learner JS is escaped so it can't break out of its tag. */
-export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html', react = false, next }: WebFiles): string {
+export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html', react = false, next, node }: WebFiles): string {
   if (next) return nextPage(next, rawCss, js);
+  if (node) return nodePage(node, rawCss, js);
   // Built-in pictures (cup.svg, banner.svg…) work offline.
   const html = withAssets(rawHtml);
   const css = withAssets(rawCss);
@@ -155,6 +175,15 @@ function nextPage(app: NextApp, css: string, js: string): string {
   const start = `try{window.__cyNext(${JSON.stringify(files)},${JSON.stringify(app.url ?? '/')},${JSON.stringify(css)})}catch(e){window.onerror && window.onerror(e.message)}`;
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 ${BRIDGE}${PRACTICE}<style>${BASE_CSS}</style></head><body><div id="root"></div><script>${safe(REACT_RUNTIME)}</script><script>${safe(NEXT_RUNTIME)}</script><script>${safe(start)}</script></body></html>`;
+}
+
+/** A Node.js lesson page: a terminal where the teaching copy of Node.js runs the program. */
+function nodePage(app: NodeApp, css: string, js: string): string {
+  const files = { ...app.files, ...(app.edit && js ? { [app.edit]: js } : {}) };
+  const opts = { ...app, files: undefined, edit: undefined, css };
+  const start = `try{window.__cyNode(${JSON.stringify(files)},${JSON.stringify(opts)})}catch(e){window.onerror && window.onerror(e.message)}`;
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+${BRIDGE}${PRACTICE}</head><body><div id="root"></div><script>${safe(NODE_RUNTIME)}</script><script>${safe(start)}</script></body></html>`;
 }
 
 /**

@@ -169,7 +169,9 @@ export default function NotesScreen() {
               </T>
             </Pressable>
           ))}
-          {notes.example.next ? (
+          {notes.example.node ? (
+            <WebPreview doc={buildPage({ html: '', js: notes.example.code.join('\n'), node: notes.example.node })} height={240} />
+          ) : notes.example.next ? (
             <WebPreview doc={buildPage({ html: '', js: notes.example.code.join('\n'), next: notes.example.next })} height={240} />
           ) : notes.example.page ? (
             <WebPreview

@@ -103,7 +103,7 @@ describe('JavaScript pages', () => {
   const webs = all.filter(([, s]) => s.type === 'web' && !!s.solution.js).map(([k, s]) => [k, s] as const);
   it.each(webs)('%s: the solution page runs without an error', async (_, s) => {
     if (s.type !== 'web') return;
-    const page = await runPage({ ...s.solution, react: s.react, next: s.next }, s.next ? 1200 : 700);
+    const page = await runPage({ ...s.solution, react: s.react, next: s.next, node: s.node }, s.next || s.node ? 1200 : 700);
     expect(page.logs.filter((l) => l.level === 'error')).toEqual([]);
   });
 });

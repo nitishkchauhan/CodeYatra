@@ -32,10 +32,10 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
   const [checks, setChecks] = useState<{ label: string; ok: boolean }[] | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [logs, setLogs] = useState<PageLog[]>([]);
-  const doc = useDeferredValue(buildPage({ ...files, pages: step.pages, current: step.current, react: step.react, next: step.next }));
+  const doc = useDeferredValue(buildPage({ ...files, pages: step.pages, current: step.current, react: step.react, next: step.next, node: step.node }));
   const pass = checks?.every((c) => c.ok) ?? false;
   // A Next.js project edits one file of the app, shown by its path.
-  const fileName = (f: WebFile) => (f === 'js' && step.next?.edit ? step.next.edit : FILE_NAME[f]);
+  const fileName = (f: WebFile) => (f === 'js' && (step.next?.edit ?? step.node?.edit) ? (step.next?.edit ?? step.node?.edit)! : FILE_NAME[f]);
   // The React Compiler keeps this function stable, so the preview is not reloaded on every render.
   const onLog = (log: PageLog) => setLogs((l) => [...l.slice(-4), log]);
 
