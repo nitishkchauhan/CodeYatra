@@ -42,7 +42,7 @@ import { PY_I_UNITS, PY_I_V5 } from './tracks/pythonV5i';
 import { PY_A_UNITS, PY_A_V5 } from './tracks/pythonV5a';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
 import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
-import { NEXT_FOUNDATIONS, NEXT_PROJECT } from './tracks/nextFoundations';
+import { NEXT_UNITS, NEXT_V5 } from './tracks/nextV5';
 
 export * from './types';
 export { PROJECTS } from './projects';
@@ -244,8 +244,7 @@ const ALL: Lesson[] = [
   ...REACT_V5,
   ...NODE_LESSONS,
   NODE_PROJECT,
-  ...NEXT_FOUNDATIONS,
-  NEXT_PROJECT,
+  ...NEXT_V5,
   ...PYTHON_MORE_2,
   ...C_LESSONS,
   C_PROJECT,
@@ -637,19 +636,7 @@ export const STAGES: Stage[] = [
     accent: '#A3A1B8',
     icon: 'M12 3l10 18H2z',
     units: [
-      unit('nx-u1', 'Routing', ref('nx-1', 'What Next.js is, and file-based routing', 'Lesson + code editor · 8 min')),
-      unit('nx-u2', 'Layouts', ref('nx-layout-1', 'Layouts and nested layouts', 'Lesson + code editor · 8 min')),
-      unit('nx-u6', 'Navigation', ref('nx-link-1', 'Linking and navigating', 'Lesson + code editor · 8 min')),
-      unit('nx-u3', 'Dynamic routes', ref('nx-dyn-1', 'Dynamic routes and params', 'Lesson + code editor · 8 min')),
-      unit('nx-u8', 'Loading and errors', ref('nx-loading-1', 'Loading, error and not-found pages', 'Lesson + code editor · 8 min')),
-      unit('nx-u4', 'Server and client', ref('nx-data-1', 'Server and Client Components', 'Lesson + code editor · 8 min')),
-      unit('nx-u11', 'Rendering', ref('nx-render-1', 'Rendering, streaming and caching', 'Lesson + code editor · 8 min')),
-      unit('nx-u5', 'APIs', ref('nx-api-1', 'Route Handlers: build a REST API', 'Lesson + code editor · 9 min')),
-      unit('nx-u9', 'Forms', ref('nx-actions-1', 'Server Actions and forms', 'Lesson + code editor · 9 min')),
-      unit('nx-u7', 'Styling and SEO', ref('nx-meta-1', 'Styling, images, fonts and metadata', 'Lesson + code editor · 8 min')),
-      unit('nx-u12', 'Security', ref('nx-auth-1', 'Secrets, auth and proxy', 'Lesson + code editor · 9 min')),
-      unit('nx-u10', 'Ship it', ref('nx-deploy-1', 'Testing and deploying', 'Lesson + code editor · 8 min')),
-      unit('nx-u13', 'Project', ref('nx-project', 'Project: student management API', 'Project · 3 tested steps · 20 min')),
+      ...NEXT_UNITS,
     ],
     practice: [
       { id: 'x-dynamic', title: 'One page per train', kind: 'Next.js', difficulty: 'Medium', xp: 15 },

@@ -8,7 +8,8 @@
 // ("use server") run from forms; next/link, next/navigation, next/headers (cookies), next/cache ("use cache",
 // revalidatePath, revalidateTag), next/image, next/font, next/dynamic, metadata, proxy.js and .env files work.
 // A practice database (@/lib/db) answers Prisma-style queries. The page logs requests like `next dev` does:
-// "GET /menu 200".
+// "GET /menu 200". Pages are static or dynamic like a built site: a page that uses nothing per-visit is made once
+// and reused until revalidatePath or revalidateTag.
 //
 // It is not Next.js: there is no real server, build or cache timing. Lessons say so where it matters.
 // Built into src/lib/web/nextRuntime.ts by scripts/build-react-runtime.mjs.
@@ -99,6 +100,12 @@
   // ── Cookies (one browser, one server) ────────────────────────────────────────
 
   var jar = {};
+  // Pages are static (made once, then reused, like after `next build`) unless drawing them used something that
+  // differs per visit: cookies(), headers(), connection(), searchParams, or fetch with cache: "no-store".
+  var drawing = null;
+  function markDynamic() {
+    if (drawing && phase === 'render') drawing.dynamic = true;
+  }
   var phase = 'render';
   var dirty = false;
   function cookieStore() {
@@ -427,7 +434,9 @@
     wrapped.__cached = true;
     return wrapped;
   }
+  var staticPages = {};
   function dropCache(tag) {
+    staticPages = {};
     Object.keys(cacheStore).forEach(function (k) {
       if (tag === undefined || cacheStore[k].tags.indexOf(tag) >= 0) delete cacheStore[k];
     });
@@ -620,9 +629,11 @@
         case 'next/headers':
           return {
             cookies: function () {
+              markDynamic();
               return Promise.resolve(cookieStore());
             },
             headers: function () {
+              markDynamic();
               return Promise.resolve(Headers2(BROWSER_HEADERS));
             },
           };
@@ -646,7 +657,14 @@
             cacheLife: function () {},
           };
         case 'next/server':
-          return { NextResponse: NextResponse, NextRequest: Req };
+          return {
+            NextResponse: NextResponse,
+            NextRequest: Req,
+            connection: function () {
+              markDynamic();
+              return Promise.resolve();
+            },
+          };
         case 'server-only':
           if (mode === 'client') throw new Error('This module can only be used on the server ("server-only"), but a Client Component imports it.');
           return {};
@@ -970,6 +988,8 @@
           function (e) {
             if (e && (e.__notFound || e.__redirect)) throw e;
             e = hookHint(e);
+            // A page that broke is never kept as a static page.
+            ctx.dynamic = true;
             log('⨯ Error: ' + e.message);
             return h(ErrorBoundary, { key: key, fallback: props.fallback, error: e });
           },
@@ -1040,7 +1060,13 @@
 
     // ── Pages: wrap the page in its layouts and boundaries, like Next.js does ──
     function build(m, slotSegs, intercept, searchObj) {
-      var sp = Promise.resolve(searchObj);
+      // Reading searchParams makes the page dynamic: it differs per visit.
+      var sp = {
+        then: function (ok, fail) {
+          markDynamic();
+          return Promise.resolve(searchObj).then(ok, fail);
+        },
+      };
       function level(k, chain, want, params) {
         var pp = Promise.resolve(params);
         var n = chain[k].node;
@@ -1240,6 +1266,7 @@
     var pageFetch = window.fetch;
     window.fetch = function (input, init) {
       var raw = String(input && input.url ? input.url : input);
+      if (init && init.cache === 'no-store') markDynamic();
       var abs = /^https?:\/\//.test(raw);
       var u;
       try {
@@ -1351,14 +1378,22 @@
                   if (!ok) throw NotFound();
                 })
               : Promise.resolve();
+          // A static page made before is reused as it is: its Server Components don’t run again.
+          var reuse = !tree && staticPages[view.path];
+          if (reuse) return Promise.resolve(Object.assign({}, reuse, { u: u }));
+          var keep = !tree && pageEx.dynamic !== 'force-dynamic' && pageEx.revalidate !== 0;
           if (!tree) tree = build(m, slotSegs, false, view.obj);
+          ctx.dynamic = !keep;
+          drawing = ctx;
           return check
             .then(function () {
               return serverPass(tree, ctx);
             })
             .then(function (t) {
               return metadataFor(m, view.obj).then(function (md) {
-                return { tree: t, u: u, params: m.params, title: md.title, status: ctx.status, match: m, searchObj: view.obj };
+                var r = { tree: t, u: u, params: m.params, title: md.title, status: ctx.status, match: m, searchObj: view.obj };
+                if (!ctx.dynamic && ctx.status === 200) staticPages[view.path] = r;
+                return r;
               });
             })
             .catch(function (e) {

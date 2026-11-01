@@ -1,7 +1,15 @@
 import { describe, expect, it } from '@jest/globals';
+import { transformSync } from 'esbuild';
+import { readFileSync } from 'node:fs';
 
 import { runPage } from '@/content/testing/page';
+import { NEXT_RUNTIME } from '@/lib/web/nextRuntime';
 import type { NextApp } from '@/lib/web/page';
+
+it('the Next.js runtime is built from scripts/next-runtime.js (run node scripts/build-react-runtime.mjs)', () => {
+  const source = readFileSync('scripts/next-runtime.js', 'utf8');
+  expect(NEXT_RUNTIME).toBe(transformSync(source, { minify: true, target: 'es2019', legalComments: 'none' }).code);
+});
 
 // The teaching copy of Next.js (scripts/next-runtime.js) behaves like Next.js 16 for what the lessons use.
 const LAYOUT = `export const metadata = { title: { default: "Rosa’s Café", template: "%s · Rosa’s Café" } };
@@ -248,11 +256,28 @@ export default function Login() {
     expect(p.text()).not.toContain('Pop-up');
   });
 
+  it('makes static pages once, and dynamic pages (cookies, searchParams) on every visit', async () => {
+    const visits = 'let n = 0;\n\nexport function visit() {\n  n += 1;\n  return n;\n}';
+    const p = await open({
+      files: {
+        'lib/visits.js': visits,
+        'app/page.js': 'import { visit } from "@/lib/visits";\n\nexport default function Home() {\n  return <p>Static, made on visit {visit()}</p>;\n}',
+        'app/live/page.js': 'import { visit } from "@/lib/visits";\n\nexport default async function Live({ searchParams }) {\n  const { q } = await searchParams;\n  return <p>Dynamic, made on visit {visit()}</p>;\n}',
+      },
+    });
+    await p.click('#cy-reload');
+    expect(p.text()).toContain('Static, made on visit 1');
+    await p.go('/live');
+    await p.click('#cy-reload');
+    expect(p.text()).toContain('Dynamic, made on visit 3');
+  });
+
   it('caches "use cache" results until their tag is refreshed', async () => {
     const p = await open({
       files: {
         'lib/visits.js': 'let n = 0;\n\nexport function visit() {\n  n += 1;\n  return n;\n}',
         'app/page.js': `import { cacheTag } from "next/cache";
+import { connection } from "next/server";
 import { visit } from "@/lib/visits";
 
 async function getSpecial() {
@@ -262,12 +287,13 @@ async function getSpecial() {
 }
 
 export default async function Home() {
-  return <p>{await getSpecial()}</p>;
+  await connection();
+  return <p>{await getSpecial()} on visit {visit()}</p>;
 }`,
       },
     });
-    expect(p.text()).toContain('Special #1');
+    expect(p.text()).toContain('Special #1 on visit 2');
     await p.click('#cy-reload');
-    expect(p.text()).toContain('Special #1');
+    expect(p.text()).toContain('Special #1 on visit 3');
   });
 });

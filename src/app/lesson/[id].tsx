@@ -177,7 +177,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
       <LessonTopBar steps={lesson.steps.length} index={index} xp={reward.xp} onClose={() => router.back()} onNotes={notesFor && v4 ? () => router.push({ pathname: '/notes/[id]', params: { id: lesson.id } }) : undefined} />
       <Animated.View key={index} entering={FadeIn.duration(220)} style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <V5CodeLang.Provider value={lesson.skill === 'python' ? 'python' : lesson.skill === 'react' ? 'jsx' : null}>
+          <V5CodeLang.Provider value={lesson.skill === 'python' ? 'python' : lesson.skill === 'react' || lesson.skill === 'next' ? 'jsx' : null}>
             {step.type === 'concept' && <ConceptStep step={step} onDone={next} onMistake={onMistake} />}
             {step.type === 'hook' && <HookStep step={step} onDone={next} />}
             {step.type === 'try' && <TryStep step={step} onDone={next} />}

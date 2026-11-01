@@ -24,6 +24,7 @@ describe.each([
   ['css', 20],
   ['js', 21],
   ['react', 19],
+  ['next', 16],
 ])('the %s track (Lesson v5)', (id, modules) => {
   const track = STAGES.find((s) => s.id === id)!;
   it(`has ${modules} modules, each ending with its Challenge`, () => {
@@ -94,7 +95,7 @@ describe('Lesson v5 screens', () => {
   it.each(rows(of('explore')))('%s: notes point at real lines and real parts of the page', async (_, s) => {
     if (!s) return;
     // A React page is checked once React has drawn it.
-    const doc = s.page?.react ? (await runPage(s.page, 800)).window.document : dom((s.page ?? { html: s.code.join('\n') }).html);
+    const doc = s.page?.react || s.page?.next ? (await runPage(s.page, 900)).window.document : dom((s.page ?? { html: s.code.join('\n') }).html);
     for (const n of s.notes) {
       expect(n.line).toBeGreaterThanOrEqual(1);
       expect(n.line).toBeLessThanOrEqual(s.code.length);
@@ -214,13 +215,14 @@ describe('Lesson v5 JavaScript screens', () => {
 
   it.each(rows(of('tappage')))('%s: the page runs, and the demo taps reach the goal', async (_, s) => {
     if (!s) return;
-    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current, react: s.page.react }, s.page.react ? 800 : 0);
+    const live = s.page.react || s.page.next;
+    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current, react: s.page.react, next: s.page.next }, live ? 900 : 0);
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.some((l) => l.text.includes(s.goal))).toBe(false);
     // A short pause between taps, like a real user, so a React page can draw again in between.
     for (const a of s.demo) {
       act(window, a);
-      if (s.page.react) await new Promise((r) => setTimeout(r, 40));
+      if (live) await new Promise((r) => setTimeout(r, s.page.next ? 700 : 40));
     }
     await new Promise((r) => setTimeout(r, 1300));
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
@@ -241,6 +243,22 @@ describe('Lesson v5 JavaScript screens', () => {
     const r = tryCode(key, code);
     expect(r.error).toBeUndefined();
     expect(r.out.length).toBeGreaterThan(0);
+  });
+
+  it.each(rows(of('arrange').filter(([, s]) => s.next)))('%s: the Next.js blocks in order draw the app without an error', async (_, s) => {
+    if (!s) return;
+    const { logs, window } = await runPage({ html: '', css: s.css, js: s.blocks.join('\n'), next: s.next }, 1200);
+    expect(logs.filter((l) => l.level === 'error')).toEqual([]);
+    expect(window.document.querySelector('#root')?.textContent?.trim()).not.toBe('');
+  });
+
+  it.each(rows(of('web').filter(([, s]) => s.next)))('%s: the Next.js project draws its starter and its solution without an error', async (_, s) => {
+    if (!s) return;
+    for (const files of [s.starter, s.solution]) {
+      const { logs, window } = await runPage({ html: '', css: files.css, js: files.js, next: s.next }, 1200);
+      expect(logs.filter((l) => l.level === 'error')).toEqual([]);
+      expect(window.document.querySelector('#root')?.textContent?.trim()).not.toBe('');
+    }
   });
 
   it.each(rows(of('arrange').filter(([, s]) => s.react)))('%s: the React blocks in order draw the page without an error', async (_, s) => {
