@@ -3,7 +3,7 @@
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
 ## 1 Nov 2026 (branch `lesson-v3`): Next.js v5 draft
-- **Draft for the owner's OK:** `content-drafts/next-v5.md`. It plans 14 modules of 3 short lessons, each with a Module Challenge; two final tests; notes for every module; and live Next.js pages through a small teaching copy of Next.js built on the bundled React. The checklist is the official Next.js 16 docs, because W3Schools has no Next.js tutorial. Nothing is built yet.
+- **Draft for the owner's OK:** `content-drafts/next-v5.md`. Second version, following the owner's 12-section Next.js flow (Fundamentals to Industry Practices): 12 modules of 3-5 short lessons, each with a Module Challenge; three final tests (Basic, Intermediate, Advanced); notes for every module; and live Next.js pages through a small teaching copy of Next.js built on the bundled React. The checklist is the official Next.js 16 docs, because W3Schools has no Next.js tutorial. Nothing is built yet.
 
 ## 1 Nov 2026 (branch `lesson-v3`): React covers every W3Schools React topic, and React notes
 - **Checked against the W3Schools React tutorial** (topic list only, our own words): the missing topics are now taught, each with live pages and an assessment at the end of the module.
