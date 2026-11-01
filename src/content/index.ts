@@ -21,7 +21,7 @@ import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
 import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
-import { NODE_LESSONS, NODE_PROJECT } from './tracks/nodeFoundations';
+import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
 import { canteenBill } from './python3';
 import { trainList } from './react';
 import { REACT_UNITS, REACT_V5 } from './tracks/reactV5';
@@ -242,8 +242,7 @@ const ALL: Lesson[] = [
   ...JS_I_V5,
   ...FINAL_TESTS,
   ...REACT_V5,
-  ...NODE_LESSONS,
-  NODE_PROJECT,
+  ...NODE_V5,
   ...NEXT_V5,
   ...PYTHON_MORE_2,
   ...C_LESSONS,
@@ -600,20 +599,7 @@ export const STAGES: Stage[] = [
     accent: '#86EFAC',
     icon: 'M12 2l9 5v10l-9 5-9-5V7z',
     units: [
-      unit('n-u1', 'Node.js', ref('n-intro-1', 'What Node.js is', 'Lesson + code · 7 min')),
-      unit('n-u11', 'Modules', ref('n-modules', 'Modules: import and export', 'Lesson + code · 8 min')),
-      unit('n-u6', 'npm', ref('n-npm-1', 'npm and packages', 'Lesson + code · 8 min')),
-      unit('n-u2', 'Async', ref('n-async-1', 'Asynchronous code and the event loop', 'Lesson + code · 9 min')),
-      unit('n-u7', 'Files', ref('n-fs-1', 'Files and paths', 'Lesson + code · 8 min')),
-      unit('n-u12', 'HTTP', ref('n-http', 'HTTP and a server with no packages', 'Lesson + code · 8 min')),
-      unit('n-u3', 'Express', ref('n-express-1', 'Express: routes', 'Lesson + code · 8 min')),
-      unit('n-u8', 'Middleware', ref('n-middleware-1', 'Express middleware and errors', 'Lesson + code · 8 min')),
-      unit('n-u4', 'JSON', ref('n-json-1', 'JSON and validating input', 'Lesson + code · 8 min')),
-      unit('n-u9', 'REST design', ref('n-rest-1', 'REST API design', 'Lesson + code · 8 min')),
-      unit('n-u5', 'CRUD API', ref('n-api-1', 'Build a CRUD API', 'Lesson + code · 10 min')),
-      unit('n-u10', 'Config', ref('n-env-1', 'Configuration and secrets', 'Lesson + code · 7 min')),
-      unit('n-u13', 'Testing', ref('n-test', 'Testing with node:test', 'Lesson + code · 8 min')),
-      unit('n-u14', 'Project', ref('n-project', 'Project: a train booking API', 'Project · 3 parts · 30 min')),
+      ...NODE_UNITS,
     ],
     practice: [
       { id: 'x-express', title: 'A real web server', kind: 'Express', difficulty: 'Medium', xp: 15 },

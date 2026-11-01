@@ -23,6 +23,7 @@ describe.each([
   ['html', 17],
   ['css', 20],
   ['js', 21],
+  ['node', 17],
   ['react', 19],
   ['next', 16],
 ])('the %s track (Lesson v5)', (id, modules) => {
@@ -229,7 +230,7 @@ describe('Lesson v5 JavaScript screens', () => {
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.map((l) => l.text).some((t) => t.includes(s.goal))).toBe(true);
     // A Node.js program that crashed shows Node’s last line; only lessons about errors may crash.
-    if (s.page.node && !/Error/.test(s.goal)) expect(window.document.body.textContent).not.toContain('Node.js v22.11.0 (');
+    if (s.page.node && !/Error/.test(s.goal)) expect(window.document.getElementById('root')?.textContent).not.toContain('Node.js v22.11.0 (');
   }, 15000);
 
   it.each(rows(of('toggle').filter(([, s]) => s.views.some((v) => v.out))))('%s: each version prints what it says', (key, s) => {
@@ -252,7 +253,7 @@ describe('Lesson v5 JavaScript screens', () => {
     if (!s) return;
     const { logs, window } = await runPage({ html: '', js: s.blocks.join('\n'), node: s.node }, 1000);
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
-    expect(window.document.body.textContent).not.toContain('Node.js v22.11.0 (');
+    expect(window.document.getElementById('root')?.textContent).not.toContain('Node.js v22.11.0 (');
   });
 
   it.each(rows(of('web').filter(([, s]) => s.node)))('%s: the Node.js project runs its starter and its solution without crashing', async (_, s) => {
@@ -260,7 +261,7 @@ describe('Lesson v5 JavaScript screens', () => {
     for (const files of [s.starter, s.solution]) {
       const { logs, window } = await runPage({ html: '', js: files.js, node: s.node }, 1000);
       expect(logs.filter((l) => l.level === 'error')).toEqual([]);
-      expect(window.document.body.textContent).not.toContain('Node.js v22.11.0 (');
+      expect(window.document.getElementById('root')?.textContent).not.toContain('Node.js v22.11.0 (');
     }
   });
 
