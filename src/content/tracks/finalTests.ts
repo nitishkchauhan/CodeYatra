@@ -643,5 +643,51 @@ export const C_I_TEST = finalTest('c-i-test', 'C', 'c', 'intermediate', ['Work w
   ['Which reads a whole line from a file?', ['fgets', 'fprintf', 'fclose', 'fopen'], 'Up to the new line.', true],
 ]);
 
+export const JAVA_B_TEST = finalTest('jv-b-test', 'Java Basics', 'java', 'basic', ['Write and run Java programs', 'Use types, operators and decisions', 'Write loops and methods'], [
+  ['Where does a Java program start?', ['The main method', 'The first line', 'The constructor', 'System.out'], 'The entry point.'],
+  ['Which command compiles Main.java?', ['javac Main.java', 'java Main', 'run Main.java', 'gcc Main.java'], 'Then java Main runs it.', true],
+  ['What runs Java bytecode?', ['The JVM', 'The compiler', 'The browser', 'The OS directly'], 'Java Virtual Machine.'],
+  ['What does println do that print doesn’t?', ['Ends the line', 'Prints faster', 'Prints twice', 'Nothing'], 'A new line.'],
+  ['"Total: " + 2 + 3 gives…', ['Total: 23', 'Total: 5', '5', 'An error'], 'Text first, so + joins.', true],
+  ['Which type holds true or false?', ['boolean', 'bool', 'int', 'String'], 'Java’s yes/no.', true],
+  ['What is 7 / 2 when both are int?', ['3', '3.5', '4', '3.0'], 'Whole numbers.', true],
+  ['(int) 9.8 is…', ['9', '10', '9.8', 'An error'], 'A cast drops the decimals.', true],
+  ['Which is a class, not a primitive?', ['String', 'int', 'char', 'double'], 'Capital S.', true],
+  ['What does final do on a variable?', ['Stops it changing', 'Makes it last', 'Makes it private', 'Deletes it'], 'A constant.', true],
+  ['What is 17 % 5?', ['2', '3', '3.4', '12'], 'The remainder.', true],
+  ['Which reads an int from a Scanner in?', ['in.nextInt()', 'in.readInt()', 'in.int()', 'Scanner.nextInt'], 'next + type.', true],
+  ['How do you compare two Strings’ text?', ['a.equals(b)', 'a == b', 'a = b', 'a.same(b)'], '== checks the object.', true],
+  ['What does an arrow switch case (->) never do?', ['Fall through', 'Return a value', 'Match Strings', 'Use default'], 'No break needed.'],
+  ['Which loop always runs at least once?', ['do while', 'while', 'for', 'for-each'], 'It checks at the end.', true],
+  ['for (String s : menu) is…', ['A for-each loop over menu', 'An error', 'A while loop', 'A method'], 'Every item.', true],
+  ['What does continue do?', ['Skips to the next round', 'Leaves the loop', 'Ends main', 'Nothing'], 'break leaves.', true],
+  ['What is method overloading?', ['Same name, different parameters', 'A method calling itself', 'A long method', 'A static method'], 'Java picks by the arguments.'],
+  ['What does a void method return?', ['Nothing', '0', 'null', 'Any type'], 'No value.', true],
+  ['Java passes an int to a method…', ['As a copy', 'By reference', 'As text', 'Not at all'], 'By value.'],
+]);
+
+export const JAVA_I_TEST = finalTest('jv-i-test', 'Java', 'java', 'intermediate', ['Work with arrays, Strings and collections', 'Design classes with inheritance and interfaces', 'Handle exceptions'], [
+  ['How do you get an array’s size?', ['a.length', 'a.length()', 'a.size()', 'len(a)'], 'A field.', true],
+  ['What happens at a[5] when a has 3 items?', ['ArrayIndexOutOfBoundsException', 'It returns 0', 'Rubbish', 'The array grows'], 'Java checks.', true],
+  ['How do you print an int array readably?', ['Arrays.toString(a)', 'System.out.println(a)', 'a.print()', 'a.join()'], 'Otherwise a code.', true],
+  ['After s.toUpperCase(); without assigning, s is…', ['Unchanged', 'In capitals', 'null', 'Empty'], 'Strings are immutable.'],
+  ['"Sutton".substring(0, 3) is…', ['"Sut"', '"Sutt"', '"utt"', '"Su"'], 'Up to, not including, 3.', true],
+  ['Why use StringBuilder in a loop?', ['It changes one buffer instead of making new Strings', 'It sorts', 'It is required', 'It prints'], 'Faster.'],
+  ['What does new do?', ['Makes an object and runs its constructor', 'Defines a class', 'Copies a variable', 'Imports a class'], 'From the blueprint.'],
+  ['What does this.name mean in a constructor?', ['The object’s field', 'The parameter', 'A static field', 'The class name'], 'The field.', true],
+  ['Why make fields private?', ['So only the class can change them, safely', 'Speed', 'To share them', 'Java requires it'], 'Encapsulation.'],
+  ['A static field is…', ['Shared by every object', 'One per object', 'Unchangeable', 'Hidden'], 'One copy.'],
+  ['Which keyword makes a child class?', ['extends', 'implements', 'inherits', 'super'], 'Classes extend.', true],
+  ['Coach c = new ACCoach(); c.seats() runs…', ['ACCoach’s version', 'Coach’s version', 'Both', 'Neither'], 'Polymorphism.'],
+  ['How many classes can a class extend?', ['One', 'Two', 'Any number', 'None'], 'Many interfaces, one class.'],
+  ['Can you make an abstract class with new?', ['No', 'Yes', 'Only once', 'Only in main'], 'Only its children.'],
+  ['Which reads item 0 of an ArrayList?', ['list.get(0)', 'list[0]', 'list.at(0)', 'list.first'], 'get.', true],
+  ['Why List<Integer>, not List<int>?', ['Collections hold objects', 'int is too small', 'Integer is faster', 'No reason'], 'Wrappers.'],
+  ['map.get(key) for a missing key gives…', ['null', '0', 'An exception', '""'], 'Or use getOrDefault.', true],
+  ['Which keeps map keys sorted?', ['TreeMap', 'HashMap', 'ArrayList', 'HashSet'], 'Sorted keys.', true],
+  ['Integer.parseInt("abc") throws…', ['NumberFormatException', 'ArithmeticException', 'IOException', 'Nothing'], 'Not a number.', true],
+  ['When does finally run?', ['Always', 'Only after an exception', 'Only without one', 'Never'], 'Clean-up.'],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST];
+export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, JAVA_B_TEST, JAVA_I_TEST];

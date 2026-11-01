@@ -30,6 +30,7 @@ describe.each([
   ['dsa', 12],
   ['dsa2', 11],
   ['c', 15],
+  ['java', 15],
   ['react', 19],
   ['next', 16],
 ])('the %s track (Lesson v5)', (id, modules) => {

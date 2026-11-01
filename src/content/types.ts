@@ -577,7 +577,7 @@ export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 
  * a phone), and the rest run JavaScript.
  */
 export const v5Lang = (skill: SkillKey): 'python' | 'sql' | 'jsx' | 'c' | 'java' | null =>
-  skill === 'python' || skill === 'dsa' ? 'python' : skill === 'sql' ? 'sql' : skill === 'react' || skill === 'next' ? 'jsx' : skill === 'c' || skill === 'placement' ? 'c' : skill === 'java' ? 'java' : null;
+  skill === 'python' || skill === 'dsa' || skill === 'placement' ? 'python' : skill === 'sql' ? 'sql' : skill === 'react' || skill === 'next' ? 'jsx' : skill === 'c' ? 'c' : skill === 'java' ? 'java' : null;
 
 export const isTeaching = (s: Step) => (TEACHING_STEPS as readonly string[]).includes(s.type) || (s.type === 'trace' && !s.ask);
 

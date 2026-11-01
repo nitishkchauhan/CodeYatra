@@ -18,7 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, JAVA_B_TEST, JAVA_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
@@ -37,7 +37,8 @@ import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
 import { DSA_UNITS, DSA_V5 } from './tracks/dsaV5';
 import { GIT_LESSONS } from './tracks/git';
 import { GIT_UNITS, GIT_V5 } from './tracks/gitV5';
-import { JAVA_LESSONS, JAVA_PROJECT } from './tracks/java';
+import { JAVA_LESSONS } from './tracks/java';
+import { JAVA_UNITS, JAVA_V5 } from './tracks/javaV5';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PY_B_UNITS, PY_B_V5 } from './tracks/pythonV5';
 import { PY_I_UNITS, PY_I_V5 } from './tracks/pythonV5i';
@@ -249,8 +250,7 @@ const ALL: Lesson[] = [
   ...NEXT_V5,
   ...PYTHON_MORE_2,
   ...C_V5,
-  ...JAVA_LESSONS,
-  JAVA_PROJECT,
+  ...JAVA_V5,
   ...DSA_V5,
   ...SQL_V5,
   ...GIT_V5,
@@ -521,25 +521,16 @@ export const STAGES: Stage[] = [
     short: 'Java',
     sub: 'Object-oriented programming',
     audience: 'B.Tech · BCA',
-    blurb: 'Types, loops, methods, strings, classes, inheritance, collections and exceptions: the language of placements.',
+    blurb: '12 modules of short lessons with real Java output: types, operators, decisions, loops, methods, arrays, Strings, classes, inheritance, interfaces, collections and exceptions. A train-reservation project and two final tests.',
     color: '#B45309',
     soft: '#FDF0E1',
     accent: '#FDBA74',
     icon: 'M7 17c3 1.5 7 1.5 10 0 M8 14c2.5 1 5.5 1 8 0 M12 3c-2 3 2 4 0 7',
     units: [
-      unit('jv1', 'Hello, Java', ref('jv-hello', 'Hello, Java', 'Lesson + code · 7 min')),
-      unit('jv2', 'Variables', ref('jv-vars', 'Variables and types', 'Lesson + code · 8 min')),
-      unit('jv11', 'Operators', ref('jv-ops', 'Operators and input', 'Lesson + code · 8 min')),
-      unit('jv3', 'Decisions', ref('jv-if', 'Decisions: if and switch', 'Lesson + code · 7 min')),
-      unit('jv4', 'Loops', ref('jv-loops', 'Loops', 'Lesson + code · 8 min')),
-      unit('jv5', 'Methods', ref('jv-methods', 'Methods', 'Lesson + code · 8 min')),
-      unit('jv6', 'Arrays', ref('jv-arrays', 'Arrays', 'Lesson + code · 8 min')),
-      unit('jv7', 'Strings', ref('jv-strings', 'Strings', 'Lesson + code · 8 min')),
-      unit('jv8', 'Classes', ref('jv-classes', 'Classes and objects', 'Lesson + code · 9 min')),
-      unit('jv9', 'Inheritance', ref('jv-oop', 'Inheritance and interfaces', 'Lesson + code · 9 min')),
-      unit('jv10', 'Collections', ref('jv-collections', 'ArrayList and HashMap', 'Lesson + code · 9 min')),
-      unit('jv12', 'Exceptions', ref('jv-exceptions', 'Exceptions', 'Lesson + code · 8 min')),
-      unit('jv13', 'Project', ref('jv-project', 'Project: a train reservation system', 'Project · 3 parts · 30 min')),
+      ...JAVA_UNITS.slice(0, 6),
+      testUnit(JAVA_B_TEST),
+      ...JAVA_UNITS.slice(6),
+      testUnit(JAVA_I_TEST),
     ],
     practice: [
       { id: 'x-java-output', title: 'Output drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },
