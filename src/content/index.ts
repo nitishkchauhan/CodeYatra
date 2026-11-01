@@ -18,7 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, JAVA_B_TEST, JAVA_I_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, JAVA_B_TEST, JAVA_I_TEST, PL_B_TEST, PL_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
@@ -39,7 +39,8 @@ import { GIT_LESSONS } from './tracks/git';
 import { GIT_UNITS, GIT_V5 } from './tracks/gitV5';
 import { JAVA_LESSONS } from './tracks/java';
 import { JAVA_UNITS, JAVA_V5 } from './tracks/javaV5';
-import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
+import { PLACEMENT_LESSONS } from './tracks/placement';
+import { PL_UNITS, PL_V5 } from './tracks/placementV5';
 import { PY_B_UNITS, PY_B_V5 } from './tracks/pythonV5';
 import { PY_I_UNITS, PY_I_V5 } from './tracks/pythonV5i';
 import { PY_A_UNITS, PY_A_V5 } from './tracks/pythonV5a';
@@ -254,8 +255,7 @@ const ALL: Lesson[] = [
   ...DSA_V5,
   ...SQL_V5,
   ...GIT_V5,
-  ...PLACEMENT_LESSONS,
-  PLACEMENT_PROJECT,
+  ...PL_V5,
   ...DSA2_V5,
   ...CBSE_LESSONS,
   CBSE_PROJECT,
@@ -729,25 +729,16 @@ export const STAGES: Stage[] = [
     short: 'Placement',
     sub: 'Crack the coding round',
     audience: 'Final year · Job seekers',
-    blurb: '12 modules and a mock round: the coding, output, OOP, SQL and complexity questions campus drives ask again and again, every answer tested.',
+    blurb: '12 modules of short lessons, each ending in a real coding question: strings, numbers, arrays, hashing, patterns, matrices, Python and C output, OOP, SQL and complexity. A mock round and two final tests.',
     color: '#B45309',
     soft: '#FFF4E3',
     accent: '#FDBA74',
     icon: 'M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z',
     units: [
-      unit('pl1', 'Coding rounds', ref('pl-fizzbuzz', 'How a coding round works: FizzBuzz', 'Lesson + coding round · 7 min')),
-      unit('pl2', 'Strings', ref('pl-reverse', 'String questions', 'Lesson + coding round · 7 min')),
-      unit('pl3', 'Numbers', ref('pl-prime', 'Number questions: primes, GCD and digits', 'Lesson + coding round · 8 min')),
-      unit('pl4', 'Arrays', ref('pl-second', 'Array questions', 'Lesson + coding round · 8 min')),
-      unit('pl5', 'Hashing', ref('pl-anagram', 'Hashing questions: counting with dicts', 'Lesson + coding round · 8 min')),
-      unit('pl11', 'Patterns', ref('pl-pattern', 'Pattern printing', 'Lesson + coding round · 7 min')),
-      unit('pl12', 'Matrices', ref('pl-matrix', 'Matrix questions', 'Lesson + coding round · 8 min')),
-      unit('pl7', 'Python output', ref('pl-output-py', 'Output questions: Python', 'Lesson + written test · 8 min')),
-      unit('pl6', 'C output', ref('pl-output-c', 'Output questions: C', 'Lesson + written test · 8 min')),
-      unit('pl8', 'OOP', ref('pl-oops', 'OOP interview questions', 'Lesson + interview · 8 min')),
-      unit('pl9', 'SQL', ref('pl-sql', 'SQL interview questions', 'Lesson + interview · 8 min')),
-      unit('pl10', 'Complexity', ref('pl-complexity', 'Complexity questions', 'Lesson + interview · 8 min')),
-      unit('pl13', 'Mock round', ref('pl-project', 'Project: a mock placement round', 'Project · 3 questions · 30 min')),
+      ...PL_UNITS.slice(0, 6),
+      testUnit(PL_B_TEST),
+      ...PL_UNITS.slice(6),
+      testUnit(PL_I_TEST),
     ],
     practice: [
       { id: 'x-pl-output', title: 'Output round', kind: 'Predict the output', difficulty: 'Hard', xp: 15 },

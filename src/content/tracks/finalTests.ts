@@ -689,5 +689,51 @@ export const JAVA_I_TEST = finalTest('jv-i-test', 'Java', 'java', 'intermediate'
   ['When does finally run?', ['Always', 'Only after an exception', 'Only without one', 'Never'], 'Clean-up.'],
 ]);
 
+export const PL_B_TEST = finalTest('pl-b-test', 'Placement Basics', 'placement', 'basic', ['Approach a coding round', 'Solve string, number and array questions', 'Count with dicts and print patterns'], [
+  ['What should you do before coding a round question?', ['Work examples and edge cases', 'Start typing', 'Search online', 'Write comments only'], 'Plan first.'],
+  ['A judge expects 30; you print “Total: 30”. Result?', ['Wrong answer', 'Accepted', 'Partial marks', 'Time limit'], 'Exact output.'],
+  ['Which reads “4 9 2” as a list of ints?', ['list(map(int, input().split()))', 'int(input())', 'input().split()', 'list(input())'], 'Split, convert.', true],
+  ['In FizzBuzz, which test goes first?', ['n % 15 == 0', 'n % 3 == 0', 'n % 5 == 0', 'Any order'], 'Most specific.', true],
+  ['"Sutton"[::-1] is…', ['"nottuS"', '"Sutton"', '"nottus"', '"S"'], 'Reversed.', true],
+  ['Which reverses the words of s?', ['" ".join(s.split()[::-1])', 's[::-1]', 's.reverse()', 'reversed(s)'], 'Words, not letters.', true],
+  ['Why lower() before a palindrome check?', ['"M" and "m" differ', 'Speed', 'Python needs it', 'To remove spaces'], 'Same case.'],
+  ['Prime testing up to √n is…', ['O(√n)', 'O(n)', 'O(1)', 'O(n²)'], 'Factors pair up.', true],
+  ['gcd(48, 18) is…', ['6', '18', '3', '2'], 'Euclid.', true],
+  ['n % 10 gives…', ['The last digit', 'The first digit', 'n without its last digit', 'The digit count'], 'Remainder by 10.', true],
+  ['Is 1 a prime?', ['No', 'Yes', 'Only in C', 'Sometimes'], 'Primes start at 2.'],
+  ['sorted(set([4, 9, 9, 2]))[-2] is…', ['4', '9', '2', '3'], 'Unique, sorted.', true],
+  ['Missing number in 1..n, in O(n) time and O(1) space?', ['n(n+1)/2 − sum', 'Sort and scan', 'Nested loops', 'A set'], 'Arithmetic.'],
+  ['Rotating [1, 2, 3, 4, 5] right by 2 gives…', ['[4, 5, 1, 2, 3]', '[3, 4, 5, 1, 2]', '[2, 1, 5, 4, 3]', '[1, 2, 3, 4, 5]'], 'Last two first.', true],
+  ['Counter("banana")["a"] is…', ['3', '2', '1', '6'], 'Three a.', true],
+  ['Two sum with a dict is…', ['O(n)', 'O(n²)', 'O(log n)', 'O(1)'], 'One pass.', true],
+  ['Which checks anagrams a and b?', ['Counter(a) == Counter(b)', 'set(a) == set(b)', 'a == b[::-1]', 'len(a) == len(b)'], 'Same counts.', true],
+  ['Stars in row i of a centred pyramid?', ['2i − 1', 'i', '2i', 'i²'], 'Odd numbers.', true],
+  ['Spaces before row i of an n-row pyramid?', ['n − i', 'i', 'n', '2i'], 'Fewer each row.', true],
+  ['"*" * 4 gives…', ['"****"', '"4*"', '4', 'An error'], 'Repeats.', true],
+]);
+
+export const PL_I_TEST = finalTest('pl-i-test', 'Placement', 'placement', 'intermediate', ['Solve matrix questions', 'Answer Python and C output questions', 'Handle OOP, SQL and complexity interviews'], [
+  ['zip(*m) does what to a matrix?', ['Transposes it', 'Flattens it', 'Sorts it', 'Reverses it'], 'Columns become rows.', true],
+  ['Rotate a matrix clockwise by…', ['Transposing, then reversing each row', 'Sorting', 'Reversing the rows only', 'Swapping diagonals'], 'Two steps.'],
+  ['Why avoid [[0] * 3] * 3?', ['Every row is the same list', 'It is slow', 'It has 3 cells', 'It is invalid'], 'Shared rows.'],
+  ['a = [1]; b = a; b.append(2); a is…', ['[1, 2]', '[1]', '[2]', 'An error'], 'Same list.', true],
+  ['print(-7 // 2) in Python?', ['-4', '-3', '-3.5', '3'], 'Rounds down.', true],
+  ['Why never use [] as a default argument?', ['It is shared between calls', 'It is slow', 'It is invalid', 'It is always empty'], 'Made once.'],
+  ['print(0.1 + 0.2 == 0.3)?', ['False', 'True', 'An error', 'None'], 'Binary floats.', true],
+  ['In C, int i = 5; int a = i++; a is…', ['5', '6', '4', '7'], 'Old value.', true],
+  ['In C, -7 / 2 is…', ['-3', '-4', '-3.5', '3'], 'Towards zero.', true],
+  ['What does a stray ; after for (…) do in C?', ['Makes an empty loop body', 'Nothing', 'Ends the program', 'Causes an error'], 'The body is empty.'],
+  ['A static local variable in C…', ['Keeps its value between calls', 'Resets each call', 'Is global', 'Is constant'], 'Made once.'],
+  ['Which pillar hides data behind methods?', ['Encapsulation', 'Inheritance', 'Polymorphism', 'Abstraction'], 'A capsule.'],
+  ['Overriding means…', ['A child replaces a parent’s method', 'Same name, different parameters', 'Deleting a method', 'Calling super'], 'In a child.'],
+  ['A class attribute is…', ['Shared by every object', 'One per object', 'Private', 'Constant'], 'On the class.'],
+  ['Which filters groups in SQL?', ['HAVING', 'WHERE', 'ORDER BY', 'LIMIT'], 'After GROUP BY.', true],
+  ['How do you find missing values in SQL?', ['IS NULL', '= NULL', '== NULL', 'IS EMPTY'], 'NULL is special.', true],
+  ['DELETE vs DROP?', ['DELETE removes rows; DROP removes the table', 'They are the same', 'DROP removes rows', 'DELETE removes the table'], 'Rows vs table.'],
+  ['Nested loops over n items are…', ['O(n²)', 'O(n)', 'O(2n)', 'O(log n)'], 'n × n.', true],
+  ['O(3n² + 5n) simplifies to…', ['O(n²)', 'O(3n²)', 'O(n)', 'O(5n)'], 'Biggest term.', true],
+  ['Halving n until 1 takes about…', ['log₂ n steps', 'n steps', 'n/2 steps', '1 step'], 'O(log n).'],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, JAVA_B_TEST, JAVA_I_TEST];
+export const FINAL_TESTS: Lesson[] = [PL_B_TEST, PL_I_TEST,HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, JAVA_B_TEST, JAVA_I_TEST];
