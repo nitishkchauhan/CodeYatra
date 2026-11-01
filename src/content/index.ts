@@ -18,7 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
@@ -28,7 +28,8 @@ import { REACT_UNITS, REACT_V5 } from './tracks/reactV5';
 import { PROJECTS } from './projects';
 import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
 import { findPath } from './paths';
-import { C_LESSONS, C_PROJECT } from './tracks/c';
+import { C_LESSONS } from './tracks/c';
+import { C_UNITS, C_V5 } from './tracks/cV5';
 import { CBSE_LESSONS, CBSE_PROJECT } from './tracks/cbse';
 import { islands, minCoins } from './tracks/dsa2';
 import { DSA2_UNITS, DSA2_V5 } from './tracks/dsa2V5';
@@ -247,8 +248,7 @@ const ALL: Lesson[] = [
   ...NODE_V5,
   ...NEXT_V5,
   ...PYTHON_MORE_2,
-  ...C_LESSONS,
-  C_PROJECT,
+  ...C_V5,
   ...JAVA_LESSONS,
   JAVA_PROJECT,
   ...DSA_V5,
@@ -495,25 +495,16 @@ export const STAGES: Stage[] = [
     short: 'C',
     sub: 'How computers really work',
     audience: 'B.Tech · BCA · Diploma',
-    blurb: 'The first-year favourite: types, operators, loops, arrays, strings, pointers, structs, memory and files.',
+    blurb: '12 modules of short lessons with real gcc output: types, operators, decisions, loops, functions, arrays, strings, pointers, structs, dynamic memory and files. A marks-manager project and two final tests.',
     color: '#3949AB',
     soft: '#E8EAF6',
     accent: '#9FA8DA',
     icon: 'M17 7a6 6 0 1 0 0 10',
     units: [
-      unit('c1', 'Hello, C', ref('c-hello', 'Hello, C', 'Lesson + code · 7 min')),
-      unit('c2', 'Variables', ref('c-vars', 'Variables and types', 'Lesson + code · 8 min')),
-      unit('c11', 'Operators', ref('c-ops', 'Operators, input and output', 'Lesson + code · 8 min')),
-      unit('c3', 'Decisions', ref('c-if', 'Decisions: if, else and switch', 'Lesson + code · 7 min')),
-      unit('c4', 'Loops', ref('c-loops', 'Loops', 'Lesson + code · 8 min')),
-      unit('c5', 'Functions', ref('c-func', 'Functions', 'Lesson + code · 8 min')),
-      unit('c6', 'Arrays', ref('c-arrays', 'Arrays', 'Lesson + code · 8 min')),
-      unit('c7', 'Strings', ref('c-strings', 'Strings', 'Lesson + code · 8 min')),
-      unit('c8', 'Pointers', ref('c-pointers', 'Pointers', 'Lesson + code · 9 min')),
-      unit('c9', 'Structs', ref('c-struct', 'Structs', 'Lesson + code · 8 min')),
-      unit('c10', 'Memory', ref('c-memory', 'Dynamic memory', 'Lesson + code · 9 min')),
-      unit('c12', 'Files', ref('c-files', 'Files', 'Lesson + code · 8 min')),
-      unit('c13', 'Project', ref('c-marks-project', 'Project: a marks manager', 'Project · 3 parts · 25 min')),
+      ...C_UNITS.slice(0, 6),
+      testUnit(C_B_TEST),
+      ...C_UNITS.slice(6),
+      testUnit(C_I_TEST),
     ],
     practice: [
       { id: 'x-c-output', title: 'Output drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },

@@ -597,5 +597,51 @@ export const DSA2_A_TEST = finalTest('dsa2-a-test', 'DSA Advanced', 'dsa', 'adva
   ['gcd(84, 36) is…', ['12', '6', '4', '36'], 'Euclid.', true],
 ]);
 
+export const C_B_TEST = finalTest('c-b-test', 'C Basics', 'c', 'basic', ['Write, compile and run C programs', 'Use types, operators and decisions', 'Write loops and functions'], [
+  ['Where does every C program start?', ['main', 'The first line', 'printf', 'stdio.h'], 'The entry point.', true],
+  ['Which command compiles hello.c into a program?', ['gcc hello.c -o hello', 'run hello.c', 'c hello.c', 'python hello.c'], 'Compile first.', true],
+  ['What ends a C statement?', [';', '.', 'A new line', ':'], 'A semicolon.', true],
+  ['Which placeholder prints a double with two decimals?', ['%.2f', '%d', '%2d', '%s'], 'f for decimals.', true],
+  ['What is 7 / 2 when both are int?', ['3', '3.5', '4', '3.0'], 'Decimals are dropped.', true],
+  ['Which type holds a single letter?', ['char', 'string', 'int', 'letter'], "Single quotes: 'A'.", true],
+  ['What does const do?', ['Stops the value changing', 'Makes it global', 'Rounds it', 'Frees it'], 'Read-only.', true],
+  ['What is 17 % 5?', ['2', '3', '3.4', '12'], 'The remainder.', true],
+  ['What does 3 > 2 evaluate to in C?', ['1', 'true', '0', '3'], 'True is 1.', true],
+  ['Why the & in scanf("%d", &n)?', ['scanf needs n’s address to fill it', 'To print n', 'It means and', 'It is optional'], 'An address.'],
+  ['What is wrong with if (x = 5)?', ['It assigns 5 instead of comparing', 'Nothing', 'Missing braces', 'x must be char'], 'Use ==.', true],
+  ['What happens in a switch case without break?', ['It falls through to the next case', 'An error', 'The switch ends', 'It repeats'], 'Fall-through.'],
+  ['Which loop always runs at least once?', ['do while', 'while', 'for', 'None'], 'It checks at the end.', true],
+  ['How many times does for (int i = 0; i < 5; i++) run?', ['5', '4', '6', 'Forever'], '0 to 4.', true],
+  ['What does continue do?', ['Skips to the next round', 'Leaves the loop', 'Ends the program', 'Nothing'], 'break leaves.', true],
+  ['What does a void function return?', ['Nothing', '0', 'Any type', 'NULL'], 'No value.', true],
+  ['What is a prototype?', ['A declaration of a function before its definition', 'A first draft', 'A comment', 'A test'], 'Declare before use.'],
+  ['C passes an int to a function…', ['By value: a copy', 'By reference', 'As text', 'As a pointer'], 'Copies.'],
+  ['What causes an endless while loop?', ['A condition that never becomes false', 'A break', 'printf', 'A return'], 'Change the variable.'],
+  ['Which prints a % sign with printf?', ['%%', '\\%', '%', '%p'], 'Doubled.', true],
+]);
+
+export const C_I_TEST = finalTest('c-i-test', 'C', 'c', 'intermediate', ['Work with arrays, strings and pointers', 'Build records with structs', 'Manage memory and files'], [
+  ['What is the last index of int a[8]?', ['7', '8', '9', '0'], 'Size − 1.', true],
+  ['Does C check array bounds?', ['No: going past is undefined behaviour', 'Yes, with an error', 'Only for strings', 'Only in loops'], 'Your job.'],
+  ['Why pass the length with an array?', ['A function can’t tell an array’s length', 'C needs it', 'For speed', 'To copy it'], 'Only the start is passed.'],
+  ['What ends a C string?', ['\\0', '\\n', 'A space', 'Nothing'], 'The zero character.', true],
+  ['strlen("tea") is…', ['3', '4', '2', '0'], 'Not counting \\0.', true],
+  ['How do you compare two strings?', ['strcmp(a, b) == 0', 'a == b', 'a = b', 'a.equals(b)'], 'Letter by letter.', true],
+  ['How do you copy a string into a char array?', ['strcpy(dest, src)', 'dest = src', 'copy(dest, src)', 'dest == src'], 'From string.h.', true],
+  ['What does &x give?', ['The address of x', 'The value of x', 'x and x', 'A copy'], 'Where x lives.', true],
+  ['If p = &x, what is *p?', ['The value of x', 'The address of p', 'The address of x', '0'], 'Dereference.', true],
+  ['a[i] is the same as…', ['*(a + i)', '*a + i', '&a + i', 'a * i'], 'Pointer arithmetic.', true],
+  ['How does swap change the caller’s variables?', ['It takes their addresses', 'It returns both', 'It uses globals', 'It can’t'], 'Pointers.'],
+  ['How do you read a member through a struct pointer?', ['p->marks', 'p.marks', '*p.marks', 'p[marks]'], 'The arrow.', true],
+  ['What does typedef do?', ['Gives a type a new name', 'Makes a variable', 'Frees memory', 'Copies a struct'], 'A short name.', true],
+  ['Passing a struct without a pointer gives the function…', ['A copy', 'The original', 'Its address', 'An error'], 'By value.'],
+  ['How do you ask for room for n ints?', ['malloc(n * sizeof(int))', 'malloc(n)', 'new int[n]', 'alloc(n)'], 'Count × size.', true],
+  ['What does malloc return when it fails?', ['NULL', '0 bytes', '-1', 'Nothing'], 'Check it.', true],
+  ['What is a memory leak?', ['malloc’d memory that is never freed', 'A crash', 'A slow loop', 'An unused variable'], 'It piles up.'],
+  ['Which mode adds to the end of a file?', ['"a"', '"w"', '"r"', '"x"'], 'Append.', true],
+  ['What does fopen return when a file can’t be opened?', ['NULL', 'An empty file', '0', '-1'], 'Check before use.', true],
+  ['Which reads a whole line from a file?', ['fgets', 'fprintf', 'fclose', 'fopen'], 'Up to the new line.', true],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST];
+export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST];

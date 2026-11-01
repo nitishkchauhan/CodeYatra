@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import { allLessons, getLesson, isTeaching, STAGES, v5Lang, type Lesson, type Step, type TapAction } from '..';
 import { sqlTableProgram } from '../sqlFixture';
 import { runPage } from '../testing/page';
-import { runJs, runPyFull } from '../testing/run';
+import { runC, runJava, runJs, runPyFull } from '../testing/run';
 import { parseTrace, traceProgram } from '../trace';
 import { traceProgramJs } from '../traceJs';
 import { withAssets } from '@/lib/web/assets';
@@ -29,6 +29,7 @@ describe.each([
   ['git', 14],
   ['dsa', 12],
   ['dsa2', 11],
+  ['c', 15],
   ['react', 19],
   ['next', 16],
 ])('the %s track (Lesson v5)', (id, modules) => {
@@ -187,6 +188,17 @@ const tryJs = (code: string): { out: string[]; error?: string } => {
 /** Runs a step's program in its lesson's language (Python lessons with real Python). */
 const tryCode = (key: string, code: string): { out: string[]; error?: string } => {
   const lang = stepLang.get(key);
+  if (lang === 'c') {
+    try {
+      return { out: runC(code) };
+    } catch {
+      return { out: [], error: 'does not compile' };
+    }
+  }
+  if (lang === 'java') {
+    const r = runJava(code);
+    return r.code === 0 ? { out: r.output ? r.output.split('\n') : [] } : { out: [], error: r.error.split('\n')[0] || 'does not compile' };
+  }
   if (lang !== 'python' && lang !== 'sql') return tryJs(code);
   const r = runPyFull(lang === 'sql' ? sqlTableProgram(code) : code);
   return r.error ? { out: r.output, error: r.error } : { out: r.output };

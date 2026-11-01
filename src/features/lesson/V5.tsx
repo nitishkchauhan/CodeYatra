@@ -22,7 +22,7 @@ import { buildPage, fillSlots } from '@/lib/web/page';
 import { colors, fonts } from '@/theme';
 
 /** 'python' for Python lessons (code shown as Python, programs run in the Python runner); 'jsx' for React lessons. */
-export const V5CodeLang = createContext<'python' | 'sql' | 'jsx' | null>(null);
+export const V5CodeLang = createContext<'python' | 'sql' | 'jsx' | 'c' | 'java' | null>(null);
 
 /** A code block in the lesson's language (Python lessons override the web default). */
 function Code(p: ComponentProps<typeof CodeBlock>) {
@@ -675,7 +675,11 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
   const { style: shakeStyle, shake } = useShake();
   const built = placed.map((i) => step.blocks[i]).join('\n');
   const doc = useMemo(() => (step.run ? '' : step.next ? buildPage({ html: '', css: step.css, js: built, next: step.next }) : step.node ? buildPage({ html: '', js: built, node: step.node }) : step.git ? buildPage({ html: '', git: { ...step.git, before: [...(step.git.before ?? []), ...placed.map((i) => step.blocks[i])] } }) : step.react ? buildPage({ html: step.html ?? '<div id="root"></div>', css: step.css, js: built, react: true }) : codePage(built, step.css, step.html)), [built, step, placed]);
-  const ran = useJsRun(step.run && placed.length ? built : null);
+  const codeLang = useContext(V5CodeLang);
+  const compiled = codeLang === 'c' || codeLang === 'java';
+  const live = useJsRun(step.run && placed.length && !compiled ? built : null);
+  // A compiled program shows its real output (checked in tests) once the order is right.
+  const ran = compiled ? (phase === 'right' || phase === 'shown' ? { ok: true, output: step.expect ?? [] } : null) : live;
   useAutoNext(phase === 'right', onDone, AUTO_NEXT_MS + 600);
   const add = (i: number) => {
     if (phase === 'right' || phase === 'shown') return;
@@ -725,7 +729,7 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
       <T variant="labelSm" color={colors.ink2}>
         GOAL · {step.goal}
       </T>
-      {step.run ? <ConsoleBox out={ran} waiting="Tap a block to start" /> : <WebPreview doc={doc} height={190} />}
+      {step.run ? <ConsoleBox out={ran} waiting={compiled ? 'The output appears when the program is complete' : 'Tap a block to start'} /> : <WebPreview doc={doc} height={190} />}
     </Screen>
   );
 }
@@ -851,7 +855,8 @@ function useJsRun(code: string | null) {
   const lang = codeLang === 'python' || codeLang === 'sql' ? 'python' : 'javascript';
   const [res, setRes] = useState<{ code: string; out: RunOutcome } | null>(null);
   useEffect(() => {
-    if (code === null) return;
+    // C and Java can’t be compiled on the phone: their screens show the stored output instead.
+    if (code === null || codeLang === 'c' || codeLang === 'java') return;
     let live = true;
     // SQL runs as a Python program that loads the sample tables and prints the result.
     run(lang, codeLang === 'sql' ? sqlTableProgram(code) : code).then((out) => live && setRes({ code, out }));

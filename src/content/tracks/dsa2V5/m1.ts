@@ -203,7 +203,7 @@ export const DSA2_M1: Lesson[] = [
     ]),
   ]),
 
-  challenge('dsa2-b-6-ch', 'Graphs Challenge', { icon: '🕸', name: 'Graph Explorer' }, ['Store graphs as adjacency lists', 'Search with BFS and DFS', 'Order tasks topologically'], [
+  challenge('dsa2-b-4-ch', 'Graphs Challenge', { icon: '🕸', name: 'Graph Explorer' }, ['Store graphs as adjacency lists', 'Search with BFS and DFS', 'Order tasks topologically'], [
     mcq(1, 'An adjacency list is…', ['A dict from each node to its neighbours', 'A list of all nodes', 'A matrix of distances', 'A sorted list'], 'Compact for sparse graphs.'),
     mcq(2, 'Which search finds the fewest steps?', ['BFS', 'DFS', 'Binary search', 'Topological sort'], 'Level by level.'),
     mcq(3, 'BFS and DFS both run in…', ['O(V + E)', 'O(V²)', 'O(log V)', 'O(E²)'], 'Each node and edge once.', { mono: true }),
