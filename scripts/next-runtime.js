@@ -17,6 +17,14 @@
   var React = window.React;
   var h = React.createElement;
   var ORIGIN = 'http://localhost:3000';
+  // Session tokens in the sign-in lessons use crypto.randomUUID(); older web views may not have it.
+  if (window.crypto && !window.crypto.randomUUID)
+    window.crypto.randomUUID = function () {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (Math.random() * 16) | 0;
+        return (c === 'x' ? r : (r & 3) | 8).toString(16);
+      });
+    };
 
   // ── Small helpers ────────────────────────────────────────────────────────────
 

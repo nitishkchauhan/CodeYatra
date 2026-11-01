@@ -7,6 +7,9 @@ import { NX_M2 } from './m2';
 import { NX_M3 } from './m3';
 import { NX_M4 } from './m4';
 import { NX_M5 } from './m5';
+import { NX_M6 } from './m6';
+import { NX_M7 } from './m7';
+import { NX_M8 } from './m8';
 
 const MODULES: [string, string, Lesson[]][] = [
   ['nx-u1', 'Fundamentals of Next.js', NX_M1],
@@ -14,6 +17,9 @@ const MODULES: [string, string, Lesson[]][] = [
   ['nx-u3', 'Rendering Strategies', NX_M3],
   ['nx-u4', 'Data Fetching', NX_M4],
   ['nx-u5', 'API Development', NX_M5],
+  ['nx-u6', 'Forms and Server Actions', NX_M6],
+  ['nx-u7', 'Authentication and Authorization', NX_M7],
+  ['nx-u8', 'Database Integration', NX_M8],
 ];
 
 /** Every lesson and challenge in the Next.js track, in order. */
