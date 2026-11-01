@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { readPageMessage, type PageLog } from '@/lib/web/page';
 import { colors } from '@/theme';
 
-/** Renders a learner's page in a sandboxed iframe (scripts on, no access to the app). */
+/** Renders a learner’s page in a sandboxed iframe (scripts and forms on, no access to the app). */
 export function WebPreview({ doc, height = 260, onLog }: { doc: string; height?: number; onLog?: (log: PageLog) => void }) {
   const ref = useRef<HTMLIFrameElement>(null);
   useEffect(() => {
@@ -20,7 +20,7 @@ export function WebPreview({ doc, height = 260, onLog }: { doc: string; height?:
       ref={ref}
       title="Your page"
       srcDoc={doc}
-      sandbox="allow-scripts"
+      sandbox="allow-scripts allow-forms"
       style={{ width: '100%', height, border: `1px solid ${colors.line}`, borderRadius: 12, background: '#FFFFFF' }}
     />
   );

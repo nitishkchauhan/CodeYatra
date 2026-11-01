@@ -13,6 +13,7 @@ Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/Cod
   - It adds a practice database (`@/lib/db`, Prisma-style) and an address bar, back, reload and file list. Each request is logged like `next dev` ("GET /menu 200").
   - Pages, notes, arrange steps and the project editor all run it (`PagePreview.next`, `WebStep.next`, `ArrangeStep.next`); the React runtime now also exports `useFormStatus`.
 - **Next.js “Read more” notes** (`content/notes/next.ts`): one per module (12), each with a live worked example; tests draw every example and check the page.
+- **Web build fix:** lesson previews on the web now allow forms in their sandboxed frame, so forms work there as on phones: the Next.js address bar, Server Action forms and React form lessons.
 - Tests: `lib/__tests__/nextPage.test.ts` (the runtime, and that it is built from its source); every Next.js lesson page is run with its taps. 7677 tests pass. `supabase/track-lessons.sql` regenerated.
 
 ## 1 Nov 2026 (branch `lesson-v3`): Next.js v5 draft
