@@ -6,6 +6,7 @@ import { NODE_M1 } from './m1';
 import { NODE_M4 } from './m4';
 import { NODE_M7 } from './m7';
 import { NODE_M11 } from './m11';
+import { NODE_PROJECT } from './project';
 
 /** Splits a list of lessons into modules: each module ends with its Challenge. */
 const modules = (lessons: Lesson[]): Lesson[][] =>
@@ -36,6 +37,7 @@ const MODULES: [string, string, Level, Lesson[]][] = [
   ['n-u5', 'A CRUD API', 'intermediate', m12],
   ['n-u10', 'Configuration and security', 'intermediate', m13],
   ['n-u13', 'Testing', 'intermediate', m14],
+  ['n-u14', 'Final project', 'intermediate', [NODE_PROJECT]],
 ];
 
 /** Every lesson and challenge in the Node.js track, in order, each with its module’s level. */

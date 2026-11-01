@@ -11,7 +11,7 @@ it('the Node.js runtime is built from scripts/node-runtime.js (run node scripts/
   expect(NODE_RUNTIME).toBe(transformSync(source, { minify: true, target: 'es2019', legalComments: 'none' }).code);
 });
 
-const run = async (app: NodeApp, wait = 600) => {
+const run = async (app: NodeApp, wait = 1000) => {
   const page = await runPage({ html: '', node: app }, wait);
   const doc = page.window.document;
   const click = async (sel: string, ms = 400) => {

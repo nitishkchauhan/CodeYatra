@@ -358,5 +358,54 @@ export const NEXT_A_TEST = finalTest('next-a-test', 'Next.js', 'next', 'advanced
   ['How are async Server Components usually tested?', ['With end-to-end tests', 'With unit tests only', 'They can’t be', 'By reading them'], 'In a real browser.'],
 ]);
 
+export const NODE_B_TEST = finalTest('node-b-test', 'Node.js Basics', 'node', 'basic', ['Run programs and use modules and npm', 'Write asynchronous code', 'Work with files, events and streams'], [
+  ['What is Node.js?', ['A runtime that runs JavaScript outside the browser', 'A browser', 'A database', 'A CSS tool'], 'Servers, tools and scripts.'],
+  ['Which command runs app.js?', ['node app.js', 'npm app.js', 'run app.js', 'js app.js'], 'node and the file.', true],
+  ['Where do your own arguments start in process.argv?', ['Index 2', 'Index 0', 'Index 1', 'The end'], 'After node and the file.'],
+  ['What does a non-zero exit code mean?', ['The program failed', 'It succeeded', 'It is still running', 'Nothing'], '0 is success.'],
+  ['Which shares values in CommonJS?', ['module.exports', 'export default', 'window.exports', 'share()'], 'And require loads them.', true],
+  ['Which turns on ES modules in .js files?', ['"type": "module" in package.json', '"esm": true', 'node --modules', 'A comment'], 'Or name files .mjs.', true],
+  ['What does the node: prefix mark?', ['A built-in module', 'An npm package', 'A local file', 'A test file'], 'node:fs, node:path…'],
+  ['Which file lists a project’s packages and scripts?', ['package.json', 'node_modules', '.env', 'app.js'], 'The project’s description.', true],
+  ['What should never be committed to Git?', ['node_modules/', 'package.json', 'package-lock.json', 'app.js'], 'npm install rebuilds it.', true],
+  ['With "^5.1.0", which can npm install?', ['5.2.0', '6.0.0', '4.9.0', 'Any version'], '^ keeps the major version.', true],
+  ['How do you run a script named "dev"?', ['npm run dev', 'npm dev', 'node dev', 'npx dev'], 'With run.', true],
+  ['What does await do?', ['Pauses this async function until the promise settles', 'Blocks the whole program', 'Retries on error', 'Makes code run twice'], 'Others keep running.'],
+  ['Which runs independent jobs at the same time?', ['Promise.all', 'A for loop of awaits', 'Promise.wait', 'setInterval'], 'Overlap them.', true],
+  ['Which prints first: setTimeout(…, 0) or Promise.resolve().then(…)?', ['The promise callback', 'The timer', 'Random', 'Neither'], 'Microtasks first.'],
+  ['What blocks the event loop?', ['A long synchronous loop', 'await readFile', 'A timer', 'A promise'], 'One thread.'],
+  ['Which reads a file as text?', ['await readFile(path, "utf8")', 'await readFile(path)', 'readFile.text(path)', 'fs.open(path)'], 'Give an encoding.', true],
+  ['What does writeFile do to an existing file?', ['Replaces it', 'Adds to the end', 'Throws', 'Nothing'], 'appendFile adds.'],
+  ['What does ENOENT mean?', ['No such file or folder', 'No permission', 'Out of memory', 'Empty file'], 'Check the path.', true],
+  ['Which gives this file’s folder in an ES module?', ['import.meta.dirname', '__dirname', 'process.cwd()', 'path.here'], '__dirname is CommonJS.', true],
+  ['Which method fires an event?', ['emit', 'on', 'once', 'fire'], 'on listens.', true],
+  ['Why use a stream for a huge file?', ['Only a piece is in memory at a time', 'Streams skip errors', 'Streams are synchronous', 'readFile can’t read big files'], 'Low memory.'],
+]);
+
+export const NODE_I_TEST = finalTest('node-i-test', 'Node.js', 'node', 'intermediate', ['Build servers and REST APIs with Express', 'Validate input, handle errors and keep secrets', 'Test APIs with node:test'], [
+  ['What must every node:http handler do?', ['End the response', 'Call next()', 'Return a promise', 'Log the request'], 'res.end().'],
+  ['Which status means “created”?', ['201', '200', '204', '400'], 'After a POST.', true],
+  ['Where is :id in Express?', ['req.params.id', 'req.query.id', 'req.body.id', 'req.id'], 'Route parameters.', true],
+  ['What type is req.params.id?', ['Text', 'Number', 'Boolean', 'Object'], 'Convert it.'],
+  ['Why return after res.status(404).json(…)?', ['So nothing else is sent', 'To stop the server', 'Express needs it to log', 'It isn’t needed'], 'One response.'],
+  ['What are middleware’s arguments?', ['(req, res, next)', '(req, res)', '(next)', '(app)'], 'Error handlers add err.', true],
+  ['Which fills req.body from JSON?', ['express.json()', 'JSON.parse(req)', 'express.body()', 'req.json()'], 'Add it with app.use.', true],
+  ['How does Express know a middleware handles errors?', ['It has four arguments', 'Its name', 'It is first', 'It throws'], '(err, req, res, next).'],
+  ['In Express 5, an async route throws. What happens?', ['The error middleware handles it', 'The server crashes', 'It is ignored', 'The request hangs'], 'Rejected promises are caught.'],
+  ['Which is valid JSON?', ['{ "name": "Sam" }', "{ name: 'Sam' }", '{ name: "Sam" }', "{ 'name': 'Sam' }"], 'Double quotes.', true],
+  ['Which status for missing or wrong fields?', ['400', '404', '409', '500'], 'Bad request.', true],
+  ['Which is the REST way to cancel booking 7?', ['DELETE /bookings/7', 'POST /cancelBooking/7', 'GET /bookings/7/delete', 'PUT /cancel'], 'Method as verb.', true],
+  ['Signed in, but not allowed?', ['403', '401', '409', '429'], '401 is not signed in.', true],
+  ['What does express.Router help with?', ['Grouping routes for one resource', 'Speed', 'Reading files', 'Testing'], 'Mount it with app.use.'],
+  ['What does CRUD stand for?', ['Create, read, update, delete', 'Copy, run, undo, deploy', 'Cache, read, use, drop', 'Create, return, upload, download'], 'The four data actions.'],
+  ['Why is one JSON file risky for a busy API?', ['Two writes at once can lose data', 'JSON can’t hold lists', 'Files are always slow', 'Express can’t write files'], 'Use a database.'],
+  ['Where should a payment key live?', ['In an environment variable', 'In app.js', 'In package.json', 'In the README'], 'Never in code.'],
+  ['Which loads a .env file in Node.js 22?', ['node --env-file=.env app.js', 'node app.js .env', 'npm env', 'import ".env"'], 'Built in.', true],
+  ['process.env.PORT is "4000". What is process.env.PORT + 1?', ['"40001"', '4001', 'NaN', 'An error'], 'Values are text.', true],
+  ['Which status says “too many requests”?', ['429', '503', '403', '400'], 'Rate limiting.', true],
+  ['Which command runs every *.test.js file?', ['node --test', 'npm test --all', 'node test', 'npx test'], 'Built in.', true],
+  ['Which compares arrays by their contents?', ['assert.deepEqual', 'assert.equal', 'assert.ok', 'assert.same'], 'Deep.', true],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST];
+export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST];

@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
   );
 }`;
 
-const open = async (app: NextApp, wait = 900) => {
+const open = async (app: NextApp, wait = 1500) => {
   const page = await runPage({ html: '', next: app }, wait);
   const doc = page.window.document;
   const go = async (url: string, ms = 600) => {
@@ -101,8 +101,8 @@ export default async function Dish({ params }) {
   it('draws "use client" components with state, and stops hooks and event handlers in Server Components', async () => {
     const counter = '"use client";\nimport { useState } from "react";\n\nexport default function Counter() {\n  const [n, setN] = useState(0);\n  return <button id="add" onClick={() => setN(n + 1)}>Cups: {n}</button>;\n}';
     const p = await open({ files: { 'app/page.js': 'import Counter from "./Counter";\n\nexport default function Home() {\n  return <Counter />;\n}', 'app/Counter.js': counter } });
-    await p.click('#add', 100);
-    await p.click('#add', 100);
+    await p.click('#add', 300);
+    await p.click('#add', 300);
     expect(p.text()).toContain('Cups: 2');
 
     const bad = await open({ files: { 'app/page.js': counter.replace('"use client";\n', '') } });

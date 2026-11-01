@@ -147,7 +147,7 @@ export const NODE_M1: Lesson[] = [
       ['CommonJS', ['const { withTax } = require("./prices");', 'module.exports = { withTax };'], 'Older, still common. Loaded when the line runs.'],
       ['ES modules', ['import { withTax } from "./prices.js";', 'export function withTax(p) { … }'], 'Modern, like the browser. Allows top-level await.'],
     ]),
-    matchUp('Which style?', [['require("./a")', 'CommonJS'], ['import x from "./a.js"', 'ES modules'], ['module.exports', 'CommonJS'], ['"type": "module"', 'Turns on ES modules']], 'Two module systems.'),
+    matchUp('Which style?', [['require("./a")', 'CommonJS import'], ['import x from "./a.js"', 'ES module import'], ['module.exports', 'CommonJS export'], ['"type": "module"', 'Turns on ES modules']], 'Two module systems.'),
     recap([
       ['📤', 'export, and export default'],
       ['📥', 'import x, { y } from "./file.js"'],

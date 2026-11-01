@@ -18,7 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
@@ -593,13 +593,16 @@ export const STAGES: Stage[] = [
     short: 'Node.js',
     sub: 'Servers and APIs',
     audience: 'B.Tech · BCA',
-    blurb: 'Write the backend: modules, npm, Express, middleware and REST APIs.',
+    blurb: '14 modules of short lessons that run live in a terminal: modules, npm, async code, files, events, HTTP, Express, middleware, validation, REST and CRUD APIs, configuration, security and testing. A final project and two final tests.',
     color: '#15803D',
     soft: '#E3F5E8',
     accent: '#86EFAC',
     icon: 'M12 2l9 5v10l-9 5-9-5V7z',
     units: [
-      ...NODE_UNITS,
+      ...NODE_UNITS.slice(0, 6),
+      testUnit(NODE_B_TEST),
+      ...NODE_UNITS.slice(6),
+      testUnit(NODE_I_TEST),
     ],
     practice: [
       { id: 'x-express', title: 'A real web server', kind: 'Express', difficulty: 'Medium', xp: 15 },
