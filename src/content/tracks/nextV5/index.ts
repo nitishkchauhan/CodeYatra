@@ -4,10 +4,16 @@
 import type { Lesson, Unit } from '../../types';
 import { NX_M1 } from './m1';
 import { NX_M2 } from './m2';
+import { NX_M3 } from './m3';
+import { NX_M4 } from './m4';
+import { NX_M5 } from './m5';
 
 const MODULES: [string, string, Lesson[]][] = [
   ['nx-u1', 'Fundamentals of Next.js', NX_M1],
   ['nx-u2', 'Routing and Navigation', NX_M2],
+  ['nx-u3', 'Rendering Strategies', NX_M3],
+  ['nx-u4', 'Data Fetching', NX_M4],
+  ['nx-u5', 'API Development', NX_M5],
 ];
 
 /** Every lesson and challenge in the Next.js track, in order. */

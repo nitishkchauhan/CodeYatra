@@ -222,12 +222,13 @@ describe('Lesson v5 JavaScript screens', () => {
     // A short pause between taps, like a real user, so a React page can draw again in between.
     for (const a of s.demo) {
       act(window, a);
-      if (live) await new Promise((r) => setTimeout(r, s.page.next ? 700 : 40));
+      // A Next.js page moves to another address after a tap, so it gets longer (typing needs no wait).
+      if (live) await new Promise((r) => setTimeout(r, s.page.next && !('type' in a) ? 700 : 40));
     }
     await new Promise((r) => setTimeout(r, 1300));
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.map((l) => l.text).some((t) => t.includes(s.goal))).toBe(true);
-  });
+  }, 15000);
 
   it.each(rows(of('toggle').filter(([, s]) => s.views.some((v) => v.out))))('%s: each version prints what it says', (key, s) => {
     if (!s) return;

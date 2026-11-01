@@ -1234,7 +1234,7 @@
       var fn = ex[method];
       var before = phase;
       if (typeof fn !== 'function') {
-        log(method + ' ' + u.path + ' 405');
+        log(method + ' ' + u.path + u.search + ' 405');
         return Promise.resolve(new Res('', { status: 405 }));
       }
       phase = 'route';
@@ -1246,17 +1246,17 @@
           function (r) {
             phase = before;
             r = r instanceof Res ? r : new Res(r === undefined ? '' : String(r));
-            log(method + ' ' + u.path + ' ' + r.status);
+            log(method + ' ' + u.path + u.search + ' ' + r.status);
             return r;
           },
           function (e) {
             phase = before;
             if (e && e.__notFound) {
-              log(method + ' ' + u.path + ' 404');
+              log(method + ' ' + u.path + u.search + ' 404');
               return new Res('', { status: 404 });
             }
             log('⨯ Error: ' + (e && e.message));
-            log(method + ' ' + u.path + ' 500');
+            log(method + ' ' + u.path + u.search + ' 500');
             return new Res('Internal Server Error', { status: 500 });
           },
         );
