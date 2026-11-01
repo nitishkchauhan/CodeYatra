@@ -1,13 +1,22 @@
 // Builds a self-contained HTML page from the learner's HTML, CSS and JS, with
 // console.log and errors forwarded to the app so they can be shown below the preview.
 import { withAssets } from './assets';
+import { NEXT_RUNTIME } from './nextRuntime';
 import { REACT_RUNTIME } from './reactRuntime';
 
 /**
  * `pages`: other pages of a small site (file name → body HTML), so links between them work in the preview.
  * `react`: js is a React program, run with the bundled React (see reactProgram).
+ * `next`: a Next.js app, run with the teaching copy of Next.js (scripts/next-runtime.js); `js`, when given, is the
+ * text of its `edit` file.
  */
-export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean };
+export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp };
+
+/**
+ * A Next.js app for a lesson page: its files by path (app/page.js, app/menu/[id]/page.js, lib/data.js, .env…), the
+ * address it opens at, and which file the learner edits (its text then comes from WebFiles.js).
+ */
+export type NextApp = { files: Record<string, string>; url?: string; edit?: string };
 export type PageLog = { level: 'log' | 'error'; text: string };
 
 const BRIDGE = `<script>
@@ -122,7 +131,8 @@ const PRACTICE = `<script>
 const BASE_CSS = 'body{font-family:system-ui,-apple-system,Roboto,sans-serif;margin:12px;line-height:1.45;color:#16142B;}';
 
 /** A full document. `</script>` in learner JS is escaped so it can't break out of its tag. */
-export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html', react = false }: WebFiles): string {
+export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html', react = false, next }: WebFiles): string {
+  if (next) return nextPage(next, rawCss, js);
   // Built-in pictures (cup.svg, banner.svg…) work offline.
   const html = withAssets(rawHtml);
   const css = withAssets(rawCss);
@@ -133,6 +143,18 @@ export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, cur
     : `<script>try{${safeJs}\n}catch(e){window.onerror && window.onerror(e.message)}</script>`;
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 ${BRIDGE}${PRACTICE}<style>${BASE_CSS}${css}</style></head><body>${html}${script}${pages ? siteScript(html, pages, current) : ''}</body></html>`;
+}
+
+const safe = (s: string) => s.replace(/<\/script/gi, '<\\/script');
+/** Built-in pictures in a Next.js app are written as "/dish.svg" (from the public folder). */
+const appAssets = (text: string) => withAssets(text.replace(/(["'])\/((?:cup|leaf|banner|dish|portrait)\.svg)(?=["'])/g, '$1$2'));
+
+/** A Next.js lesson page: React, then the teaching copy of Next.js, which draws the app at its address. */
+function nextPage(app: NextApp, css: string, js: string): string {
+  const files = Object.fromEntries(Object.entries({ ...app.files, ...(app.edit && js ? { [app.edit]: js } : {}) }).map(([k, v]) => [k, appAssets(v)]));
+  const start = `try{window.__cyNext(${JSON.stringify(files)},${JSON.stringify(app.url ?? '/')},${JSON.stringify(css)})}catch(e){window.onerror && window.onerror(e.message)}`;
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+${BRIDGE}${PRACTICE}<style>${BASE_CSS}</style></head><body><div id="root"></div><script>${safe(REACT_RUNTIME)}</script><script>${safe(NEXT_RUNTIME)}</script><script>${safe(start)}</script></body></html>`;
 }
 
 /**

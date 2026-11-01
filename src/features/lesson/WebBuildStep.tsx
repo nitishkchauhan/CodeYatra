@@ -32,8 +32,10 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
   const [checks, setChecks] = useState<{ label: string; ok: boolean }[] | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [logs, setLogs] = useState<PageLog[]>([]);
-  const doc = useDeferredValue(buildPage({ ...files, pages: step.pages, current: step.current, react: step.react }));
+  const doc = useDeferredValue(buildPage({ ...files, pages: step.pages, current: step.current, react: step.react, next: step.next }));
   const pass = checks?.every((c) => c.ok) ?? false;
+  // A Next.js project edits one file of the app, shown by its path.
+  const fileName = (f: WebFile) => (f === 'js' && step.next?.edit ? step.next.edit : FILE_NAME[f]);
   // The React Compiler keeps this function stable, so the preview is not reloaded on every render.
   const onLog = (log: PageLog) => setLogs((l) => [...l.slice(-4), log]);
 
@@ -80,14 +82,14 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
             {fileList.map((f) => (
               <Pressable key={f} accessibilityRole="tab" accessibilityState={{ selected: tab === f }} onPress={() => setTab(f)} style={[styles.tab, tab === f && styles.tabOn]}>
                 <T style={{ fontFamily: fonts.mono, fontSize: 13, color: tab === f ? colors.ink : colors.ink2 }}>
-                  {FILE_NAME[f]}
+                  {fileName(f)}
                   {builds[f].puzzle.answers.length && !builds[f].filled ? ' •' : ''}
                 </T>
               </Pressable>
             ))}
           </View>
         ) : null}
-        <BuildBoard key={tab} build={builds[tab]} lang={EDITOR_LANG[tab]} file={FILE_NAME[tab]} />
+        <BuildBoard key={tab} build={builds[tab]} lang={EDITOR_LANG[tab]} file={fileName(tab)} />
 
         {checks ? (
           <Animated.View entering={FadeInDown.duration(240)} style={styles.checks} accessibilityLiveRegion="polite">
@@ -120,7 +122,7 @@ export function WebBuildStep({ step, onDone, onMistake }: { step: WebStep; onDon
               instructions: step.instructions,
               code: (['html', 'css', 'js'] as WebFile[])
                 .filter((f) => files[f] !== undefined)
-                .map((f) => `--- ${FILE_NAME[f]} ---\n${files[f]}`)
+                .map((f) => `--- ${fileName(f)} ---\n${files[f]}`)
                 .join('\n'),
               problem: 'Checklist items not done yet:\n' + checks.filter((c) => !c.ok).map((c) => `- ${c.label}`).join('\n'),
             })}

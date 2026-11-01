@@ -1,4 +1,8 @@
-export type CodeLang = 'python' | 'javascript' | 'html' | 'css' | 'jsx' | 'c' | 'java' | 'sql' | 'bash';
+import type { NextApp } from '@/lib/web/page';
+
+export type { NextApp };
+
+export type CodeLang ='python' | 'javascript' | 'html' | 'css' | 'jsx' | 'c' | 'java' | 'sql' | 'bash';
 
 export type CodeSample = { lang: CodeLang; label: string; lines: string[] };
 
@@ -224,6 +228,8 @@ export type WebStep = {
   current?: string;
   /** The js file is a React program (see PagePreview). */
   react?: boolean;
+  /** The js file is the `edit` file of this Next.js app (see PagePreview). */
+  next?: NextApp;
 };
 
 /** Lesson v2: opens a module with a real situation and what the learner will be able to do. */
@@ -372,7 +378,8 @@ export type RecallStep = {
 
 /** A web page shown in a live preview: body HTML, with optional CSS. */
 /** `react`: js is a React program (JSX, imports from "react"); it runs with the bundled React, and App is shown in #root. */
-export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean };
+/** `next`: a Next.js app (see NextApp in lib/web/page), run with the teaching copy of Next.js. */
+export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp };
 
 /** Yatri talks: a few short speech bubbles, then a button. */
 export type ChatStep = { type: 'chat'; kicker?: string; lines: string[]; button?: string; code?: string[]; page?: PagePreview };
@@ -495,6 +502,8 @@ export type ArrangeStep = {
   expect?: string[];
   /** A React arrange: the blocks are a React program, shown live in the page (html, or a #root). */
   react?: boolean;
+  /** A Next.js arrange: the blocks are the `edit` file of this app, shown live. */
+  next?: NextApp;
   goal: string;
 };
 
@@ -613,6 +622,8 @@ export type ModuleNotes = {
     walk: { line: number; text: string }[];
     /** For CSS notes: the page the styles in `code` are applied to; the notes show it live. */
     page?: string;
+    /** For Next.js notes: the app `code` belongs to (`code` is its `edit` file); the notes show it live. */
+    next?: NextApp;
     /** What it prints (or, for a web page, the text it shows); tests run or render it and compare. */
     output: string[];
   };
