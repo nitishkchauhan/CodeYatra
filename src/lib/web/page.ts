@@ -2,6 +2,7 @@
 // console.log and errors forwarded to the app so they can be shown below the preview.
 import { withAssets } from './assets';
 import { NEXT_RUNTIME } from './nextRuntime';
+import { GIT_RUNTIME } from './gitRuntime';
 import { NODE_RUNTIME } from './nodeRuntime';
 import { REACT_RUNTIME } from './reactRuntime';
 
@@ -11,7 +12,7 @@ import { REACT_RUNTIME } from './reactRuntime';
  * `next`: a Next.js app, run with the teaching copy of Next.js (scripts/next-runtime.js); `js`, when given, is the
  * text of its `edit` file.
  */
-export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp; node?: NodeApp };
+export type WebFiles = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp; node?: NodeApp; git?: GitApp };
 
 /**
  * A Next.js app for a lesson page: its files by path (app/page.js, app/menu/[id]/page.js, lib/data.js, .env…), the
@@ -152,9 +153,10 @@ const PRACTICE = `<script>
 const BASE_CSS = 'body{font-family:system-ui,-apple-system,Roboto,sans-serif;margin:12px;line-height:1.45;color:#16142B;}';
 
 /** A full document. `</script>` in learner JS is escaped so it can't break out of its tag. */
-export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html', react = false, next, node }: WebFiles): string {
+export function buildPage({ html: rawHtml, css: rawCss = '', js = '', pages, current = 'index.html', react = false, next, node, git }: WebFiles): string {
   if (next) return nextPage(next, rawCss, js);
   if (node) return nodePage(node, rawCss, js);
+  if (git) return gitPage(git);
   // Built-in pictures (cup.svg, banner.svg…) work offline.
   const html = withAssets(rawHtml);
   const css = withAssets(rawCss);
@@ -177,6 +179,29 @@ function nextPage(app: NextApp, css: string, js: string): string {
   const start = `try{window.__cyNext(${JSON.stringify(files)},${JSON.stringify(app.url ?? '/')},${JSON.stringify(css)})}catch(e){window.onerror && window.onerror(e.message)}`;
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 ${BRIDGE}${PRACTICE}<style>${BASE_CSS}</style></head><body><div id="root"></div><script>${safe(REACT_RUNTIME)}</script><script>${safe(NEXT_RUNTIME)}</script><script>${safe(start)}</script></body></html>`;
+}
+
+/**
+ * A Git lesson page: a terminal where the teaching copy of Git answers commands. `files` is the folder to start with,
+ * `repo` an existing history (commits as [message, {file: text}, branch?]), `origin` a remote it was pushed to (with
+ * commits a teammate added since), `hub` repositories that can be cloned; `commands` are ready-made buttons, and
+ * `before` commands already run when the page opens.
+ */
+export type GitApp = {
+  files?: Record<string, string>;
+  folder?: string;
+  repo?: { commits: [string, Record<string, string | null>, string?][]; branch?: string; from?: Record<string, string> };
+  origin?: { url: string; ahead?: [string, Record<string, string>][] };
+  hub?: Record<string, { commits: [string, Record<string, string | null>, string?][] }>;
+  commands?: string[];
+  before?: string[];
+};
+
+function gitPage(app: GitApp): string {
+  const { commands, before, ...setup } = app;
+  const start = `try{window.__cyGit(${JSON.stringify(setup)},${JSON.stringify({ commands, before })})}catch(e){window.onerror && window.onerror(e.message)}`;
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+${BRIDGE}</head><body><div id="root"></div><script>${safe(GIT_RUNTIME)}</script><script>${safe(start)}</script></body></html>`;
 }
 
 /** A Node.js lesson page: a terminal where the teaching copy of Node.js runs the program. */

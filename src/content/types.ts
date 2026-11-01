@@ -1,6 +1,6 @@
-import type { NextApp, NodeApp } from '@/lib/web/page';
+import type { GitApp, NextApp, NodeApp } from '@/lib/web/page';
 
-export type { NextApp, NodeApp };
+export type { GitApp, NextApp, NodeApp };
 
 export type CodeLang ='python' | 'javascript' | 'html' | 'css' | 'jsx' | 'c' | 'java' | 'sql' | 'bash';
 
@@ -381,7 +381,7 @@ export type RecallStep = {
 /** A web page shown in a live preview: body HTML, with optional CSS. */
 /** `react`: js is a React program (JSX, imports from "react"); it runs with the bundled React, and App is shown in #root. */
 /** `next`: a Next.js app (see NextApp in lib/web/page), run with the teaching copy of Next.js. */
-export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp; node?: NodeApp };
+export type PagePreview = { html: string; css?: string; js?: string; pages?: Record<string, string>; current?: string; react?: boolean; next?: NextApp; node?: NodeApp; git?: GitApp };
 
 /** Yatri talks: a few short speech bubbles, then a button. */
 export type ChatStep = { type: 'chat'; kicker?: string; lines: string[]; button?: string; code?: string[]; page?: PagePreview };

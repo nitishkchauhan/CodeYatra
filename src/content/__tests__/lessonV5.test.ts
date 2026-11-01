@@ -98,7 +98,7 @@ describe('Lesson v5 screens', () => {
   it.each(rows(of('explore')))('%s: notes point at real lines and real parts of the page', async (_, s) => {
     if (!s) return;
     // A React page is checked once React has drawn it.
-    const doc = s.page?.react || s.page?.next || s.page?.node ? (await runPage(s.page, 900)).window.document : dom((s.page ?? { html: s.code.join('\n') }).html);
+    const doc = s.page?.react || s.page?.next || s.page?.node || s.page?.git ? (await runPage(s.page, 900)).window.document : dom((s.page ?? { html: s.code.join('\n') }).html);
     for (const n of s.notes) {
       expect(n.line).toBeGreaterThanOrEqual(1);
       expect(n.line).toBeLessThanOrEqual(s.code.length);
@@ -219,8 +219,8 @@ describe('Lesson v5 JavaScript screens', () => {
 
   it.each(rows(of('tappage')))('%s: the page runs, and the demo taps reach the goal', async (_, s) => {
     if (!s) return;
-    const live = s.page.react || s.page.next || s.page.node;
-    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current, react: s.page.react, next: s.page.next, node: s.page.node }, live ? 900 : 0);
+    const live = s.page.react || s.page.next || s.page.node || s.page.git;
+    const { logs, window } = await runPage({ html: s.page.html, css: s.page.css, js: s.page.js, pages: s.page.pages, current: s.page.current, react: s.page.react, next: s.page.next, node: s.page.node, git: s.page.git }, live ? 900 : 0);
     expect(logs.filter((l) => l.level === 'error')).toEqual([]);
     expect(logs.some((l) => l.text.includes(s.goal))).toBe(false);
     // A short pause between taps, like a real user, so a React page can draw again in between.
