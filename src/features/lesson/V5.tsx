@@ -674,7 +674,7 @@ export function ArrangeScreen({ step, onDone, onMistake }: { step: ArrangeStep }
   const [phase, setPhase] = useState<'ask' | 'right' | 'hint' | 'shown'>('ask');
   const { style: shakeStyle, shake } = useShake();
   const built = placed.map((i) => step.blocks[i]).join('\n');
-  const doc = useMemo(() => (step.run ? '' : step.next ? buildPage({ html: '', css: step.css, js: built, next: step.next }) : step.node ? buildPage({ html: '', js: built, node: step.node }) : step.git ? buildPage({ html: '', git: { ...step.git, before: [...(step.git.before ?? []), ...placed.map((i) => step.blocks[i])] } }) : step.react ? buildPage({ html: step.html ?? '<div id="root"></div>', css: step.css, js: built, react: true }) : codePage(built, step.css, step.html)), [built, step]);
+  const doc = useMemo(() => (step.run ? '' : step.next ? buildPage({ html: '', css: step.css, js: built, next: step.next }) : step.node ? buildPage({ html: '', js: built, node: step.node }) : step.git ? buildPage({ html: '', git: { ...step.git, before: [...(step.git.before ?? []), ...placed.map((i) => step.blocks[i])] } }) : step.react ? buildPage({ html: step.html ?? '<div id="root"></div>', css: step.css, js: built, react: true }) : codePage(built, step.css, step.html)), [built, step, placed]);
   const ran = useJsRun(step.run && placed.length ? built : null);
   useAutoNext(phase === 'right', onDone, AUTO_NEXT_MS + 600);
   const add = (i: number) => {

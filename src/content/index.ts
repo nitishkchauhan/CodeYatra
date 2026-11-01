@@ -18,7 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
@@ -746,13 +746,16 @@ export const STAGES: Stage[] = [
     short: 'Git',
     sub: 'Version control like a pro',
     audience: 'Everyone who codes',
-    blurb: 'Commits, branches, merges, pull requests and undoing mistakes.',
+    blurb: '11 modules of short lessons with a live Git terminal: repositories, commits, history, branches, merges and conflicts, GitHub, pull requests, .gitignore, undoing and stash. A final project and two final tests.',
     color: '#C2410C',
     soft: '#FFEDE5',
     accent: '#FDBA8C',
     icon: 'M6 3v12 M6 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M18 9a9 9 0 0 1-9 9',
     units: [
-      ...GIT_UNITS,
+      ...GIT_UNITS.slice(0, 6),
+      testUnit(GIT_B_TEST),
+      ...GIT_UNITS.slice(6),
+      testUnit(GIT_I_TEST),
     ],
     practice: [{ id: 'x-git-drill', title: 'Command drill', kind: 'Order + quiz', difficulty: 'Easy', xp: 15 }],
   },

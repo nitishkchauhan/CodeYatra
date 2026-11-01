@@ -271,7 +271,7 @@ describe('Lesson v5 JavaScript screens', () => {
 
   it.each(rows(of('arrange').filter(([, s]) => s.git)))('%s: the Git commands in order run without an error', async (_, s) => {
     if (!s) return;
-    const { window } = await runPage({ html: '', git: { ...s.git, before: [...(s.git.before ?? []), ...s.blocks] } }, 300);
+    const { window } = await runPage({ html: '', git: { ...s.git, before: [...(s.git!.before ?? []), ...s.blocks] } }, 300);
     const out = Array.from(window.document.querySelectorAll('.cy-line')).map((d) => d.textContent ?? '');
     expect(out.filter((l) => /^(fatal|error):|command not found/.test(l))).toEqual([]);
   });

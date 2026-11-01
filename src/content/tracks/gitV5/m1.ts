@@ -1,7 +1,7 @@
 // Git · Modules 1–6 (Basic): what Git is, starting a repository, staging and committing, history, branches, and
 // merging. Each module’s first lesson keeps its old id.
 import type { Lesson } from '../../types';
-import { arrange, bugTask, CAFE_REPO, challenge, chat, check, explore, lesson, matchUp, mcq, pairs, pickCode, press, recap, reveal, swipe, tapbug, tapPage, term, toggle, truth, xray } from './kit';
+import { arrange, bugTask, CAFE_REPO, challenge, chat, check, explore, lesson, matchUp, mcq, pairs, pickCode, press, recap, reveal, swipe, tapbug, tapPage, term, truth, xray } from './kit';
 
 const TWO_BRANCHES = { repo: CAFE_REPO, before: ['git switch -c offers', 'echo "Tea and toast: 100" > offers.txt', 'git add offers.txt', 'git commit -m "Add the offers page"', 'git switch main'] };
 

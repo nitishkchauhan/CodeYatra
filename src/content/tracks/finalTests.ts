@@ -456,5 +456,53 @@ export const SQL_I_TEST = finalTest('sql-i-test', 'SQL', 'sql', 'intermediate', 
   ['How do you stop SQL injection?', ['Pass values as parameters', 'Remove quotes from input', 'Use capitals', 'Use a view'], 'Never glue user text into SQL.'],
 ]);
 
+export const GIT_B_TEST = finalTest('git-b-test', 'Git Basics', 'git', 'basic', ['Start repositories and commit changes', 'Read history and tag releases', 'Branch and merge, conflicts included'], [
+  ['What is Git?', ['A version control system', 'A website', 'A programming language', 'A database'], 'It keeps a project’s history.'],
+  ['What is GitHub?', ['A website that hosts Git repositories', 'Another name for Git', 'A Git command', 'A code editor'], 'Online sharing.'],
+  ['Which sets your name for every repository?', ['git config --global user.name "Rosa Cafe"', 'git name "Rosa Cafe"', 'git user Rosa', 'git config name'], 'Once per computer.', true],
+  ['Which starts a repository?', ['git init', 'git start', 'git new', 'git create'], 'Makes .git.', true],
+  ['Where does Git keep the history?', ['In the .git folder', 'In each file', 'On GitHub only', 'In README.md'], 'Hidden.', true],
+  ['What does ?? mean in git status -s?', ['Untracked file', 'Conflict', 'Deleted', 'Staged'], 'Not tracked yet.', true],
+  ['Which stages a file?', ['git add menu.txt', 'git commit menu.txt', 'git stage-file menu.txt', 'git save menu.txt'], 'Into the staging area.', true],
+  ['Which saves staged changes with a message?', ['git commit -m "Add the menu"', 'git save "Add the menu"', 'git push -m "Add the menu"', 'git add -m "Add the menu"'], '-m for message.', true],
+  ['Which is the best commit message?', ['Add opening hours to the footer', 'update', 'stuff', 'changes 2'], 'Specific and imperative.'],
+  ['What does git commit --amend do?', ['Replaces the last commit', 'Adds a second commit', 'Pushes', 'Deletes history'], 'Not for pushed commits.', true],
+  ['Which lists commits one per line?', ['git log --oneline', 'git list', 'git history', 'git show -1'], 'Short form.', true],
+  ['What does git diff show by default?', ['Changes not staged yet', 'Staged changes', 'The last commit', 'Branches'], '--staged for staged.', true],
+  ['What is HEAD~1?', ['The commit before the current one', 'The first commit', 'A branch', 'The next commit'], 'One step back.', true],
+  ['What does a tag do?', ['Names one commit, like a release', 'Moves with every commit', 'Deletes a branch', 'Stages files'], 'v1.0.'],
+  ['Which makes a branch and switches to it?', ['git switch -c offers', 'git branch offers', 'git switch offers', 'git merge offers'], '-c creates.', true],
+  ['What happens to files when you switch branches?', ['They change to that branch’s version', 'Nothing', 'They are deleted', 'They are pushed'], 'The folder follows.'],
+  ['Why might Git refuse to switch?', ['Uncommitted changes would be lost', 'The branch is new', 'You are offline', 'The branch is empty'], 'Commit or stash.'],
+  ['What is a fast-forward merge?', ['main just moves up to the branch', 'A merge with conflicts', 'A deleted branch', 'A force push'], 'No merge commit.'],
+  ['What causes a merge conflict?', ['Both branches changed the same lines', 'Long branch names', 'Too many commits', 'Being offline'], 'Git can’t choose.'],
+  ['After fixing a conflicted file, what next?', ['git add it, then git commit', 'git push --force', 'git merge again', 'git init'], 'Stage, then commit.'],
+  ['Which backs out of a merge in progress?', ['git merge --abort', 'git merge --undo', 'git reset --soft', 'git stash'], 'Back to before.', true],
+]);
+
+export const GIT_I_TEST = finalTest('git-i-test', 'Git', 'git', 'intermediate', ['Work with GitHub: clone, push, pull and pull requests', 'Keep secrets out and undo safely', 'Use stash and team workflows'], [
+  ['Which copies a repository from GitHub?', ['git clone URL', 'git pull URL', 'git copy URL', 'git fetch URL'], 'With all its history.', true],
+  ['Which connects a repository to GitHub?', ['git remote add origin URL', 'git origin URL', 'git link URL', 'git push URL'], 'Then push.', true],
+  ['What is origin?', ['The usual name of the main remote', 'The first commit', 'The main branch', 'A GitHub user'], 'Just a name.'],
+  ['What does -u do in git push -u origin main?', ['Links main to origin/main', 'Undoes the push', 'Pushes every branch', 'Uploads faster'], 'Upstream.', true],
+  ['Why would a push be rejected?', ['The remote has commits you don’t have', 'The message is long', 'You are on main', 'The file is big'], 'Pull first.'],
+  ['What is the difference between fetch and pull?', ['fetch downloads; pull downloads and merges', 'They are the same', 'pull only reads', 'fetch uploads'], 'Look first.'],
+  ['Why avoid git push --force on shared branches?', ['It can overwrite others’ commits', 'It is slow', 'It needs a password', 'It deletes branches'], 'Rewrites history.'],
+  ['What is a pull request?', ['A request to review and merge a branch', 'A git pull', 'A bug report', 'A fork'], 'On GitHub.'],
+  ['What is a fork?', ['Your copy of someone else’s repository on GitHub', 'A branch', 'A conflict', 'A tag'], 'Contribute through a PR.'],
+  ['What makes a pull request easy to review?', ['Small, with what, why and how to test', 'Very large', 'No description', 'Many unrelated changes'], 'Clear and focused.'],
+  ['What does .gitignore do?', ['Lists files Git should not track', 'Deletes files', 'Encrypts files', 'Hides branches'], 'For untracked files.'],
+  ['Which line ignores the node_modules folder?', ['node_modules/', '#node_modules', '!node_modules', 'node_modules.txt'], 'A trailing slash.', true],
+  ['Which untracks a committed file but keeps it on disk?', ['git rm --cached .env', 'git rm .env', 'git ignore .env', 'git reset .env'], '--cached.', true],
+  ['A secret was pushed. What first?', ['Change (rotate) it', 'Delete the commit', 'Rename the file', 'Nothing'], 'Assume it leaked.'],
+  ['Which throws away uncommitted edits to a file?', ['git restore menu.txt', 'git revert menu.txt', 'git stash list', 'git reset --soft'], 'Can’t be undone.', true],
+  ['Which undoes a pushed commit safely?', ['git revert id', 'git reset --hard id', 'git commit --amend', 'git push --force'], 'A new commit.', true],
+  ['What does git reset --hard HEAD~1 do?', ['Removes the last commit and its changes', 'Keeps changes staged', 'Reverts it', 'Pushes it'], 'Dangerous.', true],
+  ['Which lists where HEAD has been?', ['git reflog', 'git log --all', 'git status', 'git show'], 'For recovering commits.', true],
+  ['Which sets uncommitted changes aside?', ['git stash', 'git save', 'git hide', 'git park'], 'Then git stash pop.', true],
+  ['What is GitHub flow?', ['Branch, pull request, review, merge for each task', 'Everyone pushes to main', 'develop and release branches', 'One branch per person forever'], 'main always works.'],
+  ['When should you not rebase?', ['On commits others already have', 'On your own unpushed work', 'On a new branch', 'Never'], 'It rewrites them.'],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST];
+export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST];
