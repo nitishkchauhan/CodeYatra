@@ -2,7 +2,7 @@
 // code splitting with lazy loading. Lesson 9.1 keeps the old module id (nx-meta-1).
 import type { Lesson } from '../../types';
 import { CAFE, CAFE_LAYOUT, DB_MENU } from './apps';
-import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, truth, xray } from './kit';
+import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, xray } from './kit';
 
 const META_DISH = [
   'import { notFound } from "next/navigation";',

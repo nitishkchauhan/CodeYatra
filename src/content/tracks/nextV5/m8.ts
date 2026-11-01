@@ -3,7 +3,7 @@
 // Prisma set-up next to it.
 import type { Lesson } from '../../types';
 import { CAFE } from './apps';
-import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, truth, xray } from './kit';
+import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, xray } from './kit';
 
 const ENV = ['DATABASE_URL=postgresql://cafe:practice@db.rosascafe.example:5432/cafe', 'NEXT_PUBLIC_SITE_NAME=Rosa’s Café'];
 const SETTINGS = [

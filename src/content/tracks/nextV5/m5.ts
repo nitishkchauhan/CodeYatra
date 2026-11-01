@@ -2,7 +2,7 @@
 // and response handling. Lesson 5.1 keeps the old module id (nx-api-1). A small “API tester” page sends the requests.
 import type { Lesson } from '../../types';
 import { CAFE } from './apps';
-import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, truth, xray } from './kit';
+import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, truth, xray } from './kit';
 
 const LIST = [
   'import { db } from "@/lib/db";',

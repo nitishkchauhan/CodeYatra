@@ -48,6 +48,13 @@ describe('module notes', () => {
       expect(pageText(n.example.code.join('\n'))).toEqual(n.example.output);
       return;
     }
+    if (n.example.next) {
+      // Next.js examples are one file of a small app, run with the teaching copy of Next.js; the page then shows `output`.
+      const page = await runPage({ html: '', js: n.example.code.join('\n'), next: n.example.next }, 1500);
+      expect(page.logs.filter((l) => l.level === 'error')).toEqual([]);
+      expect(page.lines).toEqual(n.example.output);
+      return;
+    }
     if (n.lang === 'jsx') {
       // React examples run on their page with the bundled React; the drawn page then shows `output`.
       const page = await runPage({ html: n.example.page ?? '<div id="root"></div>', js: n.example.code.join('\n'), react: true }, 1500);
@@ -72,7 +79,7 @@ describe('module notes', () => {
     expect(r.output).toEqual(n.example.output);
   });
 
-  it.each(['python', 'react'])('every %s module has notes', (track) => {
+  it.each(['python', 'react', 'next'])('every %s module has notes', (track) => {
     // A Lesson v5 module is a unit of short lessons; its notes belong to the unit's first lesson.
     const modules = STAGES.find((s) => s.id === track)!.units.flatMap((u) => u.lessons.filter((l, i) => i === 0 || getLesson(l.id)?.format !== 'v5').map((l) => getLesson(l.id)!)).filter((l) => l.kind === 'lesson' && !l.exam);
     expect(modules.filter((l) => !NOTES[l.id]).map((l) => l.id)).toEqual([]);

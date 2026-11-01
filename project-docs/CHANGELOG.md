@@ -2,6 +2,19 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 1 Nov 2026 (branch `lesson-v3`): Next.js in Lesson v5
+- **Built from the approved draft** (`content-drafts/next-v5.md`, the owner’s 12-section flow), in `src/content/tracks/nextV5/`:
+  - **Basic:** Fundamentals (with styling as 1.5), Routing and Navigation, Rendering Strategies, Data Fetching; then the Next.js Basics final test.
+  - **Intermediate:** API Development, Forms and Server Actions, Authentication and Authorization, Database Integration; then the Next.js Intermediate final test.
+  - **Advanced:** Performance and SEO, Deployment, Advanced Next.js Features, Industry Practices; then the final project (**Rosa’s Café online menu**, 6 checked steps, keeps `nx-project`) and the Next.js final test.
+  - Each module ends with a Module Challenge. Old lesson ids are kept, so progress and practice sets carry over. The old v2 lessons (`tracks/nextFoundations.ts`) are removed.
+- **Live Next.js apps in lessons:** `scripts/next-runtime.js`, a small teaching copy of Next.js 16 on the bundled React, built into `lib/web/nextRuntime.ts` (31 KB) by `scripts/build-react-runtime.mjs`.
+  - It covers file routing (dynamic, catch-all, groups, private, parallel and intercepting routes), layouts, loading/error/not-found, Server and Client Components, Route Handlers, Server Actions (useActionState, useFormStatus, useOptimistic), cookies, proxy.js, `.env` files, static vs dynamic pages, "use cache", metadata, sitemap and robots, next/link, next/image, next/font and next/dynamic.
+  - It adds a practice database (`@/lib/db`, Prisma-style) and an address bar, back, reload and file list. Each request is logged like `next dev` ("GET /menu 200").
+  - Pages, notes, arrange steps and the project editor all run it (`PagePreview.next`, `WebStep.next`, `ArrangeStep.next`); the React runtime now also exports `useFormStatus`.
+- **Next.js “Read more” notes** (`content/notes/next.ts`): one per module (12), each with a live worked example; tests draw every example and check the page.
+- Tests: `lib/__tests__/nextPage.test.ts` (the runtime, and that it is built from its source); every Next.js lesson page is run with its taps. 7677 tests pass. `supabase/track-lessons.sql` regenerated.
+
 ## 1 Nov 2026 (branch `lesson-v3`): Next.js v5 draft
 - **Draft for the owner's OK:** `content-drafts/next-v5.md`. Second version, following the owner's 12-section Next.js flow (Fundamentals to Industry Practices): 12 modules of 3-5 short lessons, each with a Module Challenge; three final tests (Basic, Intermediate, Advanced); notes for every module; and live Next.js pages through a small teaching copy of Next.js built on the bundled React. The checklist is the official Next.js 16 docs, because W3Schools has no Next.js tutorial. Nothing is built yet.
 

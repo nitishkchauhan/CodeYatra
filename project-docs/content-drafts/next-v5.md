@@ -1,6 +1,6 @@
 # Next.js in Lesson v5 · content draft
 
-**Status:** draft for the owner’s OK (1 Nov 2026). Nothing is built yet. Second version: it **follows the owner’s Next.js flow** (12 sections, from “Fundamentals of Next.js” to “Industry Practices”), one module per section, in that order. Once approved it is built on `lesson-v3` in `src/content/tracks/nextV5/`, with tests, like the React track.
+**Status:** approved by the owner (1 Nov 2026: “approved, go ahead and build it”) and **built** on 1 Nov 2026 in `src/content/tracks/nextV5/`: 12 modules (50 lessons and 12 Module Challenges), the final project, three final tests and notes for every module. Styling was added as lesson 1.5 (decision 3). Second version: it **follows the owner’s Next.js flow** (12 sections, from “Fundamentals of Next.js” to “Industry Practices”), one module per section, in that order. Once approved it is built on `lesson-v3` in `src/content/tracks/nextV5/`, with tests, like the React track.
 
 **What changes:** today Next.js is 12 long lessons (Lesson v2) and an API project, and learners only see code. In v5 it becomes:
 - **12 modules**, one per section of the flow, each with 3–5 short lessons and a Module Challenge;

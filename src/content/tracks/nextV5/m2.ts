@@ -2,7 +2,7 @@
 // error and loading UI. Lessons 2.2 to 2.5 keep the old module ids (nx-dyn-1, nx-layout-1, nx-link-1, nx-loading-1).
 import type { Lesson } from '../../types';
 import { CAFE, CAFE_LAYOUT, DB_MENU, DISH_PAGE } from './apps';
-import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, truth, xray } from './kit';
+import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, xray } from './kit';
 
 const page = (name: string, text: string) => [`export default function ${name}() {`, `  return <h1>${text}</h1>;`, '}'];
 

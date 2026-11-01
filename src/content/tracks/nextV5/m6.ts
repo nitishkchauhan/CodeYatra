@@ -2,7 +2,7 @@
 // mutations with optimistic UI. Lesson 6.1 keeps the old module id (nx-actions-1).
 import type { Lesson } from '../../types';
 import { CAFE } from './apps';
-import { app, arrange, bugTask, challenge, chat, check, explore, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, truth, xray } from './kit';
+import { app, arrange, bugTask, challenge, chat, check, explore, lesson, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, truth, xray } from './kit';
 
 const ORDERS = [
   'import { revalidatePath } from "next/cache";',

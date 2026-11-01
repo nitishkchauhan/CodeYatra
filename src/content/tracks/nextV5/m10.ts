@@ -3,7 +3,7 @@
 // can’t run on a phone, so these lessons show real terminal output and config; error reporting runs live.
 import type { Lesson } from '../../types';
 import { CAFE } from './apps';
-import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, toggle, truth, xray } from './kit';
+import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, truth, xray } from './kit';
 
 const BUILD_OUT = [
   '$ npm run build',

@@ -1,7 +1,7 @@
 // Next.js · Module 7 · Authentication and Authorization: the ideas, sessions, protected routes, and role-based access.
 // Lesson 7.1 keeps the old module id (nx-auth-1). The practice sign-in files are in auth.ts.
 import type { Lesson, TapAction } from '../../types';
-import { ACCOUNT, ADMIN, AUTH_APP, LOGIN_ACTIONS, PROXY, SESSION } from './auth';
+import { ACCOUNT, AUTH_APP, LOGIN_ACTIONS, PROXY, SESSION } from './auth';
 import { app, arrange, bugTask, challenge, chat, check, explore, go, lesson, matchUp, mcq, pairs, pickCode, recap, reveal, swipe, tapbug, tapPage, truth, xray } from './kit';
 
 const signIn = (email: string, password: string): TapAction[] => [...go('/login'), { type: ['#email', email] }, { type: ['#password', password] }, { submit: '#login' }];
