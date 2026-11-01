@@ -28,7 +28,7 @@ describe('Python Foundations follows Lesson v2', () => {
 });
 
 // HTML, CSS, JavaScript and React now follow Lesson v5 (lessonV5.test.ts).
-describe.each(['dsa', 'placement', 'cbse', 'foundations', 'c', 'java', 'dsa2'])('%s follows Lesson v2', (track) => {
+describe.each(['placement', 'cbse', 'foundations', 'c', 'java', 'dsa2'])('%s follows Lesson v2', (track) => {
   const next = trackModules(track);
   it('has at least 10 modules and ends with a project', () => {
     expect(next.filter((l) => l.kind === 'lesson').length).toBeGreaterThanOrEqual(10);

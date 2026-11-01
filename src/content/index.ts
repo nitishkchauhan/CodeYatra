@@ -18,7 +18,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
@@ -33,7 +33,7 @@ import { CBSE_LESSONS, CBSE_PROJECT } from './tracks/cbse';
 import { islands, minCoins } from './tracks/dsa2';
 import { DSA_ADVANCED, DSA_ADVANCED_PROJECT } from './tracks/dsaAdvanced';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
-import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
+import { DSA_UNITS, DSA_V5 } from './tracks/dsaV5';
 import { GIT_LESSONS } from './tracks/git';
 import { GIT_UNITS, GIT_V5 } from './tracks/gitV5';
 import { JAVA_LESSONS, JAVA_PROJECT } from './tracks/java';
@@ -251,8 +251,7 @@ const ALL: Lesson[] = [
   C_PROJECT,
   ...JAVA_LESSONS,
   JAVA_PROJECT,
-  ...DSA_LESSONS,
-  DSA_PROJECT,
+  ...DSA_V5,
   ...SQL_V5,
   ...GIT_V5,
   ...PLACEMENT_LESSONS,
@@ -647,26 +646,16 @@ export const STAGES: Stage[] = [
     short: 'DSA',
     sub: 'Think in algorithms',
     audience: 'B.Tech · BCA · Placements',
-    blurb: '13 modules and a mock coding round in Python: Big-O, arrays, searching, sorting, hashing, two pointers, sliding window, prefix sums, stacks, queues, linked lists and recursion.',
+    blurb: '9 modules of short lessons that run in Python: Big-O, arrays and strings, recursion, searching, sorting, hashing, two pointers, sliding windows, prefix sums, stacks, queues and linked lists. A mock coding round and two final tests.',
     color: '#6D28D9',
     soft: '#F1EBFE',
     accent: '#C4B5FD',
     icon: 'M12 4v4 M6 12h12 M6 12v4 M18 12v4 M12 8v4',
     units: [
-      unit('dsa1', 'Big-O', ref('dsa-bigo', 'Big-O: how code scales', 'Lesson + code editor · 9 min')),
-      unit('dsa11', 'Arrays and strings', ref('dsa-arrays', 'Arrays and strings', 'Lesson + code editor · 9 min')),
-      unit('dsa2', 'Linear search', ref('dsa-linear', 'Linear search', 'Lesson + code editor · 8 min')),
-      unit('dsa3', 'Binary search', ref('dsa-binary', 'Binary search', 'Lesson + code editor · 9 min')),
-      unit('dsa4', 'Sorting', ref('dsa-sort', 'Sorting', 'Lesson + code editor · 9 min')),
-      unit('dsa7', 'Hashing', ref('dsa-hash', 'Hashing with sets and dicts', 'Lesson + code editor · 9 min')),
-      unit('dsa8', 'Two pointers', ref('dsa-pointers', 'Two pointers', 'Lesson + code editor · 9 min')),
-      unit('dsa12', 'Sliding window', ref('dsa-window', 'Sliding window', 'Lesson + code editor · 9 min')),
-      unit('dsa13', 'Prefix sums', ref('dsa-prefix', 'Prefix sums', 'Lesson + code editor · 8 min')),
-      unit('dsa5', 'Stacks', ref('dsa-stack', 'Stacks', 'Lesson + code editor · 9 min')),
-      unit('dsa6', 'Queues', ref('dsa-queue', 'Queues', 'Lesson + code editor · 9 min')),
-      unit('dsa10', 'Linked lists', ref('dsa-linked', 'Linked lists', 'Lesson + code editor · 10 min')),
-      unit('dsa9', 'Recursion', ref('dsa-recursion', 'Recursion', 'Lesson + code editor · 9 min')),
-      unit('dsa14', 'Project', ref('dsa-project', 'Project: a mock coding round', 'Project · 3 problems · 25 min')),
+      ...DSA_UNITS.slice(0, 5),
+      testUnit(DSA_B_TEST),
+      ...DSA_UNITS.slice(5),
+      testUnit(DSA_I_TEST),
     ],
     practice: [
       { id: 'x-dsa-binary', title: 'Binary search', kind: 'Code editor', difficulty: 'Medium', xp: 15 },

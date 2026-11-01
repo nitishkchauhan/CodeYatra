@@ -504,5 +504,52 @@ export const GIT_I_TEST = finalTest('git-i-test', 'Git', 'git', 'intermediate', 
   ['When should you not rebase?', ['On commits others already have', 'On your own unpushed work', 'On a new branch', 'Never'], 'It rewrites them.'],
 ]);
 
+export const DSA_B_TEST = finalTest('dsa-b-test', 'DSA Basics', 'dsa', 'basic', ['Measure code with Big-O', 'Work with arrays, strings and recursion', 'Search and sort'], [
+  ['What does Big-O describe?', ['How work grows with the input', 'Exact running time', 'Lines of code', 'Memory in bytes'], 'Growth.'],
+  ['Which is fastest as n grows?', ['O(log n)', 'O(n)', 'O(n log n)', 'O(n²)'], 'Halving.', true],
+  ['A loop inside a loop over n items is…', ['O(n²)', 'O(n)', 'O(2n)', 'O(log n)'], 'n × n.', true],
+  ['O(3n + 5) simplifies to…', ['O(n)', 'O(3n)', 'O(5)', 'O(n²)'], 'Drop constants.', true],
+  ['Reading xs[5] from a Python list is…', ['O(1)', 'O(n)', 'O(log n)', 'O(5)'], 'Direct.', true],
+  ['Inserting at the front of a list is…', ['O(n)', 'O(1)', 'O(log n)', 'O(n²)'], 'Items shift.', true],
+  ['What does s[::-1] do to a string?', ['Reverses it', 'Removes the last letter', 'Sorts it', 'Nothing'], 'A reversed copy.', true],
+  ['What stops a recursive function?', ['Its base case', 'A for loop', 'A print', 'Python after one call'], 'The smallest problem.'],
+  ['What error comes from recursion without a base case?', ['RecursionError', 'IndexError', 'KeyError', 'ValueError'], 'Too many calls.', true],
+  ['Linear search is…', ['O(n)', 'O(log n)', 'O(1)', 'O(n²)'], 'Each item.', true],
+  ['Binary search needs the data to be…', ['Sorted', 'Unique', 'Numbers', 'Short'], 'Halves must mean something.'],
+  ['Binary search is…', ['O(log n)', 'O(n)', 'O(1)', 'O(n log n)'], 'Halving.', true],
+  ['About how many checks does binary search need for a million items?', ['20', '1000', '500,000', '1,000,000'], 'log2(1,000,000) ≈ 20.'],
+  ['Why lo = mid + 1 in binary search?', ['mid was checked; the range must shrink', 'To skip duplicates', 'Python requires it', 'For speed only'], 'Or it can loop forever.'],
+  ['Bubble sort is…', ['O(n²)', 'O(n log n)', 'O(n)', 'O(log n)'], 'Nested passes.', true],
+  ['Which sort is O(n log n) in every case?', ['Merge sort', 'Quicksort', 'Bubble sort', 'Insertion sort'], 'Quicksort can be O(n²).'],
+  ['Which simple sort is quick on nearly sorted data?', ['Insertion sort', 'Selection sort', 'Bubble sort', 'None'], 'Few moves.'],
+  ['What does list.sort() return?', ['None', 'A new list', 'True', 'The first item'], 'It sorts in place.', true],
+  ['What does a stable sort keep?', ['The order of equal items', 'The original list', 'Duplicates out', 'Memory'], 'Python’s sort is stable.'],
+  ['Which sorts trains by fare?', ['sorted(trains, key=lambda t: t[1])', 'sorted(trains, t[1])', 'trains.sort(fare)', 'sort(trains)'], 'A key function.', true],
+]);
+
+export const DSA_I_TEST = finalTest('dsa-i-test', 'DSA', 'dsa', 'intermediate', ['Use hash tables for fast lookups', 'Apply two pointers, windows and prefix sums', 'Use stacks, queues and linked lists'], [
+  ['Average cost of x in a_set?', ['O(1)', 'O(n)', 'O(log n)', 'O(n²)'], 'Hashing.', true],
+  ['Which can be a dict key?', ['A tuple', 'A list', 'A dict', 'A set'], 'Hashable.', true],
+  ['Two sum with a dict takes…', ['O(n)', 'O(n²)', 'O(log n)', 'O(1)'], 'One pass.', true],
+  ['What is a hash collision?', ['Two keys landing in the same slot', 'Two equal values', 'A crash', 'A full table'], 'Handled by the table.'],
+  ['Two pointers for a pair sum needs the list…', ['Sorted', 'Reversed', 'Unique', 'Short'], 'To know which pointer to move.'],
+  ['The sum is too small. Which pointer moves?', ['The left one, to the right', 'The right one, to the left', 'Both', 'Neither'], 'Towards bigger values.'],
+  ['A fixed sliding window updates by…', ['Adding the new item and removing the old one', 'Re-summing it', 'Sorting it', 'Doubling it'], 'O(1) per step.'],
+  ['A sliding window over n items is…', ['O(n)', 'O(n²)', 'O(log n)', 'O(n·k) always'], 'Each item in and out once.', true],
+  ['With prefix sums p, the sum of items a..b−1 is…', ['p[b] − p[a]', 'p[b] + p[a]', 'p[b − a]', 'p[a] − p[b]'], 'One subtraction.', true],
+  ['After building prefix sums, each range sum is…', ['O(1)', 'O(n)', 'O(log n)', 'O(n²)'], 'Set-up is O(n).', true],
+  ['A stack is…', ['Last in, first out', 'First in, first out', 'Sorted', 'Random'], 'LIFO.'],
+  ['Which pushes onto a stack in Python?', ['list.append(x)', 'list.insert(0, x)', 'list.push(x)', 'list.add(x)'], 'pop() removes.', true],
+  ['Bracket matching uses a…', ['Stack', 'Queue', 'Heap', 'Set'], 'Latest opener first.'],
+  ['A queue is…', ['First in, first out', 'Last in, first out', 'Sorted', 'A kind of dict'], 'FIFO.'],
+  ['Which removes from the front in O(1)?', ['deque.popleft()', 'list.pop(0)', 'del xs[0]', 'xs.remove(xs[0])'], 'list.pop(0) is O(n).', true],
+  ['Which gives the smallest priority first?', ['heapq.heappop', 'deque.pop', 'list.pop', 'set.pop'], 'A heap.', true],
+  ['What does a linked list node hold?', ['A value and a link to the next node', 'Only a value', 'An index', 'The whole list'], 'Value + next.'],
+  ['Adding at the front of a linked list is…', ['O(1)', 'O(n)', 'O(log n)', 'O(n²)'], 'No shifting.', true],
+  ['Reaching the i-th linked list node is…', ['O(i)', 'O(1)', 'O(log i)', 'Impossible'], 'Follow the links.', true],
+  ['What marks the end of a linked list?', ['next is None', 'value is 0', 'An empty string', 'A loop'], 'No next node.', true],
+  ['Your first solution is O(n²). What usually helps?', ['A hash table, two pointers or a window', 'More nested loops', 'Sorting twice', 'Nothing can'], 'Aim for O(n).'],
+]);
+
 /** Every final test, for the lesson list. */
-export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST];
+export const FINAL_TESTS: Lesson[] = [HTML_B_TEST, HTML_I_TEST, CSS_B_TEST, CSS_I_TEST, JS_B_TEST, JS_I_TEST, PY_B_TEST, PY_I_TEST, PY_A_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST];

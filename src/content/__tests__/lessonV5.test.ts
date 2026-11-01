@@ -27,6 +27,7 @@ describe.each([
   ['node', 17],
   ['sql', 16],
   ['git', 14],
+  ['dsa', 12],
   ['react', 19],
   ['next', 16],
 ])('the %s track (Lesson v5)', (id, modules) => {
