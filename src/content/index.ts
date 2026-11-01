@@ -34,7 +34,8 @@ import { islands, minCoins } from './tracks/dsa2';
 import { DSA_ADVANCED, DSA_ADVANCED_PROJECT } from './tracks/dsaAdvanced';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
 import { DSA_LESSONS, DSA_PROJECT } from './tracks/dsaFoundations';
-import { GIT_LESSONS, GIT_PROJECT } from './tracks/git';
+import { GIT_LESSONS } from './tracks/git';
+import { GIT_UNITS, GIT_V5 } from './tracks/gitV5';
 import { JAVA_LESSONS, JAVA_PROJECT } from './tracks/java';
 import { PLACEMENT_LESSONS, PLACEMENT_PROJECT } from './tracks/placement';
 import { PY_B_UNITS, PY_B_V5 } from './tracks/pythonV5';
@@ -253,8 +254,7 @@ const ALL: Lesson[] = [
   ...DSA_LESSONS,
   DSA_PROJECT,
   ...SQL_V5,
-  ...GIT_LESSONS,
-  GIT_PROJECT,
+  ...GIT_V5,
   ...PLACEMENT_LESSONS,
   PLACEMENT_PROJECT,
   ...DSA_ADVANCED,
@@ -752,18 +752,7 @@ export const STAGES: Stage[] = [
     accent: '#FDBA8C',
     icon: 'M6 3v12 M6 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M18 9a9 9 0 0 1-9 9',
     units: [
-      unit('g1', 'Why Git', ref('git-why', 'Why Git?', 'Lesson + Python · 6 min')),
-      unit('g2', 'Setting up', ref('git-init', 'Setting up and starting a repository', 'Lesson + Python · 6 min')),
-      unit('g3', 'Commits', ref('git-commit', 'Staging and committing', 'Lesson + Python · 7 min')),
-      unit('g4', 'History', ref('git-history', 'Looking at history: log, diff and show', 'Lesson + Python · 7 min')),
-      unit('g5', 'Branches', ref('git-branch', 'Branches', 'Lesson + Python · 7 min')),
-      unit('g6', 'Merging', ref('git-merge', 'Merging and conflicts', 'Lesson + Python · 8 min')),
-      unit('g7', 'Remotes', ref('git-remote', 'Remotes: clone, push and pull', 'Lesson + Python · 7 min')),
-      unit('g8', 'Pull requests', ref('git-pr', 'Pull requests and teamwork', 'Lesson + Python · 7 min')),
-      unit('g9', '.gitignore', ref('git-ignore', '.gitignore and secrets', 'Lesson + Python · 7 min')),
-      unit('g10', 'Undo', ref('git-undo', 'Undoing things safely', 'Lesson + Python · 7 min')),
-      unit('g11', 'Stash', ref('git-stash', 'Stash: set work aside', 'Lesson + Python · 6 min')),
-      unit('g12', 'Project', ref('git-project', 'Project: a clean-history checker', 'Project · 3 parts · 20 min')),
+      ...GIT_UNITS,
     ],
     practice: [{ id: 'x-git-drill', title: 'Command drill', kind: 'Order + quiz', difficulty: 'Easy', xp: 15 }],
   },

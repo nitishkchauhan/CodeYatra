@@ -508,6 +508,8 @@ export type ArrangeStep = {
   next?: NextApp;
   /** A Node.js arrange: the blocks are the `edit` file of this program, run in a terminal. */
   node?: NodeApp;
+  /** A Git arrange: the blocks are commands, run in order in this Git terminal. */
+  git?: GitApp;
   goal: string;
 };
 
