@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '@/components/ui/Button';
 import { T } from '@/components/ui/Text';
 import { useToast } from '@/components/ui/Toast';
-import { buildReview, getLesson, isTeaching, nextLessonAfter, type Lesson } from '@/content';
+import { buildReview, getLesson, isTeaching, nextLessonAfter, v5Lang, type Lesson } from '@/content';
 import { CHECKPOINT_PREFIX, PASS_MARK, scoreCheckpoint } from '@/content/checkpoints';
 import { getNotes } from '@/content/notes';
 import { CodeStep } from '@/features/lesson/CodeStep';
@@ -177,7 +177,7 @@ function LessonPlayer({ lesson, onReplay }: { lesson: Lesson; onReplay: () => vo
       <LessonTopBar steps={lesson.steps.length} index={index} xp={reward.xp} onClose={() => router.back()} onNotes={notesFor && v4 ? () => router.push({ pathname: '/notes/[id]', params: { id: lesson.id } }) : undefined} />
       <Animated.View key={index} entering={FadeIn.duration(220)} style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <V5CodeLang.Provider value={lesson.skill === 'python' ? 'python' : lesson.skill === 'react' || lesson.skill === 'next' ? 'jsx' : null}>
+          <V5CodeLang.Provider value={v5Lang(lesson.skill)}>
             {step.type === 'concept' && <ConceptStep step={step} onDone={next} onMistake={onMistake} />}
             {step.type === 'hook' && <HookStep step={step} onDone={next} />}
             {step.type === 'try' && <TryStep step={step} onDone={next} />}

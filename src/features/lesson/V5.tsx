@@ -15,13 +15,14 @@ import { Icon } from '@/components/ui/Icon';
 import { T } from '@/components/ui/Text';
 import type { ArrangeStep, ChatStep, CopyStep, ExploreStep, LiveStep, PagePreview, PlaceStep, RecapStep, ResizeStep, RevealStep, RunStep, Seg, SwipeStep, TapPageStep, TapBugStep, ToggleStep, XrayStep } from '@/content';
 import { haptic } from '@/lib/haptics';
+import { sqlTableProgram } from '@/content/sqlFixture';
 import { useCodeRunner, type RunOutcome } from '@/lib/runner';
 import { pageAtWidth } from '@/lib/web/media';
 import { buildPage, fillSlots } from '@/lib/web/page';
 import { colors, fonts } from '@/theme';
 
 /** 'python' for Python lessons (code shown as Python, programs run in the Python runner); 'jsx' for React lessons. */
-export const V5CodeLang = createContext<'python' | 'jsx' | null>(null);
+export const V5CodeLang = createContext<'python' | 'sql' | 'jsx' | null>(null);
 
 /** A code block in the lesson's language (Python lessons override the web default). */
 function Code(p: ComponentProps<typeof CodeBlock>) {
@@ -843,19 +844,21 @@ export function ResizeScreen({ step, onDone }: { step: ResizeStep } & Done) {
 
 // ── Programs: the console ────────────────────────────────────────────────────
 
-/** Runs `code` (when not null) in the app's sandbox, as JavaScript or (in Python lessons) Python; reruns on change. */
+/** Runs `code` (when not null) in the app's sandbox, as JavaScript, Python (Python lessons) or SQL; reruns on change. */
 function useJsRun(code: string | null) {
   const run = useCodeRunner();
-  const lang = useContext(V5CodeLang) === 'python' ? 'python' : 'javascript';
+  const codeLang = useContext(V5CodeLang);
+  const lang = codeLang === 'python' || codeLang === 'sql' ? 'python' : 'javascript';
   const [res, setRes] = useState<{ code: string; out: RunOutcome } | null>(null);
   useEffect(() => {
     if (code === null) return;
     let live = true;
-    run(lang, code).then((out) => live && setRes({ code, out }));
+    // SQL runs as a Python program that loads the sample tables and prints the result.
+    run(lang, codeLang === 'sql' ? sqlTableProgram(code) : code).then((out) => live && setRes({ code, out }));
     return () => {
       live = false;
     };
-  }, [code, run, lang]);
+  }, [code, run, lang, codeLang]);
   return code !== null && res?.code === code ? res.out : null;
 }
 

@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 
-import { allLessons, getLesson, isTeaching, STAGES, type Lesson, type Step, type TapAction } from '..';
+import { allLessons, getLesson, isTeaching, STAGES, v5Lang, type Lesson, type Step, type TapAction } from '..';
+import { sqlTableProgram } from '../sqlFixture';
 import { runPage } from '../testing/page';
 import { runJs, runPyFull } from '../testing/run';
 import { parseTrace, traceProgram } from '../trace';
@@ -15,8 +16,8 @@ const v5: Lesson[] = allLessons().filter((l) => l.format === 'v5');
 const all = v5.flatMap((l) => l.steps.map((s, i) => [`${l.id}#${i}`, s] as const));
 const of = <T extends Step['type']>(type: T) => all.filter(([, s]) => s.type === type) as unknown as [string, Extract<Step, { type: T }>][];
 const rows = <R,>(r: R[]): R[] => (r.length ? r : ([['(none)', null]] as unknown as R[]));
-// Steps of Python lessons run with real Python; the others with JavaScript.
-const pySteps = new Set(v5.filter((l) => l.skill === 'python').flatMap((l) => l.steps.map((_, i) => `${l.id}#${i}`)));
+// Steps run in their lesson's language: Python with real Python, SQL through Python's sqlite3, the rest as JavaScript.
+const stepLang = new Map<string, ReturnType<typeof v5Lang>>(v5.flatMap((l) => l.steps.map((_, i) => [`${l.id}#${i}`, v5Lang(l.skill)] as const)));
 const dom = (html: string) => new JSDOM(`<!doctype html><body>${html}</body>`).window.document;
 
 describe.each([
@@ -24,6 +25,7 @@ describe.each([
   ['css', 20],
   ['js', 21],
   ['node', 17],
+  ['sql', 16],
   ['react', 19],
   ['next', 16],
 ])('the %s track (Lesson v5)', (id, modules) => {
@@ -181,8 +183,9 @@ const tryJs = (code: string): { out: string[]; error?: string } => {
 
 /** Runs a step's program in its lesson's language (Python lessons with real Python). */
 const tryCode = (key: string, code: string): { out: string[]; error?: string } => {
-  if (!pySteps.has(key)) return tryJs(code);
-  const r = runPyFull(code);
+  const lang = stepLang.get(key);
+  if (lang !== 'python' && lang !== 'sql') return tryJs(code);
+  const r = runPyFull(lang === 'sql' ? sqlTableProgram(code) : code);
   return r.error ? { out: r.output, error: r.error } : { out: r.output };
 };
 

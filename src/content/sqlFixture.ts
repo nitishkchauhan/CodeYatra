@@ -93,3 +93,29 @@ for __cy_row in __cy_cur.fetchall():
     print(" | ".join("NULL" if __cy_v is None else str(__cy_v) for __cy_v in __cy_row))
 `;
 }
+
+/**
+ * Lesson v5 SQL: a Python program that loads the sample data, runs every statement, and prints the result of the
+ * last one as a table: a header row of column names, then one row per line ("name | fare"). A last statement that
+ * returns no rows (INSERT, UPDATE, DELETE, CREATE…) prints how many rows it changed.
+ */
+export function sqlTableProgram(query: string): string {
+  const parts = splitStatements(query);
+  const last = parts.pop() ?? '';
+  return `import sqlite3
+__cy_db = sqlite3.connect(":memory:", isolation_level=None)
+__cy_db.executescript(${JSON.stringify(SQL_SETUP)})
+for __cy_sql in ${JSON.stringify(parts)}:
+    __cy_db.execute(__cy_sql)
+__cy_cur = __cy_db.execute(${JSON.stringify(last)})
+if __cy_cur.description is None:
+    print("OK: " + str(__cy_cur.rowcount) + (" row" if __cy_cur.rowcount == 1 else " rows") + " changed")
+else:
+    print(" | ".join(__cy_d[0] for __cy_d in __cy_cur.description))
+    __cy_rows = __cy_cur.fetchall()
+    for __cy_row in __cy_rows:
+        print(" | ".join("NULL" if __cy_v is None else str(__cy_v) for __cy_v in __cy_row))
+    if not __cy_rows:
+        print("(no rows)")
+`;
+}

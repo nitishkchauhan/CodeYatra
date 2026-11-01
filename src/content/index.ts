@@ -41,7 +41,8 @@ import { PY_B_UNITS, PY_B_V5 } from './tracks/pythonV5';
 import { PY_I_UNITS, PY_I_V5 } from './tracks/pythonV5i';
 import { PY_A_UNITS, PY_A_V5 } from './tracks/pythonV5a';
 import { PYTHON_MORE_2 } from './tracks/pythonMore';
-import { SQL_LESSONS, SQL_PROJECT } from './tracks/sql';
+import { SQL_LESSONS } from './tracks/sql';
+import { SQL_UNITS, SQL_V5 } from './tracks/sqlV5';
 import { NEXT_UNITS, NEXT_V5 } from './tracks/nextV5';
 
 export * from './types';
@@ -251,8 +252,7 @@ const ALL: Lesson[] = [
   JAVA_PROJECT,
   ...DSA_LESSONS,
   DSA_PROJECT,
-  ...SQL_LESSONS,
-  SQL_PROJECT,
+  ...SQL_V5,
   ...GIT_LESSONS,
   GIT_PROJECT,
   ...PLACEMENT_LESSONS,
@@ -726,19 +726,7 @@ export const STAGES: Stage[] = [
     accent: '#7DD3FC',
     icon: 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6 M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
     units: [
-      unit('sq1', 'SELECT', ref('sql-select', 'Databases, tables and SELECT', 'Lesson + run queries · 8 min')),
-      unit('sq2', 'WHERE', ref('sql-where', 'Filtering with WHERE', 'Lesson + run queries · 8 min')),
-      unit('sq7', 'Patterns and NULL', ref('sql-patterns', 'LIKE, IN, BETWEEN and NULL', 'Lesson + run queries · 8 min')),
-      unit('sq3', 'Sorting', ref('sql-order', 'Sorting: ORDER BY, LIMIT and DISTINCT', 'Lesson + run queries · 8 min')),
-      unit('sq4', 'Aggregates', ref('sql-agg', 'Counting and totals: aggregates', 'Lesson + run queries · 8 min')),
-      unit('sq5', 'Grouping', ref('sql-group', 'GROUP BY and HAVING', 'Lesson + run queries · 8 min')),
-      unit('sq6', 'Joins', ref('sql-join', 'JOIN: combine tables', 'Lesson + run queries · 8 min')),
-      unit('sq11', 'LEFT JOIN', ref('sql-left', 'LEFT JOIN: find what’s missing', 'Lesson + run queries · 8 min')),
-      unit('sq10', 'Subqueries and CTEs', ref('sql-sub', 'Subqueries and CTEs', 'Lesson + run queries · 9 min')),
-      unit('sq12', 'Window functions', ref('sql-window', 'Window functions: ranks and running totals', 'Lesson + run queries · 9 min')),
-      unit('sq8', 'Changing data', ref('sql-change', 'Changing data safely', 'Lesson + run queries · 8 min')),
-      unit('sq9', 'Design', ref('sql-design', 'Keys, constraints and indexes', 'Lesson + run queries · 8 min')),
-      unit('sq13', 'Project', ref('sql-project', 'Project: railway sales report', 'Project · 4 tested queries · 20 min')),
+      ...SQL_UNITS,
     ],
     practice: [
       { id: 'x-sql-drill', title: 'Query results drill', kind: 'Predict the output', difficulty: 'Medium', xp: 15 },

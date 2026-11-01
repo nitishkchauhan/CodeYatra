@@ -569,6 +569,13 @@ export type ResizeStep = {
 /** Steps that only teach: they are never checked, reviewed or used in practice rounds. */
 export const TEACHING_STEPS = ['concept', 'hook', 'try', 'mistake', 'scenario', 'pagebuild', 'recall', 'chat', 'reveal', 'explore', 'toggle', 'live', 'recap', 'resize', 'run', 'tappage'] as const;
 /** A step that only teaches. Watching a program run is teaching too, unless it ends with a question. */
+/**
+ * The language a Lesson v5 track’s code screens show and run: Python tracks run Python, the SQL track runs queries
+ * (through Python’s sqlite3), React and Next.js show JSX, and the rest run JavaScript.
+ */
+export const v5Lang = (skill: SkillKey): 'python' | 'sql' | 'jsx' | null =>
+  skill === 'python' || skill === 'dsa' ? 'python' : skill === 'sql' ? 'sql' : skill === 'react' || skill === 'next' ? 'jsx' : null;
+
 export const isTeaching = (s: Step) => (TEACHING_STEPS as readonly string[]).includes(s.type) || (s.type === 'trace' && !s.ask);
 
 export type Step =
