@@ -2,7 +2,7 @@
 // Each module’s lesson keeps its old id; its Challenge ends with the old tested coding question.
 import type { Lesson } from '../../types';
 import { PLACEMENT_LESSONS as OLD } from '../placement';
-import { arrange, bugTask, chat, check, kit, matchUp, mcq, pairs, pickCode, predict, predictTask, recap, reveal, run, swipe, tapbug, task, toggleRun, truth } from './kit';
+import { bugTask, chat, check, kit, mcq, pairs, pickCode, predict, predictTask, recap, reveal, run, swipe, tapbug, task, toggleRun, truth } from './kit';
 
 const { lesson, challenge } = kit('placement');
 

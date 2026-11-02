@@ -4,7 +4,7 @@
 import type { Lesson } from '../../types';
 import * as C from '../cV5/kit';
 import { PLACEMENT_LESSONS as OLD } from '../placement';
-import { arrange, bugTask, chat, check, kit, matchUp, mcq, pairs, pickCode, predict, predictTask, recap, reveal, swipe, tapbug, task, toggleRun, truth } from './kit';
+import { bugTask, chat, check, kit, matchUp, mcq, pairs, pickCode, predict, predictTask, recap, reveal, swipe, tapbug, task, toggleRun } from './kit';
 
 const { lesson, challenge } = kit('placement');
 const sql = kit('sql');

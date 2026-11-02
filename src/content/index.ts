@@ -1,5 +1,4 @@
 import { timesTable } from './foundations';
-import { LOGIC_FOUNDATIONS, LOGIC_PROJECT } from './tracks/logicFoundations';
 import { apiHandler } from './fullstack2';
 import { cheapestTrain, countVowels, PYTHON_MORE } from './python2';
 import { countSeats, styleButton } from './web2';
@@ -7,7 +6,7 @@ import { trainCardProps } from './fullstack';
 import { trainFare } from './python';
 import { dailyLesson, reviewLesson } from './daily';
 import { drillBase, drillLesson, DRILL_PREFIX } from './drills';
-import type { Lesson, LessonRef, SkillKey, Stage, Step, Unit } from './types';
+import type { Lesson, LessonRef, SkillKey, Stage, Step } from './types';
 import { ticketHtml } from './web';
 import { flexRow } from './styling';
 import { CSS_UNITS, CSS_V5 } from './tracks/cssV5';
@@ -18,7 +17,7 @@ import { HTML_I_UNITS, HTML_I_V5 } from './tracks/htmlV5i';
 import { cheapTickets } from './js';
 import { JS_UNITS, JS_V5 } from './tracks/jsV5';
 import { JS_I_UNITS, JS_I_V5 } from './tracks/jsV5i';
-import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, JAVA_B_TEST, JAVA_I_TEST, PL_B_TEST, PL_I_TEST, testUnit } from './tracks/finalTests';
+import { CSS_B_TEST, CSS_I_TEST, FINAL_TESTS, HTML_B_TEST, HTML_I_TEST, JS_B_TEST, JS_I_TEST, PY_A_TEST, PY_B_TEST, PY_I_TEST, REACT_B_TEST, REACT_I_TEST, NEXT_B_TEST, NEXT_I_TEST, NEXT_A_TEST, NODE_B_TEST, NODE_I_TEST, SQL_B_TEST, SQL_I_TEST, GIT_B_TEST, GIT_I_TEST, DSA_B_TEST, DSA_I_TEST, DSA2_I_TEST, DSA2_A_TEST, C_B_TEST, C_I_TEST, JAVA_B_TEST, JAVA_I_TEST, PL_B_TEST, PL_I_TEST, CBSE_B_TEST, CBSE_I_TEST, F_B_TEST, F_I_TEST, testUnit } from './tracks/finalTests';
 import { dynamicRoute, routeHandler } from './next';
 import { expressRoute } from './node';
 import { NODE_UNITS, NODE_V5 } from './tracks/nodeV5';
@@ -30,7 +29,9 @@ import { buildCheckpoint, CHECKPOINT_PREFIX } from './checkpoints';
 import { findPath } from './paths';
 import { C_LESSONS } from './tracks/c';
 import { C_UNITS, C_V5 } from './tracks/cV5';
-import { CBSE_LESSONS, CBSE_PROJECT } from './tracks/cbse';
+import { CBSE_LESSONS } from './tracks/cbse';
+import { F_UNITS, F_V5 } from './tracks/foundationsV5';
+import { CBSE_UNITS, CBSE_V5 } from './tracks/cbseV5';
 import { islands, minCoins } from './tracks/dsa2';
 import { DSA2_UNITS, DSA2_V5 } from './tracks/dsa2V5';
 import { balanced, binarySearch, firstRepeat } from './tracks/dsa';
@@ -233,8 +234,7 @@ const NEW_TRACK_PRACTICE: Lesson[] = [
 ];
 
 const ALL: Lesson[] = [
-  ...LOGIC_FOUNDATIONS,
-  LOGIC_PROJECT,
+  ...F_V5,
   ...PY_B_V5,
   ...PY_I_V5,
   ...PY_A_V5,
@@ -257,8 +257,7 @@ const ALL: Lesson[] = [
   ...GIT_V5,
   ...PL_V5,
   ...DSA2_V5,
-  ...CBSE_LESSONS,
-  CBSE_PROJECT,
+  ...CBSE_V5,
   ...PRACTICE_LESSONS,
   ...TRACK_PRACTICE,
   ...NEW_TRACK_PRACTICE,
@@ -292,17 +291,6 @@ export const buildReview = (mistakes: Record<string, string>) => reviewLesson(mi
 export const hasContent = (id: string) => BY_ID.has(id);
 export const allLessons = () => [...ALL, ...DRILL_LESSONS];
 
-const ref = (id: string, title: string, meta: string): LessonRef => ({
-  id,
-  title,
-  meta,
-});
-const unit = (id: string, title: string, lesson: LessonRef): Unit => ({
-  id,
-  title,
-  lessons: [lesson],
-});
-
 /** Language tracks, grouped into sections. Each track has ten or more modules plus practice. */
 export const STAGES: Stage[] = [
   {
@@ -315,23 +303,16 @@ export const STAGES: Stage[] = [
     short: 'Logic',
     sub: 'Think like a programmer',
     audience: 'Class 8+',
-    blurb: '10 modules and a project: algorithms, loops and patterns with Yatri’s block puzzles, then variables, conditions, functions and debugging in real Python.',
+    blurb: '10 modules of short lessons: algorithms, turns, loops and patterns with Yatri’s block puzzles, then variables, conditions, while loops, nested loops, functions and debugging in real Python. A Gem Bazaar project and two final tests.',
     color: '#4B3FD8',
     soft: '#EEECFD',
     accent: '#A9A2F0',
     icon: 'M4 5h10v4H4z M8 12h10v4H8z M4 19h7',
     units: [
-      unit('f-u1', 'Algorithms', ref('f-seq-1', 'Algorithms: step-by-step instructions', 'Lesson + puzzle · 5 min')),
-      unit('f-u2', 'Turns', ref('f-seq-2', 'Turns, direction and order', 'Lesson + puzzle · 5 min')),
-      unit('f-u3', 'Loops', ref('f-loop-1', 'Loops: repeat without rewriting', 'Lesson + puzzle · 6 min')),
-      unit('f-u4', 'Patterns', ref('f-loop-2', 'Patterns and decomposition', 'Lesson + puzzle · 6 min')),
-      unit('f-u7', 'Variables', ref('f-var-1', 'Variables: labelled boxes', 'Lesson + Python · 6 min')),
-      unit('f-u6', 'Conditions', ref('f-if-1', 'Conditions: making decisions', 'Lesson + Python · 7 min')),
-      unit('f-u8', 'While loops', ref('f-while-1', 'While loops: repeat until done', 'Lesson + Python · 6 min')),
-      unit('f-u9', 'Nested loops', ref('f-nest-1', 'Loops inside loops', 'Lesson + Python · 7 min')),
-      unit('f-u5', 'Functions', ref('f-fn-1', 'Functions: make your own block', 'Lesson + Python · 7 min')),
-      unit('f-u10', 'Debugging', ref('f-debug-1', 'Debugging like a pro', 'Lesson + Python · 6 min')),
-      unit('f-u11', 'Project', ref('f-project', 'Project: Yatri’s Gem Bazaar', 'Project · puzzle + Python · 15 min')),
+      ...F_UNITS.slice(0, 5),
+      testUnit(F_B_TEST),
+      ...F_UNITS.slice(5),
+      testUnit(F_I_TEST),
     ],
     practice: [
       { id: 'x-corner', title: 'Corner run', kind: 'Blocks puzzle', difficulty: 'Easy', xp: 15 },
@@ -349,25 +330,16 @@ export const STAGES: Stage[] = [
     short: 'CBSE CS',
     sub: 'Class 11–12 Python syllabus',
     audience: 'Class 11 · Class 12',
-    blurb: '12 modules and a practical project for Computer Science (083): Python, modules, exceptions, text, binary and CSV files, stacks and SQL, with board-style find-the-output practice.',
+    blurb: '12 modules for Computer Science (083), each ending in a tested board-style program: Python basics, strings, lists, dictionaries, functions, modules, exceptions, text, binary and CSV files, stacks and SQL. A practical project and two final tests.',
     color: '#0F766E',
     soft: '#DDF5F2',
     accent: '#5EEAD4',
     icon: 'M4 6l8-3 8 3-8 3z M8 8v5c2.5 2 5.5 2 8 0V8',
     units: [
-      unit('cb1', 'Data types', ref('cbse-types', 'Data types and operators', 'Lesson + board questions · 7 min')),
-      unit('cb2', 'Flow of control', ref('cbse-flow', 'Flow of control', 'Lesson + board questions · 7 min')),
-      unit('cb3', 'Strings', ref('cbse-strings', 'Strings', 'Lesson + board questions · 8 min')),
-      unit('cb4', 'Lists', ref('cbse-lists', 'Lists', 'Lesson + board questions · 8 min')),
-      unit('cb5', 'Tuples and dictionaries', ref('cbse-dict', 'Tuples and dictionaries', 'Lesson + board questions · 8 min')),
-      unit('cb6', 'Functions', ref('cbse-functions', 'Functions and scope', 'Lesson + board questions · 8 min')),
-      unit('cb11', 'Modules', ref('cbse-modules', 'Modules: math, random and statistics', 'Lesson + board questions · 7 min')),
-      unit('cb7', 'Exceptions', ref('cbse-exceptions', 'Exception handling', 'Lesson + board questions · 7 min')),
-      unit('cb8', 'Text files', ref('cbse-files', 'Text files', 'Lesson + board questions · 8 min')),
-      unit('cb12', 'Binary and CSV', ref('cbse-binary', 'Binary and CSV files', 'Lesson + board questions · 8 min')),
-      unit('cb9', 'Stack', ref('cbse-stack', 'Stack using a list', 'Lesson + board questions · 7 min')),
-      unit('cb10', 'SQL', ref('cbse-sql', 'SQL for board exams', 'Lesson + run a query · 8 min')),
-      unit('cb13', 'Project', ref('cbse-project', 'Project: a board practical record program', 'Project · 3 parts · 25 min')),
+      ...CBSE_UNITS.slice(0, 6),
+      testUnit(CBSE_B_TEST),
+      ...CBSE_UNITS.slice(6),
+      testUnit(CBSE_I_TEST),
     ],
     practice: [
       { id: 'x-cbse-output', title: 'Find the output', kind: 'Board-style', difficulty: 'Medium', xp: 15 },

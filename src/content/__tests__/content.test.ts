@@ -90,13 +90,14 @@ describe('stages', () => {
     const stage = STAGES[0];
     const statuses = stageLessonStatuses(stage, { 'f-seq-1': true });
     expect(statuses.get('f-seq-1')).toBe('done');
-    expect(statuses.get('f-seq-2')).toBe('current');
-    expect(statuses.get('f-var-1')).toBe('locked');
+    // Each module’s Challenge comes straight after its lesson.
+    expect(statuses.get('f-b-1-ch')).toBe('current');
+    expect(statuses.get('f-seq-2')).toBe('locked');
     expect(statuses.get('f-loop-1')).toBe('locked');
   });
 
   it('finds lessons by id', () => {
-    expect(getLesson('f-loop-1')?.steps.map((s) => s.type)).toEqual(['hook', 'concept', 'concept', 'concept', 'try', 'mistake', 'predict', 'quiz', 'puzzle']);
+    expect(getLesson('f-loop-1')?.steps.map((s) => s.type)).toEqual(['chat', 'toggle', 'run', 'trace', 'puzzle', 'quiz', 'recap']);
     expect(getLesson('missing')).toBeUndefined();
   });
 });

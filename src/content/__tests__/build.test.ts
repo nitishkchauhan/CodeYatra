@@ -103,7 +103,8 @@ describe('try it: tap to change values', () => {
     if (!python) return '';
     return runPyFull(step.lang === 'sql' ? sqlProgram(code) : code).error;
   };
-  it.each(tries)('%s: every value you can tap still runs cleanly', (_, step: TryStep) => {
+  it.each(tries.length ? tries : ([['(none)', null]] as unknown as typeof tries))('%s: every value you can tap still runs cleanly', (_, step: TryStep) => {
+    if (!step) return;
     const tw = tweakables(step.starter, step.lang as 'python', seed(step));
     tw.forEach((t, i) => {
       for (let o = 1; o < t.options.length; o++) {
@@ -119,6 +120,6 @@ describe('try it: tap to change values', () => {
     const withTweaks = tries.filter(([, s]) => tweakables(s.starter, s.lang as 'python', seed(s)).length > 0);
     // The rest are run-and-watch: only values nothing else depends on are offered, so every change still runs.
     // (Python, HTML, CSS and JavaScript moved to Lesson v5, whose Run and tweak screens replace these try-its.)
-    expect(withTweaks.length / tries.length).toBeGreaterThanOrEqual(0.45);
+    if (tries.length) expect(withTweaks.length / tries.length).toBeGreaterThanOrEqual(0.45);
   });
 });
