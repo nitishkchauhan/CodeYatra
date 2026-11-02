@@ -9,10 +9,11 @@ import { PYTHON_V4_NOTES } from './pythonV4';
 import { PYTHON_MORE_NOTES } from './pythonMore';
 import { NEXT_NOTES } from './next';
 import { REACT_NOTES } from './react';
+import { SQL_NOTES } from './sql';
 
 // Modules rebuilt in Lesson v4 get the extra notes sections on top of their existing notes.
 const PYTHON_WITH_V4 = Object.fromEntries(Object.entries(PYTHON_NOTES).map(([id, n]) => [id, { ...n, ...PYTHON_V4_NOTES[id] }]));
 
-export const NOTES: Record<string, ModuleNotes> = { ...PYTHON_WITH_V4, ...PYTHON_MORE_NOTES, ...HTML_NOTES, ...HTML_MORE_NOTES, ...CSS_NOTES, ...JS_NOTES, ...REACT_NOTES, ...NEXT_NOTES };
+export const NOTES: Record<string, ModuleNotes> = { ...PYTHON_WITH_V4, ...PYTHON_MORE_NOTES, ...HTML_NOTES, ...HTML_MORE_NOTES, ...CSS_NOTES, ...JS_NOTES, ...REACT_NOTES, ...NEXT_NOTES, ...SQL_NOTES };
 
 export const getNotes = (lessonId: string): ModuleNotes | undefined => NOTES[lessonId];

@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { NOTES } from '../notes';
+import { sqlTableProgram } from '../sqlFixture';
 import { python, runPyFull } from '../testing/run';
 
 const rows = <T,>(r: T[]): T[] => (r.length ? r : ([['(none)', null]] as unknown as T[]));
@@ -23,11 +24,13 @@ describe('Notes v4', () => {
     }
     expect(JSON.stringify(n)).not.toMatch(/\b(namaste|chai|chalo|arre|thali|poha|samosa|roti)\b/i);
     if (!python) return;
+    // SQL runs on the sample railway database; its errors are shown without Python's "sqlite3." prefix.
+    const run = (code: string[]) => runPyFull(n.lang === 'sql' ? sqlTableProgram(code.join('\n')) : code.join('\n'));
     for (const m of n.mistakes!) {
-      const bad = runPyFull(m.bad.join('\n'));
-      const said = /Error\b/.test(m.error) ? bad.error.trim().split('\n').at(-1) : bad.output.join('\n');
+      const bad = run(m.bad);
+      const said = /Error\b/.test(m.error) ? bad.error.trim().split('\n').at(-1)?.replace(/^sqlite3\./, '') : bad.output.join('\n');
       expect(said).toBe(m.error);
-      expect(runPyFull(m.fix.join('\n')).error).toBe('');
+      expect(run(m.fix).error).toBe('');
     }
     // Every block runs on its own. A block that shows an error on purpose names it in a comment.
     if (n.runnable)

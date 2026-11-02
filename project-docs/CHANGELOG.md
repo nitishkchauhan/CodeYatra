@@ -2,6 +2,11 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 2 Nov 2026 (branch `notes-v5`): “Read more” notes for the SQL track
+- Plan and sample note approved by the owner (`content-drafts/sql-notes-v5.md`). Each note uses the Notes v4 layout: key points, explain sections, a worked example, common mistakes, in industry, interview questions, cheat sheet and Check yourself.
+- `content/notes/sql.ts`: one note per module (13) and one for the final project. The notes fill in the W3Schools SQL topics the lessons had no room for: comments, NOT, the `_` wildcard, self join, RIGHT and FULL JOIN, UNION ALL, EXISTS/ANY/ALL, IFNULL and COALESCE, INSERT INTO SELECT, data types, AUTO INCREMENT, SQL injection and stored procedures.
+- Tests run every worked example and every mistake on the sample railway database. They check the output and the exact error message, and that every fix runs cleanly. The every-module-has-notes check now includes SQL.
+
 ## 1–2 Nov 2026 (branch `lesson-v3`): every remaining track in Lesson v5
 The owner chose “all 10 tracks, no drafts”: built straight from W3Schools and the official docs as topic checklists, in our own words. Every track now has modules of short lessons, a Module Challenge per module (5 questions, then 6 tasks), a final project and final tests at each level. Old lesson ids are kept, so progress and practice sets carry over.
 - **Node.js** (`nodeV5/`, 14 modules, train-booking API project, 2 final tests, `df3a157`): a terminal page runtime (`scripts/node-runtime.js`) with an in-memory file system, events, http, a small Express 5, node:test and fetch to the local server.

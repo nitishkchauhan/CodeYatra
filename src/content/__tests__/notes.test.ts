@@ -3,6 +3,7 @@ import { describe, expect, it } from '@jest/globals';
 import { getLesson, STAGES } from '..';
 import { NOTES } from '../notes';
 import { runPage } from '../testing/page';
+import { sqlTableProgram } from '../sqlFixture';
 import { python, runJs, runPyFull } from '../testing/run';
 
 const words = (s: string) => s.split(/\s+/).filter(Boolean).length;
@@ -81,12 +82,14 @@ describe('module notes', () => {
       return;
     }
     if (!python) return;
-    const r = runPyFull(n.example.code.join('\n'));
+    // SQL examples run against the sample railway database and print a table, as in the lessons.
+    const code = n.example.code.join('\n');
+    const r = runPyFull(n.lang === 'sql' ? sqlTableProgram(code) : code);
     expect(r.error).toBe('');
     expect(r.output).toEqual(n.example.output);
   });
 
-  it.each(['python', 'react', 'next'])('every %s module has notes', (track) => {
+  it.each(['python', 'react', 'next', 'sql'])('every %s module has notes', (track) => {
     // A Lesson v5 module is a unit of short lessons; its notes belong to the unit's first lesson.
     const modules = STAGES.find((s) => s.id === track)!.units.flatMap((u) => u.lessons.filter((l, i) => i === 0 || getLesson(l.id)?.format !== 'v5').map((l) => getLesson(l.id)!)).filter((l) => l.kind === 'lesson' && !l.exam);
     expect(modules.filter((l) => !NOTES[l.id]).map((l) => l.id)).toEqual([]);
