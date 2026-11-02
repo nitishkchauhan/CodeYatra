@@ -2,6 +2,18 @@
 
 Newest first. Commit IDs refer to the Git history on GitHub (`nitishkchauhan/CodeYatra`).
 
+## 1–2 Nov 2026 (branch `lesson-v3`): every remaining track in Lesson v5
+The owner chose “all 10 tracks, no drafts”: built straight from W3Schools and the official docs as topic checklists, in our own words. Every track now has modules of short lessons, a Module Challenge per module (5 questions, then 6 tasks), a final project and final tests at each level. Old lesson ids are kept, so progress and practice sets carry over.
+- **Node.js** (`nodeV5/`, 14 modules, train-booking API project, 2 final tests, `df3a157`): a terminal page runtime (`scripts/node-runtime.js`) with an in-memory file system, events, http, a small Express 5, node:test and fetch to the local server.
+- **SQL** (`sqlV5/`, 13 modules, 2 final tests, `504969a`): queries run on the sample tables through Python’s sqlite3.
+- **Git** (`gitV5/`, 11 modules, 2 final tests, `7c47317`): a Git simulator (`scripts/git-runtime.js`) checked against real git, with a teammate’s remote and command buttons.
+- **DSA** (`dsaV5/`, 9 modules, mock coding round, 2 final tests, `6e64e39`) and **DSA Advanced** (`dsa2V5/`, 8 modules, route-planner project, 2 final tests, `fa61b96`): real Python on every screen.
+- **C** (`cV5/`, 12 modules, marks-manager project, 2 final tests, `51b22f3`) and **Java** (`javaV5/`, 12 modules, train-reservation project, 2 final tests, `fb3a6a7`): the phone can’t compile them, so code screens show stored output, and the tests compile and run every program (gcc; Java 17 in WSL) to check it. Arrange shows the output once the order is right.
+- **Placement** (`placementV5/`, 12 modules, mock round, 2 final tests, `19174dc`), **CBSE** (`cbseV5/`, 12 modules, practical project, 2 final tests) and **Logic Foundations** (`foundationsV5/`, 10 modules, Gem Bazaar project, 2 final tests; Yatri block puzzles kept in the first four lessons) (`30aa901`): each Module Challenge ends with the tested coding task from the old lesson. Placement’s C-output module shows real gcc output; the SQL modules run real queries.
+- **Shared:** `v5Lang()` picks each track’s code language (python, sql, jsx, c, java or JavaScript). No track uses Lesson v2 any more; old track files stay only where projects or practice sets import them.
+- **Fixes:** a duplicate DSA Advanced challenge id; tests that could now have no rows are guarded.
+- `supabase/track-lessons.sql` regenerated: run it when `lesson-v3` is merged.
+
 ## 1 Nov 2026 (branch `lesson-v3`): Next.js in Lesson v5
 - **Built from the approved draft** (`content-drafts/next-v5.md`, the owner’s 12-section flow), in `src/content/tracks/nextV5/`:
   - **Basic:** Fundamentals (with styling as 1.5), Routing and Navigation, Rendering Strategies, Data Fetching; then the Next.js Basics final test.
